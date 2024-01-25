@@ -21,8 +21,7 @@ public class DanhMucServiceImpl implements DanhMucService {
     }
 
     @Override
-    public List<DanhMuc> getDanhMucs() {
-        return null;
+    public List<DanhMuc> getDanhMucs() { return null;
     }
 
     @Override
