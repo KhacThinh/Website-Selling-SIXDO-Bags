@@ -31,6 +31,7 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
         ThuongHieu th = new ThuongHieu();
         th.setMa(thuongHieu.getMa());
         th.setTen(thuongHieu.getTen());
+        th.setTrangThai(true);
         return thuongHieuRepository.save(th);
     }
 
