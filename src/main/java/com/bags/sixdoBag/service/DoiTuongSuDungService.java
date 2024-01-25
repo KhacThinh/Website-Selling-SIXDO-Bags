@@ -13,9 +13,9 @@ public interface DoiTuongSuDungService {
 
     public DoiTuongSuDung addDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung);
 
-    public DoiTuongSuDung editDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung);
+    public DoiTuongSuDung editDoiTuongSuDung(int idDoiTuongSuDung,DoiTuongSuDung doiTuongSuDung);
 
-    public DoiTuongSuDung deleteDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung);
+    public DoiTuongSuDung deleteDoiTuongSuDung(int iddoiTuongSuDung);
 
     public List<DoiTuongSuDung>pageDoiTuongSuDung(int limit, int size);
 
