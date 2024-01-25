@@ -21,9 +21,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Table(name = "chuc_vu")
-public class ChucVu {
-
+@Table(name = "danh_muc")
+public class DanhMuc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,17 +30,18 @@ public class ChucVu {
 
     @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
     @NotEmpty(message = "Mã Không Được Để Trống")
-    @Max(value = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
-    @Column(name = "ma_chuc_vu")
-    private String maChucVu;
+    @Max(value = 100,message = "Mã Không Vượt Quá 100 Ký Tự")
+    @Column(name = "ma")
+    private String maDanhMuc;
 
     @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
     @NotEmpty(message = "Tên Không Được Để Trống")
-    @Max(value = 300, message = "Tên Không Được Vượt Quá 300 Ký Tự")
-    @Column(name = "ten_chuc_vu")
-    private String tenChucVu;
+    @Max(value = 300,message = "Tên Không Được Vượt Quá 300 Ký Tự")
+    @Column(name = "ten")
+    private String tenDanhMuc;
 
 
     @Column(name = "trang_thai")
     private Boolean trangThai;
+
 }
