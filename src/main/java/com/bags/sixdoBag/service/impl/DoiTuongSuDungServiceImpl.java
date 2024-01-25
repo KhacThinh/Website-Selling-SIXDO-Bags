@@ -22,12 +22,12 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     }
 
     @Override
-    public DoiTuongSuDung editDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung) {
+    public DoiTuongSuDung editDoiTuongSuDung(int idDoiTuongSuDung, DoiTuongSuDung doiTuongSuDung) {
         return null;
     }
 
     @Override
-    public DoiTuongSuDung deleteDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung) {
+    public DoiTuongSuDung deleteDoiTuongSuDung(int iddoiTuongSuDung) {
         return null;
     }
 

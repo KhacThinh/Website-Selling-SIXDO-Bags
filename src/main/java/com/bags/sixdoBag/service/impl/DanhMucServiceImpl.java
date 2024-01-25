@@ -14,39 +14,52 @@ public class DanhMucServiceImpl implements DanhMucService {
 
     private final DanhMucRepository danhMucRepository;
 
-
     @Override
     public DanhMuc getDanhMuc(int idDanhMuc) {
-        return null;
+        DanhMuc danhMuc = danhMucRepository.findById(idDanhMuc).orElse(null);
+        return danhMuc;
     }
 
     @Override
     public List<DanhMuc> getDanhMucs() {
-        return null;
+        List<DanhMuc> danhMucs = danhMucRepository.findDanhMucByAll();
+        return danhMucs;
     }
 
     @Override
     public DanhMuc addDanhMuc(DanhMuc danhMuc) {
-        return null;
+        DanhMuc dm = new DanhMuc();
+        dm.setMaDanhMuc(danhMuc.getMaDanhMuc());
+        dm.setTenDanhMuc(danhMuc.getTenDanhMuc());
+        dm.setTrangThai(true);
+        return danhMucRepository.save(dm);
     }
 
     @Override
     public DanhMuc editDanhMuc(Integer idDanhMuc, DanhMuc danhMuc) {
-        return null;
+        DanhMuc dm = getDanhMuc(idDanhMuc);
+        dm.setTenDanhMuc(danhMuc.getTenDanhMuc());
+        danhMucRepository.save(dm);
+        return dm;
     }
 
     @Override
     public DanhMuc deleteDanhMuc(Integer idDanhMuc) {
-        return null;
+        DanhMuc dm = getDanhMuc(idDanhMuc);
+        dm.setTrangThai(false);
+        danhMucRepository.save(dm);
+        return dm;
     }
 
     @Override
     public List<DanhMuc> pageDanhMuc(int limit, int size) {
-        return null;
+        List<DanhMuc> danhMucs = danhMucRepository.findByPageing(limit, size);
+        return danhMucs;
     }
 
     @Override
     public List<DanhMuc> searchDanhMuc(String tenDanhMuc) {
-        return null;
+        List<DanhMuc> danhMucs = danhMucRepository.searchDanhMucOrMaDanhMuc(tenDanhMuc);
+        return danhMucs;
     }
 }
