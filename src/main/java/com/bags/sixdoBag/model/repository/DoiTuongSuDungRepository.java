@@ -12,7 +12,10 @@ public interface DoiTuongSuDungRepository extends JpaRepository<DoiTuongSuDung, 
     @Query(value = "SELECT dtsg FROM DoiTuongSuDung dtsg where dtsg.trangThai = true")
     List<DoiTuongSuDung> findDoiTuongSuDungByAll();
 
-    @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from dong_tuong_su_dung \n" +
+    @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from doi_tuong_su_dung \n" +
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     List<DoiTuongSuDung> findByPageing(int page, int size);
+
+    @Query(value = "select * from doi_tuong_su_dung where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
+    List<DoiTuongSuDung> searchDoiTuongSuDungTenOrMa(String tenMa);
 }

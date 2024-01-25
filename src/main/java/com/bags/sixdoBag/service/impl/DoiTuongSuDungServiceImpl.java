@@ -29,8 +29,8 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     @Override
     public DoiTuongSuDung addDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung) {
         DoiTuongSuDung dtsg = new DoiTuongSuDung();
-        dtsg.setMaDoiTuongSuDung(doiTuongSuDung.getMaDoiTuongSuDung());
-        dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung());
+        dtsg.setMaDoiTuongSuDung(doiTuongSuDung.getMaDoiTuongSuDung().trim());
+        dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung().trim());
         dtsg.setTrangThai(true);
         return doiTuongSuDungRepository.save(dtsg);
     }
@@ -38,7 +38,7 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     @Override
     public DoiTuongSuDung editDoiTuongSuDung(int idDoiTuongSuDung, DoiTuongSuDung doiTuongSuDung) {
         DoiTuongSuDung dtsg = getDoiTuongSuDung(idDoiTuongSuDung);
-        dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung());
+        dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung().trim());
         return doiTuongSuDungRepository.save(dtsg);
     }
 
@@ -57,6 +57,7 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
 
     @Override
     public List<DoiTuongSuDung> searchDoiTuongSuDung(String tenDoiTuongSuDung) {
-        return null;
+        List<DoiTuongSuDung> doiTuongSuDungs = doiTuongSuDungRepository.searchDoiTuongSuDungTenOrMa(tenDoiTuongSuDung);
+        return doiTuongSuDungs;
     }
 }

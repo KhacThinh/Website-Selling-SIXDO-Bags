@@ -42,7 +42,6 @@ public class DoiTuongSuDung {
         @Column(name = "ten")
         private String tenDoiTuongSuDung;
 
-
         @Column(name = "trang_thai")
         private Boolean trangThai;
 

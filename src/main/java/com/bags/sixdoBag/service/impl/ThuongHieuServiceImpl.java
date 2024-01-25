@@ -29,8 +29,8 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     @Override
     public ThuongHieu addThuongHieu(ThuongHieu thuongHieu) {
         ThuongHieu th = new ThuongHieu();
-        th.setMa(thuongHieu.getMa());
-        th.setTen(thuongHieu.getTen());
+        th.setMa(thuongHieu.getMa().trim());
+        th.setTen(thuongHieu.getTen().trim());
         th.setTrangThai(true);
         return thuongHieuRepository.save(th);
     }
@@ -38,7 +38,7 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     @Override
     public ThuongHieu editThuongHieu(Integer idThuongHieu, ThuongHieu thuongHieu) {
         ThuongHieu th = getidThuongHieu(idThuongHieu);
-        th.setTen(thuongHieu.getTen());
+        th.setTen(thuongHieu.getTen().trim());
         return thuongHieuRepository.save(th);
     }
 

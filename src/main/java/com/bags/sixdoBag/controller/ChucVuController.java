@@ -17,18 +17,19 @@ public class ChucVuController {
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(chucVuService.getListChucVu());
     }
+
     @PostMapping("")
-    public ResponseEntity<?>add(@RequestBody @Valid ChucVu cv ){
+    public ResponseEntity<?> add(@RequestBody @Valid ChucVu cv) {
         return ResponseEntity.ok(chucVuService.addChucVu(cv));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>edit(@RequestBody @Valid ChucVu cv, @PathVariable int id){
-        return ResponseEntity.ok(chucVuService.editChucVu(id,cv));
+    public ResponseEntity<?> edit(@RequestBody @Valid ChucVu cv, @PathVariable int id) {
+        return ResponseEntity.ok(chucVuService.editChucVu(id, cv));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>delete(@PathVariable int id){
+    public ResponseEntity<?> delete(@PathVariable int id) {
         return ResponseEntity.ok(chucVuService.deleteChucVu(id));
     }
 }

@@ -24,18 +24,19 @@ public class ThuongHieuController {
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(thuongHieuService.getThuongHieus());
     }
+
     @PostMapping("")
-    public ResponseEntity<?>add(@RequestBody @Valid ThuongHieu th ){
+    public ResponseEntity<?> add(@RequestBody @Valid ThuongHieu th) {
         return ResponseEntity.ok(thuongHieuService.addThuongHieu(th));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>edit(@RequestBody @Valid ThuongHieu th, @PathVariable int id){
-        return ResponseEntity.ok(thuongHieuService.editThuongHieu(id,th));
+    public ResponseEntity<?> edit(@RequestBody @Valid ThuongHieu th, @PathVariable int id) {
+        return ResponseEntity.ok(thuongHieuService.editThuongHieu(id, th));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>delete(@PathVariable int id){
+    public ResponseEntity<?> delete(@PathVariable int id) {
         return ResponseEntity.ok(thuongHieuService.deleteThuongHieu(id));
     }
 }

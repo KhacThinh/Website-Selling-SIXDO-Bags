@@ -29,7 +29,7 @@ public class ThoiGianBaoHanhServiceImpl implements ThoiGianBaoHanhService {
     @Override
     public ThoiGianBaoHanh addThoiGianBaoHanh(ThoiGianBaoHanh thoiGianBaoHanh) {
         ThoiGianBaoHanh tgbh = new ThoiGianBaoHanh();
-        tgbh.setMa(thoiGianBaoHanh.getMa());
+        tgbh.setMa(thoiGianBaoHanh.getMa().trim());
         tgbh.setThoiGian(thoiGianBaoHanh.getThoiGian());
         tgbh.setTrangThai(true);
         return thoiGianBaoHanhRepository.save(tgbh);
