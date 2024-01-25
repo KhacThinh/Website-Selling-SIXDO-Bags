@@ -1,39 +1,58 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
+import com.bags.sixdoBag.model.repository.DoiTuongSuDungRepository;
 import com.bags.sixdoBag.service.DoiTuongSuDungService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
+
+    private final DoiTuongSuDungRepository doiTuongSuDungRepository;
+
     @Override
     public DoiTuongSuDung getDoiTuongSuDung(int idDoiTuongSuDung) {
-        return null;
+        DoiTuongSuDung doiTuongSuDung = doiTuongSuDungRepository.findById(idDoiTuongSuDung).orElse(null);
+        return doiTuongSuDung;
     }
 
     @Override
     public List<DoiTuongSuDung> getListDoiTuongSuDung() {
-        return null;
+        List<DoiTuongSuDung> doiTuongSuDungs = doiTuongSuDungRepository.findDoiTuongSuDungByAll();
+        return doiTuongSuDungs;
     }
 
     @Override
     public DoiTuongSuDung addDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung) {
-        return null;
+        DoiTuongSuDung dtsg = new DoiTuongSuDung();
+        dtsg.setMaDoiTuongSuDung(doiTuongSuDung.getMaDoiTuongSuDung());
+        dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung());
+        dtsg.setTrangThai(true);
+        return doiTuongSuDungRepository.save(dtsg);
     }
 
     @Override
     public DoiTuongSuDung editDoiTuongSuDung(int idDoiTuongSuDung, DoiTuongSuDung doiTuongSuDung) {
-        return null;
+        DoiTuongSuDung dtsg = getDoiTuongSuDung(idDoiTuongSuDung);
+        dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung());
+        return doiTuongSuDungRepository.save(dtsg);
     }
 
     @Override
     public DoiTuongSuDung deleteDoiTuongSuDung(int iddoiTuongSuDung) {
-        return null;
+        DoiTuongSuDung doiTuongSuDung = getDoiTuongSuDung(iddoiTuongSuDung);
+        doiTuongSuDung.setTrangThai(false);
+        return doiTuongSuDungRepository.save(doiTuongSuDung);
     }
 
     @Override
     public List<DoiTuongSuDung> pageDoiTuongSuDung(int limit, int size) {
-        return null;
+        List<DoiTuongSuDung> doiTuongSuDungs = doiTuongSuDungRepository.findByPageing(limit, size);
+        return doiTuongSuDungs;
     }
 
     @Override

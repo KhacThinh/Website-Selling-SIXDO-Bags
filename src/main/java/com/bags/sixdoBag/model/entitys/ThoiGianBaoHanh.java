@@ -3,6 +3,7 @@ package com.bags.sixdoBag.model.entitys;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "thoi_gian_bao_hanh")
@@ -11,7 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ThoiGianBaoHanh {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,7 +20,7 @@ public class ThoiGianBaoHanh {
     @Column(name = "ma")
     @NotBlank(message = "Mã không được để khoảng trắng!")
     @NotEmpty(message = "Mã không được để trống!")
-    @Max(value = 100, message = "Mã không được vượt quá 100 ký tự!")
+    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự!")
     private String ma;
 
     @Column(name = "thoi_gian")

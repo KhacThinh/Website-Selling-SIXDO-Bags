@@ -16,31 +16,42 @@ public class ThoiGianBaoHanhServiceImpl implements ThoiGianBaoHanhService {
 
     @Override
     public ThoiGianBaoHanh getThoiGianBaoHanh(int idThoiGianBaoHanh) {
-        return null;
+        ThoiGianBaoHanh gianBaoHanh = thoiGianBaoHanhRepository.findById(idThoiGianBaoHanh).orElse(null);
+        return gianBaoHanh;
     }
 
     @Override
     public List<ThoiGianBaoHanh> getThoiGianBaoHanhs() {
-        return null;
+        List<ThoiGianBaoHanh> thoiGianBaoHanhs = thoiGianBaoHanhRepository.findThoiGianBaoHanhByAll();
+        return thoiGianBaoHanhs;
     }
 
     @Override
     public ThoiGianBaoHanh addThoiGianBaoHanh(ThoiGianBaoHanh thoiGianBaoHanh) {
-        return null;
+        ThoiGianBaoHanh tgbh = new ThoiGianBaoHanh();
+        tgbh.setMa(thoiGianBaoHanh.getMa());
+        tgbh.setThoiGian(thoiGianBaoHanh.getThoiGian());
+        tgbh.setTrangThai(true);
+        return thoiGianBaoHanhRepository.save(tgbh);
     }
 
     @Override
     public ThoiGianBaoHanh editThoiGianBaoHanh(Integer idThoiGianBaoHanh, ThoiGianBaoHanh thoiGianBaoHanh) {
-        return null;
+        ThoiGianBaoHanh tgbh = getThoiGianBaoHanh(idThoiGianBaoHanh);
+        tgbh.setThoiGian(thoiGianBaoHanh.getThoiGian());
+        return thoiGianBaoHanhRepository.save(tgbh);
     }
 
     @Override
     public ThoiGianBaoHanh deleteThoiGianBaoHanh(Integer idThoiGianBaoHanh) {
-        return null;
+        ThoiGianBaoHanh gianBaoHanh = getThoiGianBaoHanh(idThoiGianBaoHanh);
+        gianBaoHanh.setTrangThai(false);
+        return thoiGianBaoHanhRepository.save(gianBaoHanh);
     }
 
     @Override
     public List<ThoiGianBaoHanh> pageThoiGianBaoHanh(int limit, int size) {
-        return null;
+        List<ThoiGianBaoHanh> thoiGianBaoHanhs = thoiGianBaoHanhRepository.findByPageing(limit, size);
+        return thoiGianBaoHanhs;
     }
 }

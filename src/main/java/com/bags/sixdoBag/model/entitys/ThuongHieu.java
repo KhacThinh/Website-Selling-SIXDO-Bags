@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "thuong_hieu")
@@ -21,13 +22,13 @@ public class ThuongHieu {
 
     @NotBlank(message = "Mã không được để khoảng trắng")
     @NotEmpty(message = "Mã không được để trống")
-    @Max(value = 100, message = "Mã không được vượt quá 100 ký tự!")
+    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự!")
     @Column(name = "ma")
     private String ma;
 
     @NotBlank(message = "Mã không được để khoảng trắng")
     @NotEmpty(message = "Mã không được để trống")
-    @Max(value = 300, message = "Mã không được vượt quá 300 ký tự!")
+    @Length(max = 300, message = "Mã không được vượt quá 300 ký tự!")
     @Column(name = "ten")
     private String ten;
 
