@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.MauSac;
+import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.repository.MauSacRepository;
 import com.bags.sixdoBag.service.MauSacService;
 import lombok.RequiredArgsConstructor;
