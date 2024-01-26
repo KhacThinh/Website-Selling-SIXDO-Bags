@@ -70,6 +70,7 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
 
     @Override
     public List<KhuyenMai> searchKhuyenMaiNgay(String dateStart, String dateEnd) {
-        return null;
+        List<KhuyenMai> khuyenMais = khuyenMaiRepository.searchKhuyenMaiNgay(dateStart, dateEnd);
+        return khuyenMais;
     }
 }

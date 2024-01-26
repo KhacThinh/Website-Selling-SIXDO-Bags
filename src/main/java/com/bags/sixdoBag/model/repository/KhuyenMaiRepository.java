@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
+import com.bags.sixdoBag.model.entitys.SanPham;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,12 +17,12 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai, Integer> {
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     List<KhuyenMai> findByPageing(int page, int size);
 
-    @Query(value = "select * from khuyen_mai where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
+    @Query(value = "select * from khuyen_mai where ten like %:tenMa% or ma_khuyen_mai like %:tenMa%", nativeQuery = true)
     List<KhuyenMai> searchKhuyenMaiTenOrMa(String tenMa);
 
 
-    @Query(value = "DECLARE @start_date datetime = :dateStart; " +
-            "DECLARE @end_date datetime = :dateEnd;   " +
+    @Query(value = "DECLARE @start_date datetime = :dateStart; \n" +
+            "DECLARE @end_date datetime = :dateEnd;   \n" +
             "\n" +
             "SELECT *\n" +
             "FROM khuyen_mai\n" +
