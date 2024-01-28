@@ -68,19 +68,20 @@ public class SanPham {
     @Column(name = "trang_thai")
     private Boolean trangThai;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_thoi_gian_bao_hanh")
     private ThoiGianBaoHanh thoiGianBaoHanh;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_thuong_hieu")
     private ThuongHieu thuongHieu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_danh_muc")
     private DanhMuc danhMuc;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_doi_tuong_su_dung")
     private DoiTuongSuDung doiTuongSuDung;
+
 }

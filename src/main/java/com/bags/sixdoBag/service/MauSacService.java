@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface MauSacService {
 
-    public MauSac getDanhMuc(int idMauSac);
+    public MauSac getDanhMuc(Integer idMauSac);
 
     public List<MauSac> getMauSacs();
 

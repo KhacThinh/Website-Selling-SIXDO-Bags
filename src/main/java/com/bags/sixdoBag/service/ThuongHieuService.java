@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface ThuongHieuService {
 
-    public ThuongHieu getidThuongHieu(int idThuongHieu);
+    public ThuongHieu getidThuongHieu(Integer idThuongHieu);
 
     public List<ThuongHieu> getThuongHieus();
 

@@ -15,7 +15,7 @@ public class ThoiGianBaoHanhServiceImpl implements ThoiGianBaoHanhService {
     private final ThoiGianBaoHanhRepository thoiGianBaoHanhRepository;
 
     @Override
-    public ThoiGianBaoHanh getThoiGianBaoHanh(int idThoiGianBaoHanh) {
+    public ThoiGianBaoHanh getThoiGianBaoHanh(Integer idThoiGianBaoHanh) {
         ThoiGianBaoHanh gianBaoHanh = thoiGianBaoHanhRepository.findById(idThoiGianBaoHanh).orElse(null);
         return gianBaoHanh;
     }

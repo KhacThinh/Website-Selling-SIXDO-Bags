@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface DanhMucService {
 
-    public DanhMuc getDanhMuc(int idDanhMuc);
+    public DanhMuc getDanhMuc(Integer idDanhMuc);
 
     public List<DanhMuc> getDanhMucs();
 

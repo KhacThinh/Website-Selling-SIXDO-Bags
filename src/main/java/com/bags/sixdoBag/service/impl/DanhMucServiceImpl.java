@@ -15,7 +15,7 @@ public class DanhMucServiceImpl implements DanhMucService {
     private final DanhMucRepository danhMucRepository;
 
     @Override
-    public DanhMuc getDanhMuc(int idDanhMuc) {
+    public DanhMuc getDanhMuc(Integer idDanhMuc) {
         DanhMuc danhMuc = danhMucRepository.findById(idDanhMuc).orElse(null);
         return danhMuc;
     }
