@@ -15,7 +15,7 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     private final DoiTuongSuDungRepository doiTuongSuDungRepository;
 
     @Override
-    public DoiTuongSuDung getDoiTuongSuDung(int idDoiTuongSuDung) {
+    public DoiTuongSuDung getDoiTuongSuDung(Integer idDoiTuongSuDung) {
         DoiTuongSuDung doiTuongSuDung = doiTuongSuDungRepository.findById(idDoiTuongSuDung).orElse(null);
         return doiTuongSuDung;
     }

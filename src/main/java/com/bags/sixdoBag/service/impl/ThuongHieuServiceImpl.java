@@ -15,7 +15,7 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     private final ThuongHieuRepository thuongHieuRepository;
 
     @Override
-    public ThuongHieu getidThuongHieu(int idThuongHieu) {
+    public ThuongHieu getidThuongHieu(Integer idThuongHieu) {
         ThuongHieu thuongHieu = thuongHieuRepository.findById(idThuongHieu).orElse(null);
         return thuongHieu;
     }

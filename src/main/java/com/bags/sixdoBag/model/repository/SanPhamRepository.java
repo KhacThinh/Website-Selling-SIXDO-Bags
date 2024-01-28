@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
+
     @Query(value = "SELECT sp FROM SanPham sp where sp.trangThai = true")
     List<SanPham> findSanPhamByAll();
 
@@ -16,6 +17,11 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     List<SanPham> findByPageing(int page, int size);
 
-    @Query(value = "select * from san_pham where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
+    @Query(value = "select * from san_pham where trang_thai = 1 and ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     List<SanPham> searchSanPhamTenOrMa(String tenMa);
+
+    @Query(value = "select sp from SanPham sp where sp.trangThai = true and sp.khoiLuong between :min and :max")
+    List<SanPham> searchKhoiLuong(int min, int max);
+
+//    List<SanPham> findSanPhamsByChatLieuContainingIgnoreCase(String chatLieu);
 }

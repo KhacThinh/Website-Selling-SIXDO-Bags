@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface DoiTuongSuDungService {
-    public DoiTuongSuDung getDoiTuongSuDung(int idDoiTuongSuDung);
+    public DoiTuongSuDung getDoiTuongSuDung(Integer idDoiTuongSuDung);
 
     public List<DoiTuongSuDung> getListDoiTuongSuDung();
 

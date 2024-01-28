@@ -73,38 +73,6 @@ mo_ta varchar(max),
 trang_thai int
 )
 
-
-DECLARE @start_date datetime = null;  -- Thay đổi giá trị theo ngày bạn muốn
-DECLARE @end_date datetime = '2025-01-01';    -- Thay đổi giá trị theo ngày bạn muốn
-
-SELECT *
-FROM khuyen_mai
-WHERE ngay_bat_dau BETWEEN @start_date AND @end_date
-   OR ngay_ket_thuc BETWEEN @start_date AND @end_date
-   OR (@start_date BETWEEN ngay_bat_dau AND ngay_ket_thuc AND @end_date BETWEEN ngay_bat_dau AND ngay_ket_thuc);
-
-
----- Câu 1
---INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
---VALUES ('KM001', N'Khuyến mãi 1', 10.5, '2024-01-01 08:30:00', '2024-01-10 18:45:00', N'Giảm 10%', 1);
-
----- Câu 2
---INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
---VALUES ('KM002', N'Khuyến mãi 2', 15.75, '2024-02-05 12:00:00', '2024-02-15 23:59:59', N'Giảm 15%', 1);
-
----- Câu 3
---INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
---VALUES ('KM003', N'Khuyến mãi 3', 20, '2024-03-10 09:15:30', '2024-03-20 15:30:00', N'Giảm 20%', 1);
-
----- Câu 4
---INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
---VALUES ('KM004', N'Khuyến mãi 4', 25.3, '2024-04-15 14:00:00', '2024-04-25 23:59:59', N'Giảm 25%', 1);
-
----- Câu 5
---INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
---VALUES ('KM005', N'Khuyến mãi 5', 30.2, '2024-05-20 10:45:00', '2024-05-30 20:30:45', N'Giảm 30%', 1);
-
-
 create table chi_tiet_san_pham(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 ma_ctsp varchar(100) ,
@@ -258,4 +226,58 @@ url_anh varchar(200),
 link varchar(300),
 CONSTRAINT FK_Anh_Slide_Show FOREIGN KEY(id_slide_show) REFERENCES slide_show(id),
 )
+
+
+---- Câu 1
+INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
+VALUES	('KM001', N'Khuyến mãi 1', 10.5, '2024-01-01 08:30:00', '2024-01-10 18:45:00', N'Giảm 10%', 1),
+		('KM002', N'Khuyến mãi 2', 15.75, '2024-02-05 12:00:00', '2024-02-15 23:59:59', N'Giảm 15%', 1),
+		('KM003', N'Khuyến mãi 3', 20, '2024-03-10 09:15:30', '2024-03-20 15:30:00', N'Giảm 20%', 1),
+		('KM004', N'Khuyến mãi 4', 25.3, '2024-04-15 14:00:00', '2024-04-25 23:59:59', N'Giảm 25%', 1),
+		('KM005', N'Khuyến mãi 5', 30.2, '2024-05-20 10:45:00', '2024-05-30 20:30:45', N'Giảm 30%', 1);
+
+DECLARE @start_date datetime = '2024-03-10';  -- Thay đổi giá trị theo ngày bạn muốn
+DECLARE @end_date datetime = '2030-01-01';    -- Thay đổi giá trị theo ngày bạn muốn
+
+SELECT * FROM khuyen_mai
+WHERE ngay_bat_dau BETWEEN @start_date AND @end_date
+   OR ngay_ket_thuc BETWEEN @start_date AND @end_date
+   OR (@start_date BETWEEN ngay_bat_dau AND ngay_ket_thuc AND @end_date BETWEEN ngay_bat_dau AND ngay_ket_thuc);
+
+select * from khuyen_mai
+
+INSERT INTO san_pham (ma_san_pham, id_thoi_gian_bao_hanh, id_thuong_hieu, id_danh_muc, id_doi_tuong_su_dung, ten, anh, product_url, kich_thuoc, khoi_luong, chat_lieu, xuat_xu, mo_ta, trang_thai)
+VALUES	('SP001', null, null, null, null, N'Sản phẩm 1', 'image1.jpg', 'product1_url', '10x15x5 cm', 0.5, N'Vật liệu 1', 'Việt Nam', N'Mô tả sản phẩm 1', 1),
+		('SP002', null, null, null, null, N'Sản phẩm 2', 'image2.jpg', 'product2_url', '20x25x10 cm', 1.2, N'Vật liệu 2', 'Trung Quốc', N'Mô tả sản phẩm 2', 1),
+		('SP003', null, null, null, null, N'Sản phẩm 3', 'image3.jpg', 'product3_url', '15x20x8 cm', 0.8, N'Vật liệu 3', 'Hàn Quốc', N'Mô tả sản phẩm 3', 1),
+		('SP004', null, null, null, null, N'Sản phẩm 4', 'image4.jpg', 'product4_url', '18x22x7 cm', 1.0, N'Vật liệu 4', 'Mỹ', N'Mô tả sản phẩm 4', 1),
+		('SP005', null, null, null, null, N'Sản phẩm 5', 'image5.jpg', 'product5_url', '25x30x12 cm', 1.5, N'Vật liệu 5', 'Nhật Bản', N'Mô tả sản phẩm 5', 1);
+
+select * from san_pham where khoi_luong between 0.4 and 1
+select * from san_pham where trang_thai = 1 and ten like N'%phẩm 2%'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

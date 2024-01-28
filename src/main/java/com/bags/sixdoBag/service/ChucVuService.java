@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface ChucVuService {
-    public ChucVu getChucVu(int idChucVu);
+    public ChucVu getChucVu(Integer idChucVu);
 
     public List<ChucVu> getListChucVu();
 

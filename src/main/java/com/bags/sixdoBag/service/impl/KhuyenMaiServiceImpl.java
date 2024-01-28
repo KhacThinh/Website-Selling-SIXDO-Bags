@@ -15,7 +15,7 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
     private final KhuyenMaiRepository khuyenMaiRepository;
 
     @Override
-    public KhuyenMai getKhuyenMai(int idKhuyenMai) {
+    public KhuyenMai getKhuyenMai(Integer idKhuyenMai) {
         KhuyenMai khuyenMai = khuyenMaiRepository.findById(idKhuyenMai).orElse(null);
         return khuyenMai;
     }

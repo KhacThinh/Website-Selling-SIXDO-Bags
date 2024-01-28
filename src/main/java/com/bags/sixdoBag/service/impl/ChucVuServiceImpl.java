@@ -14,7 +14,7 @@ public class ChucVuServiceImpl implements ChucVuService {
     public final ChucVuRepository chucVuRepository;
 
     @Override
-    public ChucVu getChucVu(int idChucVu) {
+    public ChucVu getChucVu(Integer idChucVu) {
         ChucVu chucVu = chucVuRepository.findById(idChucVu).orElse(null);
         return chucVu;
     }

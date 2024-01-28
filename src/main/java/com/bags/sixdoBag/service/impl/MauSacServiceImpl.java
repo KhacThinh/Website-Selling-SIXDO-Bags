@@ -16,7 +16,7 @@ public class MauSacServiceImpl implements MauSacService {
     private final MauSacRepository mauSacRepository;
 
     @Override
-    public MauSac getDanhMuc(int idMauSac) {
+    public MauSac getDanhMuc(Integer idMauSac) {
         MauSac mauSac = mauSacRepository.findById(idMauSac).orElse(null);
         return mauSac;
     }
