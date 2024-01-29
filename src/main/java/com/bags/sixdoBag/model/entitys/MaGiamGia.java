@@ -11,11 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,8 +21,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 @Table(name = "ma_giam_gia")
 public class MaGiamGia {
@@ -37,24 +32,24 @@ public class MaGiamGia {
 
     @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
     @NotEmpty(message = "Mã Không Được Để Trống")
-    @Length(max = 100,message = "Mã Không Vượt Quá 100 Ký Tự")
+    @Length(max = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
     @Column(name = "ma_giam_gia")
     private String maGiamGia;
 
     @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
     @NotEmpty(message = "Tên Không Được Để Trống")
-    @Length(max = 200,message = "Tên Không Được Vượt Quá 200 Ký Tự")
+    @Length(max = 200, message = "Tên Không Được Vượt Quá 200 Ký Tự")
     @Column(name = "ten_ma_giam_gia")
     private String tenMaGiamGia;
 
-    @Min(value = 0,message = "Giá Trị Giảm Không Được Nhỏ Hơn 0")
+    @Min(value = 0, message = "Giá Trị Giảm Không Được Nhỏ Hơn 0")
     @Column(name = "gia_tri_giam")
     private Double giaTriGiam;
 
-    @Column(name ="ngay_bat_dau")
+    @Column(name = "ngay_bat_dau")
     private LocalDateTime ngayBatDau;
 
-    @Column(name ="ngay_ket_thuc")
+    @Column(name = "ngay_ket_thuc")
     private LocalDateTime ngayKetThuc;
 
     @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
@@ -62,18 +57,16 @@ public class MaGiamGia {
     @Column(name = "mo_ta")
     private String moTa;
 
-    @Min(value = 0,message = "Số Lượng Phải Lớn Hơn Hoặc = 0")
+    @Min(value = 0, message = "Số Lượng Phải Lớn Hơn Hoặc = 0")
     @NotNull(message = "Số lượng không được bỏ trống")
     @Column(name = "so_luong")
     private Integer soLuong;
 
 
-    @Min(value = 0,message = "Diều Kiện Giảm Phải Lớn Hơn Hoặc = 0")
+    @Min(value = 0, message = "Diều Kiện Giảm Phải Lớn Hơn Hoặc = 0")
     @NotNull(message = "Diều Kiện không được bỏ trống")
     @Column(name = "dieu_kien")
     private Integer dieuKienGiam;
-
-
 
 
     @Column(name = "trang_thai")

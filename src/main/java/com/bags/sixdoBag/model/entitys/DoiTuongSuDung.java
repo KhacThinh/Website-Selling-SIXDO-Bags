@@ -9,40 +9,35 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 @Table(name = "doi_tuong_su_dung")
 public class DoiTuongSuDung {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id")
-        private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-        @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
-        @NotEmpty(message = "Mã Không Được Để Trống")
-        @Length(max = 100,message = "Mã Không Vượt Quá 100 Ký Tự")
-        @Column(name = "ma")
-        private String maDoiTuongSuDung;
+    @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
+    @NotEmpty(message = "Mã Không Được Để Trống")
+    @Length(max = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
+    @Column(name = "ma")
+    private String maDoiTuongSuDung;
 
-        @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
-        @NotEmpty(message = "Tên Không Được Để Trống")
-        @Length(max = 300,message = "Tên Không Được Vượt Quá 300 Ký Tự")
-        @Column(name = "ten")
-        private String tenDoiTuongSuDung;
+    @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
+    @NotEmpty(message = "Tên Không Được Để Trống")
+    @Length(max = 300, message = "Tên Không Được Vượt Quá 300 Ký Tự")
+    @Column(name = "ten")
+    private String tenDoiTuongSuDung;
 
-        @Column(name = "trang_thai")
-        private Boolean trangThai;
+    @Column(name = "trang_thai")
+    private Boolean trangThai;
 
-    }
+}

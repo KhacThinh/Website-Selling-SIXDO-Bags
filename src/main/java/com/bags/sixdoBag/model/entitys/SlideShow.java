@@ -39,5 +39,4 @@ public class SlideShow {
     @Column(name = "trang_thai")
     private Boolean trangThai;
 
-
 }
