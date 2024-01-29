@@ -24,12 +24,12 @@ public class ThoiGianBaoHanhController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@RequestBody @Valid ThoiGianBaoHanh thoiGianBaoHanh, @PathVariable int id) {
+    public ResponseEntity<?> edit(@RequestBody @Valid ThoiGianBaoHanh thoiGianBaoHanh, @PathVariable Integer id) {
         return ResponseEntity.ok(thoiGianBaoHanhService.editThoiGianBaoHanh(id, thoiGianBaoHanh));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(thoiGianBaoHanhService.deleteThoiGianBaoHanh(id));
     }
     @GetMapping("/searchMa")
