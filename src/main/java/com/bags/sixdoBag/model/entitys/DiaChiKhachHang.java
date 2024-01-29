@@ -15,7 +15,6 @@ import lombok.*;
 public class DiaChiKhachHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_khach_hang")
     private Integer id;
 
     @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
@@ -31,4 +30,8 @@ public class DiaChiKhachHang {
     @NotEmpty(message = "Mô Tả Không Được Để Trống")
     @Column(name = "mo_ta")
     private String moTa;
+
+    @ManyToOne
+    @JoinColumn(name = "id_khach_hang")
+    private KhachHang khachHang;
 }
