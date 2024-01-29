@@ -278,6 +278,8 @@ select * from khuyen_mai
 
 select * from san_pham
 
+select * from hoa_don
+
 
 
 
