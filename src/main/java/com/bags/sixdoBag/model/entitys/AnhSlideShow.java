@@ -41,6 +41,4 @@ public class AnhSlideShow {
     @ManyToOne
     @JoinColumn(name = "id_slide_show")
     private SlideShow slideShow;
-
-
 }

@@ -1,7 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.MauSac;
-import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.repository.MauSacRepository;
 import com.bags.sixdoBag.service.MauSacService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,9 @@ public class MauSacServiceImpl implements MauSacService {
     private final MauSacRepository mauSacRepository;
 
     @Override
-    public MauSac getDanhMuc(Integer idMauSac) {
-        MauSac mauSac = mauSacRepository.findById(idMauSac).orElse(null);
+    public MauSac getMauSac(Integer idMauSac) {
+        MauSac mauSac = mauSacRepository.findById(idMauSac)
+                .orElseThrow(()-> new IllegalArgumentException("Màu Sắc không tồn tại id " + idMauSac));
         return mauSac;
     }
 
@@ -37,7 +37,7 @@ public class MauSacServiceImpl implements MauSacService {
 
     @Override
     public MauSac editMauSac(Integer idMauSac, MauSac mauSac) {
-        MauSac ms = getDanhMuc(idMauSac);
+        MauSac ms = getMauSac(idMauSac);
         ms.setMaMauSac(mauSac.getMaMauSac().trim());
         ms.setTenMauSac(mauSac.getTenMauSac().trim());
         return mauSacRepository.save(ms);
@@ -45,7 +45,7 @@ public class MauSacServiceImpl implements MauSacService {
 
     @Override
     public MauSac deleteMauSac(Integer idMauSac) {
-        MauSac ms = getDanhMuc(idMauSac);
+        MauSac ms = getMauSac(idMauSac);
         mauSacRepository.delete(ms);
         return ms;
     }
