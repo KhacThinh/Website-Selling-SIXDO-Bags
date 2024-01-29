@@ -95,8 +95,17 @@ id_ctsp  int ,
 url varchar(max)
 CONSTRAINT FK_CTSP_ACTSP FOREIGN KEY(id_ctsp) REFERENCES chi_tiet_san_pham(id),
 )
+
+create table tai_khoan(
+id int IDENTITY(1,1) PRIMARY KEY,
+ten_dang_nhap varchar(50),
+mat_khau varchar(50),
+quyen varchar(30)
+)
+
 create table khach_hang(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
+id_tai_khoan int,
 ma_khach_hang varchar(100) unique,
 ten_khach_hang nvarchar(100),
 gioi_tinh int,
@@ -105,6 +114,7 @@ sdt varchar(100),
 email varchar(100),
 trang_thai int,
 mat_khau varchar(100),
+CONSTRAINT FK_TaiKhoan FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
 
 create table dia_chi_khach_hang(
@@ -113,8 +123,8 @@ ten_dia_chi nvarchar(max),
 trang_thai int,
 mo_ta nvarchar(max)
 CONSTRAINT FK_KhachHang_DCKH FOREIGN KEY(id_khach_hang) REFERENCES khach_hang(id)
-
 )
+
 
 create table san_pham_yeu_thich(
 id_san_pham  int,
@@ -150,8 +160,9 @@ id int IDENTITY(1, 1)  PRIMARY KEY not null,
 ma_chuc_vu varchar(100) unique,
 ten_chuc_vu nvarchar(100),
 trang_thai int
-
 )
+
+
 create table ma_giam_gia(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 ma_giam_gia varchar(100) unique,
@@ -168,6 +179,7 @@ trang_thai int
 create table nhan_vien(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 id_chuc_vu int,
+id_tai_khoan int,
 ma_nhan_vien varchar(100),
 ho_ten nvarchar(100),
 ngay_sinh datetime, 
@@ -179,8 +191,10 @@ cccd varchar(100),
 thoi_gian_vao datetime,
 thoi_gian_ra datetime,
 trang_thai int,
-CONSTRAINT FK_ChucVu FOREIGN KEY(id_chuc_vu) REFERENCES chuc_vu(id)
+FOREIGN KEY(id_chuc_vu) REFERENCES chuc_vu(id),
+FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
+
 
 create table hoa_don(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
@@ -210,7 +224,6 @@ gia float,
 PRIMARY KEY (id_hoa_don,id_ctsp),
 CONSTRAINT FK_HoaDon_CTHD FOREIGN KEY(id_hoa_don) REFERENCES hoa_don(id),
 CONSTRAINT FK_CTSP_CTHD FOREIGN KEY(id_ctsp) REFERENCES chi_tiet_san_pham(id),
-
 )
 
 create table slide_show(
@@ -255,6 +268,8 @@ VALUES	('SP001', null, null, null, null, N'Sản phẩm 1', 'image1.jpg', 'produ
 
 select * from san_pham where khoi_luong between 0.4 and 1
 select * from san_pham where trang_thai = 1 and ten like N'%phẩm 2%'
+
+--select * from san_pham where khoi_luong = or ten like N'%Phẩm 4%'
 
 
 
