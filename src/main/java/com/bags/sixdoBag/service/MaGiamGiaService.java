@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface MaGIamGiaService {
+public interface MaGiamGiaService {
 
-    public MaGiamGia getMaGiamGia(int idMaGiamGia);
+    public MaGiamGia getMaGiamGia(Integer idMaGiamGia);
 
     public List<MaGiamGia> getListMaGiamGia();
 

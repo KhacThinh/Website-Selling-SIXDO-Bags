@@ -32,4 +32,12 @@ public class ThoiGianBaoHanhController {
     public ResponseEntity<?> delete(@PathVariable int id) {
         return ResponseEntity.ok(thoiGianBaoHanhService.deleteThoiGianBaoHanh(id));
     }
+    @GetMapping("/searchMa")
+    public ResponseEntity<?>searchMa(@RequestParam String tenMa){
+        return ResponseEntity.ok(thoiGianBaoHanhService.searchMa(tenMa));
+    }
+    @GetMapping("/searchTime")
+    public ResponseEntity<?>searchTime(@RequestParam Integer time){
+        return ResponseEntity.ok(thoiGianBaoHanhService.searchTime(time));
+    }
 }

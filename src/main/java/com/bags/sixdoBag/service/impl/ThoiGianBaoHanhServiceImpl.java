@@ -54,4 +54,18 @@ public class ThoiGianBaoHanhServiceImpl implements ThoiGianBaoHanhService {
         List<ThoiGianBaoHanh> thoiGianBaoHanhs = thoiGianBaoHanhRepository.findByPageing(limit, size);
         return thoiGianBaoHanhs;
     }
+
+    @Override
+    public List<ThoiGianBaoHanh> searchMa(String ma) {
+        List<ThoiGianBaoHanh>listSearchMa= thoiGianBaoHanhRepository.searchTenThuongHieuMa(ma);
+        return listSearchMa;
+    }
+
+    @Override
+    public List<ThoiGianBaoHanh> searchTime(Integer time) {
+        List<ThoiGianBaoHanh>listSearchTime = thoiGianBaoHanhRepository.searchTenThuongHieuTime(time);
+        return listSearchTime;
+    }
+
+
 }

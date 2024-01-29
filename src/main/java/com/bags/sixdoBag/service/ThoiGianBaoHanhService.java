@@ -19,4 +19,8 @@ public interface ThoiGianBaoHanhService {
     public ThoiGianBaoHanh deleteThoiGianBaoHanh(Integer idThoiGianBaoHanh);
 
     public List<ThoiGianBaoHanh> pageThoiGianBaoHanh(int limit, int size);
+
+    public List<ThoiGianBaoHanh>searchMa(String ma);
+    public List<ThoiGianBaoHanh>searchTime(Integer time);
+
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface DiaChiKhachHangService {
-    public DiaChiKhachHang getDiaChiKhachHang(int idMaDiaChi);
+    public DiaChiKhachHang getDiaChiKhachHang(Integer idMaDiaChi);
 
     public List<DiaChiKhachHang> getListDiaChiKhachHang();
 

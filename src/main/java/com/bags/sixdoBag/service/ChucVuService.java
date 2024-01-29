@@ -13,9 +13,9 @@ public interface ChucVuService {
 
     public ChucVu addChucVu(ChucVu chucVu);
 
-    public ChucVu editChucVu(int idChucVu,ChucVu chucVu);
+    public ChucVu editChucVu(Integer idChucVu,ChucVu chucVu);
 
-    public ChucVu deleteChucVu(int idchucVu);
+    public ChucVu deleteChucVu(Integer idchucVu);
 
     public List<ChucVu>pageChucVu(int limit, int size);
 

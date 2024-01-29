@@ -1,9 +1,8 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
-import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
-import com.bags.sixdoBag.service.MaGIamGiaService;
+import com.bags.sixdoBag.service.MaGiamGiaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +10,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MaGiamGiaServiceImpl implements MaGIamGiaService {
+public class MaGiamGiaServiceImpl implements MaGiamGiaService {
     public final MaGiamGiaRepository maGiamGiaRepository;
 
     @Override
-    public MaGiamGia getMaGiamGia(int idMaGiamGia) {
+    public MaGiamGia getMaGiamGia(Integer idMaGiamGia) {
         MaGiamGia maGiamGia = maGiamGiaRepository.findById(idMaGiamGia).orElse(null);
 
         return maGiamGia;
@@ -58,8 +57,8 @@ public class MaGiamGiaServiceImpl implements MaGIamGiaService {
     @Override
     public MaGiamGia deleteMaGiamGia(Integer idMaGiamGia) {
         MaGiamGia maGiamGia = getMaGiamGia(idMaGiamGia);
-        maGiamGiaRepository.delete(maGiamGia);
-        return maGiamGia;
+        maGiamGia.setTrangThai(false);
+        return maGiamGiaRepository.save(maGiamGia);
     }
 
     @Override
