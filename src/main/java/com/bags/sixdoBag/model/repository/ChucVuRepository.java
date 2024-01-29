@@ -17,6 +17,6 @@ public interface ChucVuRepository extends JpaRepository<ChucVu, Integer> {
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     public List<ChucVu> findByPageing(int page, int size);
 
-    @Query(value = "select * from chuc_vu where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
+    @Query(value = "select * from chuc_vu where ten_chuc_vu like %:tenMa% or ma_chuc_vu like %:tenMa%", nativeQuery = true)
     List<ChucVu> searchChucVuTenOrMa(String tenMa);
 }

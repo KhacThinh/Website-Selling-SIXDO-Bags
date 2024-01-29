@@ -13,7 +13,7 @@ import java.util.List;
 public class DiaChiKhachHangServiceImpl implements DiaChiKhachHangService {
     public final DiaChiKhachHangRepository diaChiKhachHangRepository;
     @Override
-    public DiaChiKhachHang getDiaChiKhachHang(int idMaDiaChi) {
+    public DiaChiKhachHang getDiaChiKhachHang(Integer idMaDiaChi) {
         return null;
     }
 

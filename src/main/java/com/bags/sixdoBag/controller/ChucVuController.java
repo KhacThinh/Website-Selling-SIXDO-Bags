@@ -32,4 +32,9 @@ public class ChucVuController {
     public ResponseEntity<?> delete(@PathVariable int id) {
         return ResponseEntity.ok(chucVuService.deleteChucVu(id));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?>searchTenOrMa(@RequestParam String tenMa){
+        return ResponseEntity.ok(chucVuService.searchChucVu(tenMa));
+    }
 }

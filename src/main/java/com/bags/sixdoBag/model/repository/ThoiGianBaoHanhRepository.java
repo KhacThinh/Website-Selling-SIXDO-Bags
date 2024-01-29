@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ThoiGianBaoHanh;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,10 @@ public interface ThoiGianBaoHanhRepository extends JpaRepository<ThoiGianBaoHanh
     @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from thoi_gian_bao_hanh \n" +
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     public List<ThoiGianBaoHanh> findByPageing(int page, int size);
+
+    @Query(value = "select * from thoi_gian_bao_hanh where ma like %:tenMa%", nativeQuery = true)
+    List<ThoiGianBaoHanh> searchTenThuongHieuMa(String tenMa);
+
+    @Query(value = "select * from thoi_gian_bao_hanh where thoi_gian  =?1", nativeQuery = true)
+    List<ThoiGianBaoHanh> searchTenThuongHieuTime(Integer time);
 }

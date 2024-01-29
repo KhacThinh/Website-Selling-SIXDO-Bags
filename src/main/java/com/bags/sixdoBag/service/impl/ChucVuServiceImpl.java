@@ -36,7 +36,7 @@ public class ChucVuServiceImpl implements ChucVuService {
     }
 
     @Override
-    public ChucVu editChucVu(int idChucVu, ChucVu chucVu) {
+    public ChucVu editChucVu(Integer idChucVu, ChucVu chucVu) {
         ChucVu cv = getChucVu(idChucVu);
         cv.setTenChucVu(chucVu.getTenChucVu().trim());
         chucVuRepository.save(cv);
@@ -44,11 +44,13 @@ public class ChucVuServiceImpl implements ChucVuService {
     }
 
     @Override
-    public ChucVu deleteChucVu(int idchucVu) {
+    public ChucVu deleteChucVu(Integer idchucVu) {
         ChucVu cv = getChucVu(idchucVu);
-        chucVuRepository.delete(cv);
+        cv.setTrangThai(false);
 
-        return cv;
+
+
+        return  chucVuRepository.save(cv);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.bags.sixdoBag.controller;
 
-import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
-import com.bags.sixdoBag.service.MaGIamGiaService;
+import com.bags.sixdoBag.service.MaGiamGiaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ma_giam_gia")
 public class MaGiamGiaController {
 
-    public final MaGIamGiaService maGIamGiaService;
+    public final MaGiamGiaService maGIamGiaService;
     @GetMapping("")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(maGIamGiaService.getListMaGiamGia());
