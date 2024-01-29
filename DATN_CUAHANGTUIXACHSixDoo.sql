@@ -118,6 +118,7 @@ CONSTRAINT FK_TaiKhoan FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
 
 create table dia_chi_khach_hang(
+id int IDENTITY(1, 1) PRIMARY KEY,
 id_khach_hang  int,
 ten_dia_chi nvarchar(max),
 trang_thai int,
