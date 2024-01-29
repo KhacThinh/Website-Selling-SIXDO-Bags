@@ -39,6 +39,7 @@ public class ChucVuServiceImpl implements ChucVuService {
     public ChucVu editChucVu(int idChucVu, ChucVu chucVu) {
         ChucVu cv = getChucVu(idChucVu);
         cv.setTenChucVu(chucVu.getTenChucVu().trim());
+        chucVuRepository.save(cv);
         return cv;
     }
 
