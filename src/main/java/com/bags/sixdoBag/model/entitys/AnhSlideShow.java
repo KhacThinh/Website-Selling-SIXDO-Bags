@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+
 @Builder
 public class AnhSlideShow {
     @Id
@@ -31,11 +32,13 @@ public class AnhSlideShow {
     @NotBlank(message = "URL ảnh không được để khoảng trắng")
     @NotEmpty(message = "URL ảnh không được để trống")
     @Length(max = 200, message = "URL không được vượt quá 300 ký tự!")
+    @Column(name = "url_anh")
     private String urlAnh;
 
     @NotBlank(message = "Link không được để khoảng trắng")
     @NotEmpty(message = "Link không được để trống")
     @Length(max = 300, message = "Link không được vượt quá 300 ký tự!")
+    @Column(name = "link")
     private String linkAnhSlideShow;
 
     @ManyToOne
