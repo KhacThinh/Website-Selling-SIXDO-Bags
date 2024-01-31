@@ -271,7 +271,6 @@ select * from san_pham where khoi_luong between 0.4 and 1
 select * from san_pham where trang_thai = 1 and ten like N'%phẩm 2%'
 
 --select * from san_pham where khoi_luong = or ten like N'%Phẩm 4%'
-select * from anh_slide_show
 
 select * from mau_sac
 
