@@ -23,41 +23,41 @@ public class NhanVien {
     @JoinColumn(name = "id_chuc_vu")
     private ChucVu chucVu;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_tai_khoan")
     private TaiKhoan taiKhoan;
 
-    @Column
+    @Column(name = "ma_nhan_vien")
     private String maNhanVien;
 
-    @Column
+    @Column(name = "ho_ten")
     private String hoTen;
 
-    @Column
+    @Column(name = "ngay_sinh")
     private LocalDateTime ngaySinh;
 
-    @Column
+    @Column(name = "sdt")
     private String sdt;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
-    @Column
+    @Column(name = "mat_khau")
     private String matKhau;
 
-    @Column
+    @Column(name = "que_quan")
     private String queQuan;
 
-    @Column
+    @Column(name = "cccd")
     private String cccd;
 
-    @Column
+    @Column(name = "thoi_gian_vao")
     private LocalDateTime thoiGianVao;
 
-    @Column
+    @Column(name = "thoi_gian_ra")
     private LocalDateTime thoiGianRa;
 
-    @Column
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
 }

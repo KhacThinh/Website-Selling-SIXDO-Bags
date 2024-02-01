@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.dto.request.NhanVienRequest;
 import com.bags.sixdoBag.model.entitys.NhanVien;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,9 @@ public interface NhanVienService {
 
     public List<NhanVien> getNhanViens();
 
-    public NhanVien addNhanVien(NhanVien nhanVien);
+    public NhanVien addNhanVien(NhanVienRequest nhanVien);
 
-    public NhanVien editNhanVien(Integer idNhanVien, NhanVien nhanVien);
+    public NhanVien editNhanVien(Integer idNhanVien, NhanVienRequest nhanVien);
 
     public NhanVien deleteNhanVien(Integer idNhanVien);
 }
