@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.dto.request.DiaChiKhachHangRequest;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,9 @@ public interface DiaChiKhachHangService {
 
     public List<DiaChiKhachHang> getListDiaChiKhachHang();
 
-    public DiaChiKhachHang addDiaChiKhachHang(DiaChiKhachHang diaChiKhachHang);
+    public DiaChiKhachHang addDiaChiKhachHang(DiaChiKhachHangRequest diaChiKhachHang);
 
-    public DiaChiKhachHang editDiaChiKhachHang(Integer idDiaChi, DiaChiKhachHang diaChiKhachHang);
+    public DiaChiKhachHang editDiaChiKhachHang(Integer idDiaChi, DiaChiKhachHangRequest diaChiKhachHang);
 
     public DiaChiKhachHang deleteDiaChiKhachHang(Integer idDiaChi);
 

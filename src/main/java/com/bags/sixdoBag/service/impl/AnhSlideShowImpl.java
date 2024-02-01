@@ -2,7 +2,6 @@ package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.AnhSlideShowRequest;
 import com.bags.sixdoBag.model.entitys.AnhSlideShow;
-import com.bags.sixdoBag.model.entitys.SlideShow;
 import com.bags.sixdoBag.model.repository.AnhSlideShowRepository;
 import com.bags.sixdoBag.model.repository.SlideShowRepository;
 import com.bags.sixdoBag.service.AnhSlideShowService;
@@ -19,8 +18,6 @@ import java.util.Optional;
 public class AnhSlideShowImpl implements AnhSlideShowService {
     public final AnhSlideShowRepository anhSlideShowRepository;
     public final SlideShowService slideShowService;
-    public final SlideShowRepository slideShowRepository;
-
     @Override
     public AnhSlideShow getAnhSlideShow(Integer idAnhSlideShow) {
         AnhSlideShow anhSlideShow = anhSlideShowRepository.findById(idAnhSlideShow)
@@ -52,17 +49,9 @@ public class AnhSlideShowImpl implements AnhSlideShowService {
         anhSlideShow.setUrlAnh(slideShow.getUrlAnh());
         anhSlideShow.setLinkAnhSlideShow(slideShow.getLinkAnhSlideShow());
         Integer idSlideShow = slideShow.getIdSlideShow();
-        if(idSlideShow!=null){
+        Optional.ofNullable(slideShowService.getSlideShow(idSlideShow)).ifPresent(anhSlideShow::setSlideShow);
 
-        SlideShow slideShow1= slideShowRepository.findById(idSlideShow).orElse(null) ;
-        anhSlideShow.setSlideShow(slideShow1);
-        }else{
-            anhSlideShow.setSlideShow(null);
-        }
-
-
-        anhSlideShowRepository.save(anhSlideShow);
-        return anhSlideShow;
+        return anhSlideShowRepository.save(anhSlideShow);
     }
 
     @Override

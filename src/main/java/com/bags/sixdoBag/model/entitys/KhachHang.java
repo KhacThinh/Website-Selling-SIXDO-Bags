@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "anh_ctsp")
+@Table(name = "khach_hang")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -37,7 +37,10 @@ public class KhachHang {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "trangThai")
+    @Column(name = "mat_khau")
+    private String matKhau;
+
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
     @ManyToOne
