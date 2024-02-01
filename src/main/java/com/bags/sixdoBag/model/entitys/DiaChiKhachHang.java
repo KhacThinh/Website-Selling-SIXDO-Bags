@@ -16,8 +16,8 @@ public class DiaChiKhachHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
-    @NotEmpty(message = "Tên Không Được Để Trống")
+//    @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
+//    @NotEmpty(message = "Tên Không Được Để Trống")
     @Column(name = "ten_dia_chi")
     private String tenDiaChi;
 
@@ -25,8 +25,8 @@ public class DiaChiKhachHang {
     @Column(name = "trang_thai")
     private Boolean trangThai;
 
-    @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
-    @NotEmpty(message = "Mô Tả Không Được Để Trống")
+//    @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
+//    @NotEmpty(message = "Mô Tả Không Được Để Trống")
     @Column(name = "mo_ta")
     private String moTa;
 

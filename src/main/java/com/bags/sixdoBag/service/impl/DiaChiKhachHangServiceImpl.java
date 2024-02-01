@@ -1,8 +1,10 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.dto.request.DiaChiKhachHangRequest;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.repository.DiaChiKhachHangRepository;
 import com.bags.sixdoBag.service.DiaChiKhachHangService;
+import com.bags.sixdoBag.service.KhachHangService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,29 +14,56 @@ import java.util.List;
 
 public class DiaChiKhachHangServiceImpl implements DiaChiKhachHangService {
     public final DiaChiKhachHangRepository diaChiKhachHangRepository;
+    public final KhachHangService khachHangService;
     @Override
     public DiaChiKhachHang getDiaChiKhachHang(Integer idMaDiaChi) {
-        return null;
+        DiaChiKhachHang dc = diaChiKhachHangRepository.findById(idMaDiaChi).orElse(null);
+        return dc;
     }
 
     @Override
     public List<DiaChiKhachHang> getListDiaChiKhachHang() {
-        return null;
+        List<DiaChiKhachHang>listDC= diaChiKhachHangRepository.findDiaChiKhachHangByAll();
+        return listDC;
     }
 
     @Override
-    public DiaChiKhachHang addDiaChiKhachHang(DiaChiKhachHang diaChiKhachHang) {
-        return null;
+    public DiaChiKhachHang addDiaChiKhachHang(DiaChiKhachHangRequest diaChiKhachHang) {
+        DiaChiKhachHang dc = new DiaChiKhachHang();
+        dc.setTenDiaChi(diaChiKhachHang.getTenDiaChi());
+        dc.setMoTa(diaChiKhachHang.getMoTa());
+        dc.setTrangThai(true);
+        Integer idKhachHang = diaChiKhachHang.getIdKhachHang();
+        if(idKhachHang== null){
+            dc.setKhachHang(null);
+        }else{
+            dc.setKhachHang(khachHangService.getKhachHang(idKhachHang));
+        }
+        diaChiKhachHangRepository.save(dc);
+        return dc;
     }
 
     @Override
-    public DiaChiKhachHang editDiaChiKhachHang(Integer idDiaChi, DiaChiKhachHang diaChiKhachHang) {
-        return null;
+    public DiaChiKhachHang editDiaChiKhachHang(Integer idDiaChi, DiaChiKhachHangRequest diaChiKhachHang) {
+        DiaChiKhachHang dc= getDiaChiKhachHang(idDiaChi);
+        dc.setTenDiaChi(diaChiKhachHang.getTenDiaChi());
+        dc.setMoTa(diaChiKhachHang.getMoTa());
+//        Integer idKhachHang = diaChiKhachHang.getKhachHang().getId();
+//        if(idKhachHang== null){
+//            dc.setKhachHang(null);
+//        }else{
+//            dc.setKhachHang(khachHangService.getKhachHang(idKhachHang));
+//        }
+        diaChiKhachHangRepository.save(dc);
+        return dc;
     }
 
     @Override
     public DiaChiKhachHang deleteDiaChiKhachHang(Integer idDiaChi) {
-        return null;
+        DiaChiKhachHang dc=getDiaChiKhachHang(idDiaChi);
+        dc.setTrangThai(false);
+        diaChiKhachHangRepository.save(dc);
+        return dc;
     }
 
     @Override
