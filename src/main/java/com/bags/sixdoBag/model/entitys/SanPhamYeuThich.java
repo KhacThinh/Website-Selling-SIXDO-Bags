@@ -10,13 +10,15 @@ import lombok.*;
 @Data
 @Builder
 public class SanPhamYeuThich {
-    @Id
-    @Column(name="id_san_pham", nullable=false)
-    private Integer idSanPham;
-
-    @Id
-    @Column(name="id_khach_hang", nullable=false)
-    private Integer idKhachHang;
+//    @Id
+//    @Column(name="id_san_pham", nullable=false)
+//    private Integer idSanPham;
+//
+//    @Id
+//    @Column(name="id_khach_hang", nullable=false)
+//    private Integer idKhachHang;
+    @EmbeddedId
+    private SanPhamYeuThichID id;
 
     @Column(name="trang_thai", nullable=false)
     private int trangThai;
