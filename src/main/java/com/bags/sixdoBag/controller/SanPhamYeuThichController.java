@@ -38,6 +38,6 @@ public class SanPhamYeuThichController {
     @DeleteMapping("")
     public ResponseEntity<?> deleteSanPhamYT(@RequestParam("idKh") Integer idKh , @RequestParam("idSp") Integer idSp) {
         System.out.println(idKh +"abcccccc"+ idSp);
-        return new ResponseEntity<>(sanPhamYeuThichService.deleteSanPhamYeuThich(idKh,idSp), HttpStatus.OK);
+        return new ResponseEntity<>(sanPhamYeuThichService.deleteSanPhamYeuThich(idSp,idKh), HttpStatus.OK);
     }
 }
