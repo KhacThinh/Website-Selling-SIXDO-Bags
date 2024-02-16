@@ -6,25 +6,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
-@Table(name = "chi_tiet_hoa_don")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class ChiTietHoaDon {
+@IdClass(HoaDonChiTietId.class)
+@Table(name = "chi_tiet_hoa_don")
+public class ChiTietHoaDon implements Serializable {
     @Id
     @Column(name = "id_hoa_don", nullable = false)
     private Integer idHoaDon;
 
     @Id
     @Column(name = "id_ctsp", nullable = false)
-    private Integer idChiTietSanPham;
+    private Integer idCtSanPham;
 
-    @Column
+    @Column(name = "so_luong", nullable = false)
     private Integer soLuong;
 
-    @Column
+    @Column(name = "gia", nullable = false)
     private Double gia;
 
     @ManyToOne

@@ -31,33 +31,37 @@ public class HoaDon {
     @JoinColumn(name = "id_ma_giam_gia")
     private MaGiamGia maGiamGia;
 
-    @Column
+
+    @Column(name = "ma_hoa_don")
+    private String maHoaDon;
+
+    @Column(name = "tong_tien")
     private Double tongTien;
 
-    @Column
+    @Column(name = "thoi_gian_tao")
     private LocalDateTime thoiGianTao;
 
-    @Column
+    @Column(name = "thoi_gian_xac_nhan")
     private LocalDateTime thoiGianXacNhan;
 
-    @Column
+    @Column(name = "thoi_gian_giao_hang")
     private LocalDateTime thoiGianGiaoHang;
 
-    @Column
+    @Column(name = "thoi_gian_thanh_toan")
     private LocalDateTime thoiGianThanhToan;
 
-    @Column
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
-    @Column
+    @Column(name = "ten_nguoi_nhan")
     private String tenNguoiNhan;
 
-    @Column
+    @Column(name = "email_nguoi_nhan")
     private String emailNguoiNhan;
 
-    @Column
+    @Column(name = "sdt_nguoi_nhan")
     private String sdtNguoiNhan;
 
-    @Column
+    @Column(name = "dia_chi_nguoi_nhan")
     private String diaChiNguoiNhan;
 }

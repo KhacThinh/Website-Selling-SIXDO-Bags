@@ -36,6 +36,7 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     public List<ChiTietSanPham> getChiTietSanPhams() {
         List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.findAll();
         return chiTietSanPhams;
+
     }
 
     @Override
@@ -80,4 +81,6 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         chiTietSanPhamRepository.delete(ctsp);
         return ctsp;
     }
+
+
 }

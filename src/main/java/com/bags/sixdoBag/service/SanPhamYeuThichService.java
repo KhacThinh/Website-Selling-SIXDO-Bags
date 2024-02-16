@@ -16,5 +16,5 @@ public interface SanPhamYeuThichService {
 
     public SanPhamYeuThich addSanPhamYeuThich(SanPhamYeuThichRequest sanPhamYeuThichRequest);
 
-    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang);
+//    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang);
 }

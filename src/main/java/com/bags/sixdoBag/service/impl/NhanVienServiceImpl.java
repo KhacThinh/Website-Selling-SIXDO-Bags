@@ -20,7 +20,7 @@ public class NhanVienServiceImpl implements NhanVienService {
 
     private final NhanVienRepository nhanVienRepository;
 
-    private final TaiKhoanService taiKhoanService;
+//    private final TaiKhoanService taiKhoanService;
 
     private final ChucVuService chucVuService;
 

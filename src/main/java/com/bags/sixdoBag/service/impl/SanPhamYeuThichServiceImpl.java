@@ -51,11 +51,11 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
         return sanPhamYeuThich;
     }
 
-    @Override
-    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang) {
-
-        sanPhamYeuThichRepository.deleteSanPhamYeuThich(idKhachHang,idSanPham);
-
-        return null;
-    }
+//    @Override
+//    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang) {
+//
+//        sanPhamYeuThichRepository.deleteSanPhamYeuThich(idKhachHang,idSanPham);
+//
+//        return null;
+//    }
 }
