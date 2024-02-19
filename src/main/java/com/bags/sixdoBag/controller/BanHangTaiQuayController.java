@@ -1,30 +1,17 @@
 package com.bags.sixdoBag.controller;
 
 
-import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
-import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
-import com.bags.sixdoBag.model.entitys.HoaDon;
-import com.bags.sixdoBag.model.entitys.SanPham;
-import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
-import com.bags.sixdoBag.service.HoaDonChiTietService;
-import com.bags.sixdoBag.service.HoaDonService;
-import com.bags.sixdoBag.service.SanPhamService;
+import com.bags.sixdoBag.model.entitys.*;
+import com.bags.sixdoBag.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("ban-tai-quay")
@@ -32,22 +19,41 @@ import java.util.Map;
 public class BanHangTaiQuayController {
 
     private final SanPhamService sanPhamService;
-    @Autowired
-    ChiTietSanPhamServivce chiTietSanPham;
-    @Autowired
-    HoaDonService hoaDonService;
 
-    @Autowired
-    HoaDonChiTietService hoaDonChiTietService;
+    private final ChiTietSanPhamServivce chiTietSanPhamServivce;
+
+    private final DoiTuongSuDungService doiTuongSuDungService;
+
+    private final MauSacService mauSacService;
+
+    private final HoaDonService hoaDonService;
+
+    private final HoaDonChiTietService hoaDonChiTietService;
 
     @GetMapping("")
-    public String hienThiSanPham(Model model) {
-        List<ChiTietSanPham> list = chiTietSanPham.getChiTietSanPhams();
-        List<HoaDon> danhSachTab = hoaDonService.getTabHoaDon();
-        System.out.println("do daiiiiiiii" + list.size());
+    public String hienThiSanPham(Model model, @RequestParam(value = "name", required = false) String name) {
+        extracted(model);
+
+        List<ChiTietSanPham> list = new ArrayList<>();
+        if (Objects.isNull(name)) {
+            list = chiTietSanPhamServivce.getChiTietSanPhams();
+        } else {
+            list = chiTietSanPhamServivce.searchChiTietSanPhams(name);
+            model.addAttribute("nameSearch", name);
+        }
         model.addAttribute("listSp", list);
-        model.addAttribute("tabs", danhSachTab);
         return "ban-hang-tai-quay/home";
+    }
+
+    private void extracted(Model model) {
+        Set<String> chatLieus = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
+        List<String> doiTuongSuDungs = doiTuongSuDungService.getListDoiTuongSuDung().stream().map(DoiTuongSuDung::getTenDoiTuongSuDung).collect(Collectors.toList());
+        List<String> mauSacs = mauSacService.getMauSacs().stream().map(MauSac::getTenMauSac).toList();
+        List<HoaDon> danhSachTab = hoaDonService.getTabHoaDon();
+        model.addAttribute("tabs", danhSachTab);
+        model.addAttribute("chatLieus", chatLieus);
+        model.addAttribute("doiTuongSuDungs", doiTuongSuDungs);
+        model.addAttribute("mauSacs", mauSacs);
     }
 
 
@@ -80,10 +86,28 @@ public class BanHangTaiQuayController {
         int idTab = Integer.parseInt(idTabString.substring(2));
         System.out.println("idddđ tab là :  " + idTab);
         List<ChiTietHoaDon> listHoaDonChiTiet = hoaDonChiTietService.getGioHangTaiQuay(idTab);
-        System.out.println("listHoaDonchi = "+listHoaDonChiTiet.size());
+        System.out.println("listHoaDonchi = " + listHoaDonChiTiet.size());
         return ResponseEntity.ok(listHoaDonChiTiet);
-
     }
 
+
+    @PostMapping("filter")
+    public String filter(
+            Model model,
+            @RequestParam("mauSac") String mauSac,
+            @RequestParam("doiTuongSuDung") String doiTuongSuDung,
+            @RequestParam("chatLieu") String chatLieu
+    ) {
+        extracted(model);
+        List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu, mauSac, doiTuongSuDung);
+        System.out.println(mauSac + "   " + doiTuongSuDung + "   " + chatLieu);
+        List<HoaDon> danhSachTab = hoaDonService.getTabHoaDon();
+        model.addAttribute("listSp", listSearchCTSP);
+        model.addAttribute("tabs", danhSachTab);
+        model.addAttribute("mauSac", mauSac);
+        model.addAttribute("doiTuongSuDung", doiTuongSuDung);
+        model.addAttribute("chatLieu", chatLieu);
+        return "ban-hang-tai-quay/home";
+    }
 
 }

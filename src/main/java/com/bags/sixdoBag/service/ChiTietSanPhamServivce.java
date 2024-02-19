@@ -18,4 +18,8 @@ public interface ChiTietSanPhamServivce {
     public ChiTietSanPham editChiTietSanPham(Integer idChiTietSanPham, ChiTietSanPhamRequest chiTietSanPhamRequest);
 
     public ChiTietSanPham deleteChiTietSanPham(Integer idChiTietSanPham);
+
+    public List<ChiTietSanPham> searchChiTietSanPhams(String tenMa);
+
+    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung);
 }

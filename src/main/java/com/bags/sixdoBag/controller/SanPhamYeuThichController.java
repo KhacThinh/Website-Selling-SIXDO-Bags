@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //<<<<<<< HEAD
 ////package com.bags.sixdoBag.controller;
 ////
@@ -43,6 +44,10 @@
 ////    }
 ////}
 //=======
+=======
+
+
+>>>>>>> 7280e9e3193e698537e1c1e2d42a53fcceee6917
 package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
@@ -86,4 +91,7 @@ public class SanPhamYeuThichController {
         return new ResponseEntity<>(sanPhamYeuThichService.deleteSanPhamYeuThich(idSp,idKh), HttpStatus.OK);
     }
 }
+<<<<<<< HEAD
 //>>>>>>> 1251dbe4665e9b3f18284e585dc8e4b975f3756c
+=======
+>>>>>>> 7280e9e3193e698537e1c1e2d42a53fcceee6917
