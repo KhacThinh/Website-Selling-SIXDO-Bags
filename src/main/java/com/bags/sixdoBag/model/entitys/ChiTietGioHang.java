@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChiTietGioHang {
     @Id
-    @Column(name = "id_ctsp", nullable = false)
-    private Integer idChiTietSanPham;
-
-    @Id
     @Column(name = "id_gio_hang", nullable = false)
     private Integer idGioHang;
+
+    @Id
+    @Column(name = "id_ctsp", nullable = false)
+    private Integer idChiTietSanPham;
 
     @Column
     private Double tongTien;

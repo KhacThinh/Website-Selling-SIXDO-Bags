@@ -299,7 +299,11 @@ where ctsp.ma_ctsp like '%ctsp0001%' or sp.ten like '%ctsp0001%' or ms.ten like 
 
 select * from chi_tiet_san_pham as ctsp join san_pham as sp on ctsp.id_san_pham = sp.id join
 mau_sac as ms on ctsp.id_mau_sac = ms.id join doi_tuong_su_dung as dtsd on dtsd.id = sp.id_doi_tuong_su_dung
+<<<<<<< HEAD
+where sp.chat_lieu like N'%%' and ms.ten like N'%%' and dtsd.ten like '%%'
+=======
 where sp.chat_lieu = N'Nhựa' and ms.ten = N'' and dtsd.ten = ''
+>>>>>>> 7280e9e3193e698537e1c1e2d42a53fcceee6917
 
 SELECT * 
 FROM chi_tiet_san_pham AS ctsp 

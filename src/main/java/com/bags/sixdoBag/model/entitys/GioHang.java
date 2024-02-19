@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "gio_hang")
@@ -20,12 +22,25 @@ public class GioHang {
     @JoinColumn(name = "id_khach_hang")
     private KhachHang khachHang;
 
-    @Column
+    @Column(name = "ngay_tao")
     private LocalDateTime ngayTao;
 
-    @Column
+    @Column(name = "tong_tien")
     private Double tongTien;
 
-    @Column
+    @Column(name = "trang_thai")
     private Integer trangThai;
+
+    @OneToMany(mappedBy = "gioHang", fetch = FetchType.LAZY)
+    private List<ChiTietGioHang> chiTietGioHangs = new ArrayList<>();
+
+    public void addGioHangChiTiet(ChiTietGioHang chiTietGioHang) {
+        chiTietGioHangs.add(chiTietGioHang);
+    }
+
+    public void removeGioHangChiTiet(ChiTietGioHang chiTietGioHang) {
+        chiTietGioHangs.remove(chiTietGioHang);
+    }
+
+
 }
