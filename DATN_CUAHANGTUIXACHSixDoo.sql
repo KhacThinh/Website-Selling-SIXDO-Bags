@@ -54,6 +54,16 @@ CONSTRAINT FK_ThuongHieu_SP FOREIGN KEY(id_thuong_hieu) REFERENCES thuong_hieu(i
 CONSTRAINT FK_DanhMuc_SP FOREIGN KEY(id_danh_muc) REFERENCES danh_muc(id),
 CONSTRAINT FK_DoiTuongSuDung_SP FOREIGN KEY(id_doi_tuong_su_dung) REFERENCES doi_tuong_su_dung(id)
 )
+
+ALTER TABLE san_pham
+ALTER COLUMN chat_lieu NVARCHAR(200);
+
+ALTER TABLE san_pham
+ALTER COLUMN xuat_xu NVARCHAR(100);
+
+ALTER TABLE san_pham
+ALTER COLUMN mo_ta NVARCHAR(MAX);
+
  
 create table mau_sac(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
@@ -202,6 +212,7 @@ id int IDENTITY(1, 1)  PRIMARY KEY not null,
 id_khach_hang int,
 id_nhan_vien int,
 id_ma_giam_gia int,
+ma_hoa_don varchar(30),
 tong_tien float,
 thoi_gian_tao datetime,
 thoi_gian_xac_nhan datetime,
@@ -280,6 +291,29 @@ select * from san_pham
 
 select * from hoa_don
 
+
+
+select * from chi_tiet_san_pham as ctsp join san_pham as sp on ctsp.id_san_pham = sp.id join
+mau_sac as ms on ctsp.id_mau_sac = ms.id
+where ctsp.ma_ctsp like '%ctsp0001%' or sp.ten like '%ctsp0001%' or ms.ten like '%ctsp0001%'
+
+select * from chi_tiet_san_pham as ctsp join san_pham as sp on ctsp.id_san_pham = sp.id join
+mau_sac as ms on ctsp.id_mau_sac = ms.id join doi_tuong_su_dung as dtsd on dtsd.id = sp.id_doi_tuong_su_dung
+where sp.chat_lieu like N'%%' and ms.ten like N'%%' and dtsd.ten like '%%'
+
+SELECT * 
+FROM chi_tiet_san_pham AS ctsp 
+JOIN san_pham AS sp ON ctsp.id_san_pham = sp.id 
+JOIN mau_sac AS ms ON ctsp.id_mau_sac = ms.id 
+JOIN doi_tuong_su_dung AS dtsd ON dtsd.id = sp.id_doi_tuong_su_dung
+WHERE 
+    (sp.chat_lieu = N'Nhựa') or 
+    (ms.ten = N'Trắng' OR ms.ten = N'') or 
+    (dtsd.ten = 'Nam' OR dtsd.ten = N'')
+
+
+select * from hoa_don as hd join chi_tiet_hoa_don as cthd on hd.id = cthd.id_hoa_don
+select * from doi_tuong_su_dung
 
 
 
