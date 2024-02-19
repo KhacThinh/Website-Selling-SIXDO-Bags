@@ -19,8 +19,8 @@ public class GioHangController {
 //        return new ResponseEntity<>(gioHangService);
 //    }
 
-    @PostMapping
-    public ResponseEntity<?> addGioHang(@RequestBody GioHangRequest gioHangRequest, @RequestParam("tao") int tao) {
-        return new ResponseEntity<>(gioHangService.addGioHangTaiQuay(gioHangRequest, tao), HttpStatus.OK);
+    @PostMapping()
+    public ResponseEntity<?> addGioHang(@RequestBody GioHangRequest gioHangRequest) {
+        return new ResponseEntity<>(gioHangService.addGioHang(gioHangRequest), HttpStatus.OK);
     }
 }

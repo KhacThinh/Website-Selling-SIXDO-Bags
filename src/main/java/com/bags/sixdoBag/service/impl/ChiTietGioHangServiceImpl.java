@@ -41,13 +41,14 @@ public class ChiTietGioHangServiceImpl implements ChiTietGioHangService {
             throw new IllegalArgumentException("Giỏ hàng bắt buộc cần sản phẩm");
         }
         ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(idChiTietSanPham);
-        if (chiTietSanPham.getSoLuong() > chiTietGioHangRequestDto.getSoLuong()) {
+        if (chiTietSanPham.getSoLuong() < chiTietGioHangRequestDto.getSoLuong()) {
             throw new IllegalArgumentException("Số lượng sản phẩm trong giỏ hàng không được vượt quá số lượng kho");
         }
         chiTietGioHang.setSoLuong(chiTietGioHangRequestDto.getSoLuong());
         chiTietGioHang.setIdChiTietSanPham(chiTietSanPham.getId());
         chiTietGioHang.setTongTien(Double.valueOf(chiTietSanPham.getGiaBan()) * chiTietGioHang.getSoLuong());
         return chiTietGioHangRepository.save(chiTietGioHang);
+
     }
 
     @Override
