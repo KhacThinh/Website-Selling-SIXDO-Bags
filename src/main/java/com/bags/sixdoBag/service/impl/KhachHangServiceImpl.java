@@ -87,4 +87,10 @@ public class KhachHangServiceImpl implements KhachHangService {
         khachHangRepository.save(khachHang);
         return khachHang;
     }
+
+    @Override
+    public KhachHang searchKh(String email) {
+        KhachHang  khachHang = khachHangRepository.searchKh(email);
+        return khachHang;
+    }
 }

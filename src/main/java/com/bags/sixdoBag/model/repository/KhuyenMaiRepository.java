@@ -21,6 +21,7 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai, Integer> {
     List<KhuyenMai> searchKhuyenMaiTenOrMa(String tenMa);
 
 
+
     @Query(value = "DECLARE @start_date datetime = :dateStart; \n" +
             "DECLARE @end_date datetime = :dateEnd;   \n" +
             "\n" +

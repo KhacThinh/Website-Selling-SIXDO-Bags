@@ -10,6 +10,7 @@ import com.bags.sixdoBag.service.SanPhamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,6 +82,8 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         chiTietSanPhamRepository.delete(ctsp);
         return ctsp;
     }
+
+
 
 
 }

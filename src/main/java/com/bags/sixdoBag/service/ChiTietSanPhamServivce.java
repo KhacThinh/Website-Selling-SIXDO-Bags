@@ -18,4 +18,5 @@ public interface ChiTietSanPhamServivce {
     public ChiTietSanPham editChiTietSanPham(Integer idChiTietSanPham, ChiTietSanPhamRequest chiTietSanPhamRequest);
 
     public ChiTietSanPham deleteChiTietSanPham(Integer idChiTietSanPham);
+
 }

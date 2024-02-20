@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/ma_giam_gia")
 public class MaGiamGiaController {
-
     public final MaGiamGiaService maGIamGiaService;
     @GetMapping("")
     public ResponseEntity<?> getAll() {

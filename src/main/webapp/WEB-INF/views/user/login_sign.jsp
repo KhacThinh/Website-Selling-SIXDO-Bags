@@ -16,23 +16,150 @@
     <title>Modern Login Page | AsmrProg</title>
 </head>
 
-<body>
+<script>
+    function showAlert() {
+        var message = "${not empty tbtb}";
+
+        if (message.trim() !== "") {
+            alert("email này đã tồn tại!");
+        }
+    }
+
+
+</script>
+
+
+<body  >
+
 
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form>
+        <form action="/user" method="post" onsubmit="return validateForm()" >
             <h1>Tạo tài khoản</h1>
             <div class="social-icons">
                 <!-- social icons here -->
             </div>
-            <span>hoặc sử dụng email của bạn để đăng ký</span>
-            <input type="text" placeholder="Full Name">
-            <input type="email" placeholder="Email">
-            <input type="text" placeholder="Address">
-            <input type="password" placeholder="Password">
-            <input type="password" placeholder="Confirm Password">
-            <button>Đăng ký</button>
+            <span>Hãy sử dụng email của bạn để đăng ký</span>
+            <input type="text" id="fullName" name="ten" value="${ten}" placeholder="Full Name">
+            <span id="nameError" style="color: red; display: none;">Tên chỉ được chứa các ký tự chữ cái!</span>
+            <input type="email" id="email" name="email" value="${email}"  placeholder="Email">
+            <c:if test="${not empty tbtb}">
+                <script>
+                    showAlert();
+                </script>
+                <span style="color: red">${tbtb}</span>
+            </c:if>
+            <span id="emailError" style="color: red; display: none;">Email không được trống hoặc không hợp lệ!</span>
+            <input type="text" id="address" name="diaChi" value="${diaChi}"placeholder="Address">
+            <span id="addressError" style="color: red; display: none;">Địa chỉ không được để trống!</span>
+            <input type="password" id="pass" name="pass" value="${pass}" placeholder="Password">
+            <span id="passError" style="color: red; display: none;">Mật khẩu ít nhất 6 kí tự và phải chứa cả chữ và số!</span>
+            <input type="password" id="confirm" name="confirm" value="${confirm}" placeholder="Confirm Password">
+            <span id="confirmError" style="color: red; display: none;">Xác nhận mật khẩu không khớp!</span>
+            <button type="submit">Đăng ký</button>
+<%--            <c:if test="${not empty tb}">--%>
+<%--                <script>--%>
+<%--                    showAlert1();--%>
+<%--                </script>--%>
+<%--            </c:if>--%>
+
+            <c:if test="${not empty tb}">
+                <script>
+                    // JavaScript function to display custom alert
+                    function showAlert1() {
+                        var message = "${tb}"; // Lấy giá trị từ biến "tb" và gán vào biến message
+
+                        if (message.trim() !== "") {
+                            var alertBox = document.createElement("div"); // Tạo một div mới
+                            alertBox.classList.add("custom-alert", "red-text"); // Thêm class cho div (ở đây là class red-text để chỉ định màu đỏ)
+                            alertBox.innerHTML = "<p>&nbsp;</p><p>" + message + "</p>"; // Thiết lập nội dung của div
+
+                            document.body.appendChild(alertBox); // Thêm div vào trang
+
+                            setTimeout(function(){ alertBox.style.display = "none"; }, 5000); // Ẩn sau 3 giây
+                        }
+                    }
+
+                    // Gọi hàm showAlert1() khi cần hiển thị alert
+                    showAlert1();
+                </script>
+            </c:if>
+
+
+
         </form>
+
+        <script>
+            function validateForm() {
+                var fullName = document.getElementById("fullName").value.trim();
+                var email = document.getElementById("email").value.trim();
+                var address = document.getElementById("address").value.trim();
+                var pass = document.getElementById("pass").value.trim();
+                var confirmPass = document.getElementById("confirm").value.trim();
+                var nameErrorSpan = document.getElementById("nameError");
+                var emailErrorSpan = document.getElementById("emailError");
+                var addressErrorSpan = document.getElementById("addressError");
+                var passErrorSpan = document.getElementById("passError");
+                var confirmErrorSpan = document.getElementById("confirmError");
+                var namePattern = /^[a-zA-ZÀ-ÿ\s]+$/;
+                var passPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+
+                if (!fullName || !fullName.match(namePattern)) {
+                    nameErrorSpan.style.display = "block";
+                    return false;
+                } else {
+                    nameErrorSpan.style.display = "none";
+                }
+
+                if (!email || !validateEmail(email)) {
+                    emailErrorSpan.style.display = "block";
+                    return false;
+                } else {
+                    emailErrorSpan.style.display = "none";
+                }
+
+                if (!address) {
+                    addressErrorSpan.style.display = "block";
+                    return false;
+                } else {
+                    addressErrorSpan.style.display = "none";
+                }
+
+                if (!pass || !pass.match(passPattern)) {
+                    passErrorSpan.style.display = "block";
+                    return false;
+                } else {
+                    passErrorSpan.style.display = "none";
+                }
+
+                if (!confirmPass) {
+                    confirmErrorSpan.style.display = "block";
+                    return false;
+                } else if (pass !== confirmPass) {
+                    confirmErrorSpan.style.display = "block";
+                    return false;
+                } else {
+                    confirmErrorSpan.style.display = "none";
+                }
+
+                // Thực hiện các kiểm tra khác nếu cần
+
+                return true; // Submit form nếu tất cả điều kiện đều đúng
+            }
+
+            function validateEmail(email) {
+                var re = /\S+@\S+\.\S+/;
+                return re.test(email);
+            }
+
+
+
+        </script>
+
+
+
+
+
     </div>
     <div class="form-container sign-in">
         <form>
@@ -46,7 +173,7 @@
             <span>hoặc sử dụng mật khẩu email của bạn</span>
             <input type="email" placeholder="Email">
             <input type="password" placeholder="Password">
-            <a href="#">Quên mật khẩu?</a>
+            <a href="/lay-mk">Quên mật khẩu?</a>
             <button>Đăng Nhập</button>
         </form>
     </div>
@@ -117,6 +244,10 @@ line-height: 20px;
 letter-spacing: 0.3px;
 margin: 20px 0;
 }
+.red-text {
+    color: red;
+}
+
 
 .container span{
 font-size: 12px;
@@ -297,6 +428,13 @@ transform: translateX(200%);
 .container form .row {
 margin-bottom: 15px;
 }
+
+
+
+
+
+
+
 </style>
 
 </html>

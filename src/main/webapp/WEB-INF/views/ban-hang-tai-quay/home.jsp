@@ -201,7 +201,13 @@
 
 <div class="header">
     <div class="search-bar">
-        <input type="text" placeholder="Search...">
+        <form action="/ban-tai-quay/search-san-pham" method="get">
+            <input type="text" name="name" placeholder="Search...">
+            <button type="submit" style="border: none; background: none; cursor: pointer;">
+                <img src="path_to_search_icon.png" alt="Search" style="width: 20px; height: 20px;">
+            </button>
+        </form>
+
         <div class="tab">
             <c:forEach var="o" items="${tabs}" varStatus="loop">
                 <button class="tablinks active tab1 " id="${o.maHoaDon}"
