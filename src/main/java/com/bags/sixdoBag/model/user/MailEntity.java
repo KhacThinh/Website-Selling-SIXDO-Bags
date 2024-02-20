@@ -1,4 +1,4 @@
-package com.bags.sixdoBag.service.user;
+package com.bags.sixdoBag.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

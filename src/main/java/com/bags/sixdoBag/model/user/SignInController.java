@@ -1,4 +1,4 @@
-package com.bags.sixdoBag.controller;
+package com.bags.sixdoBag.model.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

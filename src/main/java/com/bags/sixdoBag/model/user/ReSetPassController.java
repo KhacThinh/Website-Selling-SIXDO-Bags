@@ -1,4 +1,4 @@
-package com.bags.sixdoBag.service.user;
+package com.bags.sixdoBag.model.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.model.entitys.KhachHang;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.bags.sixdoBag.service.KhachHangService;
 
 @Controller
@@ -27,16 +26,21 @@ public class ReSetPassController {
 
     @GetMapping("/Reset/{email}")
     public String formReset(@PathVariable("email") String email,Model model){
-        System.out.println(email);
-        model.addAttribute("email",email);
+        KhachHang khachHang = khachHangService.searchKh(email);
+        if(khachHang != null){
+            System.out.println(email);
+            model.addAttribute("email",email);
 
-        return "/user/laylaipass/form_reset_pass";
+            return "/user/laylaipass/form_reset_pass";
+        }else{
+            return "redirect:/user";
+        }
+
 
     }
     @PostMapping("/config")
     public String updatePass(@RequestParam("email") String email,@RequestParam("pass") String pass){
-        KhachHang khachHang = new KhachHang();
-        khachHang=khachHangService.searchKh(email);
+        KhachHang khachHang = khachHangService.searchKh(email);
 
         khachHang.setMatKhau(pass);
         khachHangService.editKhachHang(khachHang.getId(),khachHang);
