@@ -12,19 +12,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
+@IdClass(GioHangChiTietId.class)
 public class ChiTietGioHang {
-    @Id
-    @Column(name = "id_ctsp", nullable = false)
-    private Integer idChiTietSanPham;
-
     @Id
     @Column(name = "id_gio_hang", nullable = false)
     private Integer idGioHang;
 
-    @Column
+    @Id
+    @Column(name = "id_ctsp", nullable = false)
+    private Integer idChiTietSanPham;
+
+    @Column(name = "tong_tien")
     private Double tongTien;
 
-    @Column
+    @Column(name = "so_luong")
     private Integer soLuong;
 
     @ManyToOne

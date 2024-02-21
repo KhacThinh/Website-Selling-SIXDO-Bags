@@ -36,6 +36,11 @@ public class ChiTietSanPhamController {
         return new ResponseEntity<>(chiTietSanPhamServivce.editChiTietSanPham(id, khuyenMai), HttpStatus.OK);
     }
 
+    @GetMapping("search")
+    public ResponseEntity<?> search(@RequestParam("name") String name){
+        return new ResponseEntity<>(chiTietSanPhamServivce.searchChiTietSanPhams(name), HttpStatus.OK);
+    }
+
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> deleteKhuyeMai(@PathVariable int id) {
 //        return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);

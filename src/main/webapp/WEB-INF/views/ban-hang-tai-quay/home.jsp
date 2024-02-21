@@ -10,9 +10,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header with Search Bar and Tabs</title>
+    <title>BÁN TẠI QUẦY</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <style>
         /* Style the header */
         .header {
@@ -194,7 +193,80 @@
             margin-left: 10px; /* Khoảng cách giữa nút Add và thông tin sản phẩm */
         }
 
+        /* Định dạng cho filter-bar */
+        .filter-bar {
+            background-color: #f9f9f9;
+            padding: 10px;
+        }
+
+        /* Định dạng cho container của filter-bar */
+        .filter-bar .container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Định dạng cho select */
+        .filter-bar select {
+            margin-right: 10px; /* Khoảng cách giữa các select */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /* Định dạng cho nút lọc */
+        .filter-bar button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* nút add khi thêm sản phẩm vào hoá đơn*/
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item img {
+            width: 70px;
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .name, .price {
+            max-width: 150px; /* Đặt chiều dài tối đa */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Xử lý tràn nội dung */
+            white-space: nowrap;
+        }
+
+        .quantity, .returnPrice {
+            width: 60px; /* Đặt chiều rộng cố định */
+        }
+
+        .btnAdd {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -209,15 +281,58 @@
         </form>
 
         <div class="tab">
+
+    <div class="search-bar d-flex align-items-center">
+        <form action="/ban-tai-quay" method="get" class="d-flex">
+            <input type="text" name="name" value="${nameSearch}" class="form-control form-control-sm me-2"
+                   placeholder="Tìm kiếm mã, tên, màu">
+            <button type="submit" class="btn btn-primary" style="height: 38px; padding: 5px 15px;">
+                <span class="bi bi-search" style="font-size: 20px;"></span> <!-- Thêm biểu tượng search -->
+                Search
+            </button>
+
+        </form>
+        <!-- Ô tìm kiếm sản phẩm -->
+        <div class="tab ms-3">
+
             <c:forEach var="o" items="${tabs}" varStatus="loop">
-                <button class="tablinks active tab1 " id="${o.maHoaDon}"
+                <button class="tablinks active tab1 btn btn-outline-secondary me-2" id="${o.maHoaDon}"
                         onclick="openTab(event,'${o.maHoaDon}')">${o.maHoaDon}</button>
             </c:forEach>
 
-            <button class="tablinks add" onclick="addTab()">+</button>
+            <button class="tablinks add btn btn-outline-secondary" onclick="addTab()">+</button>
         </div>
     </div>
 </div>
+
+
+<div class="filter-bar">
+    <div class="container">
+        <form action="/ban-tai-quay/filter" method="post">
+            <select name="chatLieu">
+                <option value="">Chọn chất liệu</option>
+                <c:forEach var="chatLieuItem" items="${chatLieus}">
+                    <option value="${chatLieuItem}" ${chatLieu eq chatLieuItem ? 'selected' : ''}>${chatLieuItem}</option>
+                </c:forEach>
+            </select>
+            <select name="doiTuongSuDung">
+                <option value="">Chọn đối tượng sử dụng</option>
+                <c:forEach var="doiTuongSuDungItem" items="${doiTuongSuDungs}">
+                    <option value="${doiTuongSuDungItem}" ${doiTuongSuDung eq doiTuongSuDungItem ? 'selected' : ''}>${doiTuongSuDungItem}</option>
+                </c:forEach>
+            </select>
+            <select name="mauSac">
+                <option value="">Chọn màu sắc</option>
+                <c:forEach var="mauSacItem" items="${mauSacs}">
+                    <option value="${mauSacItem}" ${mauSac eq mauSacItem ? 'selected' : ''}>${mauSacItem}</option>
+                </c:forEach>
+            </select>
+
+            <button type="submit">Lọc</button>
+        </form>
+    </div>
+</div>
+
 
 <!-- Information Panel -->
 <div class="container">
@@ -232,6 +347,7 @@
                         <div class="info">
                             <div class="name"> ${o.sanPham.tenSanPham} </div>
                             <div class="price"> ${o.mauSac.tenMauSac}</div>
+                            <div class="chatLieu"> ${o.sanPham.chatLieu}</div>
                         </div>
                         <div class="quantity"> ${o.soLuong}</div>
                         <div class="returnPrice"> ${o.giaBan} </div>
@@ -248,7 +364,6 @@
     <!-- Middle column -->
     <div class="info-panel">
         <div class="returnCart">
-
             <div class="list gioHangTaiQuay">
                 <c:forEach var="o" items="${listGioHang}" varStatus="loop">
                     <div class="item">
@@ -257,37 +372,56 @@
                             <div class="name"> ${o.chiTietSanPham.sanPham.tenSanPham} </div>
                             <div class="price"> ${o.chiTietSanPham.mauSac.tenMauSac}</div>
                         </div>
-                        <div class="quantity"> ${o.soLuong}</div>
+                        <div class="quantity">
+                            <button onclick="decreaseQuantity(this)">-</button>
+                                ${o.soLuong}
+                            <button onclick="increaseQuantity(this)">+</button>
+                        </div>
                         <div class="returnPrice"> ${o.chiTietSanPham.giaBan * o.soLuong} </div>
                     </div>
-
                 </c:forEach>
-
             </div>
         </div>
     </div>
 
+
     <!-- Right column -->
     <div class="info-panel thanh-toan">
         <h2>Thông tin đơn hàng</h2>
-        <div>
-            <input type="text" placeholder="Tên khách hàng">
-            <input type="text" placeholder="Số điện thoại">
+        <div class="mb-3">
+            <label for="customerName" class="form-label">Tên khách hàng</label>
+            <input type="text" class="form-control" id="customerName" placeholder="Nhập tên khách hàng">
         </div>
-        <div>
-            <input type="text" placeholder="Tổng giá trị đơn hàng">
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại">
         </div>
-        <div>
-            <select name="discountCode" id="discountCode">
+        <div class="mb-3">
+            <label for="totalAmount" class="form-label">Tổng giá trị đơn hàng</label>
+            <input type="text" class="form-control" id="totalAmount" placeholder="Nhập tổng giá trị đơn hàng">
+        </div>
+        <div class="mb-3">
+            <label for="discountCode" class="form-label">Chọn mã giảm giá</label>
+            <select class="form-select" id="discountCode">
                 <option value="">Chọn mã giảm giá</option>
                 <option value="code1">Mã giảm giá 1</option>
                 <option value="code2">Mã giảm giá 2</option>
                 <option value="code3">Mã giảm giá 3</option>
             </select>
         </div>
-        <button onclick="checkout()">Thanh toán</button>
+        <button class="btn btn-primary" onclick="checkout()">Thanh toán</button>
     </div>
+
 </div>
+
+<!-- Đường dẫn đến file JavaScript Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<!-- JavaScript để xử lý chức năng tìm kiếm -->
+<script src="${pageContext.request.contextPath}/static/javascript/search-tai-quay.js"></script>
+
 
 <script>
     var tabActive = "";
@@ -460,6 +594,8 @@
     //
     //
     // }
+
+
 </script>
 
 </body>

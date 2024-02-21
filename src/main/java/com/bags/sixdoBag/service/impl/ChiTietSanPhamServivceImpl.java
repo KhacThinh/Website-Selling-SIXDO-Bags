@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +82,25 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         ChiTietSanPham ctsp = getChiTietSanPham(idChiTietSanPham);
         chiTietSanPhamRepository.delete(ctsp);
         return ctsp;
+    }
+
+    @Override
+    public List<ChiTietSanPham> searchChiTietSanPhams(String tenMa) {
+        return chiTietSanPhamRepository.listSearch(tenMa);
+    }
+
+    @Override
+    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung) {
+        List<ChiTietSanPham> chiTietSanPhams = getChiTietSanPhams().stream()
+                .filter(ctsp -> {
+                    boolean tenChatLieu = chatLieu.isEmpty() || chatLieu.equals(ctsp.getSanPham().getChatLieu());
+                    boolean tenMauSac = mauSac.isEmpty() || mauSac.equals(ctsp.getMauSac().getTenMauSac());
+                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(ctsp.getSanPham().getDoiTuongSuDung().getTenDoiTuongSuDung());
+                    return tenChatLieu && tenMauSac && tenDoiTuong;
+                })
+                .collect(Collectors.toList());
+
+        return chiTietSanPhams;
     }
 
 

@@ -10,12 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class KhachHangServiceImpl implements KhachHangService {
     public final KhachHangRepository khachHangRepository;
+
     public final TaiKhoanService taiKhoanService;
     public final TaiKhoanRepository taiKhoanRepository;
+
     @Override
     public KhachHang getKhachHang(Integer idKhachHang) {
         KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
@@ -24,14 +27,14 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Override
     public List<KhachHang> getListKhachHang() {
-        List<KhachHang>listKH= khachHangRepository.findKhachHangByAll();
+        List<KhachHang> listKH = khachHangRepository.findKhachHangByAll();
         return listKH;
     }
 
     @Override
     public KhachHang addKhachHang(KhachHang khachHang) {
-        KhachHang kh= new KhachHang();
-        List<KhachHang>listKH= khachHangRepository.findAll();
+        KhachHang kh = new KhachHang();
+        List<KhachHang> listKH = khachHangRepository.findAll();
 //        List<TaiKhoan>listTK=taiKhoanService.getTaiKhoans();
 //        for (TaiKhoan taiKhoan: listTK
 //             ) {
@@ -43,13 +46,15 @@ public class KhachHangServiceImpl implements KhachHangService {
 //
 //            }
 //        }
-        TaiKhoan taiKhoan= new TaiKhoan();
+
+        TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setTenDangNhap(khachHang.getEmail());
         taiKhoan.setMatKhau(khachHang.getMatKhau());
         taiKhoanRepository.save(taiKhoan);
         kh.setTaiKhoan(taiKhoan);
-        int size = listKH.size()+1;
-        String maKH= "KH" +size;
+
+        int size = listKH.size() + 1;
+        String maKH = "KH" + size;
         kh.setMaKhachHang(maKH);
         kh.setNgaySinh(khachHang.getNgaySinh());
         kh.setTenKhachHang(khachHang.getTenKhachHang());
@@ -58,15 +63,14 @@ public class KhachHangServiceImpl implements KhachHangService {
         kh.setMatKhau(khachHang.getMatKhau());
         kh.setTrangThai(1);
 
-
-        return  khachHangRepository.save(kh);
+        return khachHangRepository.save(kh);
     }
 
     @Override
     public KhachHang editKhachHang(Integer idKhachHang, KhachHang khachHang) {
         KhachHang kh = getKhachHang(idKhachHang);
 
-        TaiKhoan taiKhoan= kh.getTaiKhoan();
+        TaiKhoan taiKhoan = kh.getTaiKhoan();
         taiKhoan.setMatKhau(khachHang.getMatKhau());
         taiKhoanRepository.save(taiKhoan);
         kh.setTaiKhoan(taiKhoan);
@@ -75,14 +79,12 @@ public class KhachHangServiceImpl implements KhachHangService {
         kh.setSdt(khachHang.getSdt());
         kh.setMatKhau(khachHang.getMatKhau());
 
-
-
         return kh;
     }
 
     @Override
     public KhachHang deleteKhachHang(Integer idKhachHang) {
-        KhachHang khachHang= getKhachHang(idKhachHang);
+        KhachHang khachHang = getKhachHang(idKhachHang);
         khachHang.setTrangThai(0);
         khachHangRepository.save(khachHang);
         return khachHang;
