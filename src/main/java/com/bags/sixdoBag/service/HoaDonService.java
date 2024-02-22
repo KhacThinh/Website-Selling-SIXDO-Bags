@@ -9,4 +9,7 @@ import java.util.List;
 public interface HoaDonService {
     void themHoaDon();
     List<HoaDon> getTabHoaDon ();
+    void updateHoaDon(int idHoaDon,HoaDon hoaDon);
+    HoaDon getHoaDonById(int idHoaDon);
+    void deleteHoaDonById(int id);
 }

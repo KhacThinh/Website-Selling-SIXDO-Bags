@@ -2,10 +2,12 @@ package com.bags.sixdoBag.service.impl;
 
 
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
+import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.repository.ChiTietHoaDonRepository;
 import com.bags.sixdoBag.service.HoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class ChiTietHoaDonImpl implements HoaDonChiTietService {
 
     @Autowired
     ChiTietHoaDonRepository chiTietHoaDonRepository;
+
     @Override
     public void addGioHang(ChiTietHoaDon chiTietHoaDon) {
         chiTietHoaDonRepository.save(chiTietHoaDon);
@@ -22,5 +25,26 @@ public class ChiTietHoaDonImpl implements HoaDonChiTietService {
     @Override
     public List<ChiTietHoaDon> getGioHangTaiQuay(int idHoaDon) {
         return chiTietHoaDonRepository.getGioHangChiTiet(idHoaDon);
+    }
+
+    @Override
+    public ChiTietHoaDon getHoaDonById(int idHoaDon, int idCtSanPham) {
+        return chiTietHoaDonRepository.getGioHangChiTiet(idHoaDon, idCtSanPham);
+
+    }
+
+    @Override
+    public void updateChiTietHoaDon(int idHoaDon, int idChiTietSp, ChiTietHoaDon hoaDon) {
+        ChiTietHoaDon cthd = getHoaDonById(idHoaDon, idChiTietSp);
+        cthd.setSoLuong(hoaDon.getSoLuong());
+        cthd.setGia(hoaDon.getGia());
+        chiTietHoaDonRepository.save(cthd);
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteHoaDonChiTietById(int idHoaDon) {
+        chiTietHoaDonRepository.deleteChiTietHoaDonByIdHoaDon(idHoaDon);
     }
 }

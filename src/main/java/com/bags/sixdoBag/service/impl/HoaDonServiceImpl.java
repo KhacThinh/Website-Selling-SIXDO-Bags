@@ -37,4 +37,27 @@ public class HoaDonServiceImpl implements HoaDonService {
     public List<HoaDon> getTabHoaDon() {
         return hoaDonRepository.findAll();
     }
+
+    @Override
+    public void updateHoaDon(int idHoaDon, HoaDon hoaDon) {
+        HoaDon hoaDonTemp = getHoaDonById(idHoaDon);
+        hoaDonTemp.setTenNguoiNhan(hoaDon.getTenNguoiNhan());
+        hoaDonTemp.setTrangThai(hoaDon.getTrangThai());
+        hoaDonTemp.setSdtNguoiNhan(hoaDon.getSdtNguoiNhan());
+        hoaDonTemp.setTongTien(hoaDon.getTongTien());
+
+        hoaDonRepository.save(hoaDonTemp);
+    }
+
+    @Override
+    public HoaDon getHoaDonById(int idHoaDon) {
+        return hoaDonRepository.findById(idHoaDon).orElse(null);
+    }
+
+
+
+    @Override
+    public void deleteHoaDonById(int id) {
+        hoaDonRepository.deleteById(id);
+    }
 }

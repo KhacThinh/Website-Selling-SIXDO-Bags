@@ -53,7 +53,7 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
         return sanPhamYeuThich;
     }
 
-<<<<<<< HEAD
+
 //    @Override
 //    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang) {
 //
@@ -61,7 +61,6 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
 //
 //        return null;
 //    }
-=======
     @Override
     public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang) {
         SanPhamYeuThich sanPhamYeuThich = sanPhamYeuThichRepository.findSanPhamYeuThichByIdSpAndIdKh(idSanPham, idKhachHang);
@@ -72,5 +71,4 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
         sanPhamYeuThichRepository.delete(sanPhamYeuThich);
         return sanPhamYeuThich;
     }
->>>>>>> 1251dbe4665e9b3f18284e585dc8e4b975f3756c
 }

@@ -2,6 +2,7 @@ package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,15 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon,Int
 
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     List<ChiTietHoaDon> getGioHangChiTiet(@Param("idHoaDon") int idHoaDon);
+
+
+    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon and c.idCtSanPham =:idCtSanPham")
+    ChiTietHoaDon getGioHangChiTiet(@Param("idHoaDon") int idHoaDon, @Param("idCtSanPham") int idCtSanPham);
+
+
+
+    @Modifying
+    @Query("delete from ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
+    void deleteChiTietHoaDonByIdHoaDon(@Param("idHoaDon") int idHoaDon);
 
 }
