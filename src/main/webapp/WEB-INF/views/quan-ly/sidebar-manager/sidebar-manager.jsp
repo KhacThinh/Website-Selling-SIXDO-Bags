@@ -564,11 +564,11 @@
         <ul class="nav-links">
             <li><a href="#">
                 <i class="uil uil-estate"></i>
-                <span class="link-name">Dahsboard</span>
+                <span class="link-name">THỐNG KÊ</span>
             </a></li>
             <li><a href="/view_sp">
                 <i class="uil uil-files-landscapes"></i>
-                <span class="link-name">Content</span>
+                <span class="link-name">QUẢN LÝ</span>
             </a></li>
             <li><a href="/view_nv">
                 <i class="uil uil-chart"></i>
@@ -605,6 +605,7 @@
         </ul>
     </div>
 </nav>
+
 <script>
     const body = document.querySelector("body"),
         modeToggle = body.querySelector(".mode-toggle");

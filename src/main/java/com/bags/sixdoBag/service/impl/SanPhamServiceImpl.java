@@ -119,4 +119,9 @@ public class SanPhamServiceImpl implements SanPhamService {
     public List<SanPham> searchKichThuoc(int min, int max) {
         return null;
     }
+
+    @Override
+    public List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu) {
+        return sanPhamRepository.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
+    }
 }

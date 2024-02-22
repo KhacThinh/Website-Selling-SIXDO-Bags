@@ -43,11 +43,11 @@
 </head>
 
 <body>
-<jsp:include page="/WEB-INF/views/quan_ly/navbar/navbar.jsp"/>
+<jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12 text-center">
-            <h2>Quản Lý Nhân Viên</h2>
+            <h2>Quản Lý Chi Tiết Sản Phẩm</h2>
             <hr>
             <div class="col-md-12 mb-3">
                 <form>

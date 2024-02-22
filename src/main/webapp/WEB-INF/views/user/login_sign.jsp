@@ -101,7 +101,7 @@
                 var addressErrorSpan = document.getElementById("addressError");
                 var passErrorSpan = document.getElementById("passError");
                 var confirmErrorSpan = document.getElementById("confirmError");
-                var namePattern = /^[a-zA-ZÀ-ÿ\s]+$/;
+                var namePattern = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹ ~]+$/;
                 var passPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
 
                 if (!fullName || !fullName.match(namePattern)) {

@@ -320,6 +320,17 @@ select * from hoa_don as hd join chi_tiet_hoa_don as cthd on hd.id = cthd.id_hoa
 select * from doi_tuong_su_dung
 
 
+select * from gio_hang as gh join chi_tiet_gio_hang as ctgh on gh.id = ctgh.id_gio_hang join khach_hang as kh
+on gh.id_khach_hang = kh.id
+where kh.id = 1
+delete from chi_tiet_gio_hang where id_ctsp = 6
+select * from chi_tiet_gio_hang
+select * from khach_hang
+select * from chi_tiet_san_pham
+
+
+
+
 
 
 

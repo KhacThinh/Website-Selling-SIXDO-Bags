@@ -7,5 +7,7 @@ public class ChiTietGioHangRequestDto {
 
     private Integer idChiTietSanPham;
 
+    private Integer idGioHang;
+
     private Integer soLuong;
 }

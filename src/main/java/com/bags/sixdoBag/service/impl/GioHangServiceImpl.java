@@ -44,22 +44,22 @@ public class GioHangServiceImpl implements GioHangService {
 
     @Override
     public GioHang addGioHang(GioHangRequest gioHangRequest) {
-//        KhachHang khachHang = Optional.ofNullable(khachHangService
-//                .getKhachHang(gioHangRequest.getIdKhachHang())).orElseGet(() -> {
-//            KhachHang kh = new KhachHang();
-//            kh.setTenKhachHang("Khách lẻ");
-//            return kh;
-//        });
+        KhachHang khachHang = Optional.ofNullable(khachHangService
+                .getKhachHang(gioHangRequest.getIdKhachHang())).orElseGet(() -> {
+            KhachHang kh = new KhachHang();
+            kh.setTenKhachHang("Khách lẻ");
+            return kh;
+        });
 
-//        KhachHang finalKhachHang = khachHang;
-//        GioHang gioHang = gioHangRepository.findGioHangByKhachHang(khachHang).orElseGet(() -> {
-        GioHang gioHang = new GioHang();
-        gioHang.setNgayTao(LocalDateTime.now());
-//            newGioHang.setKhachHang(finalKhachHang);
-        gioHang.setTongTien(0d);
-        gioHang.setTrangThai(1);
-//            return newGioHang;
-//        });
+        KhachHang finalKhachHang = khachHang;
+        GioHang gioHang = gioHangRepository.findGioHangByKhachHang(khachHang).orElseGet(() -> {
+            GioHang newGioHang = new GioHang();
+            newGioHang.setNgayTao(LocalDateTime.now());
+            newGioHang.setKhachHang(finalKhachHang);
+            newGioHang.setTongTien(0d);
+            newGioHang.setTrangThai(1);
+            return newGioHang;
+        });
 
         ChiTietGioHangRequestDto chiTietGioHangRequestDto = gioHangRequest.getChiTietGioHangRequestDto();
 //        ChiTietGioHang chiTietGioHang = gioHang.getChiTietGioHangs().stream()
@@ -67,15 +67,18 @@ public class GioHangServiceImpl implements GioHangService {
 //                .findFirst()
 //                .orElse(null);
 
+        GioHang gh = gioHangRepository.save(gioHang);
+        chiTietGioHangRequestDto.setIdGioHang(gh.getId());
+
         ChiTietGioHang chiTietGioHang = chiTietGioHangService.addChiTietGioHang(chiTietGioHangRequestDto);
 
-//        if (Objects.nonNull(chiTietGioHang)) {
-//            int soLuongMoi = chiTietGioHangRequestDto.getSoLuong();
-//            int soLuongHienTai = chiTietGioHang.getSoLuong();
-//            chiTietGioHang.setSoLuong(soLuongHienTai + soLuongMoi);
-//        } else {
-        gioHang.addGioHangChiTiet(chiTietGioHang);
-//        }
+        if (Objects.nonNull(chiTietGioHang)) {
+            int soLuongMoi = chiTietGioHangRequestDto.getSoLuong();
+            int soLuongHienTai = chiTietGioHang.getSoLuong();
+            chiTietGioHang.setSoLuong(soLuongHienTai + soLuongMoi);
+        } else {
+            gioHang.addGioHangChiTiet(chiTietGioHang);
+        }
 
         return gioHangRepository.save(gioHang);
     }

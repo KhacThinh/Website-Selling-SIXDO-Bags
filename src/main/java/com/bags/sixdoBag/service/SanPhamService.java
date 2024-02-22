@@ -28,4 +28,6 @@ public interface SanPhamService {
     public List<SanPham> searchChatLieu(String chatLieu);
 
     public List<SanPham> searchKichThuoc(int min, int max);
+
+    List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu);
 }
