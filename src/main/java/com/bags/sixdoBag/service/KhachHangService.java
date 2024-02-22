@@ -17,4 +17,6 @@ public interface KhachHangService {
     public KhachHang editKhachHang(Integer idKhachHang, KhachHang khachHang);
 
     public KhachHang deleteKhachHang(Integer idKhachHang);
+
+    public KhachHang searchKh(String email);
 }

@@ -15,6 +15,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
             " where ctsp.ma like %:tenMa% or sp.tenSanPham like %:tenMa% or ms.tenMauSac like %:tenMa%")
     List<ChiTietSanPham> listSearch(String tenMa);
 
+
     @Query(value = "select ctsp from ChiTietSanPham ctsp join SanPham sp on ctsp.sanPham = sp join MauSac ms on ctsp.mauSac = ms" +
             " join DoiTuongSuDung as dtsd on sp.doiTuongSuDung = dtsd where" +
             " sp.chatLieu like %:chatLieu% and" +

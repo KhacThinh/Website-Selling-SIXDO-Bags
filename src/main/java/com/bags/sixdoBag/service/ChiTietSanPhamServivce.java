@@ -22,4 +22,5 @@ public interface ChiTietSanPhamServivce {
     public List<ChiTietSanPham> searchChiTietSanPhams(String tenMa);
 
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung);
+
 }

@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class KhachHang {
+public class
+KhachHang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,7 +35,7 @@ public class KhachHang {
     @Column(name = "sdt")
     private String sdt;
 
-    @Column(name = "email")
+    @Column(name = "email" )
     private String email;
 
     @Column(name = "mat_khau")

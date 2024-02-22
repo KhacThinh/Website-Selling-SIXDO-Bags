@@ -89,6 +89,7 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         return chiTietSanPhamRepository.listSearch(tenMa);
     }
 
+
     @Override
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung) {
         List<ChiTietSanPham> chiTietSanPhams = getChiTietSanPhams().stream()
