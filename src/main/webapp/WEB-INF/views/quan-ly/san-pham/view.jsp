@@ -291,10 +291,10 @@
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
-                                </button>
+                                    <button type="submit" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModall">
+                                        <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
+                                    </button>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
@@ -315,7 +315,7 @@
 </div>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">

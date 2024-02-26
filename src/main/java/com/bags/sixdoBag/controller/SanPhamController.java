@@ -1,9 +1,12 @@
 package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
+import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
+import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
 import com.bags.sixdoBag.service.KhuyenMaiService;
 import com.bags.sixdoBag.service.SanPhamService;
 import com.bags.sixdoBag.service.ThuongHieuService;
@@ -60,6 +63,7 @@ public class SanPhamController {
         model.addAttribute("tenThuongHieuSelect", tenThuongHieu);
         return "/quan-ly/san-pham/view";
     }
+
 
 
     @PostMapping("")
