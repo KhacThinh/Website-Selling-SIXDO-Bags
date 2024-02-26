@@ -173,7 +173,7 @@
                             </li>
 
                             <li>
-                                    <a class="dropdown-item"  href="/chi-tiet-san-pham/detail?id=${sp.id}">  <i class="bi bi-exclamation-circle"></i>Quản Lý Chi Tiết</a>
+                                    <a class="dropdown-item"  href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}">  <i class="bi bi-exclamation-circle"></i>Quản Lý Chi Tiết</a>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
@@ -314,7 +314,6 @@
 </div>
 
 
->>>>>>> 3bafe04bf94cde3fe48dcffe86c9ec0abc2bee49
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <!-- Link JavaScript của Bootstrap (cần thiết cho một số tính năng của Bootstrap) -->

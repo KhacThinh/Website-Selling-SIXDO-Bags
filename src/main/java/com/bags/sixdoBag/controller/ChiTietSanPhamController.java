@@ -52,6 +52,22 @@ public class ChiTietSanPhamController {
 
     private final ThuongHieuService thuongHieuService;
 
+    @PostMapping("/detail")
+    public ResponseEntity<?> detail(@RequestParam("id") Integer id) {
+        System.out.println(id);
+        return new ResponseEntity<>(chiTietSanPhamServivce.getChiTietSanPham(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/detailCTSP")
+    public String detailSanPhamById(Model model, @RequestParam("id") int id) {
+        System.out.println("idddddddddđffffffffffffff" + id);
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhamById(id);
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("chiTietSanPham", new ChiTietSanPham());
+
+        System.out.println(listCTSP.size()+"sizzzzzzzzzzz");
+        return "/quan-ly/chi-tiet-san-pham/view";
+    }
 
     @GetMapping("")
     public String getKhuyenMai(Model model) {
@@ -66,13 +82,6 @@ public class ChiTietSanPhamController {
         return "quan-ly/chi-tiet-san-pham/view";
     }
 
-    @GetMapping("/detail")
-    public String detailSanPhamById(Model model, @RequestParam("id") int id) {
-        System.out.println("idddddddddđffffffffffffff" + id);
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhamById(id);
-        model.addAttribute("listCTSP", listCTSP);
-        return "/quan-ly/chi-tiet-san-pham/view";
-    }
 
     @PostMapping("/add")
     public String add(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,

@@ -211,14 +211,13 @@
             </div>
         </div>
     </div>
-</div>
-<script>
+</div><script>
     // Function để hiển thị dữ liệu chi tiết sản phẩm trong modal
     function openModal(productId) {
         // Gửi yêu cầu đến server để lấy dữ liệu chi tiết sản phẩm
         $.ajax({
             type: "POST",
-            url: "chi-tiet-san-pham/detail",
+            url: "/chi-tiet-san-pham/detail",
             data: { id: productId }, // Chuyển tham số id qua cơ thể của yêu cầu
             success: function(response) {
                 // Hiển thị dữ liệu chi tiết trong modal
@@ -232,24 +231,40 @@
     }
 
 
-        // Function để render dữ liệu chi tiết vào modal
-        function renderChiTiet(chiTietSanPham) {
-            // Compile template Handlebars
-            var source = document.getElementById("detail-template").innerHTML;
-            var template = Handlebars.compile(source);
+    // Function để render dữ liệu chi tiết vào modal
+    function renderChiTiet(chiTietSanPham) {
+        // Compile template Handlebars
+        var source = document.getElementById("detail-template").innerHTML;
+        var template = Handlebars.compile(source);
 
-            // Hiển thị dữ liệu chi tiết sản phẩm trong modal
-            var modalBody = $('#detailBody');
-            modalBody.empty(); // Xóa dữ liệu cũ trong modal
+        // Hiển thị dữ liệu chi tiết sản phẩm trong modal
+        var modalBody = $('#detailBody');
+        modalBody.empty(); // Xóa dữ liệu cũ trong modal
 
-            // Thêm dữ liệu vào modal bằng cách sử dụng template Handlebars
-            modalBody.append(template(chiTietSanPham));
-        }
-
-
+        // Thêm dữ liệu vào modal bằng cách sử dụng template Handlebars
+        modalBody.append(template(chiTietSanPham));
+    }
 
 
 
+
+
+</script>
+<script id="detail-template" type="text/x-handlebars-template">
+    <tr>
+        <td>{{id}}</td>
+        <td><img src="{{hinhAnh}}" alt="" width="100px" height="100px"></td>
+        <td>{{ma}}</td>
+        <td>{{sanPham.tenSanPham}}</td>
+        <td>{{mauSac.tenMauSac}}</td>
+        <td>{{soLuong}}</td>
+        <td>{{thoiGian}}</td>
+        <td>{{giaNhap}}</td>
+        <td>{{giaBan}}</td>
+        <td>{{khuyenMai.maKhuyenMai}}</td>
+
+
+    </tr>
 </script>
 <script id="detail-template" type="text/x-handlebars-template">
     <tr>
