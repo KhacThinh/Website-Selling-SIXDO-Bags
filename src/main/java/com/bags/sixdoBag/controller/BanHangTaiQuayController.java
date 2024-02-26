@@ -3,6 +3,7 @@ package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.service.*;
+import com.bags.sixdoBag.service.impl.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("ban-tai-quay")
 @RequiredArgsConstructor
 public class BanHangTaiQuayController {
+    Utils utils = new Utils();
 
     private final SanPhamService sanPhamService;
 
@@ -97,12 +99,15 @@ public class BanHangTaiQuayController {
 
         int idTab = Integer.parseInt(idTabString.substring(2));
         System.out.println("tabsstring" + idTab);
+
         ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
         chiTietHoaDon.setIdCtSanPham(Integer.valueOf(productId));
         chiTietHoaDon.setSoLuong(1);
         chiTietHoaDon.setGia((double) Integer.valueOf(giaBanString));
         chiTietHoaDon.setIdHoaDon(idTab);
         hoaDonChiTietService.addGioHang(chiTietHoaDon);
+//        int soLuongKho = chiTietSanPhamServivce.getSoLuongSanPhamById(Integer.valueOf(productId));
+//        chiTietSanPhamServivce.updateSoLuongSanPham(soLuongKho-1,Integer.valueOf(productId));
         return ResponseEntity.ok().build();
 
     }
@@ -176,22 +181,20 @@ public class BanHangTaiQuayController {
         String tongDonHangString = String.valueOf(requestBody.get("tongGiaTri"));
         ///////
         int idTab = Integer.parseInt(idTabString.substring(2));
-
         HoaDon hoaDon = new HoaDon();
         hoaDon.setTrangThai(0);
         hoaDon.setSdtNguoiNhan(soDienThoai);
         hoaDon.setTenNguoiNhan(tenKhachHang);
         hoaDon.setTongTien((double) Integer.valueOf(tongDonHangString));
-
+        hoaDon.setThoiGianXacNhan(utils.getCurrentDateTime());
+        hoaDon.setThoiGianThanhToan(utils.getCurrentDateTime());
         hoaDonService.updateHoaDon(idTab, hoaDon);
-
         List<HoaDon> listTab = hoaDonService.getTabHoaDon();
         List<HoaDon> danhSachTab = new ArrayList<>();
         for (HoaDon o : listTab) {
             if (o.getTrangThai() == 1) {
                 danhSachTab.add(o);
             }
-
         }
 
         return ResponseEntity.ok(danhSachTab);

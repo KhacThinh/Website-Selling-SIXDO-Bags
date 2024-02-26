@@ -35,6 +35,11 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     }
 
     @Override
+    public List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham) {
+        return chiTietSanPhamRepository.getChiTietSanPhamById(idSanPham);
+    }
+
+    @Override
     public List<ChiTietSanPham> getChiTietSanPhams() {
         List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.findAll();
         return chiTietSanPhams;
@@ -102,6 +107,16 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
                 .collect(Collectors.toList());
 
         return chiTietSanPhams;
+    }
+
+    @Override
+    public void updateSoLuongSanPham(int newSoLuong,int idCtSanPham  ) {
+        chiTietSanPhamRepository.updateSoLuongSanPham(newSoLuong,idCtSanPham);
+    }
+
+    @Override
+    public int getSoLuongSanPhamById(int idCtSanPham) {
+        return chiTietSanPhamRepository.getSoLuongSanPhamById(idCtSanPham);
     }
 
 

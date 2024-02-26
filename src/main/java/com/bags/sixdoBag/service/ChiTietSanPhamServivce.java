@@ -10,6 +10,7 @@ import java.util.List;
 public interface ChiTietSanPhamServivce {
 
     public ChiTietSanPham getChiTietSanPham(Integer idChiTietSanPham);
+    List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham);
 
     public List<ChiTietSanPham> getChiTietSanPhams();
 
@@ -22,5 +23,7 @@ public interface ChiTietSanPhamServivce {
     public List<ChiTietSanPham> searchChiTietSanPhams(String tenMa);
 
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung);
+    void updateSoLuongSanPham(int newSoLuong,int idCtSanPham );
+    int getSoLuongSanPhamById(int idCtSanPham);
 
 }

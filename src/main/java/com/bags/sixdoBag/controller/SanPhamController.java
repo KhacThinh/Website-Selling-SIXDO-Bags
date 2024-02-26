@@ -62,6 +62,10 @@ public class SanPhamController {
     }
 
 
+
+
+
+
     @PostMapping("")
     public ResponseEntity<?> addKhuyenMai(@RequestBody @Valid SanPhamRequest khuyenMai) {
         return new ResponseEntity<>(sanPhamService.addSanPham(khuyenMai), HttpStatus.OK);

@@ -558,7 +558,7 @@
         <div class="logo-image">
             <img src="images/logo.png" alt="">
         </div>
-        <span class="logo_name">CodingLab</span>
+        <span class="logo_name">Sixdo Shop</span>
     </div>
     <div class="menu-items">
         <ul class="nav-links">

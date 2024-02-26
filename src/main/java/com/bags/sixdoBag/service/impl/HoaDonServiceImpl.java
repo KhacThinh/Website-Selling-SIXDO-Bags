@@ -15,11 +15,13 @@ import java.util.List;
 public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
     HoaDonRepository hoaDonRepository;
+    Utils utils = new Utils();
 
     @Override
     public void themHoaDon() {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setTrangThai(1); // Thiết lập trạng thái hóa đơn
+        hoaDon.setThoiGianTao(utils.getCurrentDateTime());
 
 // Lưu hóa đơn vào cơ sở dữ liệu để nhận ID
         hoaDon = hoaDonRepository.save(hoaDon);
@@ -45,7 +47,8 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDonTemp.setTrangThai(hoaDon.getTrangThai());
         hoaDonTemp.setSdtNguoiNhan(hoaDon.getSdtNguoiNhan());
         hoaDonTemp.setTongTien(hoaDon.getTongTien());
-
+        hoaDonTemp.setThoiGianXacNhan(hoaDon.getThoiGianXacNhan());
+        hoaDonTemp.setThoiGianThanhToan(hoaDon.getThoiGianThanhToan());
         hoaDonRepository.save(hoaDonTemp);
     }
 
@@ -53,7 +56,6 @@ public class HoaDonServiceImpl implements HoaDonService {
     public HoaDon getHoaDonById(int idHoaDon) {
         return hoaDonRepository.findById(idHoaDon).orElse(null);
     }
-
 
 
     @Override

@@ -53,4 +53,7 @@ public class ChiTietSanPham {
     @JoinColumn(name = "id_khuyen_mai")
     private KhuyenMai khuyenMai;
 
+
+
+
 }
