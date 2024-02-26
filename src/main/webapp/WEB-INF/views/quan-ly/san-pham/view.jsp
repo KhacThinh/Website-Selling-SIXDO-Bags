@@ -62,7 +62,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .detail-product{
+        .detail-product {
             background-color: #f8f9fa;
         }
     </style>
@@ -175,7 +175,8 @@
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
-                        <div class="modal fade" id="exampleModal${i.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" id="exampleModal${i.index}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
@@ -192,8 +193,9 @@
                                                     <h2 class="mb-4">${sp.tenSanPham}</h2>
                                                     <p><strong>Mã sản phẩm:</strong> ${sp.maSanPham}</p>
                                                     <p><strong>Kích thước:</strong> ${sp.kichThuoc}</p>
-                                                    <fmt:formatNumber pattern="#,###" value="${sp.khoiLuong}" var="khoiLuong"></fmt:formatNumber>
-                                                    <p><strong>Khối lượng:</strong>${khoiLuong}  gram</p>
+                                                    <fmt:formatNumber pattern="#,###" value="${sp.khoiLuong}"
+                                                                      var="khoiLuong"></fmt:formatNumber>
+                                                    <p><strong>Khối lượng:</strong>${khoiLuong} gram</p>
                                                     <p><strong>Chất liệu:</strong> ${sp.chatLieu}</p>
                                                     <p><strong>Xuất xứ:</strong> ${sp.xuatXu}</p>
                                                     <p><strong>Thương hiệu:</strong> ${sp.thuongHieu.ten}</p>
@@ -211,7 +213,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Thoát</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Thoát
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -225,6 +228,84 @@
 </div>
 
 
+<<<<<<< HEAD
+=======
+<div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="onSubmit($event)">
+                    <div class="mb-3">
+                        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+                        <input ng-model="product.id" type="number" class="form-control" id="recipient-name"
+                               placeholder="ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+                        <input ng-model="product.tenSP" type="text" class="form-control" id="recipient-name"
+                               placeholder="Tên Sản Phẩm" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="recipient-name" class="col-form-label">Giá Nhập:</label>
+                            <input ng-model="product.giaNhap" type="number" class="form-control"
+                                   id="recipient-name" placeholder="Giá Nhập" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recipient-name" class="col-form-label">Giá Bán:</label>
+                            <input ng-model="product.giaBan" type="number" class="form-control"
+                                   id="recipient-name" placeholder="Giá Bán" required>
+                        </div>
+                    </div>
+                    <div class=" row mb-3">
+                        <div class="col-md-6">
+                            <label for="recipient-name" class="col-form-label">Số
+                                Lượng</label>
+                            <input type="number" ng-model="product.soLuong" class="form-control"
+                                   id="recipient-name" min="0">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="recipient-name" class="col-form-label">Ngày Nhập Kho</label>
+                            <input ng-model="product.ngayNhapHang" ng-model-options="{ getterSetter: true }"
+                                   type="text" class="form-control" id="recipient-name" required
+                                   placeholder="Định dạng yyyy-MM-dd">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="recipient-name"
+                                   class="col-form-label">File Image</label>
+                            <input ng-model="product.urlImage" type="text" class="form-control" id="recipient-name"
+                                   placeholder="Đường dẫn ảnh">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="recipient-name" class="col-form-label">Trạng Thái</label>
+                            <select ng-model="product.trangThai" class="form-select"
+                                    aria-label="Default select example">
+                                <option value="Đang Bán">Đang Bán</option>
+                                <option value="Ngừng Bán">Ngừng Bán</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">Huỷ</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+>>>>>>> 3bafe04bf94cde3fe48dcffe86c9ec0abc2bee49
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <!-- Link JavaScript của Bootstrap (cần thiết cho một số tính năng của Bootstrap) -->

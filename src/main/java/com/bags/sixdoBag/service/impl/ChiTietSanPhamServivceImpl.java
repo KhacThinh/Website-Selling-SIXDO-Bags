@@ -11,7 +11,8 @@ import com.bags.sixdoBag.service.SanPhamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,19 +44,19 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     }
 
     @Override
-    public ChiTietSanPham addChiTietSanPham(ChiTietSanPhamRequest chiTietSanPhamRequest) {
+    public ChiTietSanPham addChiTietSanPham(ChiTietSanPham chiTietSanPham) {
         ChiTietSanPham ctsp = new ChiTietSanPham();
-        ctsp.setMa(chiTietSanPhamRequest.getMa());
-        ctsp.setGiaBan(chiTietSanPhamRequest.getGiaBan());
-        ctsp.setGiaNhap(chiTietSanPhamRequest.getGiaNhap());
-        ctsp.setSoLuong(chiTietSanPhamRequest.getSoLuong());
-        ctsp.setThoiGian(chiTietSanPhamRequest.getThoiGian());
-        ctsp.setHinhAnh(chiTietSanPhamRequest.getHinhAnh());
-        Integer idMauSac = chiTietSanPhamRequest.getIdMauSac();
+        ctsp.setMa(chiTietSanPham.getMa());
+        ctsp.setGiaBan(chiTietSanPham.getGiaBan());
+        ctsp.setGiaNhap(chiTietSanPham.getGiaNhap());
+        ctsp.setSoLuong(chiTietSanPham.getSoLuong());
+        ctsp.setThoiGian(LocalDateTime.now());
+        ctsp.setHinhAnh(chiTietSanPham.getHinhAnh());
+        Integer idMauSac = chiTietSanPham.getMauSac().getId();
         Optional.ofNullable(mauSacService.getMauSac(idMauSac)).ifPresent(ctsp::setMauSac);
-        Integer idSanPham = chiTietSanPhamRequest.getIdSanPham();
+        Integer idSanPham = chiTietSanPham.getSanPham().getId();
         Optional.ofNullable(sanPhamService.getSanPham(idSanPham)).ifPresent(ctsp::setSanPham);
-        Integer idKhuyenMai = chiTietSanPhamRequest.getIdKhuyenMai();
+        Integer idKhuyenMai = chiTietSanPham.getKhuyenMai().getId();
         Optional.ofNullable(khuyenMaiService.getKhuyenMai(idKhuyenMai)).ifPresent(ctsp::setKhuyenMai);
         return chiTietSanPhamRepository.save(ctsp);
     }
