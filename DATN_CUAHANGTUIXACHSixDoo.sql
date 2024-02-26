@@ -64,6 +64,9 @@ ALTER COLUMN xuat_xu NVARCHAR(100);
 ALTER TABLE san_pham
 ALTER COLUMN mo_ta NVARCHAR(MAX);
 
+ALTER TABLE san_pham
+ALTER COLUMN anh NVARCHAR(MAX);
+
  
 create table mau_sac(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,

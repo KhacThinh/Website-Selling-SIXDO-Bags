@@ -262,7 +262,7 @@
         transition: var(--tran-05);
     }
 
-    nav.close~.dashboard {
+    nav.close ~ .dashboard {
         left: 73px;
         width: calc(100% - 73px);
     }
@@ -281,7 +281,7 @@
         z-index: 10;
     }
 
-    nav.close~.dashboard .top {
+    nav.close ~ .dashboard .top {
         left: 73px;
         width: calc(100% - 73px);
     }
@@ -463,22 +463,22 @@
             pointer-events: auto;
         }
 
-        nav~.dashboard {
+        nav ~ .dashboard {
             left: 73px;
             width: calc(100% - 73px);
         }
 
-        nav.close~.dashboard {
+        nav.close ~ .dashboard {
             left: 250px;
             width: calc(100% - 250px);
         }
 
-        nav~.dashboard .top {
+        nav ~ .dashboard .top {
             left: 73px;
             width: calc(100% - 73px);
         }
 
-        nav.close~.dashboard .top {
+        nav.close ~ .dashboard .top {
             left: 250px;
             width: calc(100% - 250px);
         }
@@ -530,25 +530,37 @@
             pointer-events: none;
         }
 
-        nav~.dashboard {
+        nav ~ .dashboard {
             left: 0;
             width: 100%;
         }
 
-        nav.close~.dashboard {
+        nav.close ~ .dashboard {
             left: 73px;
             width: calc(100% - 73px);
         }
 
-        nav~.dashboard .top {
+        nav ~ .dashboard .top {
             left: 0;
             width: 100%;
         }
 
-        nav.close~.dashboard .top {
+        nav.close ~ .dashboard .top {
             left: 0;
             width: 100%;
         }
+
+        /* Thêm CSS để ẩn submenu ban đầu */
+        .sub-menu {
+            display: none;
+        }
+
+        /* Sử dụng hover để hiển thị submenu khi di chuột vào menu chính */
+        .nav-links li:hover .sub-menu {
+            display: block;
+        }
+
+
     }
 </style>
 
@@ -566,11 +578,30 @@
                 <i class="uil uil-estate"></i>
                 <span class="link-name">THỐNG KÊ</span>
             </a></li>
-            <li><a href="/view_sp">
-                <i class="uil uil-files-landscapes"></i>
-                <span class="link-name">QUẢN LÝ</span>
-            </a></li>
-            <li><a href="/view_nv">
+            <li>
+                <a href="#" id="manageBtn">
+                    <i class="uil uil-files-landscapes"></i>
+                    <span class="link-name">QUẢN LÝ</span>
+                </a>
+                <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
+                <ul class="sub-menu" id="subMenu" class="sub-menu">
+                    <li><a href="/san-pham" id="btnSanPham">
+                        <i class="uil uil-box"></i>
+                        <span class="link-name">Sản phẩm</span>
+                    </a></li>
+                    <li><a href="/hoa-don/lich-su" id="btnHoaDon">
+                        <i class="uil uil-file-alt"></i>
+                        <span class="link-name">Lịch Sử Hoá đơn</span>
+                    </a></li>
+                    <li><a href="/chi-tiet-san-pham" id="btnMauSac">
+                        <i class="uil uil-palette"></i>
+                        <span class="link-name">Sản Phẩm Chi Tiết</span>
+                    </a></li>
+                </ul>
+
+            </li>
+
+            <li><a href="#">
                 <i class="uil uil-chart"></i>
                 <span class="link-name">Analytics</span>
             </a></li>
@@ -605,8 +636,21 @@
         </ul>
     </div>
 </nav>
+<select>
+
+</select>
 
 <script>
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     var manageBtn = document.getElementById("manageBtn");
+    //     var subMenu = document.getElementById("subMenu");
+    //
+    //     manageBtn.addEventListener("click", function (event) {
+    //         event.preventDefault(); // Prevent default link behavior
+    //         subMenu.classList.toggle("active");
+    //     });
+    // });
+
     const body = document.querySelector("body"),
         modeToggle = body.querySelector(".mode-toggle");
     sidebar = body.querySelector("nav");

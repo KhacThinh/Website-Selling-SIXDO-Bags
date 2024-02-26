@@ -50,6 +50,23 @@
         }
 
 
+        .product-info {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-product {
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 
@@ -66,156 +83,8 @@
             <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
         </button>
 
-        <!-- Modal -->
-        <div class="modal modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form ng-submit="onSubmit($event)"
-                              class="ng-pristine ng-invalid ng-invalid-required ng-valid-min">
-                            <div class="mb-3">
-                                <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
-                                <input ng-model="product.id" type="number"
-                                       class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
-                                       id="recipient-name" placeholder="ID" required="">
-                            </div>
-                            <div class="mb-3">
-                                <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
-                                <input ng-model="product.tenSP" type="text"
-                                       class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
-                                       id="recipient-name" placeholder="Tên Sản Phẩm" required="">
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="recipient-name" class="col-form-label">Giá Nhập:</label>
-                                    <input ng-model="product.giaNhap" type="number"
-                                           class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-required"
-                                           id="recipient-name" placeholder="Giá Nhập" required="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="recipient-name" class="col-form-label">Giá Bán:</label>
-                                    <input ng-model="product.giaBan" type="number"
-                                           class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-required"
-                                           id="recipient-name" placeholder="Giá Bán" required="">
-                                </div>
-                            </div>
-                            <div class=" row mb-3">
-                                <div class="col-md-6">
-                                    <label for="recipient-name" class="col-form-label">Số
-                                        Lượng</label>
-                                    <input type="number" ng-model="product.soLuong"
-                                           class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-min"
-                                           id="recipient-name" min="0">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="recipient-name" class="col-form-label">Ngày Nhập Kho</label>
-                                    <input ng-model="product.ngayNhapHang" ng-model-options="{ getterSetter: true }"
-                                           type="text"
-                                           class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
-                                           id="recipient-name" required="" placeholder="Định dạng yyyy-MM-dd">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-8">
-                                    <label for="recipient-name" class="col-form-label">File Image</label>
-                                    <input ng-model="product.urlImage" type="text"
-                                           class="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                                           id="recipient-name" placeholder="Đường dẫn ảnh">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="recipient-name" class="col-form-label">Trạng Thái</label>
-                                    <select ng-model="product.trangThai"
-                                            class="form-select ng-pristine ng-untouched ng-valid ng-empty"
-                                            aria-label="Default select example">
-                                        <option value="? string: ?" selected="selected"></option>
-                                        <option value="Đang Bán">Đang Bán</option>
-                                        <option value="Ngừng Bán">Ngừng Bán</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-<%--        <!-- Modal -->--%>
-<%--        <div class="modal modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
-<%--            <div class="modal-dialog">--%>
-<%--                <div class="modal-content">--%>
-<%--                    <div class="modal-header">--%>
-<%--                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>--%>
-<%--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-body">--%>
-<%--                        <form ng-submit="onSubmit($event)" class="ng-pristine ng-invalid ng-invalid-required ng-valid-min">--%>
-<%--                            <div class="row mb-3">--%>
-<%--                                <div class="col-md-4">--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <input ng-model="product.id" type="number" class="form-control" id="productId" placeholder="ID" required="">--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <input ng-model="product.tenSanPham" type="text" class="form-control" id="productName" placeholder="Tên Sản Phẩm" required="">--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="col-form-label">Giá Nhập:</label>--%>
-<%--                                        <input ng-model="product.giaNhap" type="number" class="form-control" id="importPrice" placeholder="Giá Nhập" required="">--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-<%--                                <div class="col-md-4">--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="col-form-label">Giá Bán:</label>--%>
-<%--                                        <input ng-model="product.giaBan" type="number" class="form-control" id="sellingPrice" placeholder="Giá Bán" required="">--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="col-form-label">Số Lượng</label>--%>
-<%--                                        <input type="number" ng-model="product.soLuong" class="form-control" id="quantity" min="0">--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="col-form-label">Ngày Nhập Kho</label>--%>
-<%--                                        <input ng-model="product.ngayNhapKho" ng-model-options="{ getterSetter: true }" type="text" class="form-control" id="importDate" required="" placeholder="Định dạng yyyy-MM-dd">--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-<%--                                <div class="col-md-4">--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="col-form-label">File Image</label>--%>
-<%--                                        <input type="file" id="imageInput" class="form-control">--%>
-<%--                                        <button type="button" class="btn btn-primary mt-2" onclick="document.getElementById('imageInput').click();">Chọn Ảnh</button>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="col-form-label">Trạng Thái</label>--%>
-<%--                                        <select ng-model="product.trangThai" class="form-select" aria-label="Default select example">--%>
-<%--                                            <option value="true">Đang Bán</option>--%>
-<%--                                            <option value="false">Ngừng Bán</option>--%>
-<%--                                        </select>--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                            <!-- Các trường còn lại -->--%>
-<%--                            <div class="mb-3">--%>
-<%--                                <label class="col-form-label">Kích Thước</label>--%>
-<%--                                <input ng-model="product.kichThuoc" type="text" class="form-control" id="size" placeholder="Kích Thước">--%>
-<%--                            </div>--%>
-<%--                            <!-- Các trường còn lại -->--%>
-<%--                            <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>--%>
-<%--                        </form>--%>
-<%--                    </div>--%>
-<%--                    <div class="modal-footer">--%>
-<%--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
+        <!-- Add modal -->
+        <jsp:include page="./them-san-pham-modal.jsp"/>
     </div>
 </div>
 <div class="container mt-4">
@@ -260,7 +129,6 @@
 </div>
 
 
-
 <div class="container">
     <div id="test">
         <table class="table table-hover table-striped mb-5">
@@ -278,7 +146,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${sanPhams}" var="sp">
+            <c:forEach items="${sanPhams}" var="sp" varStatus="i">
                 <tr>
                     <th scope="col">${sp.id}</th>
                     <td>${sp.maSanPham}</td>
@@ -289,14 +157,23 @@
                     <td>${sp.xuatXu}</td>
                     <td>${sp.thuongHieu.ten}</td>
 
+
+                        <%--                    <td><img src="${pageContext.request.contextPath}${sp.anh}" height="200px" width="250px" alt="Ảnh sản phẩm"></td>--%>
+
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal">
-                                    <a href="/chi-tiet-san-pham/detail?id=${sp.id}">  <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
+
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal${i.index}">
+                                    <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
                                 </button>
+                            </li>
+
+                            <li>
+                                    <a class="dropdown-item"  href="/chi-tiet-san-pham/detail?id=${sp.id}">  <i class="bi bi-exclamation-circle"></i>Quản Lý Chi Tiết</a>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
@@ -308,6 +185,50 @@
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
+                        <div class="modal fade" id="exampleModal${i.index}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Chi Tiết Sản Phẩm</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row detail-product">
+                                            <div class="col-md-6">
+                                                <!-- Hiển thị thông tin sản phẩm -->
+                                                <div class="product-info">
+                                                    <h2 class="mb-4">${sp.tenSanPham}</h2>
+                                                    <p><strong>Mã sản phẩm:</strong> ${sp.maSanPham}</p>
+                                                    <p><strong>Kích thước:</strong> ${sp.kichThuoc}</p>
+                                                    <fmt:formatNumber pattern="#,###" value="${sp.khoiLuong}"
+                                                                      var="khoiLuong"></fmt:formatNumber>
+                                                    <p><strong>Khối lượng:</strong>${khoiLuong} gram</p>
+                                                    <p><strong>Chất liệu:</strong> ${sp.chatLieu}</p>
+                                                    <p><strong>Xuất xứ:</strong> ${sp.xuatXu}</p>
+                                                    <p><strong>Thương hiệu:</strong> ${sp.thuongHieu.ten}</p>
+                                                    <p><strong>Danh mục:</strong> ${sp.danhMuc.tenDanhMuc}</p>
+                                                    <p><strong>Mô tả:</strong> ${sp.moTa}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Hiển thị ảnh sản phẩm -->
+                                                <div class="product-image text-center">
+                                                    <img src="${sp.anh}" alt="${sanPham.tenSanPham}"
+                                                         class="img-fluid rounded">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Thoát
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </c:forEach>
@@ -315,6 +236,7 @@
         </table>
     </div>
 </div>
+
 
 
 <div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -392,8 +314,13 @@
 </div>
 
 
+>>>>>>> 3bafe04bf94cde3fe48dcffe86c9ec0abc2bee49
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Link JavaScript của Bootstrap (cần thiết cho một số tính năng của Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

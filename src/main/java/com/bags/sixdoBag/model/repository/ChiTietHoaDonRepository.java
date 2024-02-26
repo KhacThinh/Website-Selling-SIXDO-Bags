@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Repository
-public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon,Integer> {
+public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, Integer> {
 
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     List<ChiTietHoaDon> getGioHangChiTiet(@Param("idHoaDon") int idHoaDon);
@@ -20,6 +20,9 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon,Int
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon and c.idCtSanPham =:idCtSanPham")
     ChiTietHoaDon getGioHangChiTiet(@Param("idHoaDon") int idHoaDon, @Param("idCtSanPham") int idCtSanPham);
 
+
+    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
+    List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(@Param("idHoaDon") int idHoaDon);
 
 
     @Modifying

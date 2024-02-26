@@ -58,10 +58,12 @@ public class BanHangTaiQuayController {
     }
 
     private void extracted(Model model) {
-        Set<String> chatLieus = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
+
+        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
+
         List<String> doiTuongSuDungs = doiTuongSuDungService.getListDoiTuongSuDung().stream().map(DoiTuongSuDung::getTenDoiTuongSuDung).collect(Collectors.toList());
         List<String> mauSacs = mauSacService.getMauSacs().stream().map(MauSac::getTenMauSac).toList();
-        model.addAttribute("chatLieus", chatLieus);
+        model.addAttribute("chatLieus", tenChatLieuSelects);
         model.addAttribute("doiTuongSuDungs", doiTuongSuDungs);
         model.addAttribute("mauSacs", mauSacs);
         List<HoaDon> listTab = hoaDonService.getTabHoaDon();

@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "chi_tiet_san_pham")
@@ -45,7 +47,6 @@ public class ChiTietSanPham {
     private SanPham sanPham;
 
     @ManyToOne
-
     @JoinColumn(name = "id_mau_sac")
     private MauSac mauSac;
 
@@ -53,6 +54,9 @@ public class ChiTietSanPham {
     @JoinColumn(name = "id_khuyen_mai")
     private KhuyenMai khuyenMai;
 
+
+    @OneToMany(mappedBy = "chiTietSanPham")
+    List<HinhAnhCTSP>anhChiTietSanPhams;
 
 
 

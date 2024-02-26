@@ -1,9 +1,12 @@
 package com.bags.sixdoBag.model.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ChiTietSanPhamRequest {
     private String ma;

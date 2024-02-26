@@ -11,8 +11,13 @@ public interface HoaDonChiTietService {
     void addGioHang(ChiTietHoaDon chiTietHoaDon);
 
     public List<ChiTietHoaDon> getGioHangTaiQuay(int idHoaDon);
-    public ChiTietHoaDon getHoaDonById(int idHoaDon,int idChiTietSp);
-    public void updateChiTietHoaDon(int idHoaDon , int idChiTietSp, ChiTietHoaDon hoaDon);
+
+    public ChiTietHoaDon getHoaDonById(int idHoaDon, int idChiTietSp);
+
+    public void updateChiTietHoaDon(int idHoaDon, int idChiTietSp, ChiTietHoaDon hoaDon);
+
     void deleteHoaDonChiTietById(int idHoaDon);
+
+    List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(int idHoaDon);
 
 }
