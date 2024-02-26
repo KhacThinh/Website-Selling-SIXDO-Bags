@@ -1,13 +1,17 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.repository.HoaDonRepository;
+import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
+import com.bags.sixdoBag.service.HoaDonChiTietService;
 import com.bags.sixdoBag.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 @Service
@@ -16,9 +20,12 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
     HoaDonRepository hoaDonRepository;
 
+    private final HoaDonChiTietService hoaDonChiTietService;
+
     @Override
     public void themHoaDon() {
         HoaDon hoaDon = new HoaDon();
+        hoaDon.setThoiGianTao(LocalDateTime.now());
         hoaDon.setTrangThai(1); // Thiết lập trạng thái hóa đơn
 
 // Lưu hóa đơn vào cơ sở dữ liệu để nhận ID
@@ -55,9 +62,24 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
 
-
     @Override
     public void deleteHoaDonById(int id) {
         hoaDonRepository.deleteById(id);
+    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDon() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.findAll();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;
     }
 }

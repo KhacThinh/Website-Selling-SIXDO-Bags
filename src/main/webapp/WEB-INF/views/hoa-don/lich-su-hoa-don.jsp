@@ -23,7 +23,7 @@
     <style type="text/css">
         #test {
             width: auto;
-            height: 400px;
+            height: 600px;
             overflow-x: hidden;
             overflow-y: auto;
             position: relative; /* Thiết lập vị trí tương đối */
@@ -48,43 +48,12 @@
         }
 
 
-        .product-info {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-image {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .detail-product{
-            background-color: #f8f9fa;
-        }
     </style>
 </head>
 
 <body>
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
-<div class="container">
-    <div class="title text-center pt-5">
-        <h2 class="position-relative d-inline-block">QUẢN LÝ SẢN PHẨM</h2>
-    </div>
-    <div class="row">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-            <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
-        </button>
 
-        <!-- Add modal -->
-        <jsp:include page="./them-san-pham-modal.jsp"/>
-    </div>
-</div>
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-7 mb-3">
@@ -132,29 +101,23 @@
         <table class="table table-hover table-striped mb-5">
             <thead>
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">MÃ</th>
-                <th scope="col">TÊN</th>
-                <th scope="col">KÍCH THƯỚC</th>
-                <th scope="col">KHỐI LƯỢNG(kg)</th>
-                <th scope="col">CHẤT LIỆU</th>
-                <th scope="col">XUẤT XỨ</th>
-                <th scope="col">THƯƠNG HIỆU</th>
+                <th scope="col">STT</th>
+                <th scope="col">MÃ HOÁ ĐƠN</th>
+                <th scope="col">THỜI GIAN TẠO</th>
+                <th scope="col">SỐ LƯỢNG SẢN PHẨM</th>
+                <th scope="col">TỔNG TIỀN</th>
                 <th scope="col">HOẠT ĐỘNG</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${sanPhams}" var="sp" varStatus="i">
+            <c:forEach items="${hoaDons}" var="hd" varStatus="i">
                 <tr>
-                    <th scope="col">${sp.id}</th>
-                    <td>${sp.maSanPham}</td>
-                    <td>${sp.tenSanPham}</td>
-                    <td>${sp.kichThuoc}</td>
-                    <td>${sp.khoiLuong}</td>
-                    <td>${sp.chatLieu}</td>
-                    <td>${sp.xuatXu}</td>
-                    <td>${sp.thuongHieu.ten}</td>
-                        <%--                    <td><img src="${pageContext.request.contextPath}${sp.anh}" height="200px" width="250px" alt="Ảnh sản phẩm"></td>--%>
+                    <th scope="col">${i.index + 1}</th>
+                    <td>${hd.key.maHoaDon}</td>
+                    <td>${hd.key.thoiGianTao}</td>
+                    <td>${hd.value.size()}</td>
+                    <fmt:formatNumber pattern="#,###" var="tongTien" value="${hd.key.tongTien}"></fmt:formatNumber>
+                    <td>${tongTien}</td>
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>
@@ -165,53 +128,61 @@
                                     <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
                                 </button>
                             </li>
-                            <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"><i class="bi bi-pencil"></i> Sửa
-                                </button>
-                            </li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3"></i> Xóa</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                                <%--                            <li>--%>
+                                <%--                                <button type="button" class="dropdown-item" data-bs-toggle="modal"--%>
+                                <%--                                        data-bs-target="#exampleModal"><i class="bi bi-pencil"></i> Sửa--%>
+                                <%--                                </button>--%>
+                                <%--                            </li>--%>
+                                <%--                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3"></i> Xóa</a></li>--%>
+                                <%--                            <li>--%>
+                                <%--                                <hr class="dropdown-divider">--%>
+                                <%--                            </li>--%>
                         </ul>
-                        <div class="modal fade" id="exampleModal${i.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" id="exampleModal${i.index}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Chi Tiết Sản Phẩm</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">HOÁ ĐƠN CHI TIẾT</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="row detail-product">
-                                            <div class="col-md-6">
-                                                <!-- Hiển thị thông tin sản phẩm -->
-                                                <div class="product-info">
-                                                    <h2 class="mb-4">${sp.tenSanPham}</h2>
-                                                    <p><strong>Mã sản phẩm:</strong> ${sp.maSanPham}</p>
-                                                    <p><strong>Kích thước:</strong> ${sp.kichThuoc}</p>
-                                                    <fmt:formatNumber pattern="#,###" value="${sp.khoiLuong}" var="khoiLuong"></fmt:formatNumber>
-                                                    <p><strong>Khối lượng:</strong>${khoiLuong}  gram</p>
-                                                    <p><strong>Chất liệu:</strong> ${sp.chatLieu}</p>
-                                                    <p><strong>Xuất xứ:</strong> ${sp.xuatXu}</p>
-                                                    <p><strong>Thương hiệu:</strong> ${sp.thuongHieu.ten}</p>
-                                                    <p><strong>Danh mục:</strong> ${sp.danhMuc.tenDanhMuc}</p>
-                                                    <p><strong>Mô tả:</strong> ${sp.moTa}</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!-- Hiển thị ảnh sản phẩm -->
-                                                <div class="product-image text-center">
-                                                    <img src="${sp.anh}" alt="${sanPham.tenSanPham}"
-                                                         class="img-fluid rounded">
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <table class="table table-hover table-striped mb-5">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">TÊN SẢN PHẨM</th>
+                                                <th scope="col">DANH MỤC</th>
+                                                <th scope="col">THƯƠNG HIỆU</th>
+                                                <th scope="col">MÀU SẮC</th>
+                                                <th scope="col">SỐ LƯỢNG</th>
+                                                <th scope="col">ĐƠN GIÁ</th>
+                                                <th scope="col">THÀNH TIỀN</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${hd.value}" var="cthd" varStatus="j">
+                                                <tr>
+                                                    <th scope="col">${j.index + 1}</th>
+                                                    <td>${cthd.chiTietSanPham.sanPham.tenSanPham}</td>
+                                                    <td>${cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc}</td>
+                                                    <td>${cthd.chiTietSanPham.sanPham.thuongHieu.ten}</td>
+                                                    <td>${cthd.chiTietSanPham.mauSac.tenMauSac}</td>
+                                                    <td>${cthd.soLuong}</td>
+                                                    <fmt:formatNumber pattern="#,###" var="donGia" value="${cthd.gia}"></fmt:formatNumber>
+                                                    <td>${donGia}</td>
+                                                    <fmt:formatNumber pattern="#,###" var="thanhTien" value="${cthd.soLuong*cthd.gia}"></fmt:formatNumber>
+                                                    <td>${thanhTien}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Thoát</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Huỷ
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -225,12 +196,11 @@
 </div>
 
 
+</div>
+
+
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<!-- Link JavaScript của Bootstrap (cần thiết cho một số tính năng của Bootstrap) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
