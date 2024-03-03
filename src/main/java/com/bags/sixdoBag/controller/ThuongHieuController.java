@@ -1,48 +1,67 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.dto.request.ThuongHieuRequest;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
-import com.bags.sixdoBag.service.ThuongHieuService;
+import com.bags.sixdoBag.model.repository.ThuongHieuRepository;
+import com.bags.sixdoBag.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@RestController
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+@Controller
+@RequestMapping("thuong-hieu")
 @RequiredArgsConstructor
-@RequestMapping("/thuonghieu")
 public class ThuongHieuController {
-    public final ThuongHieuService thuongHieuService;
+    private final ThuongHieuService thuongHieuService;
+    private final ThuongHieuRepository thuongHieuRepository;
+    private final ThuongHieuRequest request = new ThuongHieuRequest();
+//    private ThuongHieuRequest rq = new ThuongHieuRequest();
 
     @GetMapping("")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(thuongHieuService.getThuongHieus());
+    public String getThuongHieu(Model model, @RequestParam(name = "name", required = false) String name) {
+        model.addAttribute("TH", new ThuongHieu());
+        model.addAttribute("listThuongHieu", thuongHieuService.getThuongHieus());
+        return "/quan-ly/thuong-hieu/view";
     }
 
     @PostMapping("")
-    public ResponseEntity<?> add(@RequestBody @Valid ThuongHieu th) {
-        return ResponseEntity.ok(thuongHieuService.addThuongHieu(th));
+    public String add(@Valid @ModelAttribute("TH") ThuongHieu thuongHieuRequest , BindingResult bindingResult, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            System.out.println("Lỗi");
+//        }
+        thuongHieuService.addThuongHieu(thuongHieuRequest);
+        model.addAttribute("TH", new ThuongHieu());
+        model.addAttribute("listThuongHieu", thuongHieuService.getThuongHieus());
+        return "redirect:/thuong-hieu";
+    }
+//    @GetMapping("")
+//    public String edit(
+//            @PathVariable("id") ThuongHieu thuongHieu,
+//            Model model
+//    ) {
+//        request.loadFromEntityTH(thuongHieu);
+//        model.addAttribute("th", request);
+//        model.addAttribute("action", "/thuong-hieu/update/" + thuongHieu.getId());
+//        return "quan-ly/thuong-hieu/them-thuong-hieu-modal";
+//    }
+
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id") ThuongHieu thuongHieu)
+    {
+        this.thuongHieuService.deleteThuongHieu(thuongHieu.getId());
+//        return "redirect:/thuong-hieu/view";
+        return "redirect:/thuong-hieu";
+
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@RequestBody @Valid ThuongHieu th, @PathVariable int id) {
-        return ResponseEntity.ok(thuongHieuService.editThuongHieu(id, th));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
-        return ResponseEntity.ok(thuongHieuService.deleteThuongHieu(id));
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<?>searchTenOrMa(@RequestParam String tenMa){
-        return ResponseEntity.ok(thuongHieuService.searchThuongHieu(tenMa));
-    }
 }

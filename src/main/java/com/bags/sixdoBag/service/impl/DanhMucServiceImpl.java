@@ -30,8 +30,8 @@ public class DanhMucServiceImpl implements DanhMucService {
     @Override
     public DanhMuc addDanhMuc(DanhMuc danhMuc) {
         DanhMuc dm = new DanhMuc();
-        dm.setMaDanhMuc(danhMuc.getMaDanhMuc().trim());
-        dm.setTenDanhMuc(danhMuc.getTenDanhMuc().trim());
+        dm.setMa(danhMuc.getMa().trim());
+        dm.setTen(danhMuc.getTen().trim());
         dm.setTrangThai(true);
         return danhMucRepository.save(dm);
     }
@@ -39,7 +39,7 @@ public class DanhMucServiceImpl implements DanhMucService {
     @Override
     public DanhMuc editDanhMuc(Integer idDanhMuc, DanhMuc danhMuc) {
         DanhMuc dm = getDanhMuc(idDanhMuc);
-        dm.setTenDanhMuc(danhMuc.getTenDanhMuc().trim());
+        dm.setTen(danhMuc.getTen().trim());
         danhMucRepository.save(dm);
         return dm;
     }
@@ -64,3 +64,4 @@ public class DanhMucServiceImpl implements DanhMucService {
         return danhMucs;
     }
 }
+

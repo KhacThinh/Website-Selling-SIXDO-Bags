@@ -22,17 +22,17 @@ public class DanhMuc {
     @Column(name = "id")
     private Integer id;
 
-    @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
-    @NotEmpty(message = "Mã Không Được Để Trống")
-    @Length(max = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
+//    @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
+//    @NotEmpty(message = "Mã Không Được Để Trống")
+//    @Length(max = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
     @Column(name = "ma")
-    private String maDanhMuc;
+    private String ma;
 
-    @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
-    @NotEmpty(message = "Tên Không Được Để Trống")
-    @Length(max = 300, message = "Tên Không Được Vượt Quá 300 Ký Tự")
+//    @NotBlank(message = "Tên Không Được Để Khoảng Trắng")
+//    @NotEmpty(message = "Tên Không Được Để Trống")
+//    @Length(max = 300, message = "Tên Không Được Vượt Quá 300 Ký Tự")
     @Column(name = "ten")
-    private String tenDanhMuc;
+    private String ten;
 
 
     @Column(name = "trang_thai")

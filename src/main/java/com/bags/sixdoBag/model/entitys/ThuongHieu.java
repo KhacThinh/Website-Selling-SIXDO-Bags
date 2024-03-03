@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.entitys;
 
+import com.bags.sixdoBag.model.dto.request.ThuongHieuRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -20,18 +21,24 @@ public class ThuongHieu {
     @Column(name = "id")
     private Integer id;
 
-    @NotBlank(message = "Mã không được để khoảng trắng")
-    @NotEmpty(message = "Mã không được để trống")
-    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự!")
+//    @NotBlank(message = "Mã không được để khoảng trắng")
+//    @NotEmpty(message = "Mã không được để trống")
+//    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự!")
     @Column(name = "ma")
     private String ma;
 
-    @NotBlank(message = "Mã không được để khoảng trắng")
-    @NotEmpty(message = "Mã không được để trống")
-    @Length(max = 300, message = "Mã không được vượt quá 300 ký tự!")
+//    @NotBlank(message = "Mã không được để khoảng trắng")
+//    @NotEmpty(message = "Mã không được để trống")
+//    @Length(max = 300, message = "Mã không được vượt quá 300 ký tự!")
     @Column(name = "ten")
     private String ten;
 
     @Column(name = "trang_thai")
     private Boolean trangThai;
+    public void loadFromRQTH(ThuongHieuRequest rq)
+    {
+        this.setMa(rq.getMaThuongHieu() );
+        this.setTen( rq.getTenThuongHieu() );
+        this.setTrangThai( rq.getTrangThaiTT() );
+    }
 }

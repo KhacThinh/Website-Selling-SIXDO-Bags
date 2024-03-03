@@ -6,37 +6,45 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("doi-tuong-su-dung")
 public class DoiTuongSuDungController {
 
     private final DoiTuongSuDungService doiTuongSuDungService;
 
-    @GetMapping("")
-    public ResponseEntity<?> getObject() {
-        return new ResponseEntity<>(doiTuongSuDungService.getListDoiTuongSuDung(), HttpStatus.OK);
-    }
+    private final DoiTuongSuDungService thuongHieuRepository;
+//    private ThuongHieuRequest rq = new ThuongHieuRequest();
 
-    @GetMapping("/search")
-    public ResponseEntity<?> getSearch(@RequestParam String tenMa) {
-        return new ResponseEntity<>(doiTuongSuDungService.searchDoiTuongSuDung(tenMa), HttpStatus.OK);
+    @GetMapping("")
+    public String getDoiTuong(Model model, @RequestParam(name = "name", required = false) String name) {
+        model.addAttribute("DT", new DoiTuongSuDung());
+        model.addAttribute("listDoiTuong", doiTuongSuDungService.getListDoiTuongSuDung());
+        return "/quan-ly/doi-tuong-su-dung/view";
     }
 
     @PostMapping("")
-    public ResponseEntity<?> addObject(@RequestBody @Valid DoiTuongSuDung danhMuc) {
-        return new ResponseEntity<>(doiTuongSuDungService.addDoiTuongSuDung(danhMuc), HttpStatus.OK);
+    public String add(@Valid @ModelAttribute("DT") DoiTuongSuDung doiTuongRequest , BindingResult bindingResult, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            System.out.println("Lỗi");
+//        }
+        doiTuongSuDungService.addDoiTuongSuDung(doiTuongRequest);
+        model.addAttribute("DT", new DoiTuongSuDung());
+        model.addAttribute("listDoiTuong", doiTuongSuDungService.getListDoiTuongSuDung());
+        return "redirect:/doi-tuong-su-dung";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> addObject(@PathVariable Integer id, @RequestBody @Valid DoiTuongSuDung danhMuc) {
-        return new ResponseEntity<>(doiTuongSuDungService.editDoiTuongSuDung(id, danhMuc), HttpStatus.OK);
-    }
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id") DoiTuongSuDung doiTuongSuDung)
+    {
+        this.doiTuongSuDungService.deleteDoiTuongSuDung(doiTuongSuDung.getId());
+//        return "redirect:/thuong-hieu/view";
+        return "redirect:/doi-tuong-su-dung";
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> addObject(@PathVariable Integer id) {
-        return new ResponseEntity<>(doiTuongSuDungService.deleteDoiTuongSuDung(id), HttpStatus.OK);
     }
 }
