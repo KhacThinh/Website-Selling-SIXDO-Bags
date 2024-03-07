@@ -62,7 +62,7 @@
     <div class="row">
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
+                data-bs-target="#modalAdd">
 
             <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
         </button>

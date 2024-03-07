@@ -13,23 +13,318 @@
     <title>BÁN TẠI QUẦY</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
     <style>
         /* Style the header */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
         body {
             font-family: 'Poppins', sans-serif;
             max-height: 400px;
         }
 
+        .center-content {
+            background-image: url("/src/main/resources/static/images/icon/cost.png");
+            background-size: cover; /* Hiển thị hình ảnh với kích thước bằng với kích thước của class "center-content" */
+            background-position: center; /* Canh giữa hình ảnh */
+            padding: 20px; /* Thêm padding để nội dung không sát vào cạnh */
+            text-align: center; /* Căn giữa nội dung */
+            color: black; /* Màu chữ */
+        }
+
+
+        .alert {
+            margin-bottom: 20px;
+        }
+
+        #searchResults {
+            position: absolute;
+            padding: 10px;
+            z-index: 999; /* Đảm bảo form hiển thị trên các phần tử khác */
+        }
+
+        .cartCustomer {
+            position: relative; /* Đảm bảo vị trí tương đối của form cartCustomer */
+            /* Thêm các thuộc tính CSS khác tùy thuộc vào thiết kế của bạn */
+        }
+
+
+        #resultsTable {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #ddd; /* Kẻ khung cho bảng */
+        }
+
+
+        #resultsTable th,
+        #resultsTable td {
+            padding: 10px;
+            text-align: left;
+        }
+
+
+        #resultsTable th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+
+        #resultsTable tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #resultsTable tbody tr:hover {
+            background-color: #e5e5e5;
+        }
+
+        #resultsTable tbody tr:last-child td {
+            border-bottom: none; /* Loại bỏ đường kẻ dưới của hàng cuối cùng */
+        }
+
+        #resultsTable tbody tr:first-child td,
+        #resultsTable tbody tr:last-child td {
+            border-top: none; /* Loại bỏ đường kẻ trên của hàng đầu tiên và cuối cùng */
+        }
+
+        #resultsTable tbody tr:not(:first-child) td {
+            border-top: 2px solid #ddd; /* Kẻ đường ngang giữa các hàng trừ hàng đầu tiên */
+        }
+
+        #resultsTable tbody tr:not(:last-child) td {
+            border-bottom: 2px solid #ddd; /* Kẻ đường ngang giữa các hàng trừ hàng cuối cùng */
+        }
+
+        .codeAndColor {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code,
+        .color {
+            padding: 5px;
+        }
+
+
+        .position-relative {
+            position: relative;
+        }
+
+        .clear-input-icon {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.5;
+        }
+
+        .clear-input-icon:hover {
+            opacity: 0.7;
+        }
+
+        .clear-input-icon:active {
+            opacity: 1;
+        }
+
+
+        .returnCart {
+            margin-top: 20px;
+        }
+
+        .returnCart table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px; /* Khoảng cách giữa các hàng */
+        }
+
+        .returnCart th, .returnCart td {
+            padding: 12px;
+            text-align: left;
+            border: none; /* Loại bỏ viền cho các ô */
+        }
+
+        .returnCart th {
+            background-color: #f5f5f5;
+            color: #333;
+            font-size: 16px; /* Kích thước chữ tiêu đề */
+        }
+
+        .returnCart tbody tr {
+            background-color: #fff; /* Màu nền cho các hàng */
+        }
+
+        .returnCart tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Màu nền cho các hàng chẵn */
+        }
+
+        .returnCart tbody tr:hover {
+            background-color: #f0f0f0; /* Màu nền khi di chuột qua */
+        }
+
+        .returnCart tbody td {
+            vertical-align: middle;
+            font-size: 14px; /* Kích thước chữ trong các ô */
+        }
+
+        .returnCart tbody tr:last-child td {
+            border-bottom: none; /* Loại bỏ viền dưới cho hàng cuối cùng */
+        }
+
+        .close {
+            position: absolute;
+            top: 2px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Phần tiêu đề "Giỏ Hàng" */
+        .gioHang h2 {
+            font-size: 36px; /* Kích thước chữ lớn hơn */
+            color: #333; /* Màu chữ */
+            font-weight: bold; /* Chữ đậm */
+            text-transform: uppercase; /* Chữ in hoa */
+            margin-bottom: 20px; /* Khoảng cách dưới */
+            text-align: center; /* Canh giữa */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
+        }
+
+        /* Nút "Tìm Kiếm" */
+        .buttonTimKiemSp {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .buttonTimKiemSp button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buttonTimKiemSp button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Danh sách các mục trong giỏ hàng */
+        /* Style cho container chứa danh sách sản phẩm */
+        /* Style cho mỗi mục sản phẩm */
+        .item {
+            display: flex;
+            flex-direction: row; /* Đảm bảo các phần tử con nằm hàng ngang */
+            align-items: center; /* Căn phần tử con theo chiều dọc */
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+
+
+            justify-content: space-between; /* Các phần tử được căn đều với khoảng cách giữa chúng */
+            padding: 10px;
+            align-items: center;
+            gap: 10px; /* Khoảng cách giữa các phần tử */
+            padding: 10px; /* Khoảng cách bên trong */
+        }
+
+
+        /* Style cho hình ảnh sản phẩm */
+        .item img {
+            width: 100px; /* Chiều rộng của hình ảnh */
+            height: auto;
+            border-radius: 5px;
+            margin-right: 20px; /* Khoảng cách giữa hình ảnh và thông tin sản phẩm */
+        }
+
+        /* Style cho thông tin sản phẩm */
+        .info {
+            flex-grow: 1; /* Đảm bảo thông tin sản phẩm mở rộng để điền vào phần còn trống */
+        }
+
+        /* Style cho tên sản phẩm */
+        .name {
+            font-weight: bold;
+        }
+
+        /* Style cho giá sản phẩm */
+        .price {
+            color: black;
+            font-size: 14px;
+        }
+
+        /* Style cho container chứa input số lượng */
+        .quantity {
+            flex: 1;
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Style cho input số lượng */
+        .quantityInput {
+            width: 60px;
+            padding: 10px;
+            border: none;
+            border-bottom: 2px solid #ff0000; /* Dấu gạch chân màu đỏ */
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+
+            box-shadow: 0 0.5px 0.5px rgba(260, 0, 0, 1); /* Box-shadow cho viền màu đỏ */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi focus */
+            position: relative; /* Đảm bảo độ z-index */
+        }
+
+        .returnPriceCart {
+            font-family: Arial, sans-serif; /* Thay thế "Arial" bằng bất kỳ phông chữ nào bạn muốn sử dụng */
+            font-size: 14px; /* Kích thước phông chữ */
+            font-weight: bold; /* Độ đậm của phông chữ */
+            color: #333; /* Màu chữ */
+            /* Thêm bất kỳ quy tắc CSS nào khác mà bạn muốn áp dụng */
+        }
+
+
+        /* Style cho nút xóa */
+        .deleteButton {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Style cho giá trị trả lại trong giỏ hàng */
+        .returnPriceCart {
+            margin-top: 10px;
+            font-weight: bold;
+            color: red;
+        }
+
+
+        .info-panel.cartCustomer {
+            display: flex;
+            flex-direction: column; /* Xếp theo chiều dọc */
+            height: 92vh; /* Chiều cao 100% của màn hình */
+        }
+
+        .gioHang {
+            flex: 1; /* Phần này sẽ mở rộng để lấp đầy khoảng trống còn lại */
+            overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá chiều cao */
+        }
+
+
         .notifications {
             position: fixed;
             top: 60px;
             right: 6px;
             z-index: 10000;
-
         }
 
         .toast {
@@ -44,7 +339,6 @@
             --color: #0abf30;
             background-image: linear-gradient(to right, #0abf3055, #22242f 30%);
             animation: show 0.3s ease 1 forwards
-
         }
 
         .toast i {
@@ -70,15 +364,12 @@
             0% {
                 transform: translateX(100%);
             }
-
             40% {
                 transform: translateX(-5%);
             }
-
             80% {
                 transform: translateX(0%);
             }
-
             100% {
                 transform: translateX(-10%);
             }
@@ -123,6 +414,7 @@
         }
 
         /* Style the search bar */
+
         .search-bar {
             display: flex;
             align-items: center;
@@ -132,6 +424,7 @@
             padding: 10px;
             border-radius: 5px;
             border: none;
+            margin-left: 20px;
             width: 240px;
         }
 
@@ -145,6 +438,7 @@
         }
 
         /* Style the tab buttons */
+
         .tab {
             display: flex;
             align-items: center;
@@ -161,31 +455,29 @@
             font-size: 15px;
         }
 
-
         .tab button:not(.active) {
             background-color: #3498db;
             color: white;
         }
 
         /* Style the information panel */
+
         .container {
             display: grid;
-            grid-template-columns: 1.5fr 1.2fr 1.1fr;
+            grid-template-columns: 3fr 1fr;
             /* 2/5, 1/5, 1/5 */
             gap: 20px;
-            margin-top: 50px;
+            margin-top: 25px;
             /* Height of the header */
-            padding: 10px;
             height: 621px;
-
         }
-
 
         .info-panel {
             background-color: #f9f9f9;
             padding: 10px;
             border-radius: 8px;
-
+            position: relative;
+            height: 800px;
         }
 
         .info-panel input[type="text"] {
@@ -215,6 +507,7 @@
         }
 
         /* Style the shopping cart */
+
         .cart {
             background-color: #f9f9f9;
             padding: 14px;
@@ -258,7 +551,6 @@
             width: 70px;
             padding: 8px;
             border-radius: 12px;
-
         }
 
         .returnCart .list .item {
@@ -289,15 +581,22 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-left: 10px; /* Khoảng cách giữa nút Add và thông tin sản phẩm */
+            margin-left: 10px;
+            /* Khoảng cách giữa nút Add và thông tin sản phẩm */
+        }
+
+        #resultsTable tbody tr {
+            background-color: #ffffff; /* Màu nền cho các hàng trong bảng */
         }
 
         /* Khi hover vào tab */
+
         .tab button:hover {
             background-color: #4584c0;
         }
 
         /* Khi tab active và hover */
+
         .tab button.active:hover {
             background-color: #4584c0;
         }
@@ -316,9 +615,7 @@
             transition: all 0.3s ease;
             position: relative;
             display: inline-block;
-            box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
-            7px 7px 20px 0px rgba(0, 0, 0, .1),
-            4px 4px 5px 0px rgba(0, 0, 0, .1);
+            box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5), 7px 7px 20px 0px rgba(0, 0, 0, .1), 4px 4px 5px 0px rgba(0, 0, 0, .1);
             outline: none;
         }
 
@@ -326,7 +623,6 @@
             background: rgb(22, 9, 240);
             background: linear-gradient(0deg, rgba(22, 9, 240, 1) 0%, rgba(49, 110, 244, 1) 100%);
             border: none;
-
         }
 
         .btn-2:before {
@@ -352,14 +648,16 @@
 
         .cartCustomer {
             overflow-y: auto;
-            /* Enable vertical scrollbar */
-            max-height: 621px;
+
         }
 
         .closeButtonTab {
-            float: right; /* Đặt phần tử vào góc phải của button */
-            margin-left: 10px; /* Tạo khoảng cách giữa nút và dấu x */
-            cursor: pointer; /* Biến con trỏ thành dấu nhấp chuột khi di chuột qua */
+            float: right;
+            /* Đặt phần tử vào góc phải của button */
+            margin-left: 10px;
+            /* Tạo khoảng cách giữa nút và dấu x */
+            cursor: pointer;
+            /* Biến con trỏ thành dấu nhấp chuột khi di chuột qua */
             padding: 0px 4px;
             border-radius: 18px;
             font-size: 15px;
@@ -369,22 +667,261 @@
             background-color: #d8d8da;
         }
 
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* modal tìm kiếm */
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            /* Adjust the width as needed */
+            max-width: 800px;
+            /* Set a maximum width if necessary */
+            height: 80%;
+            /* Adjust the height as needed */
+            max-height: 600px;
+            /* Set a maximum height if necessary */
+            overflow-y: auto;
+            /* Enable vertical scrolling if content exceeds the height */
+            background-color: #fff;
+            /* Set the background color */
+            padding: 20px;
+            /* Add padding for better appearance */
+            border-radius: 8px;
+            /* Add rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            /* Add a subtle shadow */
+            z-index: 1000;
+
+
+        /* Set a high z-index to overlay other elements *
+    }
+    /* Style for the overlay */
+
+        /* Style for the close button in the modal */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        /* Style for the search form */
+        .search-form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .search-form input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-form button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Style for the filter options */
+        .filter-options {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Style for the table */
+        .data-table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Flex Container for Filter Bar */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Filter Form */
+        .filter-form {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style for Filter Selects */
+        .filter-group {
+            margin-right: 10px;
+        }
+
+        .filter-select {
+            padding: 8px;
+            width: 200px; /* Adjust the width as needed */
+        }
+
+        .filter-btn {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            background-color: #45a049;
+        }
+
+
+        .buttonTimKiem {
+            text-align: justify; /* Canh lề nút tìm kiếm */
+            margin-top: 70px; /* Khoảng cách từ đỉnh trang */
+        }
+
+        .info-panel cartCustomer {
+            position: fixed; /* Đặt vị trí cố định */
+            top: 0; /* Hiển thị ở đỉnh trang */
+            left: 0; /* Hiển thị ở bên trái của trang */
+            width: 100%; /* Chiều rộng 100% */
+            background-color: #f2f2f2; /* Màu nền của header */
+            padding: 10px; /* Padding tùy chỉnh */
+            z-index: 1000; /* Đảm bảo hiển thị trên cùng */
+
+        }
+
+
+        .btnAdd {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .btnAdd svg {
+            width: 24px;
+            height: 24px;
+            fill: #007bff; /* Màu của biểu tượng */
+        }
+
+        .btnAdd:hover svg {
+            fill: #0056b3; /* Màu khi di chuột qua */
+        }
+
+        #searchResults {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 999; /* Đảm bảo form hiển thị trên các phần tử khác */
+        }
+
+        .cartCustomer {
+            position: relative; /* Đảm bảo vị trí tương đối của form cartCustomer */
+            /* Thêm các thuộc tính CSS khác tùy thuộc vào thiết kế của bạn */
+        }
+
+
     </style>
+    <%--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">--%>
 </head>
 
 <body>
 
+
 <div class="header">
     <div class="search-bar">
 
-        <form action="/ban-tai-quay" method="get" class="d-flex">
-            <input type="text" name="name" value="${nameSearch}" class="form-control form-control-sm me-2"
+        <div class="position-relative">
+            <input type="text" id="searchInput" class="form-control form-control-sm me-2"
                    placeholder="Tìm kiếm mã, tên, màu">
-            <button type="submit" class="btn btn-primary" style="height: 36px;  padding: 5px 8px; margin-right: 35px">
-                Search
-            </button>
+            <span class="clear-input-icon">&#10006;</span>
 
-        </form>
+        </div>
+
+        <%--        Search--%>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // Xóa dữ liệu khi click vào icon
+                $('.clear-input-icon').on('click', function () {
+                    $('#searchInput').val(''); // Xóa dữ liệu trong input
+                    $('#resultsTable tbody').empty(); // Xóa cả dữ liệu trong ô hiển thị
+                });
+
+                $('#searchInput').keyup(function () {
+                    var query = $(this).val();
+                    if (query === '') {
+                        $('#resultsTable tbody').empty();
+                        return;
+                    }
+                    $.ajax({
+                        url: '/ban-tai-quay/searchModal',
+                        method: 'POST',
+                        data: {keyword: query},
+                        success: function (response) {
+                            // Xóa nội dung kết quả cũ
+                            $('#resultsTable tbody').empty();
+                            if (response.length === 0) {
+                                var noResultRow = "<tr id='noResultRow'><td colspan='4'>Không tìm thấy sản phẩm...</td></tr>";
+                                $('#resultsTable tbody').append(noResultRow);
+                            } else {
+                                $.each(response, function (index, item) {
+                                    var row = "<tr class='searchSp' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "' data-product-price='" + item.giaBan + "'>";
+                                    row += "<td>";
+                                    row += "<div class='codeAndColor'>";
+                                    row += "<div class='code'>" + item.ma + "</div>";
+                                    row += "<div class='color'>" + item.mauSac.tenMauSac + "</div>";
+                                    row += "</div>";
+                                    row += "</td>";
+                                    row += "<td>" + item.sanPham.tenSanPham + "</td>";
+                                    row += "<td>" + item.soLuong + "</td>";
+                                    row += "<td class='price'>" + formatCurrency(item.giaBan) + "</td>";
+                                    row += "</tr>";
+                                    $("#resultsTable").append(row);
+                                });
+                            }
+                        }
+                    });
+                });
+
+                $('#resultsTable').click(function (event) {
+                    formClicked = true;
+                    event.stopPropagation(); // Cái này dường như là lỗi chính tả, có lẽ bạn muốn xoá nó đi
+                });
+            });
+
+        </script>
+
+
         <div class="tab">
             <c:forEach var="o" items="${tabs}" varStatus="loop">
                 <button class="tablinks active tab1" style="padding-right: 8px" id="${o.maHoaDon}"
@@ -396,6 +933,7 @@
 
             <button class="tablinks add" onclick="addTab()">+</button>
         </div>
+
     </div>
 
 
@@ -404,75 +942,140 @@
 
 <!-- Information Panel -->
 
-<div class="notifications"></div>
-
+<div class="notifications">
+</div>
 <div class="container">
-    <!-- Left column -->
-    <div class="info-panel cart">
-        <div class="filter-bar" style="z-index: 100 ; display: flex ; margin-bottom: 20px ">
-            <form action="/ban-tai-quay/filter" method="post">
-                <select name="chatLieu" style="width: 127px ; font-weight: bold ">
-                    <option value="">Chọn chất liệu</option>
-                    <c:forEach var="chatLieuItem" items="${chatLieus}">
-                        <option value="${chatLieuItem}" ${chatLieu eq chatLieuItem ? 'selected' : ''}>${chatLieuItem}</option>
-                    </c:forEach>
-                </select>
-                <select name="doiTuongSuDung" style="width: 190px;font-weight: bold ">
-                    <option value="">Chọn đối tượng sử dụng</option>
-                    <c:forEach var="doiTuongSuDungItem" items="${doiTuongSuDungs}">
-                        <option value="${doiTuongSuDungItem}" ${doiTuongSuDung eq doiTuongSuDungItem ? 'selected' : ''}>${doiTuongSuDungItem}</option>
-                    </c:forEach>
-                </select>
-                <select name="mauSac" style="width: 127px;font-weight: bold ">
-                    <option value="">Chọn màu sắc</option>
-                    <c:forEach var="mauSacItem" items="${mauSacs}">
-                        <option value="${mauSacItem}" ${mauSac eq mauSacItem ? 'selected' : ''}>${mauSacItem}</option>
-                    </c:forEach>
-                </select>
-
-                <button type="submit" style="height: 25px; padding: 5px 9px ; margin-left: 23px">Lọc</button>
-            </form>
-        </div>
-        <div class="returnCart">
-
-            <div class="list">
-                <c:forEach var="o" items="${listSp}" varStatus="loop">
-                    <div class="item" style="width: 515px">
-                        <span class="idChiTietSanPham" style="display: none">${o.id}</span>
-                        <img src="img/ok.jpg">
-                        <div class="info">
-                            <div class="name"> ${o.sanPham.tenSanPham} </div>
-                            <div class="price"> ${o.mauSac.tenMauSac}</div>
-                        </div>
-                        <div class="quantity"> ${o.soLuong}</div>
-                        <div class="returnPrice"> ${o.giaBan} </div>
-                        <button class="btnAdd" onclick="addToCart(this,${o.giaBan} )" data-product-id="${o.id}">Add
-                        </button>
-
-                    </div>
-
-                </c:forEach>
-
-            </div>
-        </div>
-    </div>
 
     <!-- Middle column -->
     <div class="info-panel cartCustomer">
-        <div class="returnCart">
+        <div id="searchResults" class="position-absolute start-0">
+            <table id="resultsTable" class="table">
+                <tbody>
+
+                <!-- Bảng kết quả sẽ được cập nhật ở đây -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span class="close"></span>
+                <h2>Tìm Kiếm Sản Phẩm</h2>
+
+                <div class="search-form" id="searchForm">
+                    <input type="text" name="name" id="searchInput" value="${nameSearch}" class="form-control"
+                           placeholder="Tìm kiếm mã, tên, màu">
+                    <button type="button" id="searchButton" class="btn btn-primary">Tìm Kiếm</button>
+                </div>
+
+                <div class="filter-bar">
+                    <form action="/ban-tai-quay/filter" method="post" class="filter-form">
+                        <div class="filter-group">
+                            <select name="chatLieu" class="filter-select">
+                                <option value="">Chọn chất liệu</option>
+                                <c:forEach var="chatLieuItem" items="${chatLieus}">
+                                    <option value="${chatLieuItem}" ${chatLieu eq chatLieuItem ? 'selected' : ''}>${chatLieuItem}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select name="doiTuongSuDung" class="filter-select">
+                                <option value="">Chọn đối tượng sử dụng</option>
+                                <c:forEach var="doiTuongSuDungItem" items="${doiTuongSuDungs}">
+                                    <option value="${doiTuongSuDungItem}" ${doiTuongSuDung eq doiTuongSuDungItem ? 'selected' : ''}>${doiTuongSuDungItem}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select name="mauSac" class="filter-select">
+                                <option value="">Chọn màu sắc</option>
+                                <c:forEach var="mauSacItem" items="${mauSacs}">
+                                    <option value="${mauSacItem}" ${mauSac eq mauSacItem ? 'selected' : ''}>${mauSacItem}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <button type="submit" class="filter-btn">Lọc</button>
+                    </form>
+                </div>
+
+                <div class="returnCart">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Màu Sắc</th>
+                            <th>Số lượng</th>
+                            <th>Giá Bán</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cartBody">
+                        <!-- Dữ liệu từ Ajax sẽ được hiển thị ở đây -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay"></div>
+
+        <script>
+
+
+            // JavaScript functions to open and close the modal
+            function openModal() {
+                document.getElementById('myModal').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            }
+
+
+            function closeModal() {
+                document.getElementById('myModal').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            }
+
+            // Close the modal if the overlay is clicked
+            document.getElementById('overlay').addEventListener('click', closeModal);
+
+            // Function to handle the search form submission
+            function submitSearch() {
+                // Add your search logic here
+                // For now, you can simply alert the search query
+                var searchQuery = document.querySelector('.search-form input').value;
+                alert('Search query: ' + searchQuery);
+            }
+
+            // Function to handle filter application
+            function applyFilters() {
+                // Add your filter logic here
+// For now, you can simply alert the selected category
+                var selectedCategory = document.getElementById('filterCategory').value;
+                alert('Filter applied for category: ' + selectedCategory);
+            }
+        </script>
+
+        <div class="gioHang">
+
+            <h2>Giỏ Hàng</h2>
             <div class="list gioHangTaiQuay">
                 <c:forEach var="o" items="${listGioHang}" varStatus="loop">
-                    <div class="item">
+                    <div class="itemGioHang">
                         <img src="img/ok.jpg">
                         <div class="info">
                             <div class="name">${o.chiTietSanPham.sanPham.tenSanPham}</div>
                             <div class="price">${o.chiTietSanPham.mauSac.tenMauSac}</div>
                         </div>
+                        `1xc-8
                         <div class="quantity">
-                            <input type="number" class="quantityInput" value="${o.soLuong}"
-                                   min="1">
+                            <input type="number" class="quantityInput" value="${o.soLuong}" min="1">
                         </div>
-                        <div class="returnPriceCart">${o.chiTietSanPham.giaBan * o.soLuong}</div>
+                        <fmt:formatNumber pattern="#,###" var="tongTien"
+                                          value="${o.chiTietSanPham.giaBan * o.soLuong}"></fmt:formatNumber>
+                        <div class="returnPriceCart"> ${tongTien}</div>
                     </div>
                 </c:forEach>
             </div>
@@ -484,12 +1087,106 @@
     <div class="info-panel thanh-toan">
         <h2>Thông tin đơn hàng</h2>
         <div>
-            <input type="text" id="tenKhachHang" placeholder="Tên khách hàng">
             <input type="text" id="soDienThoai" placeholder="Số điện thoại">
+            <span id="soDienThoaiError" class="error" style="color: red;font-size: small"></span><br>
+            <input type="text" id="tenKhachHang" placeholder="Tên khách hàng">
+            <span id="tenKhachHangError" style="color: red;font-size: small" class="error"></span><br>
+            <button id="addCustomerBtn">Thêm</button>
         </div>
-        <div>
-            <p>Tổng Tiền Hàng : <span id="totalOrder" class="total_order"></span></p>
-        </div>
+
+        <style>
+            #addCustomerBtn {
+                background-color: #007bff; /* Màu nền */
+                color: #fff; /* Màu chữ */
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-bottom: 15px;
+            }
+
+            #addCustomerBtn:hover {
+                background-color: #0056b3; /* Màu nền khi di chuột qua */
+            }
+        </style>
+
+        <%--         validate and add KH--%>
+        <script>
+            $(document).ready(function () {
+                $("#addCustomerBtn").click(function () {
+                    // Lấy giá trị của số điện thoại và tên khách hàng từ input
+                    var soDienThoai = $("#soDienThoai").val().trim();
+                    var tenKhachHang = $("#tenKhachHang").val().trim();
+
+                    // Xóa các thông báo lỗi trước đó
+                    $("#soDienThoaiError").text("");
+                    $("#tenKhachHangError").text("");
+
+                    // Kiểm tra xem các trường có rỗng không
+                    if (soDienThoai === "") {
+                        $("#soDienThoaiError").text("Vui lòng nhập số điện thoại.").addClass("error-message");
+                        return;
+                    }
+
+                    if (tenKhachHang === "") {
+                        $("#tenKhachHangError").text("Vui lòng nhập tên khách hàng.").addClass("error-message");
+                        return;
+                    }
+
+                    // Kiểm tra xem số điện thoại có đúng định dạng không (chỉ chứa số và có đúng 10 kí tự không)
+                    var phoneNumberPattern = /^\d{10}$/;
+                    if (!phoneNumberPattern.test(soDienThoai)) {
+                        $("#soDienThoaiError").text("Số điện thoại phải có 10 chữ số và chỉ chứa số.").addClass("error-message");
+                        return;
+                    }
+
+                    // Nếu tất cả các điều kiện đều được thỏa mãn, thực hiện thêm khách hàng
+                    $.ajax({
+                        type: "POST",
+                        url: "/ban-tai-quay/themKhachHang",
+                        data: {
+                            soDienThoai: soDienThoai,
+                            tenKhachHang: tenKhachHang
+                        },
+                        success: function (response) {
+                            if (response === "success") {
+                                alert("Thêm khách hàng thành công!");
+
+                            } else {
+                                alert("Khách hàng đã tồn tại!");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Đã xảy ra lỗi: " + error);
+                            console.log(xhr.responseText);
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+        <%--  tìm Kiếm Kh--%>
+        <script>
+            $(document).ready(function () {
+                $('#soDienThoai').on('change', function () {
+                    var soDienThoai = $(this).val();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/ban-tai-quay/kiemTraKhachHang',
+                        data: {soDienThoai: soDienThoai},
+                        success: function (response) {
+                            $('#tenKhachHang').val(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                });
+            });
+
+        </script>
+
         <div>
             <select name="discountCode" id="discountCode">
                 <option value="">Chọn mã giảm giá</option>
@@ -498,14 +1195,43 @@
                 <option value="code3">Mã giảm giá 3</option>
             </select>
         </div>
+        <div>
+            <p>Số lượng sản phẩm: <span id="totalQuantity"></span></p>
+        </div>
+
+<%--        fill số lượng--%>
+        <script>
+            function fillSoLuong() {
+                var totalQuantity = 0;
+                var listItemsArray = Array.from(document.querySelectorAll('.item'));
+
+                listItemsArray.forEach(function(item) {
+                    var quantityInput = item.querySelector('.quantityInput');
+                    totalQuantity += parseInt(quantityInput.value);
+                });
+
+                document.getElementById('totalQuantity').innerText = totalQuantity;
+            }
+        </script>
+
+        <div>
+            <p>Tổng Tiền Hàng : <span id="totalOrder" class="total_order"></span></p>
+        </div>
+
         <button class="custom-btn btn-2 checkout" onclick="checkout()">THANH TOÁN</button>
     </div>
 </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
 <script>
     var tabActive = "";
     var listDataGioHang;
-
 
 
     function closeTabs(idTabs) {
@@ -516,7 +1242,9 @@
                 url: '/ban-tai-quay/xoa-hoa-don',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({maHoaDon: idTabs}), // Gửi maHoaDon của tab
+                data: JSON.stringify({
+                    maHoaDon: idTabs
+                }), // Gửi maHoaDon của tab
                 success: function (response) {
                     tabActive = "";
                     $('.gioHangTaiQuay').empty();
@@ -543,11 +1271,9 @@
         var updateGiaSanPham = document.querySelector('.returnPriceCart' + idTemp);
 
         if (soLuong > soLuongSanPhamKho) {
-            updateGiaSanPham.textContent = giaBan;
+            updateGiaSanPham.textContent = formatCurrency(giaBan);
             updateTotalPrice();
-
             errorAdd('Số lượng sản phẩm không đủ');
-
             $('.quantityInput').val(1);
             return;
         } else {
@@ -564,9 +1290,9 @@
 
                 success: function (ok) {
                     let sum = giaBan * soLuong;
-                    updateGiaSanPham.textContent = sum;
-                    var sumTotal = document.querySelector('.total_order');
+                    updateGiaSanPham.textContent = formatCurrency(sum); // Định dạng giá tiền sau khi cập nhật
                     updateTotalPrice();
+                    fillSoLuong();
                 },
                 error: function (error) {
                     console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
@@ -581,6 +1307,11 @@
         if (tabActive == "") {
             errorAdd('Vui lòng chọn hóa đơn trước');
         } else {
+            if (checkExistingProduct(productId)) {
+                // Nếu sản phẩm đã tồn tại trong giỏ hàng, hiển thị alert và không thêm vào giỏ hàng
+                alert('Sản phẩm đã có trong giỏ hàng.');
+                return;
+            }
 
             // Gửi id sản phẩm lên backend thông qua AJAX
             $.ajax({
@@ -590,7 +1321,8 @@
                 data: JSON.stringify({
                     productId: productId,
                     tabActive: tabActive,
-                    giaBan: giaBan
+                    giaBan: giaBan,
+
                 }),
                 success: function (response) {
                     // Xử lý phản hồi từ backend nếu cần
@@ -598,11 +1330,14 @@
                         url: '/ban-tai-quay/get-gio-hang',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({maHoaDon: tabActive}), // Gửi maHoaDon của tab
+                        data: JSON.stringify({
+                            maHoaDon: tabActive
+                        }), // Gửi maHoaDon của tab
                         success: function (ok) {
                             updateProductList(ok);
                             updateTotalPrice();
 
+                            fillSoLuong();
                             // Xử lý kết quả trả về (danh sách sản phẩm)
                             console.log("Danh sách sản phẩm của tab " + tabActive + ":", ok);
                             // Cập nhật giao diện người dùng với danh sách sản phẩm mới
@@ -623,6 +1358,26 @@
 
         }
     }
+
+    // check sp trong giỏ hàng
+
+    function checkExistingProduct(productId) {
+        var listItemsArray = Array.from(document.querySelectorAll('.item'));
+        console.log(listItemsArray);
+        for (var i = 0; i < listItemsArray.length; i++) {
+            // Lấy id sản phẩm của từng sản phẩm trong danh sách
+            var idCtspElement = listItemsArray[i].querySelector('.idCtsp');
+            var idCtspValue = idCtspElement.textContent;
+            console.log(idCtspValue);
+            console.log(productId);
+
+            if (idCtspValue === productId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
@@ -648,15 +1403,15 @@
                 url: '/ban-tai-quay/get-gio-hang',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({maHoaDon: tabName}), // Gửi maHoaDon của tab
+                data: JSON.stringify({
+                    maHoaDon: tabName
+                }), // Gửi maHoaDon của tab
                 success: function (response) {
                     updateProductList(response);
                     updateTotalPrice();
-                    // Xử lý kết quả trả về (danh sách sản phẩm)
                     console.log("Danh sách sản phẩm của tab " + tabName + ":", response);
-                    // Cập nhật giao diện người dùng với danh sách sản phẩm mới
-                    // listDataGioHang = response;
-                },
+                    fillSoLuong();
+                    },
                 error: function (error) {
                     console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
                 }
@@ -674,23 +1429,75 @@
         var gioHangTaiQuayElement = document.querySelector('.gioHangTaiQuay');
         gioHangTaiQuayElement.innerHTML = '';
 
+        // check GioHang Null
+        if (products.length === 0) {
+            gioHangTaiQuayElement.innerHTML =
+                '<div class="center-content">' +
+                '<div class="alert alert-warning" role="alert">Đơn hàng của bạn chưa có sản phẩm nào.</div>' +
+                '<button class="btn btn-primary" onclick="openModal()">Thêm sản phẩm ngay</button>' +
+                '</div>';
+            return; // Thoát khỏi hàm nếu giỏ hàng rỗng
+        }
         // Thêm danh sách sản phẩm mới vào giao diện người dùng
         products.forEach(function (product) {
-            var productHTML = '<div class="item">' +
-                '<img src="ok">' +
-                '<div class="info">' +
-                '<div class="name">' + product.chiTietSanPham.sanPham.tenSanPham + '</div>' +
-                '<div class="price">' + product.chiTietSanPham.mauSac.tenMauSac + '</div>' +
-                '</div>' +
-                '<div class="quantity">' +
-                '<input type="number" style="width: 35px ; border: none ; font-size: 15px;background-color: #f9f9f9" class="quantityInput"  onchange="updateSoLuong(' + product.chiTietSanPham.id + ',this.value,' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')" value="' + product.soLuong + '" min="1">' +
-                '</div>' +
+                const price = product.chiTietSanPham.giaBan * product.soLuong;
+                const formattedPrice = price.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                var productHTML = '<div class="item">' +
+                    '<div class= "idCtsp" hidden>' + product.chiTietSanPham.id + '</div>' +
 
-                '<div class="returnPriceCart returnPriceCart' + product.chiTietSanPham.id + '">' + product.chiTietSanPham.giaBan * product.soLuong + '</div>' +
-                '</div>';
-            gioHangTaiQuayElement.insertAdjacentHTML('beforeend', productHTML);
-        });
+                    '<div class="maSp">' + product.chiTietSanPham.ma + '</div>' +
+                    '<img src="ok">' +
 
+                    '<div class="info">' +
+                    '<div class="name">' + product.chiTietSanPham.sanPham.tenSanPham + '</div>' +
+                    '<div class="price">' + product.chiTietSanPham.mauSac.tenMauSac + '</div>' +
+                    '</div>' +
+                    '<div class="quantity">' +
+                    '<input type="number" style="width: 35px ; border: none ; font-size: 15px;background-color: #f9f9f9" class="quantityInput" onchange="updateSoLuong(' + product.chiTietSanPham.id + ',this.value,' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')" value="' + product.soLuong + '" min="1">' +
+                    '</div>' +
+
+                    '<div class="returnPriceCart returnPriceCart' + product.chiTietSanPham.id + '">' + formattedPrice + '</div>' +
+                    '<div>' +
+                    // Thêm nút xóa với sự kiện onclick và truyền đối số event
+                    '<button class="deleteButton" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3"></i></button>' +
+                    '</div>';
+                gioHangTaiQuayElement.insertAdjacentHTML('beforeend', productHTML);
+            }
+        );
+    }
+
+
+    // Xóa Sp trong giỏ hàng
+    function deleteProduct(productId, event) {
+        console.log(productId);
+        var confirmation = confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?");
+        if (confirmation) {
+            // Ngăn chặn hành vi mặc định của nút xóa (chẳng hạn chuyển trang)
+            event.stopPropagation();
+
+            $.ajax({
+                url: '/ban-tai-quay/xoa-san-pham-gio-hang',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    maHoaDon: tabActive, // Gửi mã hóa đơn hiện tại
+                    id: productId // Gửi ID sản phẩm cần xóa
+                }),
+                success: function (response) {
+                    // Xóa sản phẩm khỏi danh sách sản phẩm trong giao diện người dùng
+                    var productElement = event.target.closest('.item');
+                    productElement.remove();
+
+                    updateTotalPrice();
+                    fillSoLuong();
+
+                    console.log("Đã xóa sản phẩm khỏi giỏ hàng:", productId);
+                },
+                error: function (error) {
+                    console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error);
+                }
+            });
+        }
     }
 
 
@@ -719,7 +1526,9 @@
                     $('.tab').append(newAddTabs);
 
                     // Khôi phục trạng thái của tab đang chọn sau khi thêm tab mới
-                    openTab({currentTarget: document.getElementById(activeTabId)}, activeTabId);
+                    openTab({
+                        currentTarget: document.getElementById(activeTabId)
+                    }, activeTabId);
                 },
                 error: function (error) {
                     console.error(error);
@@ -728,9 +1537,6 @@
             });
         }
     }
-
-
-
 
 
     let notifications = document.querySelector('.notifications');
@@ -777,7 +1583,9 @@
         var returnPrices = document.querySelectorAll('.returnPriceCart');
 
         returnPrices.forEach(function (returnPriceElement) {
-            totalPrice += parseFloat(returnPriceElement.textContent);
+            // Loại bỏ dấu chấm trong giá tiền trước khi chuyển đổi thành số
+            var price = parseFloat(returnPriceElement.textContent.replace(/\./g, '').replace(/[^\d.-]/g, ''));
+            totalPrice += price;
         });
 
         var totalPriceInput = document.querySelector('.total_order');
@@ -786,13 +1594,18 @@
     }
 
     function formatCurrency(number) {
-        return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(number);
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(number);
     }
 
 
     function checkout() {
-        var tenKhachHang = document.querySelector(".thanh-toan input:nth-child(1)").value;
-        var soDienThoai = document.querySelector(".thanh-toan input:nth-child(2)").value;
+        // var tenKhachHang = document.querySelector(".thanh-toan input:nth-child(1)").value;
+        // var soDienThoai = document.querySelector(".thanh-toan input:nth-child(2)").value;
+        var soDienThoai = document.querySelector("#soDienThoai").value;
+        var tenKhachHang = document.querySelector("#tenKhachHang").value;
 
         var tongGiaTri = updateTotalPrice();
         console.log("tong " + tongGiaTri)
@@ -805,8 +1618,9 @@
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    tenKhachHang: tenKhachHang,
+
                     soDienThoai: soDienThoai,
+                    tenKhachHang: tenKhachHang,
                     tongGiaTri: tongGiaTri,
                     maHoaDon: tabActive
                 }),
@@ -840,10 +1654,122 @@
             });
         }
     }
+</script>
+
+<%--Lọc Modal--%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".filter-form").submit(function (event) {
+            // Ngăn chặn hành vi mặc định của biểu mẫu
+            event.preventDefault();
+
+            // Lấy dữ liệu từ các trường lọc
+            var formData = {
+                chatLieu: $("select[name='chatLieu']").val(),
+                doiTuongSuDung: $("select[name='doiTuongSuDung']").val(),
+                mauSac: $("select[name='mauSac']").val()
+            };
+
+            // Gửi yêu cầu AJAX POST đến URL /ban-tai-quay/filter
+            $.ajax({
+                type: "POST",
+                url: "/ban-tai-quay/filter",
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                    $("#cartBody").empty();
+
+                    // Duyệt qua dữ liệu trả về và thêm vào bảng
+                    //     $.each(response, function(index, item) {
+                    //         var row = "<tr >";
+                    //         row += "<td>" + item.ma + "</td>";
+                    //         row += "<td>" + item.sanPham.tenSanPham + "</td>";
+                    //         row += "<td>" + item.mauSac.tenMauSac + "</td>";
+                    //         row += "<td>" + item.soLuong + "</td>";
+                    //         row += "<td>" + formatCurrency(item.giaBan) + "</td>";
+                    //
+                    //         // Thêm button vào cột cuối cùng của hàng
+                    //         row += "<td><button class='btnAdd' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "'>";
+                    //         row += "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle' viewBox='0 0 16 16'>";
+                    //         row += "<path fill-rule='evenodd' d='M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm.5-9a.5.5 0 0 1 0 1H11a.5.5 0 0 1 0 1H8.5v2a.5.5 0 0 1-1 0V8H5a.5.5 0 0 1 0-1h2.5V5a.5.5 0 0 1 1 0v2h2.5z'/>";
+                    //         row += "</svg>";
+                    //         row += "</button></td>";
+                    //
+                    //         row += "</tr>";
+                    //         $("#cartBody").append(row);
+                    //     });
+                    //
+                    // },
+                    $.each(response, function (index, item) {
+                        var row = "<tr class='cartItem' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "' data-product-price='" + item.giaBan + "'>";
+                        row += "<td>" + item.ma + "</td>";
+                        row += "<td>" + item.sanPham.tenSanPham + "</td>";
+                        row += "<td>" + item.mauSac.tenMauSac + "</td>";
+                        row += "<td>" + item.soLuong + "</td>";
+                        row += "<td class='price'>" + formatCurrency(item.giaBan) + "</td>";
+                        row += "</tr>";
+                        $("#cartBody").append(row);
+                    });
+                },
+
+                error: function (xhr, status, error) {
+                    alert("Đã xảy ra lỗi: " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+
+        });
+    });
 
 
 </script>
 
+<%--Search Modal--%>
+
+<script>
+    $(document).ready(function () {
+        $('#searchButton').click(function () {
+            var searchData = $('#searchInput').val();
+            $.ajax({
+                type: 'post',
+                url: '/ban-tai-quay/search',
+                data: {name: searchData},
+                success: function (response) {
+                    console.log(response);
+                    $("#cartBody").empty();
+
+                    // Duyệt qua dữ liệu trả về và thêm vào bảng
+                    $.each(response, function (index, item) {
+                        var row = "<tr>";
+                        row += "<td>" + item.ma + "</td>";
+                        row += "<td>" + item.sanPham.tenSanPham + "</td>";
+                        row += "<td>" + item.mauSac.tenMauSac + "</td>";
+                        row += "<td>" + item.soLuong + "</td>";
+                        row += "<td>" + item.giaBan + "</td>";
+
+                        // Thêm button vào cột cuối cùng của hàng
+                        row += "<td><button class='btnAdd' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "'>";
+                        row += "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle' viewBox='0 0 16 16'>";
+                        row += "<path fill-rule='evenodd' d='M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm.5-9a.5.5 0 0 1 0 1H11a.5.5 0 0 1 0 1H8.5v2a.5.5 0 0 1-1 0V8H5a.5.5 0 0 1 0-1h2.5V5a.5.5 0 0 1 1 0v2h2.5z'/>";
+                        row += "</svg>";
+                        row += "</button></td>";
+
+                        row += "</tr>";
+                        $("#cartBody").append(row);
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
 </body>
+
 
 </html>

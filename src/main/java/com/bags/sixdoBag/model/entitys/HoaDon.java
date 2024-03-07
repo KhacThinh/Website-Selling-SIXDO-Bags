@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -66,6 +67,7 @@ public class HoaDon {
     @Column(name = "dia_chi_nguoi_nhan")
     private String diaChiNguoiNhan;
 
-//    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
-//    List<ChiTietHoaDon> chiTietHoaDons = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
+    private List<ChiTietHoaDon> chiTietHoaDons;
 }
