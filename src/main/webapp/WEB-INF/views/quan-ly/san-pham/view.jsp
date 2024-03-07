@@ -306,7 +306,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
-                    </td>
+git                     </td>
                 </tr>
             </c:forEach>
             </tbody>
