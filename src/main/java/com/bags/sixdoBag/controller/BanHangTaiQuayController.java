@@ -1,10 +1,14 @@
 package com.bags.sixdoBag.controller;
 
 
+import com.bags.sixdoBag.model.dto.request.KhachHangRequest;
+import com.bags.sixdoBag.model.dto.request.XoaSanPhamRequest;
 import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.service.*;
+import com.bags.sixdoBag.service.impl.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.*;
+import com.bags.sixdoBag.model.repository.HoaDonRepository;
+import com.bags.sixdoBag.model.repository.ChiTietHoaDonRepository;
+import com.bags.sixdoBag.model.repository.KhachHangRepository;
 
-
+import java.rmi.ServerException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,6 +34,7 @@ import java.util.stream.Collectors;
 @RequestMapping("ban-tai-quay")
 @RequiredArgsConstructor
 public class BanHangTaiQuayController {
+    Utils utils = new Utils();
 
     private final SanPhamService sanPhamService;
 
@@ -40,26 +48,45 @@ public class BanHangTaiQuayController {
 
     private final HoaDonChiTietService hoaDonChiTietService;
 
+    private final HoaDonRepository hoaDonRepository;
+
+    private final ChiTietHoaDonRepository chiTietHoaDonRepository;
+
+    private final KhachHangRepository khachHangRepository;
+
+    private final KhachHangService khachHangService;
+
+
     @GetMapping("")
-    public String hienThiSanPham(Model model, @RequestParam(value = "name", required = false) String name) {
+    public String hienThi(Model model){
+        extracted(model);
+        return "/ban-hang-tai-quay/home";
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<?> hienThiSanPham(Model model, @RequestParam(value = "name", required = false) String name) {
+        System.out.println("name: "+ name);
         extracted(model);
 
         List<ChiTietSanPham> list = new ArrayList<>();
         if (Objects.isNull(name)) {
             list = chiTietSanPhamServivce.getChiTietSanPhams();
+            return ResponseEntity.ok(list);
         } else {
             list = chiTietSanPhamServivce.searchChiTietSanPhams(name);
-            model.addAttribute("nameSearch", name);
+            return ResponseEntity.ok(list);
         }
-        model.addAttribute("listSp", list);
-        return "ban-hang-tai-quay/home";
+
+
     }
 
     private void extracted(Model model) {
-        Set<String> chatLieus = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
+
+        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
+
         List<String> doiTuongSuDungs = doiTuongSuDungService.getListDoiTuongSuDung().stream().map(DoiTuongSuDung::getTenDoiTuongSuDung).collect(Collectors.toList());
         List<String> mauSacs = mauSacService.getMauSacs().stream().map(MauSac::getTenMauSac).toList();
-        model.addAttribute("chatLieus", chatLieus);
+        model.addAttribute("chatLieus", tenChatLieuSelects);
         model.addAttribute("doiTuongSuDungs", doiTuongSuDungs);
         model.addAttribute("mauSacs", mauSacs);
         List<HoaDon> listTab = hoaDonService.getTabHoaDon();
@@ -97,12 +124,15 @@ public class BanHangTaiQuayController {
 
         int idTab = Integer.parseInt(idTabString.substring(2));
         System.out.println("tabsstring" + idTab);
+
         ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
         chiTietHoaDon.setIdCtSanPham(Integer.valueOf(productId));
         chiTietHoaDon.setSoLuong(1);
         chiTietHoaDon.setGia((double) Integer.valueOf(giaBanString));
         chiTietHoaDon.setIdHoaDon(idTab);
         hoaDonChiTietService.addGioHang(chiTietHoaDon);
+//        int soLuongKho = chiTietSanPhamServivce.getSoLuongSanPhamById(Integer.valueOf(productId));
+//        chiTietSanPhamServivce.updateSoLuongSanPham(soLuongKho-1,Integer.valueOf(productId));
         return ResponseEntity.ok().build();
 
     }
@@ -120,35 +150,17 @@ public class BanHangTaiQuayController {
 
 
 
-
-
-
-    @PostMapping("filter")
-    public String filter(
-            Model model,
-            @RequestParam("mauSac") String mauSac,
-            @RequestParam("doiTuongSuDung") String doiTuongSuDung,
-            @RequestParam("chatLieu") String chatLieu
-    ) {
+    @PostMapping("/filter")
+    @ResponseBody
+    public List<ChiTietSanPham> filterProducts(@RequestParam("chatLieu") String chatLieu,
+                                 @RequestParam("doiTuongSuDung") String doiTuongSuDung,
+                                 @RequestParam("mauSac") String mauSac, Model model) {
         extracted(model);
         List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu, mauSac, doiTuongSuDung);
-        System.out.println(mauSac + "   " + doiTuongSuDung + "   " + chatLieu);
-        model.addAttribute("listSp", listSearchCTSP);
-        model.addAttribute("mauSac", mauSac);
-        model.addAttribute("doiTuongSuDung", doiTuongSuDung);
-        model.addAttribute("chatLieu", chatLieu);
-        List<HoaDon> listTab = hoaDonService.getTabHoaDon();
-        List<HoaDon> danhSachTab = new ArrayList<>();
-        for (HoaDon o : listTab) {
-            if (o.getTrangThai() == 1) {
-                danhSachTab.add(o);
-            }
 
-        }
-        model.addAttribute("tabs", danhSachTab);
-
-        return "ban-hang-tai-quay/home";
+        return listSearchCTSP;
     }
+
 
     @PostMapping("/update-so-luong-san-pham")
     public ResponseEntity<?> updateSoLuongSanPham(@RequestBody Map<String, Object> requestBody) {
@@ -170,28 +182,38 @@ public class BanHangTaiQuayController {
 
     @PostMapping("/thanh-toan")
     public ResponseEntity<?> thanhToan(@RequestBody Map<String, Object> requestBody) {
+        ChiTietSanPham chiTietSanPham = new ChiTietSanPham();
+
+
         String idTabString = String.valueOf(requestBody.get("maHoaDon"));
         String tenKhachHang = String.valueOf(requestBody.get("tenKhachHang"));
         String soDienThoai = String.valueOf(requestBody.get("soDienThoai"));
         String tongDonHangString = String.valueOf(requestBody.get("tongGiaTri"));
+
+
         ///////
         int idTab = Integer.parseInt(idTabString.substring(2));
 
+        List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(idTab);
+        for (ChiTietHoaDon cthd : chiTietHoaDons) {
+            ChiTietSanPham ctsp = (ChiTietSanPham) chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+            ctsp.setSoLuong(ctsp.getSoLuong() - cthd.getSoLuong());
+        }
         HoaDon hoaDon = new HoaDon();
+
         hoaDon.setTrangThai(0);
         hoaDon.setSdtNguoiNhan(soDienThoai);
         hoaDon.setTenNguoiNhan(tenKhachHang);
         hoaDon.setTongTien((double) Integer.valueOf(tongDonHangString));
-
+        hoaDon.setThoiGianXacNhan(utils.getCurrentDateTime());
+        hoaDon.setThoiGianThanhToan(utils.getCurrentDateTime());
         hoaDonService.updateHoaDon(idTab, hoaDon);
-
         List<HoaDon> listTab = hoaDonService.getTabHoaDon();
         List<HoaDon> danhSachTab = new ArrayList<>();
         for (HoaDon o : listTab) {
             if (o.getTrangThai() == 1) {
                 danhSachTab.add(o);
             }
-
         }
 
         return ResponseEntity.ok(danhSachTab);
@@ -215,6 +237,63 @@ public class BanHangTaiQuayController {
         }
 
         return ResponseEntity.ok(danhSachTab);
+    }
+
+    @PostMapping("/xoa-san-pham-gio-hang")
+    public ResponseEntity<?> xoaSanPhamGioHang(@RequestBody XoaSanPhamRequest request) {
+        Integer id = request.getId();
+        String maHd = request.getMaHoaDon();
+        System.out.println("idctspp" + id);
+        System.out.println("mahdd" + maHd);
+        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
+        Integer idHD = hoaDon.getId();
+        System.out.println(idHD);
+        try {
+            chiTietHoaDonRepository.deleteChiTietHoaDonByIdChiTietSp(idHD, id);
+        } catch (Exception e) {
+            String loi = e.getMessage();
+            if (loi.contains("The statement did not return a result set")) {
+                System.out.println("khum saooo!");
+            }
+        }
+        return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/kiemTraKhachHang")
+    @ResponseBody
+    public String kiemTraKhachHang(@RequestParam("soDienThoai") String soDienThoai) {
+        KhachHang khachHang = khachHangRepository.searchBySdt(soDienThoai);
+        if (khachHang == null) {
+            return "";
+        } else {
+            return khachHang.getTenKhachHang();
+        }
+
+    }
+
+    @PostMapping("/themKhachHang")
+    public ResponseEntity<?> themKhachHang(@RequestParam("soDienThoai") String sdt, @RequestParam("tenKhachHang") String tenKh) {
+        KhachHang khachHang = khachHangRepository.searchBySdt(sdt);
+
+        if (khachHang == null || khachHang.getId() == null) {
+            KhachHang kh = new KhachHang();
+            kh.setTenKhachHang(tenKh);
+            kh.setSdt(sdt);
+            kh.setEmail("abc" + khachHangRepository.count() + "@gmail.com");
+            khachHangService.addKhachHang(kh);
+            return ResponseEntity.ok("success");
+        } else {
+            return ResponseEntity.ok("error");
+        }
+    }
+
+    @PostMapping("/searchModal")
+    public ResponseEntity<?>searchModal(@RequestParam("keyword") String keyword,Model model){
+        extracted(model);
+        List<ChiTietSanPham> list = chiTietSanPhamServivce.searchChiTietSanPhams(keyword);
+        return ResponseEntity.ok(list);
+
+
     }
 
 }

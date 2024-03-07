@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
 
-    @Query(value = "SELECT sp FROM SanPham sp where sp.trangThai = true")
+    @Query(value = "SELECT sp FROM SanPham sp")
     List<SanPham> findSanPhamByAll();
 
     @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from san_pham \n" +

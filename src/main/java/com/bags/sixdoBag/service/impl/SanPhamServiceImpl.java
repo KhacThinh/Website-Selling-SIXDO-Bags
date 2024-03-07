@@ -6,7 +6,9 @@ import com.bags.sixdoBag.model.repository.SanPhamRepository;
 import com.bags.sixdoBag.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,12 +31,26 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Override
     public List<SanPham> getSanPhams() {
         List<SanPham> sanPhams = sanPhamRepository.findSanPhamByAll();
+        sanPhams.sort(Comparator.comparing(SanPham::getId).reversed());
         return sanPhams;
     }
 
+    public String incrementNumberInString(String str, int increment) {
+        String numberString = str.replaceAll("[^0-9]", "");
+        int number = Integer.parseInt(numberString);
+        number += increment;
+        String formattedNumber = String.format("%0" + numberString.length() + "d", number);
+        String result = str.replace(numberString, formattedNumber);
+        return result;
+    }
+
     @Override
+    @Transactional
     public SanPham addSanPham(SanPhamRequest sanPhamRequest) {
-        SanPham sp = new SanPham();
+        SanPham sanPham = new SanPham();
+        sanPham.setMaSanPham("ma");
+        SanPham sp = sanPhamRepository.save(sanPham);
+        sp.setMaSanPham(incrementNumberInString("SP0000", sp.getId()));
         addEditSanPham(sanPhamRequest, sp);
         sp.setTrangThai(true);
         if (Objects.nonNull(sanPhamRequest.getIdThoiGianBaoHanh())) {
@@ -49,7 +65,7 @@ public class SanPhamServiceImpl implements SanPhamService {
         if (Objects.nonNull(sanPhamRequest.getIdDoiTuongSuDung())) {
             sp.setDoiTuongSuDung(doiTuongSuDungService.getDoiTuongSuDung(sanPhamRequest.getIdDoiTuongSuDung()));
         }
-        return sanPhamRepository.save(sp);
+        return sp;
     }
 
     @Override
@@ -72,7 +88,6 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     private void addEditSanPham(SanPhamRequest sanPhamRequest, SanPham sp) {
-        sp.setMaSanPham(sanPhamRequest.getMaSanPham().trim());
         sp.setTenSanPham(sanPhamRequest.getTenSanPham());
         sp.setAnh(sanPhamRequest.getAnh());
         sp.setProductUrl(sanPhamRequest.getProductUrl());

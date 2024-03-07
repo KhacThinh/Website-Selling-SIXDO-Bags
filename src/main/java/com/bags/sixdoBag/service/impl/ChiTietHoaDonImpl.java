@@ -47,4 +47,10 @@ public class ChiTietHoaDonImpl implements HoaDonChiTietService {
     public void deleteHoaDonChiTietById(int idHoaDon) {
         chiTietHoaDonRepository.deleteChiTietHoaDonByIdHoaDon(idHoaDon);
     }
+
+    @Override
+    public List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(int idHoaDon) {
+        List<ChiTietHoaDon> chiTietHoaDons = chiTietHoaDonRepository.getGioHangChiTietFromHoaDon(idHoaDon);
+        return chiTietHoaDons;
+    }
 }

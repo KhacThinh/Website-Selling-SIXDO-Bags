@@ -24,41 +24,37 @@ public class SanPham {
     @Column(name = "id")
     private Integer id;
 
-    @NotEmpty(message = "Mã không được để trống")
-    @NotNull(message = "Mã không được để null")
-    @NotBlank(message = "Mã Không được để khoảng trắng")
-    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự")
     @Column(name = "ma_san_pham")
     private String maSanPham;
 
-    @NotEmpty(message = "Tên không được để trống")
-    @NotNull(message = "Tên không được để null")
-    @NotBlank(message = "Tên Không được để khoảng trắng")
-    @Length(max = 300, message = "Tên không được vượt quá 300 ký tự")
+//    @NotEmpty(message = "Tên không được để trống")
+//    @NotNull(message = "Tên không được để null")
+//    @NotBlank(message = "Tên Không được để khoảng trắng")
+//    @Length(max = 300, message = "Tên không được vượt quá 300 ký tự")
     @Column(name = "ten")
     private String tenSanPham;
 
-    @Length(max = 100, message = "Tên không được vượt quá 100 ký tự")
+//    @Length(max = 100, message = "Tên không được vượt quá 100 ký tự")
     @Column(name = "anh")
     private String anh;
 
-    @Length(max = 100, message = "Tên không được vượt quá 100 ký tự")
+//    @Length(max = 100, message = "Tên không được vượt quá 100 ký tự")
     @Column(name = "product_url")
     private String productUrl;
 
-    @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
+//    @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
     @Column(name = "kich_thuoc")
     private String kichThuoc;
 
-    @Min(value = 0, message = "Khối lượng không được nhỏ hơn 0")
+//    @Min(value = 0, message = "Khối lượng không được nhỏ hơn 0")
     @Column(name = "khoi_luong")
     private Double khoiLuong;
 
-    @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
+//    @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
     @Column(name = "chat_lieu")
     private String chatLieu;
 
-    @Length(max = 100, message = "Tên không được vượt quá 100 ký tự")
+//    @Length(max = 100, message = "Tên không được vượt quá 100 ký tự")
     @Column(name = "xuat_xu")
     private String xuatXu;
 

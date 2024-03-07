@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "hoa_don")
@@ -30,7 +33,6 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "id_ma_giam_gia")
     private MaGiamGia maGiamGia;
-
 
     @Column(name = "ma_hoa_don")
     private String maHoaDon;
@@ -64,4 +66,8 @@ public class HoaDon {
 
     @Column(name = "dia_chi_nguoi_nhan")
     private String diaChiNguoiNhan;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
+    private List<ChiTietHoaDon> chiTietHoaDons;
 }

@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.ChiTietSanPhamRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
@@ -36,6 +37,11 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     }
 
     @Override
+    public List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham) {
+        return chiTietSanPhamRepository.getChiTietSanPhamById(idSanPham);
+    }
+
+    @Override
     public List<ChiTietSanPham> getChiTietSanPhams() {
         List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.findAll();
         return chiTietSanPhams;
@@ -49,7 +55,6 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         ctsp.setGiaBan(chiTietSanPham.getGiaBan());
         ctsp.setGiaNhap(chiTietSanPham.getGiaNhap());
         ctsp.setSoLuong(chiTietSanPham.getSoLuong());
-
         ctsp.setThoiGian(LocalDateTime.now());
         ctsp.setHinhAnh(chiTietSanPham.getHinhAnh());
         Integer idMauSac = chiTietSanPham.getMauSac().getId();
@@ -104,6 +109,16 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
                 .collect(Collectors.toList());
 
         return chiTietSanPhams;
+    }
+
+    @Override
+    public void updateSoLuongSanPham(int newSoLuong,int idCtSanPham  ) {
+        chiTietSanPhamRepository.updateSoLuongSanPham(newSoLuong,idCtSanPham);
+    }
+
+    @Override
+    public int getSoLuongSanPhamById(int idCtSanPham) {
+        return chiTietSanPhamRepository.getSoLuongSanPhamById(idCtSanPham);
     }
 
 

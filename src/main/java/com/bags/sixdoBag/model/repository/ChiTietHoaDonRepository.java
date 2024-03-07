@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Repository
-public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon,Integer> {
+public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, Integer> {
 
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     List<ChiTietHoaDon> getGioHangChiTiet(@Param("idHoaDon") int idHoaDon);
@@ -21,9 +21,19 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon,Int
     ChiTietHoaDon getGioHangChiTiet(@Param("idHoaDon") int idHoaDon, @Param("idCtSanPham") int idCtSanPham);
 
 
+    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
+    List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(@Param("idHoaDon") int idHoaDon);
+
 
     @Modifying
     @Query("delete from ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     void deleteChiTietHoaDonByIdHoaDon(@Param("idHoaDon") int idHoaDon);
 
+    @Query(value = "delete from chi_tiet_hoa_don where id_hoa_don =:idHd and id_ctsp =:id",nativeQuery = true)
+    void deleteChiTietHoaDonByIdChiTietSp(Integer idHd,Integer id);
+
+    @Query("select hdct from ChiTietHoaDon hdct where hdct.hoaDon.maHoaDon =:maHd")
+    List<ChiTietHoaDon> getListCTHDByMaHd(String maHd);
+
+    void deleteChiTietHoaDonByIdHoaDonAndIdCtSanPham(Integer idHoaDon,Integer idCtSanPham);
 }
