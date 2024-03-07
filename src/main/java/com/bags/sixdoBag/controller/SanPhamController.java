@@ -6,6 +6,7 @@ import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,11 +40,7 @@ public class SanPhamController {
 
     @GetMapping("")
     public String getSanPham(Model model, @RequestParam(name = "name", required = false) String name) {
-        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().map(ThuongHieu::getTen).collect(Collectors.toSet());
-        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
-        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
-        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
-        model.addAttribute("sanPhamRequest", new SanPhamRequest());
+        extracted(model);
         hienThiChung(model);
         if (Objects.isNull(name)) {
             model.addAttribute("sanPhams", sanPhamService.getSanPhams());
@@ -51,6 +48,14 @@ public class SanPhamController {
             model.addAttribute("sanPhams", sanPhamService.searchSanPhamTenOrMa(name));
         }
         return "/quan-ly/san-pham/view";
+    }
+
+    private void extracted(Model model) {
+        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().filter(th -> th != null && !th.getTen().isEmpty()).map(ThuongHieu::getTen).collect(Collectors.toSet());
+        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
+        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
+        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
+        model.addAttribute("sanPhamRequest", new SanPhamRequest());
     }
 
     private void hienThiChung(Model model) {
@@ -66,11 +71,7 @@ public class SanPhamController {
                          @RequestParam String tenChatLieu,
                          @RequestParam String tenThuongHieu
     ) {
-        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().map(ThuongHieu::getTen).collect(Collectors.toSet());
-        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
-        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
-        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
-        model.addAttribute("sanPhamRequest", new SanPhamRequest());
+        extracted(model);
         List<SanPham> sanPhams = sanPhamService.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
         model.addAttribute("sanPhams", sanPhams);
         model.addAttribute("tenChatLieuSelect", tenChatLieu);
@@ -79,17 +80,12 @@ public class SanPhamController {
     }
 
 
-
     @PostMapping("")
     public String addSanPham(
             @ModelAttribute("sanPhamRequest") SanPhamRequest sanPhamRequest,
             @RequestParam("hinhAnh") MultipartFile hinhAnh,
             BindingResult bindingResult
     ) {
-        if (bindingResult.hasErrors()) {
-            System.out.println("Lỗi");
-        }
-
         if (!hinhAnh.isEmpty()) {
             try {
                 byte[] bytes = hinhAnh.getBytes();
@@ -109,10 +105,57 @@ public class SanPhamController {
         return "redirect:/san-pham";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editSanPham(@PathVariable int id, @RequestBody @Valid SanPhamRequest khuyenMai) {
-        return new ResponseEntity<>(sanPhamService.editSanPham(id, khuyenMai), HttpStatus.OK);
+    @GetMapping("abc")
+    public ResponseEntity<?> test(){
+        System.out.println("Hello");
+        return new ResponseEntity<String>("hello", HttpStatus.OK);
     }
+
+
+//    @PutMapping("/edit")
+//    public ResponseEntity<Object> editSanPham(
+////            @PathVariable("id") int id,
+//            @RequestBody SanPhamRequest sanPhamRequest
+////            @RequestParam("hinhAnh") MultipartFile hinhAnh
+//    ) {
+//        System.out.println(sanPhamRequest.getMaSanPham());
+//        System.out.println("Hello");
+////        System.out.println(id);?
+//        // Lưu trữ tên ảnh cũ để xóa sau khi cập nhật ảnh mới
+////        String oldAnh = sanPhamService.getSanPham(id).getAnh();
+//
+////        if (!hinhAnh.isEmpty()) {
+////            try {
+////                byte[] bytes = hinhAnh.getBytes();
+////                String UPLOAD_DIR = "src/main/resources/static/images/san-pham/";
+////                // Lưu ảnh mới vào thư mục
+////                BufferedOutputStream stream =
+////                        new BufferedOutputStream(new FileOutputStream(new File(UPLOAD_DIR + hinhAnh.getOriginalFilename())));
+////                stream.write(bytes);
+////                System.out.println(hinhAnh.getOriginalFilename());
+////                sanPhamRequest.setAnh("../static/images/san-pham/" + hinhAnh.getOriginalFilename());
+////                stream.close();
+////
+////            } catch (IOException e) {
+////                e.printStackTrace();
+////            }
+////        }
+//
+////        sanPhamService.editSanPham(id, sanPhamRequest);
+//
+//        return new ResponseEntity<>(null);
+//    }
+
+    @PutMapping("/san-pham/edit/{idSanPham}")
+    public ResponseEntity<String> editSanPham(@PathVariable("idSanPham") String idSanPham, @RequestBody SanPhamRequest sanPhamRequest) {
+        // Thực hiện xử lý dữ liệu được gửi từ phía client ở đây
+        // idSanPham là ID của sản phẩm cần chỉnh sửa
+        // sanPhamRequest chứa dữ liệu của sản phẩm được gửi từ phía client
+
+        // Trả về thông điệp hoặc mã trạng thái phản hồi cho phía client
+        return ResponseEntity.ok("Sản phẩm đã được chỉnh sửa thành công.");
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteKhuyeMai(@PathVariable int id) {

@@ -119,10 +119,6 @@ public class BanHangTaiQuayController {
     }
 
 
-
-
-
-
     @PostMapping("filter")
     public String filter(
             Model model,
@@ -131,7 +127,7 @@ public class BanHangTaiQuayController {
             @RequestParam("chatLieu") String chatLieu
     ) {
         extracted(model);
-        List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu, mauSac, doiTuongSuDung);
+        List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu, "", mauSac, doiTuongSuDung);
         System.out.println(mauSac + "   " + doiTuongSuDung + "   " + chatLieu);
         model.addAttribute("listSp", listSearchCTSP);
         model.addAttribute("mauSac", mauSac);
@@ -156,7 +152,6 @@ public class BanHangTaiQuayController {
         String idCtSanPhamString = String.valueOf(requestBody.get("idChiTietSanPham"));
         String soLuongString = String.valueOf(requestBody.get("soLuong"));
         String tongGiaSanPhamString = String.valueOf(requestBody.get("giaSanPham"));
-        ///////
         int idTab = Integer.parseInt(idTabString.substring(2));
         ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
         chiTietHoaDon.setSoLuong(Integer.valueOf(soLuongString));

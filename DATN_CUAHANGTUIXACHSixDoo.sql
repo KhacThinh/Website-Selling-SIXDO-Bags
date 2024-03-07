@@ -331,6 +331,22 @@ select * from chi_tiet_gio_hang
 select * from khach_hang
 select * from chi_tiet_san_pham
 
+select ctsp.* from chi_tiet_san_pham as ctsp join san_pham as sp on ctsp.id_san_pham = sp.id join
+                   mau_sac as ms on ctsp.id_mau_sac = ms.id join thuong_hieu as th on sp.id_thuong_hieu = th.id
+                                             join doi_tuong_su_dung as dtsd on sp.id_doi_tuong_su_dung = dtsd.id
+where sp.chat_lieu like N'%Titan%' and dtsd.ten like N'%%' and ms.ten like N'%%' and th.ten like N'%%'
+
+SELECT ctsp.*
+FROM chi_tiet_san_pham AS ctsp
+         LEFT JOIN san_pham AS sp ON ctsp.id_san_pham = sp.id
+         LEFT JOIN mau_sac AS ms ON ctsp.id_mau_sac = ms.id
+         LEFT JOIN thuong_hieu AS th ON sp.id_thuong_hieu = th.id
+         LEFT JOIN doi_tuong_su_dung AS dtsd ON sp.id_doi_tuong_su_dung = dtsd.id
+WHERE sp.chat_lieu LIKE N'%Da%'
+  AND (dtsd.ten LIKE N'%%' OR dtsd.ten IS NULL)
+  AND (ms.ten LIKE N'%%' OR ms.ten IS NULL)
+  AND (th.ten LIKE N'%%' OR th.ten IS NULL);
+
 
 
 

@@ -65,6 +65,11 @@
         .detail-product {
             background-color: #f8f9fa;
         }
+
+        .required {
+            color: red;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -136,7 +141,7 @@
                 <th scope="col">MÃ</th>
                 <th scope="col">TÊN</th>
                 <th scope="col">KÍCH THƯỚC</th>
-                <th scope="col">KHỐI LƯỢNG(kg)</th>
+                <th scope="col">KHỐI LƯỢNG(gram)</th>
                 <th scope="col">CHẤT LIỆU</th>
                 <th scope="col">XUẤT XỨ</th>
                 <th scope="col">THƯƠNG HIỆU</th>
@@ -150,11 +155,12 @@
                     <td>${sp.maSanPham}</td>
                     <td>${sp.tenSanPham}</td>
                     <td>${sp.kichThuoc}</td>
-                    <td>${sp.khoiLuong}</td>
+                    <fmt:formatNumber pattern="#,###" value="${sp.khoiLuong}"
+                                      var="khoiLuong"></fmt:formatNumber>
+                    <td>${khoiLuong}</td>
                     <td>${sp.chatLieu}</td>
                     <td>${sp.xuatXu}</td>
                     <td>${sp.thuongHieu.ten}</td>
-                        <%--                    <td><img src="${pageContext.request.contextPath}${sp.anh}" height="200px" width="250px" alt="Ảnh sản phẩm"></td>--%>
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>
@@ -167,7 +173,7 @@
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"><i class="bi bi-pencil"></i> Sửa
+                                        data-bs-target="#exampleModal${sp.maSanPham}"><i class="bi bi-pencil"></i> Sửa
                                 </button>
                             </li>
                             <li><a class="dropdown-item" href="#"><i class="bi bi-trash3"></i> Xóa</a></li>
@@ -175,13 +181,292 @@
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
+
+                            <%--                        <jsp:include page="./sua-san-pham-modal.jsp"/>--%>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal${sp.maSanPham}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel-edit">Thông Tin Sản
+                                            Phẩm</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="tenSanPham">Mã<span
+                                                            class="required">*</span></label>
+                                                    <input type="hidden" id="idSanPham" value="${sp.id}"
+                                                           class="form-control"/>
+                                                    <input type="text" id="maSanPham" value="${sp.maSanPham}"
+                                                           class="form-control" readonly/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="tenSanPham">Tên Sản Phẩm<span
+                                                            class="required">*</span></label>
+                                                    <input type="text" id="tenSanPham"
+                                                           class="form-control" value="${sp.tenSanPham}"/>
+                                                    <span id="tenSanPhamError"
+                                                          class="error text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="chatLieu">Chất Liệu<span
+                                                            class="required">*</span></label>
+                                                    <input type="text" id="chatLieu"
+                                                           class="form-control" value="${sp.chatLieu}"/>
+                                                    <span id="chatLieuError"
+                                                          class="error text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="xuatXu">Xuất Xứ<span
+                                                            class="required">*</span></label>
+                                                    <input type="text" id="xuatXu" class="form-control"
+                                                           value="${sp.xuatXu}"/>
+                                                    <span id="xuatXuError" class="error text-danger"></span>
+                                                </div>
+                                                <!-- <div class="form-group">
+                            <label for="hinhAnh">Ảnh</label>
+                            <input type="file" id="hinhAnh" name="hinhAnh"
+                                class="form-control" />
+                            <img src="${sp.anh}" alt="Ảnh sản phẩm" id="previewImage"
+                                style="max-width: 100%; height: 100px;" />
+                        </div> -->
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="kichThuoc">Kích Thước<span
+                                                            class="required">*</span></label>
+                                                    <input type="text" id="kichThuoc" class="form-control"
+                                                           value="${sp.kichThuoc}"/>
+                                                    <span id="kichThuocError"
+                                                          class="error text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="khoiLuong">Khối Lượng (gram)<span
+                                                            class="required">*</span></label>
+                                                    <input type="number" id="khoiLuong" min="0" class="form-control"
+                                                           value="${sp.khoiLuong}"/>
+                                                    <span id="khoiLuongError" class="error text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="moTa">Mô Tả</label>
+                                                    <textarea id="moTa" class="form-control">${sp.moTa}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
+                                                    <select id="idThoiGianBaoHanh" class="form-control">
+                                                        <option value="">Chọn Thời Gian Bảo Hành</option>
+                                                        <c:forEach items="${thoiGianBaoHanhForm}" var="tgbhForm">
+                                                            <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="idThuongHieu">Thương Hiệu</label>
+                                                    <select id="idThuongHieu" class="form-control">
+                                                        <option value="">Chọn Thương Hiệu</option>
+                                                        <c:forEach items="${thuongHieuForm}" var="thForm">
+                                                            <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="idDanhMuc">Danh Mục</label>
+                                                    <select id="idDanhMuc" class="form-control">
+                                                        <option value="">Chọn Danh Mục</option>
+                                                        <c:forEach items="${danhMucForm}" var="dmForm">
+                                                            <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
+                                                    <select id="idDoiTuongSuDung" class="form-control">
+                                                        <option value="">Chọn Đối Tượng Sử Dụng</option>
+                                                        <c:forEach items="${doiTuongSuDungForm}" var="dtsdForm">
+                                                            <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Thoát
+                                            </button>
+                                            <button type="button" class="btn btn-primary" id="editSanPham"
+                                                    onclick="handleEdit()">Sửa
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            <%--// Lấy tham chiếu đến nút "Sửa" trong modal--%>
+                            <%--const editSanPhamButton = document.querySelector('#exampleModal${sp.maSanPham} #editSanPham');--%>
+
+                            <%--// Thêm sự kiện click cho nút "Sửa"--%>
+                            <%--editSanPhamButton.addEventListener('click', (event) => {--%>
+                            <%--    event.preventDefault();--%>
+
+                            function submitEditSanPham() {
+
+                                var idSanPham = document.getElementById('idSanPham').value;
+                                var maSanPham = document.getElementById('maSanPham').value.trim();
+                                var tenSanPham = document.getElementById('tenSanPham').value.trim();
+                                var chatLieu = document.getElementById('chatLieu').value.trim();
+                                var xuatXu = document.getElementById('xuatXu').value.trim();
+                                var khoiLuong = document.getElementById('khoiLuong').value.trim();
+                                var kichThuoc = document.getElementById('kichThuoc').value.trim();
+                                var hinhAnh = $('#hinhAnh')[0].files[0];
+                                var idThoiGianBaoHanh = document.getElementById('idThoiGianBaoHanh').value;
+                                var idThuongHieu = document.getElementById('idThuongHieu').value;
+                                var idDanhMuc = document.getElementById('idDanhMuc').value;
+                                var idDoiTuongSuDung = document.getElementById('idDoiTuongSuDung').value;
+                                var moTa = document.getElementById('moTa').value.trim();
+
+                                let hasError = false;
+
+                                if (tenSanPham === '') {
+                                    document.getElementById('tenSanPhamError').innerText = 'Vui lòng nhập Tên Sản Phẩm.';
+                                    hasError = true;
+                                } else if (tenSanPham.length > 100) {
+                                    document.getElementById('tenSanPhamError').innerText = 'Tên Sản Phẩm không được vượt quá 100 ký tự.';
+                                    hasError = true;
+                                } else {
+                                    document.getElementById('tenSanPhamError').innerText = '';
+                                }
+
+                                if (chatLieu === '') {
+                                    document.getElementById('chatLieuError').innerText = 'Vui lòng nhập Chất Liệu.';
+                                    hasError = true;
+                                } else if (chatLieu.length > 200) {
+                                    document.getElementById('chatLieuError').innerText = 'Chất Liệu không được vượt quá 200 ký tự.';
+                                    hasError = true;
+                                } else {
+                                    document.getElementById('chatLieuError').innerText = '';
+                                }
+
+                                if (xuatXu === '') {
+                                    document.getElementById('xuatXuError').innerText = 'Vui lòng nhập Xuất Xứ.';
+                                    hasError = true;
+                                } else if (xuatXu.length > 100) {
+                                    document.getElementById('xuatXuError').innerText = 'Xuất xứ không được vượt quá 100 ký tự.';
+                                    hasError = true;
+                                } else {
+                                    document.getElementById('xuatXuError').innerText = '';
+                                }
+
+                                if (khoiLuong === '') {
+                                    hasError = true;
+                                    document.getElementById('khoiLuongError').innerText = 'Vui lòng nhập Khối Lượng.';
+                                } else if (isNaN(khoiLuong)) {
+                                    document.getElementById('khoiLuongError').innerText = 'Khối Lượng phải là số.';
+                                    hasError = true;
+                                } else if (khoiLuong <= 0) {
+                                    document.getElementById('khoiLuongError').innerText = 'Khối Lượng phải lớn hơn 0.';
+                                    hasError = true;
+                                } else {
+                                    document.getElementById('khoiLuongError').innerText = '';
+                                }
+
+                                if (kichThuoc === '') {
+                                    document.getElementById('kichThuocError').innerText = 'Vui lòng nhập Kích Thước.';
+                                    hasError = true;
+                                } else if (kichThuoc.length > 200) {
+                                    document.getElementById('kichThuocError').innerText = 'Kích Thước không được vượt quá 200 ký tự.';
+                                    hasError = true;
+                                } else {
+                                    document.getElementById('kichThuocError').innerText = '';
+                                }
+
+                                if (!hasError) {
+                                    sendDataToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
+                                }
+
+                            }
+                            // );
+
+
+                            // Hàm để gửi dữ liệu đến server bằng AJAX
+                            function sendDataToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung) {
+                                // Tạo đối tượng JSON chứa dữ liệu cần gửi đến server
+                                const data = {
+                                    idSanPham: idSanPham,
+                                    maSanPham: maSanPham,
+                                    tenSanPham: tenSanPham,
+                                    chatLieu: chatLieu,
+                                    xuatXu: xuatXu,
+                                    khoiLuong: khoiLuong,
+                                    kichThuoc: kichThuoc,
+                                    hinhAnh: hinhAnh, // Thêm tham số hình ảnh
+                                    moTa: moTa, // Thêm tham số mô tả
+                                    idThoiGianBaoHanh: idThoiGianBaoHanh, // Thêm tham số ID thời gian bảo hành
+                                    idThuongHieu: idThuongHieu, // Thêm tham số ID thương hiệu
+                                    idDanhMuc: idDanhMuc, // Thêm tham số ID danh mục
+                                    idDoiTuongSuDung: idDoiTuongSuDung // Thêm tham số ID đối tượng sử dụng
+                                };
+
+                                // Gửi dữ liệu đến server bằng AJAX
+                                // Sử dụng thư viện jQuery để gửi AJAX request
+                                $.ajax({
+                                    type: 'PUT', // Phương thức PUT cho việc cập nhật dữ liệu
+                                    url: '/san-pham/edit/' + idSanPham, // Đường dẫn tới API hoặc endpoint của server để xử lý dữ liệu
+                                    data: JSON.stringify(data), // Chuyển đối tượng JSON thành chuỗi JSON để gửi đi
+                                    contentType: 'application/json', // Loại dữ liệu gửi đi là JSON
+                                    processData: false, // Không xử lý dữ liệu trước khi gửi đi
+                                    success: function (response) {
+                                        // Xử lý kết quả trả về từ server nếu cần
+                                        console.log(response);
+                                        // Sau khi sửa thành công, có thể redirect hoặc làm mới trang
+                                        window.location.href = '/san-pham';
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Xử lý khi gặp lỗi
+                                        console.log('Có lỗi xảy ra: ' + error);
+                                    }
+                                });
+                            }
+
+
+                        </script>
+
+
+                            <%-- modal thông tin sản phẩm --%>
                         <div class="modal fade" id="exampleModal${i.index}" tabindex="-1"
                              aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Chi Tiết Sản Phẩm</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
@@ -193,8 +478,6 @@
                                                     <h2 class="mb-4">${sp.tenSanPham}</h2>
                                                     <p><strong>Mã sản phẩm:</strong> ${sp.maSanPham}</p>
                                                     <p><strong>Kích thước:</strong> ${sp.kichThuoc}</p>
-                                                    <fmt:formatNumber pattern="#,###" value="${sp.khoiLuong}"
-                                                                      var="khoiLuong"></fmt:formatNumber>
                                                     <p><strong>Khối lượng:</strong>${khoiLuong} gram</p>
                                                     <p><strong>Chất liệu:</strong> ${sp.chatLieu}</p>
                                                     <p><strong>Xuất xứ:</strong> ${sp.xuatXu}</p>
@@ -227,91 +510,13 @@
     </div>
 </div>
 
-
-<<<<<<< HEAD
-=======
-<div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form ng-submit="onSubmit($event)">
-                    <div class="mb-3">
-                        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
-                        <input ng-model="product.id" type="number" class="form-control" id="recipient-name"
-                               placeholder="ID" required>
-                    </div>
-                    <div class="mb-3">
-                        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
-                        <input ng-model="product.tenSP" type="text" class="form-control" id="recipient-name"
-                               placeholder="Tên Sản Phẩm" required>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="recipient-name" class="col-form-label">Giá Nhập:</label>
-                            <input ng-model="product.giaNhap" type="number" class="form-control"
-                                   id="recipient-name" placeholder="Giá Nhập" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="recipient-name" class="col-form-label">Giá Bán:</label>
-                            <input ng-model="product.giaBan" type="number" class="form-control"
-                                   id="recipient-name" placeholder="Giá Bán" required>
-                        </div>
-                    </div>
-                    <div class=" row mb-3">
-                        <div class="col-md-6">
-                            <label for="recipient-name" class="col-form-label">Số
-                                Lượng</label>
-                            <input type="number" ng-model="product.soLuong" class="form-control"
-                                   id="recipient-name" min="0">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="recipient-name" class="col-form-label">Ngày Nhập Kho</label>
-                            <input ng-model="product.ngayNhapHang" ng-model-options="{ getterSetter: true }"
-                                   type="text" class="form-control" id="recipient-name" required
-                                   placeholder="Định dạng yyyy-MM-dd">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-8">
-                            <label for="recipient-name"
-                                   class="col-form-label">File Image</label>
-                            <input ng-model="product.urlImage" type="text" class="form-control" id="recipient-name"
-                                   placeholder="Đường dẫn ảnh">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="recipient-name" class="col-form-label">Trạng Thái</label>
-                            <select ng-model="product.trangThai" class="form-select"
-                                    aria-label="Default select example">
-                                <option value="Đang Bán">Đang Bán</option>
-                                <option value="Ngừng Bán">Ngừng Bán</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary">Huỷ</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Thêm</button>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-
->>>>>>> 3bafe04bf94cde3fe48dcffe86c9ec0abc2bee49
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <!-- Link JavaScript của Bootstrap (cần thiết cho một số tính năng của Bootstrap) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
 
 </html>

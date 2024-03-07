@@ -21,7 +21,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
             " join DoiTuongSuDung as dtsd on sp.doiTuongSuDung = dtsd where" +
             " sp.chatLieu like %:chatLieu% and" +
             " dtsd.tenDoiTuongSuDung like %:doiTuongSuDung%  and " +
-            "ms.tenMauSac like %:mauSac%")
-    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung);
+            "ms.tenMauSac like %:mauSac% and sp.thuongHieu.ten like %:thuongHieu%")
+    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String thuongHieu, String mauSac, String doiTuongSuDung);
 
 }

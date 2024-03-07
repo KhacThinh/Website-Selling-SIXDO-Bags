@@ -25,6 +25,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,8 +38,6 @@ public class ChiTietSanPhamController {
 
     private final ChiTietSanPhamServivce chiTietSanPhamServivce;
 
-    private final ChiTietSanPhamRepository chiTietSanPhamRepository;
-
     private final MauSacService mauSacService;
 
     private final SanPhamService sanPhamService;
@@ -46,18 +46,51 @@ public class ChiTietSanPhamController {
 
     private final ThuongHieuService thuongHieuService;
 
+    private final DoiTuongSuDungService doiTuongSuDungService;
+
 
     @GetMapping("")
     public String getKhuyenMai(Model model) {
-
+        extracted(model);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhams();
         model.addAttribute("listCTSP", listCTSP);
+
+        return "quan-ly/chi-tiet-san-pham/view";
+    }
+
+    private void extracted(Model model) {
+        Set<String> chatLieus = sanPhamService.getSanPhams().stream()
+                .map(SanPham::getChatLieu)
+                .filter(chatLieu -> chatLieu != null && !chatLieu.isEmpty())
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+
+        Set<String> doiTuongSuDungs = new HashSet<>(doiTuongSuDungService.getListDoiTuongSuDung().stream()
+                .map(DoiTuongSuDung::getTenDoiTuongSuDung)
+                .filter(doiTuong -> doiTuong != null && !doiTuong.isEmpty())
+                .map(s -> s.trim())
+                .collect(Collectors.toSet()));
+
+        Set<String> mauSacs = mauSacService.getMauSacs().stream()
+                .map(MauSac::getTenMauSac)
+                .filter(mauSac -> mauSac != null && !mauSac.isEmpty())
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+
+        Set<String> thuongHieus = thuongHieuService.getThuongHieus().stream()
+                .filter(th -> th != null && !th.getTen().isEmpty())
+                .map(ThuongHieu::getTen)
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+
+        model.addAttribute("tenThuongHieuSelects", thuongHieus);
+        model.addAttribute("tenDoiTuongSuDungSelects", doiTuongSuDungs);
+        model.addAttribute("tenChatLieuSelects", chatLieus);
+        model.addAttribute("tenMauSacSelects", mauSacs);
         model.addAttribute("listSp", sanPhamService.getSanPhams());
         model.addAttribute("listMauSac", mauSacService.getMauSacs());
         model.addAttribute("listKhuyenMai", khuyenMaiService.getKhuyenMais());
-
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
-        return "quan-ly/chi-tiet-san-pham/view";
     }
 
     @PostMapping("/detail")
@@ -69,7 +102,6 @@ public class ChiTietSanPhamController {
     @PostMapping("/add")
     public String add(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
                       @RequestParam("images") MultipartFile hinhAnh) {
-
         if (!hinhAnh.isEmpty()) {
             try {
                 byte[] bytes = hinhAnh.getBytes();
@@ -91,21 +123,22 @@ public class ChiTietSanPhamController {
 
     }
 
-    @PostMapping("/filter")
-    public String search(Model model,
-                         @RequestParam String tenChatLieu,
-                         @RequestParam String tenThuongHieu
+    @PostMapping("filter")
+    public String filter(
+            Model model,
+            @RequestParam("tenMauSac") String mauSac,
+            @RequestParam("tenDoiTuongSuDung") String doiTuongSuDung,
+            @RequestParam("tenChatLieu") String chatLieu,
+            @RequestParam("tenThuongHieu") String thuongHieu
     ) {
-        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().map(ThuongHieu::getTen).collect(Collectors.toSet());
-        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
-        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
-        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
-        model.addAttribute("sanPhamRequest", new SanPhamRequest());
-        List<SanPham> sanPhams = sanPhamService.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
-        model.addAttribute("sanPhams", sanPhams);
-        model.addAttribute("tenChatLieuSelect", tenChatLieu);
-        model.addAttribute("tenThuongHieuSelect", tenThuongHieu);
-        return "/quan-ly/san-pham/view";
+        extracted(model);
+        List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu.trim(), thuongHieu.trim(), mauSac.trim(), doiTuongSuDung.trim());
+        model.addAttribute("listCTSP", listSearchCTSP);
+        model.addAttribute("tenMauSacSelect", mauSac);
+        model.addAttribute("tenDoiTuongSuDungSelect", doiTuongSuDung);
+        model.addAttribute("tenChatLieuSelect", chatLieu);
+        model.addAttribute("tenThuongHieuSelect", thuongHieu);
+        return "quan-ly/chi-tiet-san-pham/view";
     }
 
 

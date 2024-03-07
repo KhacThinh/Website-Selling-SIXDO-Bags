@@ -46,8 +46,6 @@
             margin-top: 50px;
             margin-right: 50px;
         }
-
-
     </style>
 </head>
 
@@ -73,10 +71,10 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-7 mb-3">
-            <form action="/san-pham/filter" class="filter-form" method="post">
+            <form action="/chi-tiet-san-pham/filter" class="filter-form" method="post">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <select name="tenChatLieu" class="form-select" name="category">
+                        <select name="tenChatLieu" class="form-select">
                             <option value="">Chọn Chất Liệu</option>
                             <c:forEach items="${tenChatLieuSelects}" var="cl">
                                 <option value="${cl}" ${tenChatLieuSelect eq cl ? 'selected' : ''}>${cl}</option>
@@ -84,10 +82,26 @@
                         </select>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <select name="tenThuongHieu" class="form-select" name="category">
+                        <select name="tenThuongHieu" class="form-select">
                             <option value="">Chọn thương hiệu</option>
                             <c:forEach items="${tenThuongHieuSelects}" var="th">
                                 <option value="${th}" ${tenThuongHieuSelect eq th ? 'selected' : ''}>${th}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select name="tenDoiTuongSuDung" class="form-select">
+                            <option value="">Chọn đối tượng sử dụng</option>
+                            <c:forEach var="doiTuongSuDungItem" items="${tenDoiTuongSuDungSelects}">
+                                <option value="${doiTuongSuDungItem}" ${tenDoiTuongSuDungSelect eq doiTuongSuDungItem ? 'selected' : ''}>${doiTuongSuDungItem}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select name="tenMauSac" class="form-select">
+                            <option value="">Chọn màu sắc</option>
+                            <c:forEach var="mauSacItem" items="${tenMauSacSelects}">
+                                <option value="${mauSacItem}" ${tenMauSacSelect eq mauSacItem ? 'selected' : ''}>${mauSacItem}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -110,6 +124,7 @@
         </div>
     </div>
 </div>
+
 
 
 <div class="container">
