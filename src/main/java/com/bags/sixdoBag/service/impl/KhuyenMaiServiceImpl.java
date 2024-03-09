@@ -53,6 +53,7 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
     public KhuyenMai deleteKhuyenMai(Integer idKhuyenMai) {
         KhuyenMai km = getKhuyenMai(idKhuyenMai);
         km.setTrangThai(false);
+        khuyenMaiRepository.save(km);
         return km;
     }
 

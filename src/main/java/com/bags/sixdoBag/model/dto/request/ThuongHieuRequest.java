@@ -15,9 +15,5 @@ public class ThuongHieuRequest {
 
     private Boolean trangThaiTT;
 
-    public void loadFromEntityTH(ThuongHieu th){
-        this.setMaThuongHieu(th.getMa());
-        this.setTenThuongHieu(th.getTen());
-        this.setTrangThaiTT(th.getTrangThai());
-    }
+
 }

@@ -26,22 +26,22 @@ public class KhuyenMai {
     @Column(name = "id")
     private Integer id;
 
-    @NotEmpty(message = "Mã không được để trống")
-    @NotNull(message = "Mã không được để null")
-    @NotBlank(message = "Mã Không được để khoảng trắng")
-    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự")
+//    @NotEmpty(message = "Mã không được để trống")
+//    @NotNull(message = "Mã không được để null")
+//    @NotBlank(message = "Mã Không được để khoảng trắng")
+//    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự")
     @Column(name = "ma_khuyen_mai")
     private String maKhuyenMai;
 
-    @NotEmpty(message = "Tên không được để trống")
-    @NotNull(message = "Tên không được để null")
-    @NotBlank(message = "Tên Không được để khoảng trắng")
-    @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
+//    @NotEmpty(message = "Tên không được để trống")
+//    @NotNull(message = "Tên không được để null")
+//    @NotBlank(message = "Tên Không được để khoảng trắng")
+//    @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
     @Column(name = "ten")
     private String ten;
 
     @Column(name = "gia_tri_giam")
-    @Min(value = 0, message = "Giá trị giảm không được nhỏ hơn 0")
+//    @Min(value = 0, message = "Giá trị giảm không được nhỏ hơn 0")
     private Double giaTriGiam;
 
     @Column(name = "ngay_bat_dau")

@@ -20,5 +20,5 @@ public class KhuyenMaiRequest {
 
     private String moTa;
 
-    private String trangThai;
+    private int trangThai;
 }

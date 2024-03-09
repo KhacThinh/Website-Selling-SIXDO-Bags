@@ -1,94 +1,105 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Màu Sắc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* CSS styles */
+        .modal-content {
+            border-radius: 10px;
+        }
 
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+        label {
+            font-weight: bold;
+        }
 
-<!-- Modal -->
-<div class="modal modal-xl" id="addModelDoiTuongSuDung" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-footer {
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background-color: #ccc;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-family: "Arial Blackw";
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="modal modal-xl" id="modalAddDoiTuongSuDung" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+            <h1>ĐỐI TƯỢNG SỬ DỤNG</h1>
             <div class="modal-body">
-                <form:form method="POST" action="${ action }" id="myForm" modelAttribute="DT"
-                           enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-6">
-
+                    <div class="col-md-12">
                         <div class="form-group">
-
-                            <label for="ma">Mã</label>
-                            <form:input path="maDoiTuongSuDung" id="ma" class="form-control"/>
+                            <label for="maDoiTuongSuDung">Mã Đối Tượng Sử Dụng</label>
+                            <input  id="maDoiTuongSuDung" class="form-control"/>
                         </div>
-
-                    </div>
-                    <div class="col-md-6">
-
                         <div class="form-group">
-                            <label for="ma">Tên</label>
-                            <form:input path="tenDoiTuongSuDung" id="ten" class="form-control"/>
+                            <label for="tenDoiTuongSuDung">Tên Đối Tượng Sử Dụng</label>
+                            <input id="tenDoiTuongSuDung" class="form-control"/>
                         </div>
-
                     </div>
-
+                    <div class="form-group">
+                        <label for="trangThai">Trạng Thái:</label>
+                        <select id="trangThai" name="trangThai">
+                            <option value="1">Hoạt Động</option>
+                            <%--                            <option value="0">Không Hoạt Động</option>--%>
+                        </select>
+                    </div>
                 </div>
-
-
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addDoiTuongSuDung()">Lưu</button>
+                </div>
             </div>
-
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-
-                <button type="submit" class="btn btn-primary" id="them"  value="Submit"  >Lưu</button>
-            </div>
-            </form:form>
-        </div>
-    </div>
-
-</div>
-<%--modal bao them that bai--%>
-<div class="modal fade" id="errorModal" style="color: #0abf30">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                Thêm thất bại
-                <div id="error-message"></div>
-            </div>
-
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById("myForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent form submission
-
-        var ma = document.getElementById("ma").value.trim();
-        var ten = document.getElementById("ten").value.trim();
-        var errorMessage = "Yêu cầu nhập:";
-
-        if (ma === "") {
-            errorMessage += "<span style='color: red;'> Mã, </span> ";
-        }
-        if (ten === "") {
-            errorMessage += "<span style='color: red;'> Tên </span> ";
-        }
-        var errorDiv = document.getElementById("error-message");
-        errorDiv.innerHTML = errorMessage;
-        if (errorMessage !== "Yêu cầu nhập:") {
-            $('#errorModal').modal('show');
-
-            return false;
-        } else {
-            this.submit();
-        }
-    });
-
-
-
-</script>
+</body>
+</html>

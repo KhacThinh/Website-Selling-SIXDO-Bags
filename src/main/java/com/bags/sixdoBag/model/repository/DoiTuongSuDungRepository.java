@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,10 @@ public interface DoiTuongSuDungRepository extends JpaRepository<DoiTuongSuDung, 
 
     @Query(value = "select * from doi_tuong_su_dung where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     List<DoiTuongSuDung> searchDoiTuongSuDungTenOrMa(String tenMa);
+
+    @Query(value = "select dt from DoiTuongSuDung dt where dt.maDoiTuongSuDung =:maDoiTuongSuDung")
+    DoiTuongSuDung searchDoiTuongSuDungByMa(String maDoiTuongSuDung);
+
+    @Query(value = "select dt from DoiTuongSuDung dt where dt.tenDoiTuongSuDung =:tenDoiTuongSuDung")
+    DoiTuongSuDung searchDoiTuongSuDungByTen(String tenDoiTuongSuDung);
 }

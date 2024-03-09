@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,10 @@ public interface ThuongHieuRepository extends JpaRepository<ThuongHieu, Integer>
 
     @Query(value = "select * from thuong_hieu where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     List<ThuongHieu> searchTenThuongHieuOrMa(String tenMa);
+
+    @Query(value = "select th from ThuongHieu th where th.ma =:maThuongHieu")
+    ThuongHieu searchThuongHieuByMa(String maThuongHieu);
+
+    @Query(value = "select th from ThuongHieu th where th.ten=:tenThuongHieu")
+    ThuongHieu searchThuongHieuByTen(String tenThuongHieu);
 }
