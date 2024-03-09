@@ -84,11 +84,11 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${listDanhMuc}" var="dm" varStatus="i">
+            <c:forEach items="${ listDanhMuc }" var="dm" varStatus="i">
                 <tr>
-                    <td>${dm.ma}</td>
-                    <td>${dm.ten}</td>
-                    <td>${dm.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
+                    <td>${th.ma}</td>
+                    <td>${th.ten}</td>
+                    <td>${th.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
 
 
                     <td>
@@ -96,15 +96,74 @@
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3" ></i>Sửa</a></li>
-
-                            </li>
-                                <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
-                            <a class="dropdown-item delete-color" href="#" onclick="xoaDanhMuc(${dm.id})"><i class="bi bi-trash3"></i> Xóa</a>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#modalUpdate${th.id}"><i
+                                        class="bi bi-pencil"></i> Sửa
+                                </button>
+                            <li>
+                                    <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
+                                <a class="dropdown-item delete-color" href="#" onclick="xoaThuongHieu(${th.id})"><i class="bi bi-trash3"></i> Xóa</a>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
+
+                            <%--                        Modal update--%>
+                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Thương Hiệu</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" hidden>
+                                                    <label  class="form-label">Id
+                                                        <span>*</span></label>
+                                                    <input value="${th.id}" name="id" id="id" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="form-label">Mã
+                                                    <span>*</span></label>
+                                                <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label  class="form-label">Tên Thương Hiệu
+                                                <span>*</span></label>
+                                            <input value="${th.ten}" name="ten" id="tenUpdate${th.id}" class="form-control"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label  class="form-label">Trạng thái
+                                                    <span>*</span></label>
+                                                <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Thoát
+                                        </button>
+                                        <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateThuongHieu(${th.id})">Lưu</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </c:forEach>

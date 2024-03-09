@@ -35,10 +35,5 @@ public class ThuongHieu {
 
     @Column(name = "trang_thai")
     private Boolean trangThai;
-    public void loadFromRQTH(ThuongHieuRequest rq)
-    {
-        this.setMa(rq.getMaThuongHieu() );
-        this.setTen( rq.getTenThuongHieu() );
-        this.setTrangThai( rq.getTrangThaiTT() );
-    }
+
 }

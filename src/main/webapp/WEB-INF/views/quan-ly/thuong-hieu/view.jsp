@@ -62,7 +62,7 @@
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container">
     <div class="title text-center pt-5">
-        <h2 class="position-relative d-inline-block">QUẢN LÝ DANH MỤC</h2>
+        <h2 class="position-relative d-inline-block">QUẢN LÝ THƯƠNG HIỆU</h2>
     </div>
     <div class="row">
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
@@ -118,42 +118,45 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" hidden>
+                                            <label  class="form-label">Id
+                                                <span>*</span></label>
+                                            <input value="${th.id}" name="id" id="id" class="form-control"/>
+                                        </div>
+                                    </div>
                                     <div class="modal-body">
                                             <div class="row">
+
                                                 <div class="col-md-6">
-                                                    <div class="form-group" hidden>
-                                                        <label  class="form-label">Id
-                                                            <span>*</span></label>
-                                                        <input value="${th.id}" name="id" id="id" class="form-control"/>
-                                                    </div>
-                                                </div>
                                                     <div class="form-group">
                                                         <label  class="form-label">Mã
                                                             <span>*</span></label>
                                                         <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control"/>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label  class="form-label">Tên Thương Hiệu
-                                                            <span>*</span></label>
-                                                        <input value="${th.ten}" name="ten" id="tenUpdate${th.id}" class="form-control"/>
-
                                                     </div>
                                                 </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label  class="form-label">Trạng thái
-                                                            <span>*</span></label>
-                                                        <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>
-                                                    </div>
-                                                </div>
-
-
                                             </div>
 
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Tên Thương Hiệu
+                                                        <span>*</span></label>
+                                                    <input value="${th.ten}" name="ten" id="tenUpdate${th.id}" class="form-control"/>
 
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="form-label">Trạng thái
+                                                    <span>*</span></label>
+                                                <select name="trangThai" id="trangThaiUpdate${th.id}" class="form-control">
+                                                    <option value="true">Hoạt động</option>
+                                                    <option value="false">Không hoạt động</option>
+                                                </select>
+<%--                                                <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>--%>
+                                                </div>
+                                        </div>
+                                                </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                                     Thoát
@@ -164,14 +167,8 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
-
+                        </div>
                     </td>
-
                 </tr>
             </c:forEach>
             </tbody>
@@ -214,7 +211,7 @@
             return false;
         }
         $.ajax({
-            url: '/thuong-hieu/update',
+            url: '/thuong-hieu/add',
             type: 'POST',
             data: {
                 ma: ma,
@@ -236,7 +233,6 @@
         });
 
     }
-
 
     function updateThuongHieu(id) {
         var ma = document.getElementById("maUpdate" + id).value;

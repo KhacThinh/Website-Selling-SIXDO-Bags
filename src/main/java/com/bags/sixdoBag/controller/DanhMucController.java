@@ -111,6 +111,37 @@ public class DanhMucController {
         }
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> suaThuongHieu(@RequestParam("id") Integer id,
+                                           @RequestParam("ma") String ma,
+                                           @RequestParam("ten") String ten,
+                                           @RequestParam("trangThai") boolean trangThai) {
+        System.out.println(ma);
+        System.out.println(ten);
+        DanhMuc dm1 = danhMucRepository.searchDanhMucByMa(ma);
+        DanhMuc dm2 = danhMucRepository.searchDanhMucByTen(ten);
+        System.out.println(dm1);
+        System.out.println(dm2);
+
+        DanhMuc danhMuc= danhMucService.getDanhMuc(id);
+        System.out.println(danhMuc);
+
+
+        if (dm1 == null && dm1== null ) {
+            danhMuc.setMa(ma);
+            danhMuc.setTen(ten);
+            danhMuc.setTrangThai(trangThai);
+            danhMucService.editDanhMuc(id,danhMuc);
+            return ResponseEntity.ok("ok");
+        } else if(dm1 !=null && dm2 == null) {
+            return ResponseEntity.ok("errorMa");
+        }else{
+            return ResponseEntity.ok("errorTen");
+        }
+
+    }
+
+
     @PostMapping("/xoa-danh-muc")
     public ResponseEntity<?> xoaDanhMuc(@RequestBody Map<String, Object> requestBody) {
         Integer idDanhMuc = (Integer) requestBody.get("idDanhMuc");

@@ -86,9 +86,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="trangThaiTT">Trạng Thái:</label>
-                        <select id="trangThaiTT" name="trangThai">
-                            <option value="1">Hoạt Động</option>
+                        <label for="trangThai">Trạng Thái:</label>
+                        <select id="trangThai" name="trangThai">
+                            <option value="true">Hoạt Động</option>
                             <%--                            <option value="0">Không Hoạt Động</option>--%>
                         </select>
                     </div>
