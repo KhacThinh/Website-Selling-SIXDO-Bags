@@ -57,6 +57,7 @@
 
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.repository.DoiTuongSuDungRepository;
 import com.bags.sixdoBag.service.DoiTuongSuDungService;
@@ -108,6 +109,26 @@ public class DoiTuongSuDungController {
         } else {
             return ResponseEntity.ok("errorTen");
         }
+    }
+    @PostMapping("/update")
+    public ResponseEntity<?> suaDoiTuongSuDung(@RequestParam("id") Integer id,
+                                               @RequestParam("maDoiTuongSuDung") String maDoiTuongSuDung,
+                                               @RequestParam("tenDoiTuongSuDung") String tenDoiTuongSuDung,
+                                               @RequestParam("trangThai") boolean trangThai) {
+
+
+        DoiTuongSuDung doiTuongSuDung = doiTuongSuDungService.getDoiTuongSuDung(id);
+
+        System.out.println(maDoiTuongSuDung);
+        doiTuongSuDung.setMaDoiTuongSuDung(maDoiTuongSuDung);
+        doiTuongSuDung.setTenDoiTuongSuDung(tenDoiTuongSuDung);
+        doiTuongSuDung.setTrangThai(trangThai);
+        System.out.println(maDoiTuongSuDung);
+        System.out.println(tenDoiTuongSuDung);
+        System.out.println(doiTuongSuDung);
+        doiTuongSuDungService.editDoiTuongSuDung(id, doiTuongSuDung);
+
+        return ResponseEntity.ok("ok");
     }
 
     @PostMapping("/xoa-doi-tuong-su-dung")

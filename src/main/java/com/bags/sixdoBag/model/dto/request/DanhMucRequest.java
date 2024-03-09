@@ -12,5 +12,5 @@ public class DanhMucRequest {
 
     private String tenDanhMuc;
 
-    private String trangThai;
+    private Boolean trangThai;
 }

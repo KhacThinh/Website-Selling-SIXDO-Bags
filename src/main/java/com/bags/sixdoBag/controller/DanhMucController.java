@@ -59,6 +59,7 @@ package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
+import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.DanhMucRepository;
 import com.bags.sixdoBag.service.DanhMucService;
 import jakarta.validation.Valid;
@@ -118,27 +119,17 @@ public class DanhMucController {
                                            @RequestParam("trangThai") boolean trangThai) {
         System.out.println(ma);
         System.out.println(ten);
-        DanhMuc dm1 = danhMucRepository.searchDanhMucByMa(ma);
-        DanhMuc dm2 = danhMucRepository.searchDanhMucByTen(ten);
-        System.out.println(dm1);
-        System.out.println(dm2);
 
-        DanhMuc danhMuc= danhMucService.getDanhMuc(id);
+        DanhMuc danhMuc = danhMucService.getDanhMuc(id);
         System.out.println(danhMuc);
 
+        danhMuc.setMa(ma);
+        danhMuc.setTen(ten);
+        danhMuc.setTrangThai(trangThai);
 
-        if (dm1 == null && dm1== null ) {
-            danhMuc.setMa(ma);
-            danhMuc.setTen(ten);
-            danhMuc.setTrangThai(trangThai);
-            danhMucService.editDanhMuc(id,danhMuc);
-            return ResponseEntity.ok("ok");
-        } else if(dm1 !=null && dm2 == null) {
-            return ResponseEntity.ok("errorMa");
-        }else{
-            return ResponseEntity.ok("errorTen");
-        }
+        danhMucService.editDanhMuc(id, danhMuc);
 
+        return ResponseEntity.ok("ok");
     }
 
 

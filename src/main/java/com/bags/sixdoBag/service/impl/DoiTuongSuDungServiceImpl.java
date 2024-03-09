@@ -38,6 +38,7 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     @Override
     public DoiTuongSuDung editDoiTuongSuDung(int idDoiTuongSuDung, DoiTuongSuDung doiTuongSuDung) {
         DoiTuongSuDung dtsg = getDoiTuongSuDung(idDoiTuongSuDung);
+        dtsg.setMaDoiTuongSuDung(doiTuongSuDung.getMaDoiTuongSuDung().trim());
         dtsg.setTenDoiTuongSuDung(doiTuongSuDung.getTenDoiTuongSuDung().trim());
         return doiTuongSuDungRepository.save(dtsg);
     }

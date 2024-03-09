@@ -104,15 +104,114 @@
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3" ></i>Sửa</a></li>
-
-                            </li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#modalUpdate${km.id}"><i
+                                        class="bi bi-pencil"></i> Sửa
+                                </button>
+                            <li>
                                 <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
                             <a class="dropdown-item delete-color" href="#" onclick="xoaKhuyenMai(${km.id})"><i class="bi bi-trash3"></i> Xóa</a>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
+                        <div class="modal fade" id="modalUpdate${km.id}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Khuyến Mãi</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" hidden>
+                                            <label  class="form-label">Id
+                                                <span>*</span></label>
+                                            <input value="${km.id}" name="id" id="id" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Mã
+                                                        <span>*</span></label>
+                                                    <input value="${km.maKhuyenMai}" name="ma" id="maUpdate${km.id}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Tên Khuyến Mãi
+                                                        <span>*</span></label>
+                                                    <input value="${km.ten}" name="ten" id="tenUpdate${km.id}" class="form-control"/>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Ngày Bắt Đầu
+                                                        <span>*</span></label>
+                                                    <input type="datetime-local" value="${km.ngayBatDau}" name="ngayBatDau" id="tenUpdate${km.id}" class="form-control"/>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Ngày Kết Thúc
+                                                        <span>*</span></label>
+                                                    <input type="datetime-local" value="${km.ngayKetThuc}" name="ngayKetThuc" id="tenUpdate${km.id}" class="form-control"/>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Giá Trị Giảm
+                                                        <span>*</span></label>
+                                                    <input value="${km.giaTriGiam}" name="giaTriGiam" id="tenUpdate${km.id}" class="form-control"/>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Mô Tả
+                                                        <span>*</span></label>
+                                                    <input value="${km.moTa}" name="moTa" id="tenUpdate${km.id}" class="form-control"/>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label  class="form-label">Trạng Thái
+                                                    <span>*</span></label>
+                                                <select name="trangThai" id="trangThaiUpdate${km.id}" class="form-control">
+                                                    <option value="true">Hoạt động</option>
+                                                    <option value="false">Không hoạt động</option>
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Thoát
+                                        </button>
+                                        <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateKhuyenMai(${km.id})">Lưu</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </c:forEach>
@@ -178,6 +277,7 @@
                 trangThai: trangThai,
             },
             success: function (response) {
+
                 if (response === "ok") {
                     window.location.reload(); // Load lại trang nếu thành công
                 } else if (response === "errorMa") {
@@ -186,6 +286,60 @@
                     alert("Trùng Tên");
                 } else  if(ngayBatDau>ngayKetThuc){
                     alert("Ngày bắt đầu phải trước ngày kết thúc.")
+                } else if (response === "errorNgayKT"){
+                    alert("Ngày kết thúc phải sau thời gian nhập vào")
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+            }
+        });
+
+    }
+    function updateKhuyenMai(id) {
+        var maKhuyenMai = document.getElementById("maKhuyenMai" + id).value;
+        var ten = document.getElementById("ten"+ id).value;
+        var giaTriGiam = document.getElementById("giaTriGiam"+ id).value;
+        var ngayBatDau = document.getElementById("ngayBatDau"+ id).value;
+        var ngayKetThuc = document.getElementById("ngayKetThuc"+ id).value;
+        var moTa = document.getElementById("moTa"+ id).value;
+        var trangThai = document.getElementById("trangThai"+ id).value;
+        console.log(maKhuyenMai);
+        console.log(ten);
+        console.log(giaTriGiam);
+        console.log(ngayBatDau);
+        console.log(ngayKetThuc);
+        console.log(moTa);
+        console.log(trangThai);
+        if (maKhuyenMai.trim() === "" || ten.trim() === "" || giaTriGiam === "" || ngayBatDau === "" || ngayKetThuc ==="" || moTa === "") {
+            alert("Vui lòng điền đầy đủ thông tin cho các trường dữ liệu.");
+            return false;
+        }
+        console.log(ma);
+        // if (ma.trim() === "" || ten.trim() === "") {
+        //     alert("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+        //     return false;
+        // }
+        $.ajax({
+            url: '/khuyen-mai/update',
+            type: 'POST',
+            data: {
+                id: id,
+                maKhuyenMai: maKhuyenMai,
+                ten: ten,
+                giaTriGiam: giaTriGiam,
+                ngayBatDau: ngayBatDau,
+                ngayKetThuc: ngayKetThuc,
+                moTa: moTa,
+                trangThai: trangThai,
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    window.location.reload(); // Load lại trang nếu thành công
+                } else if (response === "errorMa") {
+                    alert("Mã trùng");
+                } else if (response === "errorTen") {
+                    alert("Trùng Tên");
                 }
             },
             error: function (error) {

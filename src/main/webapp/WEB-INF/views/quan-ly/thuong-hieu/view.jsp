@@ -167,7 +167,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </td>
                 </tr>
             </c:forEach>
@@ -241,10 +240,11 @@
 
 
         console.log(ma);
-        // if (ma.trim() === "" || ten.trim() === "") {
-        //     alert("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
-        //     return false;
-        // }
+        if (ma.trim() === "" || ten.trim() === "") {
+            alert("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+            return false;
+        }
+
         $.ajax({
             url: '/thuong-hieu/update',
             type: 'POST',

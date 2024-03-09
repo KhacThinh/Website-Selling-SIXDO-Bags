@@ -103,10 +103,16 @@ public class KhuyenMaiController {
         System.out.println(maKhuyenMai);
         KhuyenMai km1 = khuyenMaiRepository.searchKhuyenMaiByMa(maKhuyenMai);
         KhuyenMai km2 = khuyenMaiRepository.searchKhuyenMaiByTen(ten);
+//        KhuyenMai km3 = khuyenMaiRepository.searchNgayBD(ngayBatDau);
+//        KhuyenMai km4 = khuyenMaiRepository.searchNgayKT(ngayKetThuc);
         System.out.println(km1);
         System.out.println(km2);
         System.out.println(trangThai);
+        LocalDateTime currentTime = LocalDateTime.now();
 
+        if(ngayKetThuc.isBefore(currentTime)){
+            return ResponseEntity.ok("errorNgayKT");
+        }
         if (km1 == null && km2 == null) {
             KhuyenMai khuyenMai = new KhuyenMai();
             khuyenMai.setMaKhuyenMai(maKhuyenMai);
@@ -123,6 +129,31 @@ public class KhuyenMaiController {
         } else {
             return ResponseEntity.ok("errorTen");
         }
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> suaThuongHieu(@RequestParam("id") Integer id,
+                                           @RequestParam("maKhuyenMai") String maKhuyenMai,
+                                           @RequestParam("ten") String ten,
+                                           @RequestParam("giaTriGiam") double giaTriGiam,
+                                           @RequestParam("ngayBatDau") LocalDateTime ngayBatDau,
+                                           @RequestParam("ngayKetThuc") LocalDateTime ngayKetThuc,
+                                           @RequestParam("moTa") String moTa,
+                                           @RequestParam("trangThai") boolean trangThai, Model model) {
+
+        KhuyenMai khuyenMai = khuyenMaiService.getKhuyenMai(id);
+
+        khuyenMai.setMaKhuyenMai(maKhuyenMai);
+        khuyenMai.setTen(ten);
+        khuyenMai.setGiaTriGiam(giaTriGiam);
+        khuyenMai.setNgayBatDau(ngayBatDau);
+        khuyenMai.setNgayKetThuc(ngayKetThuc);
+        khuyenMai.setTen(moTa);
+        khuyenMai.setTrangThai(trangThai);
+
+        khuyenMaiService.editKhuyenMai(id, khuyenMai);
+
+        return ResponseEntity.ok("ok");
     }
 
     @PostMapping("/xoa-khuyen-mai")
