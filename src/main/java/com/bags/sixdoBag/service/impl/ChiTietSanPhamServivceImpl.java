@@ -37,6 +37,11 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     }
 
     @Override
+    public List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham) {
+        return chiTietSanPhamRepository.getChiTietSanPhamById(idSanPham);
+    }
+
+    @Override
     public List<ChiTietSanPham> getChiTietSanPhams() {
         List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.findAll();
         return chiTietSanPhams;
@@ -91,6 +96,12 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         return chiTietSanPhamRepository.listSearch(tenMa);
     }
 
+    @Override
+    public ChiTietSanPham searchByMaSanPham(String ma) {
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.searchSanPhamByMa(ma).orElse(null);
+        return chiTietSanPham;
+    }
+
 
     @Override
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String thuongHieu, String mauSac, String doiTuongSuDung) {
@@ -103,7 +114,7 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
 
                     boolean tenChatLieu = chatLieu.isEmpty() || sanPham.getChatLieu().equals(chatLieu);
                     boolean tenMauSac = mauSac.isEmpty() || mauSac.equals(Objects.nonNull(mauSacObj) ? mauSacObj.getTenMauSac() : "");
-                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(Objects.nonNull(dtsd)  ? dtsd.getTenDoiTuongSuDung() : "");
+                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(Objects.nonNull(dtsd) ? dtsd.getTenDoiTuongSuDung() : "");
                     boolean tenThuongHieu = thuongHieu.isEmpty() || thuongHieu.equals(Objects.nonNull(th) ? th.getTen() : "");
 
                     return tenChatLieu && tenThuongHieu && tenMauSac && tenDoiTuong;
@@ -111,6 +122,36 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
                 .collect(Collectors.toList());
 
         return chiTietSanPhams;
+    }
+
+    @Override
+    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung) {
+        List<ChiTietSanPham> chiTietSanPhams = getChiTietSanPhams().stream()
+                .filter(ctsp -> {
+                    SanPham sanPham = ctsp.getSanPham();
+                    MauSac mauSacObj = ctsp.getMauSac();
+                    DoiTuongSuDung dtsd = sanPham.getDoiTuongSuDung();
+                    ThuongHieu th = sanPham.getThuongHieu();
+
+                    boolean tenChatLieu = chatLieu.isEmpty() || sanPham.getChatLieu().equals(chatLieu);
+                    boolean tenMauSac = mauSac.isEmpty() || mauSac.equals(Objects.nonNull(mauSacObj) ? mauSacObj.getTenMauSac() : "");
+                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(Objects.nonNull(dtsd) ? dtsd.getTenDoiTuongSuDung() : "");
+
+                    return tenChatLieu && tenMauSac && tenDoiTuong;
+                })
+                .collect(Collectors.toList());
+
+        return chiTietSanPhams;
+    }
+
+    @Override
+    public void updateSoLuongSanPham(int newSoLuong, int idCtSanPham) {
+        chiTietSanPhamRepository.updateSoLuongSanPham(newSoLuong, idCtSanPham);
+    }
+
+    @Override
+    public int getSoLuongSanPhamById(int idCtSanPham) {
+        return chiTietSanPhamRepository.getSoLuongSanPhamById(idCtSanPham);
     }
 
 

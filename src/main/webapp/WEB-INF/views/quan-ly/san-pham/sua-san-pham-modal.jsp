@@ -6,47 +6,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal${sp.maSanPham}" tabindex="-1"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="exampleModallll" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel -edit">Thông Tin Sản
+                <h1 class="modal-title fs-5" id="exampleModalLabel-edit">Thông Tin Sản
                     Phẩm</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editProductForm">
+                <form id="uploadForm" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="tenSanPham">Mã<span
+                                <label for="idSanPhamSua">Mã<span
                                         class="required">*</span></label>
-                                <input type="hidden" id="idSanPham" value="${sp.id}"
+                                <input type="hidden" id="idSanPhamSua"
                                        class="form-control"/>
-                                <input type="text" id="maSanPham" value="${sp.maSanPham}"
+                                <input type="text" id="maSanPhamSua"
                                        class="form-control" readonly/>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="tenSanPham">Tên Sản Phẩm<span
+                                <label for="tenSanPhamSua">Tên Sản Phẩm<span
                                         class="required">*</span></label>
-                                <input type="text" id="tenSanPham"
-                                       class="form-control" value="${sp.tenSanPham}"/>
-                                <span id="tenSanPhamError"
+                                <input type="text" id="tenSanPhamSua"
+                                       class="form-control"/>
+                                <span id="tenSanPhamErrorr"
                                       class="error text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="chatLieu">Chất Liệu<span
+                                <label for="chatLieuSua">Chất Liệu<span
                                         class="required">*</span></label>
-                                <input type="text" id="chatLieu"
-                                       class="form-control" value="${sp.chatLieu}"/>
-                                <span id="chatLieuError"
+                                <input type="text" id="chatLieuSua"
+                                       class="form-control"/>
+                                <span id="chatLieuErrorr"
                                       class="error text-danger"></span>
                             </div>
                         </div>
@@ -54,58 +53,60 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="xuatXu">Xuất Xứ<span
+                                <label for="xuatXuSua">Xuất Xứ<span
                                         class="required">*</span></label>
-                                <input type="text" id="xuatXu" class="form-control" value="${sp.xuatXu}"/>
-                                <span id="xuatXuError" class="error text-danger"></span>
+                                <input type="text" id="xuatXuSua" class="form-control"/>
+                                <span id="xuatXuErrorr" class="error text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label for="hinhAnh">Ảnh</label>
-                                <input type="file" id="hinhAnh" name="hinhAnh" class="form-control"/>
-                                <img src="${sp.anh}" alt="Ảnh sản phẩm" id="previewImage"
-                                     style="max-width: 100%; height: 100px;"/>
+<%--                                <label for="hinhAnhSua">Ảnh</label>--%>
+<%--                                <input type="file" id="hinhAnhSua" name="hinhAnhSua"--%>
+<%--                                       class="form-control"/>--%>
+<%--                                <img alt="Ảnh sản phẩm" id="previewImage"--%>
+<%--                                     style="max-width: 100%; height: 100px;"/>--%>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kichThuoc">Kích Thước<span class="required">*</span></label>
-                                <input type="text" id="kichThuoc" class="form-control" value="${sp.kichThuoc}"/>
-                                <span id="kichThuocError"
+                                <label for="kichThuocSua">Kích Thước<span
+                                        class="required">*</span></label>
+                                <input type="text" id="kichThuocSua" class="form-control"
+                                       value="${sp.kichThuoc}"/>
+                                <span id="kichThuocErrorr"
                                       class="error text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label for="khoiLuong">Khối Lượng (gram)<span class="required">*</span></label>
-                                <fmt:formatNumber pattern="###" value="${sp.khoiLuong}"
-                                                  var="khoiLuongSua"></fmt:formatNumber>
-                                <input type="number" id="khoiLuong" min="0" class="form-control"
-                                       value="${khoiLuongSua}"/>
-                                <span id="khoiLuongError" class="error text-danger"></span>
+                                <label for="khoiLuongSua">Khối Lượng (gram)<span
+                                        class="required">*</span></label>
+                                <input type="number" id="khoiLuongSua" min="0"
+                                       class="form-control"/>
+                                <span id="khoiLuongErrorr" class="error text-danger"></span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="moTa">Mô Tả</label>
-                                <textarea id="moTa" class="form-control">${sp.moTa}</textarea>
+                                <label for="moTaSua">Mô Tả</label>
+                                <textarea id="moTaSua" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
-                                <select id="idThoiGianBaoHanh" class="form-control">
+                                <label for="idThoiGianBaoHanhSua">Thời Gian Bảo Hành</label>
+                                <select id="idThoiGianBaoHanhSua" class="form-control">
                                     <option value="">Chọn Thời Gian Bảo Hành</option>
                                     <c:forEach items="${thoiGianBaoHanhForm}" var="tgbhForm">
-                                        <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''} >${tgbhForm.thoiGian}</option>
+                                        <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="idThuongHieu">Thương Hiệu</label>
-                                <select id="idThuongHieu" class="form-control">
+                                <label for="idThuongHieuSua">Thương Hiệu</label>
+                                <select id="idThuongHieuSua" class="form-control">
                                     <option value="">Chọn Thương Hiệu</option>
                                     <c:forEach items="${thuongHieuForm}" var="thForm">
-                                        <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''} >${thForm.ten}</option>
+                                        <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -114,152 +115,193 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idDanhMuc">Danh Mục</label>
-                                <select id="idDanhMuc" class="form-control">
+                                <label for="idDanhMucSua">Danh Mục</label>
+                                <select id="idDanhMucSua" class="form-control">
                                     <option value="">Chọn Danh Mục</option>
                                     <c:forEach items="${danhMucForm}" var="dmForm">
-                                        <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''} >${dmForm.tenDanhMuc}</option>
+                                        <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
-                                <select id="idDoiTuongSuDung" class="form-control">
+                                <label for="idDoiTuongSuDungSua">Đối Tượng Sử Dụng</label>
+                                <select id="idDoiTuongSuDungSua" class="form-control">
                                     <option value="">Chọn Đối Tượng Sử Dụng</option>
                                     <c:forEach items="${doiTuongSuDungForm}" var="dtsdForm">
-                                        <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''} >${dtsdForm.tenDoiTuongSuDung}</option>
+                                        <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Thoát
+                        </button>
+                        <button type="submit" class="btn btn-primary edit-product-btn"
+                                id="editSanPham">Sửa
+                        </button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Thoát
-                </button>
-                <button type="button" class="btn btn-primary" id="editSanPham">Sửa</button>
             </div>
         </div>
     </div>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-    document.getElementById('editProductForm').addEventListener('click', function (event) {
-        event.preventDefault();
 
-        var idSanPham = document.getElementById('idSanPham').value;
-        var tenSanPham = document.getElementById('tenSanPham').value.trim();
-        var chatLieu = document.getElementById('chatLieu').value.trim();
-        var xuatXu = document.getElementById('xuatXu').value.trim();
-        var khoiLuong = document.getElementById('khoiLuong').value.trim();
-        var kichThuoc = document.getElementById('kichThuoc').value.trim();
-        var hinhAnh = $('#hinhAnh')[0].files[0];
-        var idThoiGianBaoHanh = document.getElementById('idThoiGianBaoHanh').value;
-        var idThuongHieu = document.getElementById('idThuongHieu').value;
-        var idDanhMuc = document.getElementById('idDanhMuc').value;
-        var idDoiTuongSuDung = document.getElementById('idDoiTuongSuDung').value;
-        var moTa = document.getElementById('moTa').value.trim();
+    document.addEventListener('DOMContentLoaded', function () {
+        var editButtons = document.querySelectorAll('.btn-modal-sua');
+        editButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var id = this.getAttribute('data-id');
+                sendDecodeText(id);
+            });
+        });
+    });
+
+    function sendDecodeText(decodeText) {
+        $.ajax({
+            type: "POST",
+            url: "/san-pham/findById",
+            data: {idSanPham: decodeText},
+            success: function (response) {
+                $('#idSanPhamSua').val(response.id)
+                $('#maSanPhamSua').val(response.maSanPham);
+                $('#tenSanPhamSua').val(response.tenSanPham);
+                $('#chatLieuSua').val(response.chatLieu);
+                $('#xuatXuSua').val(response.xuatXu);
+                $('#kichThuocSua').val(response.kichThuoc);
+                $('#khoiLuongSua').val(response.khoiLuong);
+                $('#moTaSua').val(response.moTa);
+                $('#idThoiGianBaoHanhSua').val(response.thoiGianBaoHanh.id);
+                $('#idThuongHieuSua').val(response.thuongHieu.id);
+                $('#idDanhMucSua').val(response.danhMuc.id);
+                $('#idDoiTuongSuDungSua').val(response.doiTuongSuDung.id);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+
+    document.getElementById('editSanPham').addEventListener('click', function (event) {
+        event.preventDefault();
+        var idSanPham = $("#idSanPhamSua").val();
+        var tenSanPham = $("#tenSanPhamSua").val();
+        var maSanPham = $("#maSanPhamSua").val();
+        var chatLieu = $("#chatLieuSua").val();
+        var xuatXu = $("#xuatXuSua").val();
+        var khoiLuong = $("#khoiLuongSua").val();
+        var kichThuoc = $("#kichThuocSua").val();
+        var idThoiGianBaoHanh = $("#idThoiGianBaoHanhSua").val();
+        var idThuongHieu = $("#idThuongHieu").val();
+        var idDanhMuc = $("#idDanhMucSua").val();
+        // var idDoiTuongSuDung = $("#idDoiTuongSuDungSua option:selected" ).text(); // cái này là lấy nam hay nữ
+        var idDoiTuongSuDung = $("#idDoiTuongSuDungSua").val();  // cái này là lấy được value
+        var moTa = $("#moTaSua").val()
 
         let hasError = false;
 
         if (tenSanPham === '') {
-            document.getElementById('tenSanPhamError').innerText = 'Vui lòng nhập Tên Sản Phẩm.';
+            document.getElementById('tenSanPhamErrorr').innerText = 'Vui lòng nhập Tên Sản Phẩm.';
             hasError = true;
         } else if (tenSanPham.length > 100) {
-            document.getElementById('tenSanPhamError').innerText = 'Tên Sản Phẩm không được vượt quá 100 ký tự.';
+            document.getElementById('tenSanPhamErrorr').innerText = 'Tên Sản Phẩm không được vượt quá 100 ký tự.';
             hasError = true;
         } else {
-            document.getElementById('tenSanPhamError').innerText = '';
+            document.getElementById('tenSanPhamErrorr').innerText = '';
         }
 
         if (chatLieu === '') {
-            document.getElementById('chatLieuError').innerText = 'Vui lòng nhập Chất Liệu.';
+            document.getElementById('chatLieuErrorr').innerText = 'Vui lòng nhập Chất Liệu.';
             hasError = true;
         } else if (chatLieu.length > 200) {
-            document.getElementById('chatLieuError').innerText = 'Chất Liệu không được vượt quá 200 ký tự.';
+            document.getElementById('chatLieuErrorr').innerText = 'Chất Liệu không được vượt quá 200 ký tự.';
             hasError = true;
         } else {
-            document.getElementById('chatLieuError').innerText = '';
+            document.getElementById('chatLieuErrorr').innerText = '';
         }
 
         if (xuatXu === '') {
-            document.getElementById('xuatXuError').innerText = 'Vui lòng nhập Xuất Xứ.';
+            document.getElementById('xuatXuErrorr').innerText = 'Vui lòng nhập Xuất Xứ.';
             hasError = true;
         } else if (xuatXu.length > 100) {
-            document.getElementById('xuatXuError').innerText = 'Xuất xứ không được vượt quá 100 ký tự.';
+            document.getElementById('xuatXuErrorr').innerText = 'Xuất xứ không được vượt quá 100 ký tự.';
             hasError = true;
         } else {
-            document.getElementById('xuatXuError').innerText = '';
+            document.getElementById('xuatXuErrorr').innerText = '';
         }
 
         if (khoiLuong === '') {
             hasError = true;
-            document.getElementById('khoiLuongError').innerText = 'Vui lòng nhập Khối Lượng.';
+            document.getElementById('khoiLuongErrorr').innerText = 'Vui lòng nhập Khối Lượng.';
         } else if (isNaN(khoiLuong)) {
-            document.getElementById('khoiLuongError').innerText = 'Khối Lượng phải là số.';
+            document.getElementById('khoiLuongErrorr').innerText = 'Khối Lượng phải là số.';
             hasError = true;
         } else if (khoiLuong <= 0) {
-            document.getElementById('khoiLuongError').innerText = 'Khối Lượng phải lớn hơn 0.';
+            document.getElementById('khoiLuongErrorr').innerText = 'Khối Lượng phải lớn hơn 0.';
             hasError = true;
         } else {
-            document.getElementById('khoiLuongError').innerText = '';
+            document.getElementById('khoiLuongErrorr').innerText = '';
         }
 
         if (kichThuoc === '') {
-            document.getElementById('kichThuocError').innerText = 'Vui lòng nhập Kích Thước.';
+            document.getElementById('kichThuocErrorr').innerText = 'Vui lòng nhập Kích Thước.';
             hasError = true;
         } else if (kichThuoc.length > 200) {
-            document.getElementById('kichThuocError').innerText = 'Kích Thước không được vượt quá 200 ký tự.';
+            document.getElementById('kichThuocErrorr').innerText = 'Kích Thước không được vượt quá 200 ký tự.';
             hasError = true;
         } else {
-            document.getElementById('kichThuocError').innerText = '';
+            document.getElementById('kichThuocErrorr').innerText = '';
         }
-            alert("hello")
 
         if (!hasError) {
-            var formData = new FormData();
-            formData.append('maSanPham', idSanPham);
-            formData.append('tenSanPham', tenSanPham);
-            formData.append('chatLieu', chatLieu);
-            formData.append('xuatXu', xuatXu);
-            formData.append('khoiLuong', khoiLuong);
-            formData.append('kichThuoc', kichThuoc);
-            formData.append('hinhAnh', hinhAnh);
-            formData.append('moTa', moTa);
-            formData.append('idThoiGianBaoHanh', idThoiGianBaoHanh);
-            formData.append('idThuongHieu', idThuongHieu);
-            formData.append('idDanhMuc', idDanhMuc);
-            formData.append('idDoiTuongSuDung', idDoiTuongSuDung);
-
-
-            var jsonObject = {};
-            formData.forEach(function (value, key) {
-                jsonObject[key] = value;
-            });
-            // Sử dụng AJAX để gửi dữ liệu đến controller
-            $.ajax({
-                type: 'PUT',
-                url: '/san-pham/edit/' + idSanPham,
-                data: JSON.stringify(jsonObject),
-                contentType: 'application.json',
-                processData: false
-            })
-                .done(function (data) {
-                    // Xử lý kết quả trả về từ controller nếu cần
-                    console.log(data);
-                    // Sau khi sửa thành công, có thể redirect hoặc làm mới trang
-                    window.location.href = '/san-pham';
-                })
-                .fail(function (data) {
-                    // Xử lý khi gặp lỗi
-                    console.log('Có lỗi xảy ra.');
-                });
+            sendDataToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
         }
     });
+
+    function sendDataToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung) {
+        const data = {
+            idSanPham: idSanPham,
+            maSanPham: maSanPham,
+            tenSanPham: tenSanPham,
+            chatLieu: chatLieu,
+            xuatXu: xuatXu,
+            khoiLuong: khoiLuong,
+            kichThuoc: kichThuoc,
+            moTa: moTa,
+            idThoiGianBaoHanh: idThoiGianBaoHanh,
+            idThuongHieu: idThuongHieu,
+            idDanhMuc: idDanhMuc,
+            idDoiTuongSuDung: idDoiTuongSuDung
+        };
+
+        // var formData = new FormData();
+        // var file = $('#hinhAnhSua')[0].files[0];
+        // formData.append('idSanPham', idSanPham);
+        // formData.append('hinhAnh', file);
+        // formData.append('sanPhamRequest', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            url: '/san-pham/sua?idSanPham=' + idSanPham,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            processData: false,
+            dataType: 'json',
+            success: function (response) {
+                window.location.href = '/san-pham';
+            },
+            error: function (xhr, status, error) {
+                // Xử lý khi gặp lỗi
+                console.log('Có lỗi xảy ra: ' + error);
+            }
+        });
+    }
 
 </script>

@@ -27,6 +27,7 @@
             overflow-x: hidden;
             overflow-y: auto;
             position: relative; /* Thiết lập vị trí tương đối */
+            font-size: 13px;
         }
 
         /* Cố định thead */
@@ -45,6 +46,7 @@
         .container {
             margin-top: 50px;
             margin-right: 50px;
+            width: 1200px;
         }
 
 
@@ -103,9 +105,12 @@
             <tr>
                 <th scope="col">STT</th>
                 <th scope="col">MÃ HOÁ ĐƠN</th>
+                <th scope="col">TÊN KHÁCH HÀNG</th>
+                <th scope="col">SDT KHÁCH HÀNG</th>
                 <th scope="col">THỜI GIAN TẠO</th>
                 <th scope="col">SỐ LƯỢNG SẢN PHẨM</th>
                 <th scope="col">TỔNG TIỀN</th>
+                <th scope="col">TRẠNG THÁI</th>
                 <th scope="col">HOẠT ĐỘNG</th>
             </tr>
             </thead>
@@ -114,10 +119,15 @@
                 <tr>
                     <th scope="col">${i.index + 1}</th>
                     <td>${hd.key.maHoaDon}</td>
+                    <td>${hd.key.tenNguoiNhan}</td>
+                    <td>${hd.key.sdtNguoiNhan}</td>
                     <td>${hd.key.thoiGianTao}</td>
                     <td>${hd.value.size()}</td>
                     <fmt:formatNumber pattern="#,###" var="tongTien" value="${hd.key.tongTien}"></fmt:formatNumber>
                     <td>${tongTien}</td>
+
+                    <td>${hd.key.trangThai==0?"ĐÃ THANH TOÁN":"HÓA ĐƠN TẠM"}</td>
+
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>

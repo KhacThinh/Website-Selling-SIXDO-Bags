@@ -1,31 +1,21 @@
 package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.ChiTietSanPhamRequest;
-import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.*;
-import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
-import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +38,22 @@ public class ChiTietSanPhamController {
 
     private final DoiTuongSuDungService doiTuongSuDungService;
 
+
+    @PostMapping("/detail")
+    public ResponseEntity<?> detail(@RequestParam("id") Integer id) {
+        System.out.println(id);
+        return new ResponseEntity<>(chiTietSanPhamServivce.getChiTietSanPham(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/detailCTSP")
+    public String detailSanPhamById(Model model, @RequestParam("id") int id) {
+        System.out.println("idddddddddđffffffffffffff" + id);
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhamById(id);
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("chiTietSanPham", new ChiTietSanPham());
+        System.out.println(listCTSP.size() + "sizzzzzzzzzzz");
+        return "/quan-ly/chi-tiet-san-pham/view";
+    }
 
     @GetMapping("")
     public String getKhuyenMai(Model model) {
@@ -93,11 +99,6 @@ public class ChiTietSanPhamController {
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
     }
 
-    @PostMapping("/detail")
-    public ResponseEntity<?> detail(@RequestParam("id") Integer id) {
-        System.out.println(id);
-        return new ResponseEntity<>(chiTietSanPhamServivce.getChiTietSanPham(id), HttpStatus.OK);
-    }
 
     @PostMapping("/add")
     public String add(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
@@ -156,4 +157,11 @@ public class ChiTietSanPhamController {
 //    public ResponseEntity<?> deleteKhuyeMai(@PathVariable int id) {
 //        return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);
 //    }
+
+    @GetMapping("ctsp")
+    @ResponseBody
+    public List<ChiTietSanPham> chiTietSanPhams() {
+        List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamServivce.getChiTietSanPhams();
+        return chiTietSanPhams;
+    }
 }

@@ -4,9 +4,7 @@ import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.service.*;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -105,60 +103,30 @@ public class SanPhamController {
         return "redirect:/san-pham";
     }
 
-    @GetMapping("abc")
-    public ResponseEntity<?> test(){
-        System.out.println("Hello");
-        return new ResponseEntity<String>("hello", HttpStatus.OK);
-    }
-
-
-//    @PutMapping("/edit")
-//    public ResponseEntity<Object> editSanPham(
-////            @PathVariable("id") int id,
-//            @RequestBody SanPhamRequest sanPhamRequest
-////            @RequestParam("hinhAnh") MultipartFile hinhAnh
-//    ) {
-//        System.out.println(sanPhamRequest.getMaSanPham());
-//        System.out.println("Hello");
-////        System.out.println(id);?
-//        // Lưu trữ tên ảnh cũ để xóa sau khi cập nhật ảnh mới
-////        String oldAnh = sanPhamService.getSanPham(id).getAnh();
-//
-////        if (!hinhAnh.isEmpty()) {
-////            try {
-////                byte[] bytes = hinhAnh.getBytes();
-////                String UPLOAD_DIR = "src/main/resources/static/images/san-pham/";
-////                // Lưu ảnh mới vào thư mục
-////                BufferedOutputStream stream =
-////                        new BufferedOutputStream(new FileOutputStream(new File(UPLOAD_DIR + hinhAnh.getOriginalFilename())));
-////                stream.write(bytes);
-////                System.out.println(hinhAnh.getOriginalFilename());
-////                sanPhamRequest.setAnh("../static/images/san-pham/" + hinhAnh.getOriginalFilename());
-////                stream.close();
-////
-////            } catch (IOException e) {
-////                e.printStackTrace();
-////            }
-////        }
-//
-////        sanPhamService.editSanPham(id, sanPhamRequest);
-//
-//        return new ResponseEntity<>(null);
-//    }
-
-    @PutMapping("/san-pham/edit/{idSanPham}")
-    public ResponseEntity<String> editSanPham(@PathVariable("idSanPham") String idSanPham, @RequestBody SanPhamRequest sanPhamRequest) {
-        // Thực hiện xử lý dữ liệu được gửi từ phía client ở đây
-        // idSanPham là ID của sản phẩm cần chỉnh sửa
-        // sanPhamRequest chứa dữ liệu của sản phẩm được gửi từ phía client
-
-        // Trả về thông điệp hoặc mã trạng thái phản hồi cho phía client
-        return ResponseEntity.ok("Sản phẩm đã được chỉnh sửa thành công.");
-    }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteKhuyeMai(@PathVariable int id) {
         return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/findById")
+    public @ResponseBody
+    SanPham findBySanPham(@RequestParam(value = "idSanPham") Integer id) {
+        System.out.println(id);
+        System.out.println("hello");
+        SanPham sanPham = sanPhamService.getSanPham(id);
+        return sanPham;
+    }
+
+    @PostMapping("/sua")
+    public @ResponseBody
+    SanPham hello
+            (@RequestParam(value = "idSanPham") Integer id,
+             @RequestBody SanPhamRequest sanPhamRequest
+            ) {
+        System.out.println(id);
+        String oldAnh = sanPhamService.getSanPham(id).getAnh();
+        sanPhamRequest.setAnh(oldAnh);
+        return sanPhamService.editSanPham(id, sanPhamRequest);
     }
 }

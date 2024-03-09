@@ -129,6 +129,9 @@ trang_thai int,
 mat_khau varchar(100),
 CONSTRAINT FK_TaiKhoan FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
+select * from khach_hang
+ALTER TABLE khach_hang
+ADD UNIQUE (sdt);
 
 create table dia_chi_khach_hang(
 id int IDENTITY(1, 1) PRIMARY KEY,

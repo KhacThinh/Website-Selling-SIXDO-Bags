@@ -11,6 +11,8 @@ public interface ChiTietSanPhamServivce {
 
     public ChiTietSanPham getChiTietSanPham(Integer idChiTietSanPham);
 
+    List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham);
+
     public List<ChiTietSanPham> getChiTietSanPhams();
 
     public ChiTietSanPham addChiTietSanPham(ChiTietSanPham chiTietSanPham);
@@ -21,6 +23,15 @@ public interface ChiTietSanPhamServivce {
 
     public List<ChiTietSanPham> searchChiTietSanPhams(String tenMa);
 
+    public ChiTietSanPham searchByMaSanPham(String ma);
+
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String thuongHieu, String mauSac, String doiTuongSuDung);
+
+    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung);
+
+    void updateSoLuongSanPham(int newSoLuong, int idCtSanPham);
+
+    int getSoLuongSanPhamById(int idCtSanPham);
+
 
 }

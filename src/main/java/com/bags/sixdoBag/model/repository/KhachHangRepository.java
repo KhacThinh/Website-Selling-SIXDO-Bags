@@ -14,4 +14,6 @@ public interface KhachHangRepository extends JpaRepository<KhachHang,Integer> {
     List<KhachHang> findKhachHangByAll();
     @Query(value = "select kh from KhachHang kh where kh.email =:email ")
     KhachHang searchKh(String email);
+    @Query(value = "select kh from KhachHang kh where kh.sdt =:sdt")
+    KhachHang searchBySdt(String sdt);
 }

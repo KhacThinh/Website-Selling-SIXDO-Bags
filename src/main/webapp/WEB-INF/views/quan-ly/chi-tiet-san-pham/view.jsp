@@ -43,8 +43,10 @@
         }
 
         .container {
-            margin-top: 50px;
+            margin-top: 10px;
             margin-right: 50px;
+            width: 1200px;
+
         }
     </style>
 </head>
@@ -59,10 +61,12 @@
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
+
             <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
         </button>
 
         <!-- Modal add -->
+
         <jsp:include page="add-chi-tiet-san-pham.jsp"/>
 
 
@@ -147,6 +151,7 @@
             <c:forEach items="${listCTSP}" var="sp">
             <tr>
                 <th scope="col">${sp.id}</th>
+
                 <td><img src="${pageContext.request.contextPath}${sp.hinhAnh}" alt="" width="50px" height="50px"></td> <!-- Thêm dòng này -->
                 <td>${sp.ma}</td>
                 <td>${sp.sanPham.tenSanPham}</td>
@@ -221,14 +226,13 @@
             </div>
         </div>
     </div>
-</div>
-<script>
+</div><script>
     // Function để hiển thị dữ liệu chi tiết sản phẩm trong modal
     function openModal(productId) {
         // Gửi yêu cầu đến server để lấy dữ liệu chi tiết sản phẩm
         $.ajax({
             type: "POST",
-            url: "chi-tiet-san-pham/detail",
+            url: "/chi-tiet-san-pham/detail",
             data: { id: productId }, // Chuyển tham số id qua cơ thể của yêu cầu
             success: function(response) {
                 // Hiển thị dữ liệu chi tiết trong modal
@@ -242,24 +246,40 @@
     }
 
 
-        // Function để render dữ liệu chi tiết vào modal
-        function renderChiTiet(chiTietSanPham) {
-            // Compile template Handlebars
-            var source = document.getElementById("detail-template").innerHTML;
-            var template = Handlebars.compile(source);
+    // Function để render dữ liệu chi tiết vào modal
+    function renderChiTiet(chiTietSanPham) {
+        // Compile template Handlebars
+        var source = document.getElementById("detail-template").innerHTML;
+        var template = Handlebars.compile(source);
 
-            // Hiển thị dữ liệu chi tiết sản phẩm trong modal
-            var modalBody = $('#detailBody');
-            modalBody.empty(); // Xóa dữ liệu cũ trong modal
+        // Hiển thị dữ liệu chi tiết sản phẩm trong modal
+        var modalBody = $('#detailBody');
+        modalBody.empty(); // Xóa dữ liệu cũ trong modal
 
-            // Thêm dữ liệu vào modal bằng cách sử dụng template Handlebars
-            modalBody.append(template(chiTietSanPham));
-        }
-
-
+        // Thêm dữ liệu vào modal bằng cách sử dụng template Handlebars
+        modalBody.append(template(chiTietSanPham));
+    }
 
 
 
+
+
+</script>
+<script id="detail-template" type="text/x-handlebars-template">
+    <tr>
+        <td>{{id}}</td>
+        <td><img src="{{hinhAnh}}" alt="" width="100px" height="100px"></td>
+        <td>{{ma}}</td>
+        <td>{{sanPham.tenSanPham}}</td>
+        <td>{{mauSac.tenMauSac}}</td>
+        <td>{{soLuong}}</td>
+        <td>{{thoiGian}}</td>
+        <td>{{giaNhap}}</td>
+        <td>{{giaBan}}</td>
+        <td>{{khuyenMai.maKhuyenMai}}</td>
+
+
+    </tr>
 </script>
 <script id="detail-template" type="text/x-handlebars-template">
     <tr>
@@ -284,10 +304,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
-
-
-
 
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
