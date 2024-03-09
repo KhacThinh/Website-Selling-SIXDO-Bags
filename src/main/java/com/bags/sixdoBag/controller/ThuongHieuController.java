@@ -113,6 +113,36 @@ public class ThuongHieuController {
         }
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> suaThuongHieu(@RequestParam("id") Integer id,
+                                           @RequestParam("ma") String ma,
+                                           @RequestParam("ten") String ten,
+                                           @RequestParam("trangThai") boolean trangThaiTT) {
+        System.out.println(ma);
+        System.out.println(ten);
+        ThuongHieu th1 = thuongHieuRepository.searchThuongHieuByMa(ma);
+        ThuongHieu th2 = thuongHieuRepository.searchThuongHieuByTen(ten);
+        System.out.println(th1);
+        System.out.println(th2);
+
+        ThuongHieu thuongHieu= thuongHieuService.getidThuongHieu(id);
+        System.out.println(thuongHieu);
+
+
+            if (th1 == null && th2== null ) {
+                thuongHieu.setMa(ma);
+                thuongHieu.setTen(ten);
+                thuongHieu.setTrangThai(trangThaiTT);
+               thuongHieuService.editThuongHieu(id,thuongHieu);
+                return ResponseEntity.ok("ok");
+            } else if(th1 !=null && th2== null) {
+                return ResponseEntity.ok("errorMa");
+            }else{
+                return ResponseEntity.ok("errorTen");
+            }
+
+    }
+
     @PostMapping("/xoa-thuong-hieu")
     public ResponseEntity<?> xoaThuongHieu(@RequestBody Map<String, Object> requestBody) {
         Integer idThuongHieu = (Integer) requestBody.get("idThuongHieu");

@@ -96,16 +96,82 @@
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3" ></i>Sửa</a></li>
-
-                            </li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#modalUpdate${th.id}"><i
+                                        class="bi bi-pencil"></i> Sửa
+                                </button>
+                            <li>
                                 <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
                             <a class="dropdown-item delete-color" href="#" onclick="xoaThuongHieu(${th.id})"><i class="bi bi-trash3"></i> Xóa</a>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
+
+<%--                        Modal update--%>
+                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Thương Hiệu</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group" hidden>
+                                                        <label  class="form-label">Id
+                                                            <span>*</span></label>
+                                                        <input value="${th.id}" name="id" id="id" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                    <div class="form-group">
+                                                        <label  class="form-label">Mã
+                                                            <span>*</span></label>
+                                                        <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label  class="form-label">Tên Thương Hiệu
+                                                            <span>*</span></label>
+                                                        <input value="${th.ten}" name="ten" id="tenUpdate${th.id}" class="form-control"/>
+
+                                                    </div>
+                                                </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label  class="form-label">Trạng thái
+                                                            <span>*</span></label>
+                                                        <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Thoát
+                                                </button>
+                                                <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateThuongHieu(${th.id})">Lưu</button>
+                                            </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
                     </td>
+
                 </tr>
             </c:forEach>
             </tbody>
@@ -140,7 +206,7 @@
     function addThuongHieu() {
         var ma = document.getElementById("ma").value;
         var ten = document.getElementById("ten").value;
-        var trangThai = document.getElementById("trangThaiTT").value;
+        var trangThai = document.getElementById("trangThai").value;
         console.log(ma);
         console.log(ten);
         if (ma.trim() === "" || ten.trim() === "") {
@@ -148,7 +214,7 @@
             return false;
         }
         $.ajax({
-            url: '/thuong-hieu/add',
+            url: '/thuong-hieu/update',
             type: 'POST',
             data: {
                 ma: ma,
@@ -170,7 +236,46 @@
         });
 
     }
+
+
+    function updateThuongHieu(id) {
+        var ma = document.getElementById("maUpdate" + id).value;
+        var ten = document.getElementById("tenUpdate" + id).value;
+        var trangThai = document.getElementById("trangThaiUpdate" + id).value;
+
+
+        console.log(ma);
+        // if (ma.trim() === "" || ten.trim() === "") {
+        //     alert("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+        //     return false;
+        // }
+        $.ajax({
+            url: '/thuong-hieu/update',
+            type: 'POST',
+            data: {
+                id: id,
+                ma: ma,
+                ten: ten,
+                trangThai: trangThai,
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    window.location.reload(); // Load lại trang nếu thành công
+                } else if (response === "errorMa") {
+                    alert("Mã trùng");
+                } else if (response === "errorTen") {
+                    alert("Trùng Tên");
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+            }
+        });
+
+    }
 </script>
+
+<
 </body>
 
 </html>
