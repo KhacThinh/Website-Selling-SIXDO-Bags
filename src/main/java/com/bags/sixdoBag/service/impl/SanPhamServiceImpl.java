@@ -1,7 +1,9 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.*;
+import com.bags.sixdoBag.model.repository.QueryJpa;
 import com.bags.sixdoBag.model.repository.SanPhamRepository;
 import com.bags.sixdoBag.service.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class SanPhamServiceImpl implements SanPhamService {
     private final ThuongHieuService thuongHieuService;
     private final DanhMucService danhMucService;
     private final DoiTuongSuDungService doiTuongSuDungService;
+    private QueryJpa queryJpa = new QueryJpa();
 
     @Override
     public SanPham getSanPham(Integer idSanPham) {
@@ -138,5 +141,10 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Override
     public List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu) {
         return sanPhamRepository.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
+    }
+
+    @Override
+    public List<ProductHomeRequest> listHienThiSanPham() {
+        return queryJpa.temp();
     }
 }

@@ -126,7 +126,11 @@
                     <fmt:formatNumber pattern="#,###" var="tongTien" value="${hd.key.tongTien}"></fmt:formatNumber>
                     <td>${tongTien}</td>
 
-                    <td>${hd.key.trangThai==0?"ĐÃ THANH TOÁN":"HÓA ĐƠN TẠM"}</td>
+                    <td>
+                        <font color="${hd.key.trangThai == 0 ? 'green' : '#FF8A33'}">
+                                ${hd.key.trangThai == 0 ? 'ĐÃ THANH TOÁN' : 'HÓA ĐƠN TẠM'}
+                        </font>
+                    </td>
 
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
@@ -138,15 +142,6 @@
                                     <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
                                 </button>
                             </li>
-                                <%--                            <li>--%>
-                                <%--                                <button type="button" class="dropdown-item" data-bs-toggle="modal"--%>
-                                <%--                                        data-bs-target="#exampleModal"><i class="bi bi-pencil"></i> Sửa--%>
-                                <%--                                </button>--%>
-                                <%--                            </li>--%>
-                                <%--                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3"></i> Xóa</a></li>--%>
-                                <%--                            <li>--%>
-                                <%--                                <hr class="dropdown-divider">--%>
-                                <%--                            </li>--%>
                         </ul>
                         <div class="modal fade" id="exampleModal${i.index}" tabindex="-1"
                              aria-labelledby="exampleModalLabel"

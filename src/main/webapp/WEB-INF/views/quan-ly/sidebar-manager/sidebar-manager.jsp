@@ -14,7 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!----======== CSS ======== -->
-    <link rel="stylesheet" href="style.css">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -561,6 +560,7 @@
         }
 
 
+
     }
 </style>
 
@@ -581,10 +581,11 @@
             <li>
                 <a href="#" id="manageBtn">
                     <i class="uil uil-files-landscapes"></i>
-                    <span class="link-name">QUẢN LÝ</span>
+                    <span class="link-name" onclick="toggleSubMenu()">QUẢN LÝ</span>
                 </a>
                 <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
-                <ul class="sub-menu" id="subMenu" class="sub-menu">
+                <ul class="sub-menu" id="subMenu" style="display: none ;
+            transition: opacity 0.8s ease">
                     <li><a href="/san-pham" id="btnSanPham">
                         <i class="uil uil-box"></i>
                         <span class="link-name">Sản phẩm</span>
@@ -650,7 +651,16 @@
     //         subMenu.classList.toggle("active");
     //     });
     // });
+    function toggleSubMenu() {
+        var subMenu = document.getElementById("subMenu");
+        subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active
 
+        if (subMenu.style.display === "none") {
+            subMenu.style.display = "block";
+        } else {
+            subMenu.style.display = "none";
+        }
+    }
     const body = document.querySelector("body"),
         modeToggle = body.querySelector(".mode-toggle");
     sidebar = body.querySelector("nav");

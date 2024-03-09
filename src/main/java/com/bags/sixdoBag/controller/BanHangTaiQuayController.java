@@ -111,7 +111,6 @@ public class BanHangTaiQuayController {
 //        int soLuongKho = chiTietSanPhamServivce.getSoLuongSanPhamById(Integer.valueOf(productId));
 //        chiTietSanPhamServivce.updateSoLuongSanPham(soLuongKho-1,Integer.valueOf(productId));
         return ResponseEntity.ok().build();
-
     }
 
     @PostMapping("/get-gio-hang")
@@ -122,7 +121,6 @@ public class BanHangTaiQuayController {
         List<ChiTietHoaDon> listHoaDonChiTiet = hoaDonChiTietService.getGioHangTaiQuay(idTab);
         System.out.println("listHoaDonchi = " + listHoaDonChiTiet.size());
         return ResponseEntity.ok(listHoaDonChiTiet);
-
     }
 
 

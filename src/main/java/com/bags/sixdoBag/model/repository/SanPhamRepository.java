@@ -1,7 +1,11 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.SanPham;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +32,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
     List<SanPham> searchKhoiLuong(int min, int max);
 
 //    List<SanPham> findSanPhamsByChatLieuContainingIgnoreCase(String chatLieu);
+
+
+
+
 }

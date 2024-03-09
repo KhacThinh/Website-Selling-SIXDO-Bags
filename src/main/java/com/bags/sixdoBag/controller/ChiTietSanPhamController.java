@@ -66,6 +66,9 @@ public class ChiTietSanPhamController {
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
 
         System.out.println(listCTSP.size()+"sizzzzzzzzzzz");
+        model.addAttribute("listSp", sanPhamService.getSanPhams());
+        model.addAttribute("listMauSac", mauSacService.getMauSacs());
+        model.addAttribute("listKhuyenMai", khuyenMaiService.getKhuyenMais());
         return "/quan-ly/chi-tiet-san-pham/view";
     }
 

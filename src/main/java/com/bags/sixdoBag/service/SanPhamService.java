@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import org.springframework.stereotype.Service;
@@ -30,4 +31,6 @@ public interface SanPhamService {
     public List<SanPham> searchKichThuoc(int min, int max);
 
     List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu);
+
+    List<ProductHomeRequest> listHienThiSanPham();
 }

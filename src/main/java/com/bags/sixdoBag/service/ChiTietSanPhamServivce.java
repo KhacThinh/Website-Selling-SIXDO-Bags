@@ -26,4 +26,5 @@ public interface ChiTietSanPhamServivce {
     void updateSoLuongSanPham(int newSoLuong,int idCtSanPham );
     int getSoLuongSanPhamById(int idCtSanPham);
 
+
 }

@@ -439,7 +439,7 @@
                 <c:forEach var="o" items="${listSp}" varStatus="loop">
                     <div class="item" style="width: 515px">
                         <span class="idChiTietSanPham" style="display: none">${o.id}</span>
-                        <img src="img/ok.jpg">
+                        <img src="${o.hinhAnh}">
                         <div class="info">
                             <div class="name"> ${o.sanPham.tenSanPham} </div>
                             <div class="price"> ${o.mauSac.tenMauSac}</div>
@@ -463,7 +463,7 @@
             <div class="list gioHangTaiQuay">
                 <c:forEach var="o" items="${listGioHang}" varStatus="loop">
                     <div class="item">
-                        <img src="img/ok.jpg">
+                        <img src="${o.hinhAnh}">
                         <div class="info">
                             <div class="name">${o.chiTietSanPham.sanPham.tenSanPham}</div>
                             <div class="price">${o.chiTietSanPham.mauSac.tenMauSac}</div>
@@ -677,7 +677,7 @@
         // Thêm danh sách sản phẩm mới vào giao diện người dùng
         products.forEach(function (product) {
             var productHTML = '<div class="item">' +
-                '<img src="ok">' +
+                '<img src="'+product.chiTietSanPham.hinhAnh+'">' +
                 '<div class="info">' +
                 '<div class="name">' + product.chiTietSanPham.sanPham.tenSanPham + '</div>' +
                 '<div class="price">' + product.chiTietSanPham.mauSac.tenMauSac + '</div>' +

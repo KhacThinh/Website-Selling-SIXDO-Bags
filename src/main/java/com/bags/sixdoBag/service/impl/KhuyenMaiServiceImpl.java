@@ -39,7 +39,7 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
         km.setNgayBatDau(khuyenMai.getNgayBatDau());
         km.setNgayKetThuc(khuyenMai.getNgayKetThuc());
         km.setMoTa(khuyenMai.getMoTa());
-        km.setTrangThai(true);
+        km.setTrangThai(1);
         return khuyenMaiRepository.save(km);
     }
 
@@ -52,7 +52,7 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
     @Override
     public KhuyenMai deleteKhuyenMai(Integer idKhuyenMai) {
         KhuyenMai km = getKhuyenMai(idKhuyenMai);
-        km.setTrangThai(false);
+        km.setTrangThai(0);
         return km;
     }
 

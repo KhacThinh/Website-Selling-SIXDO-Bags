@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai, Integer> {
-    @Query(value = "SELECT km FROM KhuyenMai km where km.trangThai = true")
+    @Query(value = "SELECT km FROM KhuyenMai km where km.trangThai = 1")
     List<KhuyenMai> findKhuyenMaiByAll();
 
     @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from khuyen_mai \n" +
