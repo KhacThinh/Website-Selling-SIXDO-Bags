@@ -286,19 +286,23 @@
             processData: false,
             dataType: 'json',
             success: function (response) {
+                setTimeout('Redirect()', 2000);
                 Swal.fire({
                     icon: "success",
                     title: "Sản phẩm của bạn đã được sửa",
                     showConfirmButton: false,
                     timer: 1500
                 });
-                window.location.href = '/san-pham';
             },
             error: function (xhr, status, error) {
                 // Xử lý khi gặp lỗi
                 console.log('Có lỗi xảy ra: ' + error);
             }
         });
+    }
+
+    function Redirect() {
+        window.location = '/san-pham';
     }
 
 </script>
