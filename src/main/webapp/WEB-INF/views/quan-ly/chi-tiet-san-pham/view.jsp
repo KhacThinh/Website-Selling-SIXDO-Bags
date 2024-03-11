@@ -52,6 +52,7 @@
 </head>
 
 <body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container">
     <div class="title text-center pt-5">
@@ -149,10 +150,11 @@
             </thead>
             <tbody>
             <c:forEach items="${listCTSP}" var="sp">
-            <tr>
-                <th scope="col">${sp.id}</th>
+            <tr id="record_${sp.id}">
+                <td scope="col">${sp.id}</td>
 
-                <td><img src="${pageContext.request.contextPath}${sp.hinhAnh}" alt="" width="50px" height="50px"></td> <!-- Thêm dòng này -->
+                <td><img src="${pageContext.request.contextPath}${sp.hinhAnh}" alt="" width="50px" height="50px"></td>
+                <!-- Thêm dòng này -->
                 <td>${sp.ma}</td>
                 <td>${sp.sanPham.tenSanPham}</td>
                 <td>${sp.mauSac.tenMauSac}</td>
@@ -172,14 +174,129 @@
                         </li>
                         <li>
                             <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"><i class="bi bi-pencil"></i> Sửa
+                                    data-bs-target="#modalUpdate${sp.id}"><i
+                                    class="bi bi-pencil"></i> Sửa
                             </button>
-                        </li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-trash3"></i> Xóa</a></li>
                         <li>
-                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" href="#" onclick="deleteItem(${sp.id})">
+                                <i class="bi bi-trash3"></i> Xóa
+                            </a>
+                        </li>
+
+                        <hr class="dropdown-divider">
                         </li>
                     </ul>
+                        <%--                    Modal Update--%>
+                    <div class="modal"  id="modalUpdate${sp.id}" tabindex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="ma" class="form-label">Mã
+                                                </label>
+                                                <input value="${sp.ma}" name="ma" id="maUpdate${sp.id}"
+                                                       class="form-control"/>
+                                                <div id="maUpdateError${sp.id}" class="error"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="soLuong" class="form-label">Số Lượng
+                                                </label>
+                                                <input value="${sp.soLuong}" name="soLuong" id="soLuongUpdate${sp.id}"
+                                                       class="form-control"/>
+                                                <div id="soLuongUpdateError${sp.id}" class="error"></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="giaNhap" class="form-label">Giá Nhập
+                                                </label>
+                                                <input value="${sp.giaNhap}" name="giaNhap" id="giaNhapUpdate${sp.id}"
+                                                       class="form-control"/>
+                                                <div id="giaNhapUpdateError${sp.id}" class="error"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="giaBan" class="form-label">Giá Bán
+                                                </label>
+                                                <input value="${sp.giaBan}" name="giaBan" id="giaBanUpdate${sp.id}"
+                                                       class="form-control"/>
+                                                <div id="giaBanUpdateError${sp.id}" class="error"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="images" class="form-label">Ảnh</label>
+                                                <input type="file" value="${sp.hinhAnh}" id="images${sp.id}" name="images"
+                                                       class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="sanPham" class="form-label">Sản Phẩm</label>
+                                                <select name="sanPham" id="sanPham${sp.id}" class="form-control">
+                                                    <option value="" label="Chọn Sản Phẩm"/>
+                                                    <c:forEach items="${listSp}" var="c">
+                                                        <option value="${c.id}"  ${c.id==sp.sanPham.id ? 'selected':''}
+                                                        >${c.tenSanPham}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="mauSac" class="form-label">Màu Sắc</label>
+                                                <select name="mauSac" id="mauSac${sp.id}" class="form-control">
+                                                    <option value="" label="Chọn Màu Sắc"/>
+                                                    <c:forEach items="${listMauSac}" var="c">
+                                                        <option value="${c.id}"  ${c.id==sp.mauSac.id ? 'selected':''}>${c.tenMauSac}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="khuyenMai" class="form-label">Khuyến Mãi</label>
+                                                <select name="khuyenMai" id="khuyenMai${sp.id}" class="form-control">
+                                                    <option value="" label="Chọn Khuyến Mãi"/>
+                                                    <c:forEach items="${listKhuyenMai}" var="c">
+
+                                                        <option value="${c.id}" ${c.id==sp.khuyenMai.id ? 'selected':''}>${c.ten}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-lable">Trạng Thái</label><br>
+                                                <input type="radio" name="trangThai" id="trangThai${sp.id}" value="1" checked>
+                                                <label for="trangThaiHoatDong${sp.id}">Hoạt Động</label><br>
+                                                <input type="radio" name="trangThai" id="trangThai${sp.id}" value="0">
+                                                <label for="trangThaiKhongHoatDong${sp.id}">Không Hoạt Động</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Thoát
+                                        </button>
+                                        <button type="submit" id="uploadButton" class="btn btn-primary"
+                                                onclick="validateFormUpdate(${sp.id})">Lưu
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     </c:forEach>
                 </td>
             </tr>
@@ -226,20 +343,21 @@
             </div>
         </div>
     </div>
-</div><script>
+</div>
+<script>
     // Function để hiển thị dữ liệu chi tiết sản phẩm trong modal
     function openModal(productId) {
         // Gửi yêu cầu đến server để lấy dữ liệu chi tiết sản phẩm
         $.ajax({
             type: "POST",
             url: "/chi-tiet-san-pham/detail",
-            data: { id: productId }, // Chuyển tham số id qua cơ thể của yêu cầu
-            success: function(response) {
+            data: {id: productId}, // Chuyển tham số id qua cơ thể của yêu cầu
+            success: function (response) {
                 // Hiển thị dữ liệu chi tiết trong modal
                 console.log(response);
                 renderChiTiet(response);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error("Error:", error);
             }
         });
@@ -261,9 +379,6 @@
     }
 
 
-
-
-
 </script>
 <script id="detail-template" type="text/x-handlebars-template">
     <tr>
@@ -297,6 +412,139 @@
 
     </tr>
 </script>
+
+
+<%--Xóa--%>
+<script>
+    function deleteItem(itemId) {
+        $.ajax({
+            url: '/chi-tiet-san-pham/delete',
+            type: 'DELETE',
+            data: {id: itemId},
+            success: function (result) {
+
+                $('#record_' + itemId).remove();
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Xóa Thành Công!",
+                    icon: "success"
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi xóa: ', error);
+            }
+        });
+    }
+
+</script>
+
+<%--Validate Update--%>
+<script>
+    function validateFormUpdate(id) {
+        var soLuong = document.getElementById('soLuongUpdate' + id).value;
+        var ma = document.getElementById('maUpdate' + id).value;
+
+        var giaNhap = document.getElementById('giaNhapUpdate' + id).value;
+        var giaBan = document.getElementById('giaBanUpdate' + id).value;
+        var sanPham = document.getElementById('sanPham' + id).value;
+        var mauSac = document.getElementById('mauSac' + id).value;
+        var khuyenMai = document.getElementById('khuyenMai' +id).value;
+        var trangThai = document.getElementById('trangThai' +id).value;
+        var fileInput = document.getElementById('images' + id);
+        var file = fileInput.files[0];
+        console.log(file);
+
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('ma', ma);
+        formData.append('soLuong', soLuong);
+        formData.append('giaNhap', giaNhap);
+        formData.append('giaBan', giaBan);
+        formData.append('sanPham', sanPham);
+        formData.append('mauSac', mauSac);
+        formData.append('khuyenMai', khuyenMai);
+        formData.append('trangThai', trangThai);
+        formData.append('images', file);
+
+
+
+
+        var isValid = true;
+
+
+        if (soLuong.trim() === '') {
+            document.getElementById('soLuongUpdateError' + id).innerText = 'Vui lòng nhập số lượng.';
+            isValid = false;
+        } else if (!isNumeric(soLuong)) {
+            document.getElementById('soLuongUpdateError' + id).innerText = 'Số lượng phải là một số.';
+            isValid = false;
+        } else {
+            document.getElementById('soLuongUpdateError' + id).innerText = '';
+        }
+
+        if (giaNhap.trim() === '') {
+            document.getElementById('giaNhapUpdateError' + id).innerText = 'Vui lòng nhập giá nhập.';
+            isValid = false;
+        } else if (!isNumeric(giaNhap)) {
+            document.getElementById('giaNhapUpdateError' + id).innerText = 'Giá nhập phải là một số.';
+            isValid = false;
+        } else {
+            document.getElementById('giaNhapUpdateError' + id).innerText = '';
+        }
+
+        if (giaBan.trim() === '') {
+            document.getElementById('giaBanUpdateError' + id).innerText = 'Vui lòng nhập giá bán.';
+            isValid = false;
+        } else if (!isNumeric(giaBan)) {
+            document.getElementById('giaBanUpdateError' + id).innerText = 'Giá bán phải là một số.';
+            isValid = false;
+        } else {
+            document.getElementById('giaBanUpdateError' + id).innerText = '';
+        }
+        if (isValid === true || isValid === false) {
+            $.ajax({
+                url: '/chi-tiet-san-pham/checkMaUpdate',
+                type: 'POST',
+                data: {
+                    ma: ma
+                },
+                success: function (response) {
+                    if (response === "ok") {
+                        document.getElementById('maUpdateError' + id).innerText = 'Mã Trùng';
+                    } else {
+                        document.getElementById('maUpdateError' + id).innerText = '';
+                        $.ajax({
+                            url: '/chi-tiet-san-pham/update',
+                            type: 'Put',
+                            data: formData,
+                            processData: false, // Ngăn việc xử lý dữ liệu formData
+                            contentType: false,
+                            success: function (result) {
+                                alert("update thanh cong");
+
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Lỗi khi xóa: ', error);
+                            }
+                        });
+
+                    }
+                },
+                error: function (error) {
+                    console.error("Lỗi khi kiểm tra mã:", error);
+                }
+            });
+        }
+    }
+
+    function isNumeric(value) {
+        return /^\d+$/.test(value);
+    }
+
+</script>
+
+
+<%--Update--%>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
@@ -305,10 +553,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 09bd914ce26007ae90e8155f6cc69531554ffcbb
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
-
 </body>
 
 </html>

@@ -97,6 +97,7 @@ gia_nhap float,
 gia_ban float,
 thoi_gian datetime,
 anh_ctsp varchar(100),
+trang_thai int,
 CONSTRAINT FK_SanPham_CTSP FOREIGN KEY(id_san_pham) REFERENCES san_pham(id),
 CONSTRAINT FK_MauSac_CTSP FOREIGN KEY(id_mau_sac) REFERENCES mau_sac(id),
 CONSTRAINT FK_KhuyenMai_CTSP FOREIGN KEY(id_khuyen_mai) REFERENCES khuyen_mai(id)

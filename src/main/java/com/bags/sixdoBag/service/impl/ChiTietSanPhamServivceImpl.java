@@ -29,6 +29,15 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
 
     private final KhuyenMaiService khuyenMaiService;
 
+    public String incrementNumberInString(String str, int increment) {
+        String numberString = str.replaceAll("[^0-9]", "");
+        int number = Integer.parseInt(numberString);
+        number += increment;
+        String formattedNumber = String.format("%0" + numberString.length() + "d", number);
+        String result = str.replace(numberString, formattedNumber);
+        return result;
+    }
+
     @Override
     public ChiTietSanPham getChiTietSanPham(Integer idChiTietSanPham) {
         ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.findById(idChiTietSanPham)
@@ -43,7 +52,7 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
 
     @Override
     public List<ChiTietSanPham> getChiTietSanPhams() {
-        List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.findAll();
+        List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.getListCtsp();
         return chiTietSanPhams;
 
     }
@@ -51,23 +60,34 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     @Override
     public ChiTietSanPham addChiTietSanPham(ChiTietSanPham chiTietSanPham) {
         ChiTietSanPham ctsp = new ChiTietSanPham();
-        ctsp.setMa(chiTietSanPham.getMa());
+
+
         ctsp.setGiaBan(chiTietSanPham.getGiaBan());
         ctsp.setGiaNhap(chiTietSanPham.getGiaNhap());
         ctsp.setSoLuong(chiTietSanPham.getSoLuong());
         ctsp.setThoiGian(LocalDateTime.now());
         ctsp.setHinhAnh(chiTietSanPham.getHinhAnh());
-        Integer idMauSac = chiTietSanPham.getMauSac().getId();
-        Optional.ofNullable(mauSacService.getMauSac(idMauSac)).ifPresent(ctsp::setMauSac);
-        Integer idSanPham = chiTietSanPham.getSanPham().getId();
-        Optional.ofNullable(sanPhamService.getSanPham(idSanPham)).ifPresent(ctsp::setSanPham);
-        Integer idKhuyenMai = chiTietSanPham.getKhuyenMai().getId();
-        Optional.ofNullable(khuyenMaiService.getKhuyenMai(idKhuyenMai)).ifPresent(ctsp::setKhuyenMai);
+        ctsp.setTrangThai(1);
+        if (chiTietSanPham.getMauSac() == null) {
+            ctsp.setMauSac(null);
+        }
+        ctsp.setMauSac(chiTietSanPham.getMauSac());
+        if (chiTietSanPham.getSanPham() == null) {
+            ctsp.setSanPham(null);
+        }
+        ctsp.setSanPham(chiTietSanPham.getSanPham());
+        if (chiTietSanPham.getKhuyenMai() == null) {
+            ctsp.setKhuyenMai(null);
+        }
+        ctsp.setKhuyenMai(chiTietSanPham.getKhuyenMai());
+       
+        chiTietSanPhamRepository.save(ctsp);
+        ctsp.setMa(incrementNumberInString("CTSP000", ctsp.getId()));
         return chiTietSanPhamRepository.save(ctsp);
     }
 
     @Override
-    public ChiTietSanPham editChiTietSanPham(Integer idChiTietSanPham, ChiTietSanPhamRequest chiTietSanPhamRequest) {
+    public ChiTietSanPham editChiTietSanPham(Integer idChiTietSanPham, ChiTietSanPham chiTietSanPhamRequest) {
         ChiTietSanPham ctsp = getChiTietSanPham(idChiTietSanPham);
         ctsp.setMa(chiTietSanPhamRequest.getMa());
         ctsp.setGiaBan(chiTietSanPhamRequest.getGiaBan());
@@ -75,19 +95,28 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         ctsp.setSoLuong(chiTietSanPhamRequest.getSoLuong());
         ctsp.setThoiGian(chiTietSanPhamRequest.getThoiGian());
         ctsp.setHinhAnh(chiTietSanPhamRequest.getHinhAnh());
-        Integer idMauSac = chiTietSanPhamRequest.getIdMauSac();
-        Optional.ofNullable(mauSacService.getMauSac(idMauSac)).ifPresent(ctsp::setMauSac);
-        Integer idSanPham = chiTietSanPhamRequest.getIdSanPham();
-        Optional.ofNullable(sanPhamService.getSanPham(idSanPham)).ifPresent(ctsp::setSanPham);
-        Integer idKhuyenMai = chiTietSanPhamRequest.getIdKhuyenMai();
-        Optional.ofNullable(khuyenMaiService.getKhuyenMai(idKhuyenMai)).ifPresent(ctsp::setKhuyenMai);
+        ctsp.setTrangThai(chiTietSanPhamRequest.getTrangThai());
+        if (ctsp.getMauSac() == null) {
+            ctsp.setMauSac(null);
+        }
+        ctsp.setMauSac(ctsp.getMauSac());
+        if (ctsp.getSanPham() == null) {
+            ctsp.setSanPham(null);
+        }
+        ctsp.setSanPham(ctsp.getSanPham());
+        if (ctsp.getKhuyenMai() == null) {
+            ctsp.setKhuyenMai(null);
+        }
+        ctsp.setKhuyenMai(ctsp.getKhuyenMai());
+        chiTietSanPhamRepository.save(ctsp);
         return chiTietSanPhamRepository.save(ctsp);
     }
 
     @Override
     public ChiTietSanPham deleteChiTietSanPham(Integer idChiTietSanPham) {
         ChiTietSanPham ctsp = getChiTietSanPham(idChiTietSanPham);
-        chiTietSanPhamRepository.delete(ctsp);
+        ctsp.setTrangThai(0);
+        chiTietSanPhamRepository.save(ctsp);
         return ctsp;
     }
 

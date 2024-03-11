@@ -1850,9 +1850,11 @@
                     var newAddTabs = '<button class="tablinks add" onclick="addTab()">+</button>';
                     $('.tab').append(newAddTabs);
 
-                    successMessage('Thanh Toán Thành Công');
-                    window.location.href = '/ban-tai-quay';
+
+                    setTimeout('Redirect()', 1000);
                     console.log("Đã thanh toán thành công. Thông tin đơn hàng:", response);
+                    successMessage('Thanh Toán Thành Công');
+
                 },
                 error: function (error) {
                     console.error("Lỗi khi thanh toán:", error);
@@ -1860,6 +1862,11 @@
             });
         }
     }
+    function Redirect() {
+        window.location="/ban-tai-quay";
+    }
+
+
 </script>
 
 <%--Lọc Modal--%>
@@ -1885,28 +1892,6 @@
                 success: function (response) {
                     console.log(response);
                     $("#cartBody").empty();
-
-                    // Duyệt qua dữ liệu trả về và thêm vào bảng
-                    //     $.each(response, function(index, item) {
-                    //         var row = "<tr >";
-                    //         row += "<td>" + item.ma + "</td>";
-                    //         row += "<td>" + item.sanPham.tenSanPham + "</td>";
-                    //         row += "<td>" + item.mauSac.tenMauSac + "</td>";
-                    //         row += "<td>" + item.soLuong + "</td>";
-                    //         row += "<td>" + formatCurrency(item.giaBan) + "</td>";
-                    //
-                    //         // Thêm button vào cột cuối cùng của hàng
-                    //         row += "<td><button class='btnAdd' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "'>";
-                    //         row += "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle' viewBox='0 0 16 16'>";
-                    //         row += "<path fill-rule='evenodd' d='M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm.5-9a.5.5 0 0 1 0 1H11a.5.5 0 0 1 0 1H8.5v2a.5.5 0 0 1-1 0V8H5a.5.5 0 0 1 0-1h2.5V5a.5.5 0 0 1 1 0v2h2.5z'/>";
-                    //         row += "</svg>";
-                    //         row += "</button></td>";
-                    //
-                    //         row += "</tr>";
-                    //         $("#cartBody").append(row);
-                    //     });
-                    //
-                    // },
                     $.each(response, function (index, item) {
                         var row = "<tr class='cartItem' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "' data-product-price='" + item.giaBan + "'>";
                         row += "<td>" + item.ma + "</td>";
