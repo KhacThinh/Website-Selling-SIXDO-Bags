@@ -10,7 +10,7 @@
     <!--===============================================================================================-->
     <%--    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>--%>
     <!--===============================================================================================-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
@@ -24,6 +24,11 @@
     <!--===============================================================================================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.2.1/js/animsition.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
@@ -83,30 +88,30 @@
                             </thead>
                             <tbody id="cartTableBody">
 
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img id="imageProduct-in-cart" src="images/item-cart-04.jpg" alt="IMG">
+                            <tr class="table_row">
+                                <td class="column-1">
+                                    <div class="how-itemcart1">
+                                        <img id="imageProduct-in-cart" src="images/item-cart-04.jpg" alt="IMG">
+                                    </div>
+                                </td>
+                                <td class="column-2" id="nameProduct-in-cart">Fresh Strawberries</td>
+                                <td class="column-3" id="priceProduct-in-cart">$ 36.00</td>
+                                <td class="column-4">
+                                    <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-minus"></i>
                                         </div>
-                                    </td>
-                                    <td class="column-2" id="nameProduct-in-cart">Fresh Strawberries</td>
-                                    <td class="column-3" id="priceProduct-in-cart">$ 36.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
 
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                   name="num-product1" id="quantityProduct-in-cart" value="1">
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                               name="num-product1" id="quantityProduct-in-cart" value="1">
 
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
+                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-plus"></i>
                                         </div>
-                                    </td>
-                                    <td class="column-5" id="sumPrice-in-cart">$ 36.00</td>
-                                </tr>
+                                    </div>
+                                </td>
+                                <td class="column-5" id="sumPrice-in-cart">$ 36.00</td>
+                            </tr>
                             </tbody>
 
                         </table>
@@ -142,33 +147,34 @@
 
                         <div class="size-209">
 								<span class="mtext-110 cl2" id="sumCart">
-									$79.65
+									0 đ
 								</span>
                         </div>
                     </div>
 
                     <div class="flex-w flex-t bor12 p-t-15 p-b-30">
-<%--                        <div class="size-208 w-full-ssm">--%>
+                        <%--                        <div class="size-208 w-full-ssm">--%>
 
-<%--                        </div>--%>
+                        <%--                        </div>--%>
 
                         <div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
                             <p class="stext-112 cl8 p-b-15">Thông Tin Người Nhận</p>
 
                             <div style="display: flex; width: 370px;">
                                 <div class="bor8 bg0 m-b-12 m-r-15 w-150">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="name"
+                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="name-for-cart"
                                            placeholder="Tên người nhận">
                                 </div>
 
                                 <div class="bor8 bg0 m-b-12">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone"
+                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone-for-cart"
                                            placeholder="Số điện thoại">
                                 </div>
                             </div>
 
                             <div class="bor8 bg0 m-b-12" style="width: 370px;">
-                                <input class="stext-111 cl8 plh3 size-111 p-lr-15 w-400" type="email" name="email"
+                                <input class="stext-111 cl8 plh3 size-111 p-lr-15 w-400" type="email"
+                                       name="email-for-cart"
                                        placeholder="Email  ( Không Bắt Buộc, Gửi Email Để Xác Nhận )">
                             </div>
 
@@ -180,19 +186,20 @@
                                 <div style="display: flex; width: 370px;">
 
 
-                                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 180px; margin-right: 16px">
-                                    <select class="js-select2" name="time" id="city">
-                                        <option>Chọn Tỉnh Thành</option>
-                                    </select>
-                                    <div class="dropDownSelect2"></div>
-                                </div>
+                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9"
+                                         style="width: 180px; margin-right: 16px">
+                                        <select class="js-select2" name="time" id="city">
+                                            <option>Chọn Tỉnh Thành</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
 
-                                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 180px;">
-                                    <select class="js-select2" name="time" id="district">
-                                        <option>Chọn Quận Huyện</option>
-                                    </select>
-                                    <div class="dropDownSelect2"></div>
-                                </div>
+                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 180px;">
+                                        <select class="js-select2" name="time" id="district">
+                                            <option>Chọn Quận Huyện</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
                                 </div>
 
                                 <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 370px;">
@@ -219,14 +226,16 @@
 
                         <div class="size-209 p-t-1">
 								<span class="mtext-110 cl2" id="last-price">
-									$79.65
+									0 đ
 								</span>
                         </div>
                     </div>
 
-                    <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15  ">
+                    <p class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 submit-oder-by-cart">
                         Đặt Hàng
-                    </button>
+                    </p>
+
+
                 </div>
             </div>
         </div>

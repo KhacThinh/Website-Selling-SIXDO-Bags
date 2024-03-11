@@ -4,6 +4,7 @@ import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,5 +20,6 @@ public interface HoaDonChiTietService {
     void deleteHoaDonChiTietById(int idHoaDon);
 
     List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(int idHoaDon);
+    void saveProductForCart(int idHoaDon, int idChiTietSp, int soLuong, double gia);
 
 }

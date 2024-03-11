@@ -71,7 +71,6 @@
 
         <jsp:include page="add-chi-tiet-san-pham.jsp"/>
 
-
     </div>
 </div>
 <div class="container mt-4">

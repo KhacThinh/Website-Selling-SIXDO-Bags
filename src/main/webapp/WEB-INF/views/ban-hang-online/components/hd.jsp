@@ -4,11 +4,48 @@
     <title>Title</title>
     <meta charshet="utf-8" />
 
+    <style>
+        .loader {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: inline-block;
+            border-top: 4px solid #413aa7;
+            border-right: 4px solid transparent;
+            box-sizing: border-box;
+            animation: rotation 0.5s linear infinite;
+            justify-content: center;
+            text-align: center;
+        }
+        .loader::after {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border-left: 4px solid #FF3D00;
+            border-bottom: 4px solid transparent;
+            animation: rotation 0.25s linear infinite reverse;
+        }
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
 
 <header class="header-v4">
-
+    <div id="loading-spinner" class="spinner-container loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
+        <div class="spinner"></div>
+    </div>
     <div class="container-menu-desktop">
 
         <div class="top-bar">
@@ -213,6 +250,17 @@
         </div>
     </div>
 </header>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Hiển thị spinner
+        document.getElementById("loading-spinner").style.display = "block";
+
+        // Ẩn spinner sau 3 giây
+        setTimeout(function() {
+            document.getElementById("loading-spinner").style.display = "none";
+        }, 150);
+    });
+</script>
 
 </body>
 </html>

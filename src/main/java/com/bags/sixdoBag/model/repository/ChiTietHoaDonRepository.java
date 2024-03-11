@@ -1,13 +1,16 @@
 package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 
 @Repository
@@ -28,5 +31,11 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, In
     @Modifying
     @Query("delete from ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     void deleteChiTietHoaDonByIdHoaDon(@Param("idHoaDon") int idHoaDon);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO chi_tiet_hoa_don (id_hoa_don, id_ctsp, so_luong, gia) VALUES (:idhoadon, :idchitietsp, :soluong, :dongia)", nativeQuery = true)
+    void insertHoaDonChiTiet(@Param("idhoadon") int idhoadon, @Param("idchitietsp") int idchitietsp, @Param("soluong") int soluong, @Param("dongia") double dongia);
+
 
 }

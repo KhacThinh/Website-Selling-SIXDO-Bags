@@ -20,4 +20,5 @@ public interface HoaDonService {
     void deleteHoaDonById(int id);
 
     Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDon();
+    void saveHoaDon (HoaDon hoaDon);
 }

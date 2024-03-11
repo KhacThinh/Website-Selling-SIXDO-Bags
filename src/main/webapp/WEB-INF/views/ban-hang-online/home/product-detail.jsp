@@ -79,23 +79,7 @@
 
 
 <!-- breadcrumb -->
-<div class="container">
-    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Home
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Men
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <span class="stext-109 cl4">
-				Lightweight Jacket
-		</span>
-    </div>
-</div>
+s
 
 
 <!-- Product Detail -->
@@ -177,54 +161,7 @@
 
 
 <script>
-    // var cart = getCartFromCookie() || [];
-    //
-    //
-    // function addToCartDetail(productId ,productMa, productName, productPrice,productImg,sl) {
-    //     var existingProduct = cart.find((product) => product.ma === productMa);
-    //
-    //     if (existingProduct) {
-    //         // Nếu đã có trong giỏ hàng, tăng số lượng
-    //         existingProduct.sl += sl;
-    //     } else {
-    //         // Nếu chưa có trong giỏ hàng, thêm vào giỏ hàng
-    //         var product = {
-    //             id: productId,
-    //             ma: productMa,
-    //             name: productName,
-    //             price: productPrice,
-    //             img: productImg,
-    //             sl: sl,
-    //         };
-    //         cart.push(product);
-    //
-    //     }
-    //
-    //     updateCartCount();
-    //     saveCartToCookie();
-    //     countProduct();
-    // }
-    //
-    // function getCartFromCookie() {
-    //     var name = 'cart=';
-    //     var decodedCookie = decodeURIComponent(document.cookie);
-    //     var cookieArray = decodedCookie.split(';');
-    //     for (var i = 0; i < cookieArray.length; i++) {
-    //         var cookie = cookieArray[i].trim();
-    //         if (cookie.indexOf(name) === 0) {
-    //             var cookieValue = cookie.substring(name.length, cookie.length);
-    //             try {
-    //                 return JSON.parse(decodeURIComponent(cookieValue));
-    //             } catch (error) {
-    //                 console.error("Lỗi khi chuyển đổi cookie thành đối tượng JSON:", error);
-    //             }
-    //         }
-    //     }
-    //     return null;
-    // }
 
-
-    // Dữ liệu sản phẩm được đẩy từ Spring Boot
     var products ; // Giả sử product là một List hoặc Array chứa dữ liệu sản phẩm
 
 

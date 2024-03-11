@@ -49,6 +49,23 @@
             width: 1200px;
         }
 
+        #trang-thai-hoa-don {
+            color: black;
+        }
+
+        /* Trạng thái đã thanh toán */
+        #trang-thai-hoa-don[data-status="0"] {
+            color: #179954;
+        }
+
+        #trang-thai-hoa-don[data-status="1"] {
+            color: #F39C12;
+        }
+
+        /* Trạng thái đã hủy */
+        #trang-thai-hoa-don[data-status="4"] {
+            color: darkred;
+        }
 
     </style>
 </head>
@@ -126,10 +143,34 @@
                     <fmt:formatNumber pattern="#,###" var="tongTien" value="${hd.key.tongTien}"></fmt:formatNumber>
                     <td>${tongTien}</td>
 
-                    <td>
-                        <font color="${hd.key.trangThai == 0 ? 'green' : '#FF8A33'}">
-                                ${hd.key.trangThai == 0 ? 'ĐÃ THANH TOÁN' : 'HÓA ĐƠN TẠM'}
-                        </font>
+                    <td id="trang-thai-hoa-don" data-status="${hd.key.trangThai}">
+                        <script>
+                            var trangThai = ${hd.key.trangThai};
+                            var trangThaiString = '';
+                            switch (trangThai) {
+                                case 0:
+                                    trangThaiString = 'Đã Thanh Toán';
+                                    break;
+                                case 1:
+                                    trangThaiString = 'Hóa Đơn Tạm';
+                                    break;
+                                case 2:
+                                    trangThaiString = 'Chưa Xác Nhận';
+                                    break;
+                                case 3:
+                                    trangThaiString = 'Đã Xác Nhận';
+                                    break;
+                                case 4:
+                                    trangThaiString = 'Đã Hủy';
+                                    break;
+                                case 5:
+                                    trangThaiString = 'Đang Giao Hàng';
+                                    break;
+                                default:
+                                    trangThaiString = 'Unknown';
+                            }
+                            document.write(trangThaiString);
+                        </script>
                     </td>
 
                     <td>
@@ -153,41 +194,138 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <table class="table table-hover table-striped mb-5">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">STT</th>
-                                                <th scope="col">TÊN SẢN PHẨM</th>
-                                                <th scope="col">DANH MỤC</th>
-                                                <th scope="col">THƯƠNG HIỆU</th>
-                                                <th scope="col">MÀU SẮC</th>
-                                                <th scope="col">SỐ LƯỢNG</th>
-                                                <th scope="col">ĐƠN GIÁ</th>
-                                                <th scope="col">THÀNH TIỀN</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach items="${hd.value}" var="cthd" varStatus="j">
+                                    <p style="font-size: 15px; font-weight: bold; margin: 10px 0px 0px 23px;background-color: #d3ead9 ; padding: 7px;border-radius: 5px ">
+                                        Thông Tin</p>
+
+                                    <div class="row" style="margin: 10px 0px 0px 25px">
+                                        <div class="col-md-6" style="margin: 0px">
+                                            <div class="form-group">
+                                                <label>Mã Đơn Hàng : </label>
+                                                <span> ${hd.key.maHoaDon}</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Tài Khoản : </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin: 0px">
+                                            <div class="form-group">
+                                                <label>Trạng Thái Đơn Hàng : </label>
+                                                <span>  <script>
+                            var trangThai = ${hd.key.trangThai};
+                            var trangThaiString = '';
+                            switch (trangThai) {
+                                case 0:
+                                    trangThaiString = 'Đã Thanh Toán';
+                                    break;
+                                case 1:
+                                    trangThaiString = 'Hóa Đơn Tạm';
+                                    break;
+                                case 2:
+                                    trangThaiString = 'Chưa Xác Nhận';
+                                    break;
+                                case 3:
+                                    trangThaiString = 'Đã Xác Nhận';
+                                    break;
+                                case 4:
+                                    trangThaiString = 'Đã Hủy';
+                                    break;
+                                case 5:
+                                    trangThaiString = 'Đang Giao Hàng';
+                                    break;
+                                default:
+                                    trangThaiString = 'Unknown';
+                            }
+                            document.write(trangThaiString);
+                        </script></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Thời Gian Đặt Hàng : </label>
+                                                <span> ${hd.key.thoiGianTao}</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 15px; font-weight: bold; margin: 0px 0px 0px 23px;background-color: #d3ead9 ; padding: 7px;border-radius: 5px ">
+                                        Thông Tin Người Nhận</p>
+                                    <div class="row" style="margin: 10px 0px 0px 25px">
+                                        <div class="col-md-6" style="margin: 0px">
+                                            <div class="form-group">
+                                                <label>Tên Người Nhận : </label>
+                                                <span> ${hd.key.tenNguoiNhan}</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Số Điện Thoại : </label>
+                                                <span> ${hd.key.sdtNguoiNhan}</span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-bottom: 0px">
+                                            <div class="form-group">
+                                                <label>Địa Chỉ : </label>
+                                                <span> ${hd.key.diaChiNguoiNhan}</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Email : </label>
+                                                <span> ${hd.key.emailNguoiNhan}</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body" style="margin-top: 0px; padding-top:0px ">
+                                        <div style="max-height: 220px; overflow-y: auto;">
+                                            <table class="table table-hover table-striped mb-5"
+                                                   style="margin-top: 0px;">
+                                                <thead>
                                                 <tr>
-                                                    <th scope="col">${j.index + 1}</th>
-                                                    <td>${cthd.chiTietSanPham.sanPham.tenSanPham}</td>
-                                                    <td>${cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc}</td>
-                                                    <td>${cthd.chiTietSanPham.sanPham.thuongHieu.ten}</td>
-                                                    <td>${cthd.chiTietSanPham.mauSac.tenMauSac}</td>
-                                                    <td>${cthd.soLuong}</td>
-                                                    <fmt:formatNumber pattern="#,###" var="donGia" value="${cthd.gia}"></fmt:formatNumber>
-                                                    <td>${donGia}</td>
-                                                    <fmt:formatNumber pattern="#,###" var="thanhTien" value="${cthd.soLuong*cthd.gia}"></fmt:formatNumber>
-                                                    <td>${thanhTien}</td>
+                                                    <th scope="col">STT</th>
+                                                    <th scope="col">TÊN SẢN PHẨM</th>
+                                                    <th scope="col">MÀU SẮC</th>
+                                                    <th scope="col">DANH MỤC</th>
+                                                    <th scope="col">THƯƠNG HIỆU</th>
+                                                    <th scope="col">SỐ LƯỢNG</th>
+                                                    <th scope="col">ĐƠN GIÁ</th>
+                                                    <th scope="col">THÀNH TIỀN</th>
                                                 </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${hd.value}" var="cthd" varStatus="j">
+                                                    <tr>
+                                                        <th scope="col">${j.index + 1}</th>
+                                                        <td>${cthd.chiTietSanPham.sanPham.tenSanPham}</td>
+                                                        <td>${cthd.chiTietSanPham.mauSac.tenMauSac}</td>
+                                                        <td>${cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc}</td>
+                                                        <td>${cthd.chiTietSanPham.sanPham.thuongHieu.ten}</td>
+                                                        <td>${cthd.soLuong}</td>
+                                                        <fmt:formatNumber pattern="#,###" var="donGia"
+                                                                          value="${cthd.gia}"></fmt:formatNumber>
+                                                        <td>${donGia}</td>
+                                                        <fmt:formatNumber pattern="#,###" var="thanhTien"
+                                                                          value="${cthd.soLuong*cthd.gia}"></fmt:formatNumber>
+                                                        <td>${thanhTien}</td>
+                                                    </tr>
+
+                                                </c:forEach>
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                        <fmt:formatNumber pattern="#,###" var="tongTien"
+                                                          value="${hd.key.tongTien}"></fmt:formatNumber>
+                                        <p style="position: absolute; bottom: 0;  right: 30px; font-weight: bold ; font-size: 15px">
+                                            Tổng Thanh Toán : ${tongTien} đ</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Huỷ
+                                        <button type="button" class="btn btn-success">Xác Nhận</button>
+                                        <button type="button" class="btn btn-success">    <i class="bi bi-truck"></i>
+                                            Đang Giao Hàng</button>
+                                        <button type="button" class="btn btn-success"> <i class="bi bi-cash-coin"></i>  Đã Thanh Toán</button>
+
+                                        <button type="button" class="btn btn-danger">Hủy Đơn</button>
+
+
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng
                                         </button>
+
                                     </div>
                                 </div>
                             </div>

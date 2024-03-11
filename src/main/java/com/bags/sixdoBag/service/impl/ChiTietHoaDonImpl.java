@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -52,5 +53,10 @@ public class ChiTietHoaDonImpl implements HoaDonChiTietService {
     public List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(int idHoaDon) {
         List<ChiTietHoaDon> chiTietHoaDons = chiTietHoaDonRepository.getGioHangChiTietFromHoaDon(idHoaDon);
         return chiTietHoaDons;
+    }
+
+    @Override
+    public void saveProductForCart(int idHoaDon, int idChiTietSp, int soLuong, double gia) {
+        chiTietHoaDonRepository.insertHoaDonChiTiet(idHoaDon,idChiTietSp,soLuong,gia);
     }
 }

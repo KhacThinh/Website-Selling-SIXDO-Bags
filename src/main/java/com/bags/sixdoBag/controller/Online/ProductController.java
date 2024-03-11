@@ -1,15 +1,20 @@
 package com.bags.sixdoBag.controller.Online;
 
 
+import com.bags.sixdoBag.model.dto.request.OderDataDto;
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
+import com.bags.sixdoBag.service.HoaDonChiTietService;
+import com.bags.sixdoBag.service.HoaDonService;
 import com.bags.sixdoBag.service.KhuyenMaiService;
 import com.bags.sixdoBag.service.MauSacService;
 import com.bags.sixdoBag.service.SanPhamService;
 import com.bags.sixdoBag.service.ThuongHieuService;
+import com.bags.sixdoBag.service.impl.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,6 +53,11 @@ public class ProductController {
     private final KhuyenMaiService khuyenMaiService;
 
     private final ThuongHieuService thuongHieuService;
+    private final HoaDonService hoaDonService;
+
+    private final HoaDonChiTietService hoaDonChiTietService;
+    Utils utils = new Utils();
+
 
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
@@ -73,12 +84,13 @@ public class ProductController {
 
         return "ban-hang-online/home/product-detail";
     }
+
     @PostMapping("/get-product-by-id")
     public ResponseEntity<?> getProductById(@RequestBody Map<String, Object> requestBody) {
         String idProduct2 = String.valueOf(requestBody.get("idProduct"));
-         ChiTietSanPham chiTietSanPhamById = chiTietSanPhamServivce.getChiTietSanPham(Integer.valueOf(idProduct2));
-        System.out.println("iddd ne"+chiTietSanPhamById.getId());
-        System.out.println("gia ne"+chiTietSanPhamById.getGiaBan());
+        ChiTietSanPham chiTietSanPhamById = chiTietSanPhamServivce.getChiTietSanPham(Integer.valueOf(idProduct2));
+//        System.out.println("iddd ne" + chiTietSanPhamById.getId());
+//        System.out.println("gia ne" + chiTietSanPhamById.getGiaBan());
 
         return ResponseEntity.ok(chiTietSanPhamById);
     }
@@ -93,6 +105,7 @@ public class ProductController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(sortedList);
     }
+
     @GetMapping("/shoping-cart")
     public String shopingCart(Model model) {
 //        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
@@ -106,6 +119,25 @@ public class ProductController {
     }
 
 
+    @PostMapping("/placeOrder")
+    public String placeOrder(@RequestBody OderDataDto orderData) {
+        System.out.println("nham neees");
+        HoaDon hoaDon = orderData.getHoadon();
+        hoaDon.setThoiGianTao(utils.getCurrentDateTime());
+        hoaDon.setTrangThai(2);
+        hoaDonService.saveHoaDon(hoaDon);
+        hoaDon.setId(hoaDon.getId());
+        hoaDon.setMaHoaDon("HDOL" + hoaDon.getId());
+        hoaDonService.saveHoaDon(hoaDon);
 
+
+        for (ChiTietHoaDon o : orderData.getCart()){
+            o.setIdHoaDon(hoaDon.getId());
+            hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(),o.getIdCtSanPham(),o.getSoLuong(),o.getGia());
+
+        }
+        return "ban-hang-online/home/index";
+
+    }
 
 }

@@ -85,4 +85,11 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         return hoaDonListMap;
     }
+
+    @Override
+    public void saveHoaDon(HoaDon hoaDon) {
+        hoaDonRepository.save(hoaDon);
+    }
+
+
 }
