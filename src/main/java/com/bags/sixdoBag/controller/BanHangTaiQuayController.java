@@ -108,8 +108,6 @@ public class BanHangTaiQuayController {
         chiTietHoaDon.setGia((double) Integer.valueOf(giaBanString));
         chiTietHoaDon.setIdHoaDon(idTab);
         hoaDonChiTietService.addGioHang(chiTietHoaDon);
-//        int soLuongKho = chiTietSanPhamServivce.getSoLuongSanPhamById(Integer.valueOf(productId));
-//        chiTietSanPhamServivce.updateSoLuongSanPham(soLuongKho-1,Integer.valueOf(productId));
         return ResponseEntity.ok().build();
 
     }
@@ -206,8 +204,6 @@ public class BanHangTaiQuayController {
     public ResponseEntity<?> xoaHoaDon(@RequestBody Map<String, Object> requestBody) {
         String idTabString = String.valueOf(requestBody.get("maHoaDon"));
         int idTab = Integer.parseInt(idTabString.substring(2));
-
-
         hoaDonChiTietService.deleteHoaDonChiTietById(idTab);
         hoaDonService.deleteHoaDonById(idTab);
         List<HoaDon> listTab = hoaDonService.getTabHoaDon();
@@ -216,9 +212,7 @@ public class BanHangTaiQuayController {
             if (o.getTrangThai() == 1) {
                 danhSachTab.add(o);
             }
-
         }
-
         return ResponseEntity.ok(danhSachTab);
     }
 

@@ -82,8 +82,6 @@
                 data-bs-target="#exampleModal">
             <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
         </button>
-
-        <!-- Add modal -->
         <jsp:include page="./them-san-pham-modal.jsp"/>
     </div>
 </div>
@@ -158,7 +156,6 @@
                     <td>${sp.thuongHieu.ten}</td>
 
 
-                        <%--                    <td><img src="${pageContext.request.contextPath}${sp.anh}" height="200px" width="250px" alt="Ảnh sản phẩm"></td>--%>
 
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
@@ -173,7 +170,7 @@
                             </li>
 
                             <li>
-                                    <a class="dropdown-item"  href="/chi-tiet-san-pham/detail?id=${sp.id}">  <i class="bi bi-exclamation-circle"></i>Quản Lý Chi Tiết</a>
+                                <a class="dropdown-item"  href="/chi-tiet-san-pham/detail?id=${sp.id}">  <i class="bi bi-exclamation-circle"></i>Quản Lý Chi Tiết</a>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
@@ -239,6 +236,8 @@
 
 
 
+
+
 <div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -249,12 +248,12 @@
             <div class="modal-body">
                 <form ng-submit="onSubmit($event)">
                     <div class="mb-3">
-                        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+
                         <input ng-model="product.id" type="number" class="form-control" id="recipient-name"
                                placeholder="ID" required>
                     </div>
                     <div class="mb-3">
-                        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+
                         <input ng-model="product.tenSP" type="text" class="form-control" id="recipient-name"
                                placeholder="Tên Sản Phẩm" required>
                     </div>
@@ -273,7 +272,7 @@
                     <div class=" row mb-3">
                         <div class="col-md-6">
                             <label for="recipient-name" class="col-form-label">Số
-                                Lượng</label>
+                                Lượng111</label>
                             <input type="number" ng-model="product.soLuong" class="form-control"
                                    id="recipient-name" min="0">
                         </div>

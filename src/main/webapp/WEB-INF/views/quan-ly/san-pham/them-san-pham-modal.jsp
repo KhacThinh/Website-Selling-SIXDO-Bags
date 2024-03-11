@@ -19,20 +19,16 @@
                            enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-12">
-<%--                        <div class="form-group">--%>
-<%--                            <label for="maSanPham">Mã Sản Phẩm</label>--%>
-<%--                            <form:input path="maSanPham" id="maSanPham" class="form-control" readonly="true"/>--%>
-<%--                            <form:errors path="maSanPham" cssClass="error"/>--%>
-<%--                        </div>--%>
+
                         <div class="form-group">
                             <label for="chatLieu">Chất Liệu</label>
                             <form:input path="chatLieu" id="chatLieu" class="form-control"/>
-<%--                            <form:errors path="chatLieu" cssClass="error"/>--%>
+
                         </div>
                         <div class="form-group">
                             <label for="tenSanPham">Tên Sản Phẩm</label>
                             <form:input path="tenSanPham" id="tenSanPham" class="form-control"/>
-<%--                            <form:errors path="tenSanPham" cssClass="error"/>--%>
+
                         </div>
                     </div>
                 </div>
@@ -41,7 +37,7 @@
                         <div class="form-group">
                             <label for="xuatXu">Xuất Xứ</label>
                             <form:input path="xuatXu" id="xuatXu" class="form-control"/>
-<%--                            <form:errors path="xuatXu" cssClass="error"/>--%>
+
                         </div>
                         <div class="form-group">
                             <label for="hinhAnh">Ảnh</label>
@@ -53,12 +49,12 @@
                         <div class="form-group">
                             <label for="kichThuoc">Kích Thước</label>
                             <form:input path="kichThuoc" id="kichThuoc" class="form-control"/>
-<%--                            <form:errors path="kichThuoc" cssClass="error"/>--%>
+
                         </div>
                         <div class="form-group">
                             <label for="khoiLuong">Khối Lượng</label>
                             <form:input path="khoiLuong" id="khoiLuong" class="form-control"/>
-<%--                            <form:errors path="khoiLuong" cssClass="error"/>--%>
+
                         </div>
                     </div>
                 </div>
@@ -67,7 +63,7 @@
                         <div class="form-group">
                             <label for="moTa">Mô Tả</label>
                             <form:textarea path="moTa" id="moTa" class="form-control"/>
-<%--                            <form:errors path="moTa" cssClass="error"/>--%>
+
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -106,7 +102,7 @@
                                 <form:options items="${doiTuongSuDungForm}" itemValue="id"
                                               itemLabel="tenDoiTuongSuDung"/>
                             </form:select>
-                            <!-- listOfDoiTuongSuDung là danh sách các đối tượng sử dụng để hiển thị trong select -->
+
                         </div>
                     </div>
                 </div>
@@ -120,29 +116,3 @@
     </div>
 </div>
 
-<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
-<%--<script>--%>
-<%--    $(document).ready(function(){--%>
-<%--        $('#addSanPham').on('click', function(){--%>
-<%--            var formData = new FormData();--%>
-<%--            var file = $('#hinhAnh')[0].files[0];--%>
-<%--            formData.append('hinhAnh', file);--%>
-
-<%--            $.ajax({--%>
-<%--                url: 'san-pham', // Địa chỉ URL của endpoint xử lý việc tải ảnh lên máy chủ--%>
-<%--                type: 'POST',--%>
-<%--                data: formData,--%>
-<%--                contentType: false,--%>
-<%--                processData: false,--%>
-<%--                success: function(response){--%>
-<%--                    console.log('Upload successful');--%>
-<%--                    // Xử lý phản hồi từ máy chủ nếu cần--%>
-<%--                },--%>
-<%--                error: function(xhr, status, error){--%>
-<%--                    console.error('Upload error:', error);--%>
-<%--                    // Xử lý lỗi nếu có--%>
-<%--                }--%>
-<%--            });--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>

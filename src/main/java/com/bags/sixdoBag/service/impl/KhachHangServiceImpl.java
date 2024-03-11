@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.TaiKhoan;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.model.repository.TaiKhoanRepository;
@@ -35,28 +36,16 @@ public class KhachHangServiceImpl implements KhachHangService {
     public KhachHang addKhachHang(KhachHang khachHang) {
         KhachHang kh = new KhachHang();
         List<KhachHang> listKH = khachHangRepository.findAll();
-//        List<TaiKhoan>listTK=taiKhoanService.getTaiKhoans();
-//        for (TaiKhoan taiKhoan: listTK
-//             ) {
-//            if(khachHang.getSdt().equals(taiKhoan.getTenDangNhap())){
-//                TaiKhoan tk = taiKhoan;
-//                kh.setMatKhau(tk.getMatKhau());
-//                kh.setTaiKhoan(taiKhoanService.getTaiKhoan(tk.getId()));
-//                break;
-//
-//            }
-//        }
-
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setTenDangNhap(khachHang.getEmail());
         taiKhoan.setMatKhau(khachHang.getMatKhau());
         taiKhoanRepository.save(taiKhoan);
         kh.setTaiKhoan(taiKhoan);
-
         int size = listKH.size() + 1;
         String maKH = "KH" + size;
         kh.setMaKhachHang(maKH);
         kh.setNgaySinh(khachHang.getNgaySinh());
+        kh.setGioiTinh(khachHang.getGioiTinh());
         kh.setTenKhachHang(khachHang.getTenKhachHang());
         kh.setSdt(khachHang.getSdt());
         kh.setEmail(khachHang.getEmail());
@@ -65,6 +54,9 @@ public class KhachHangServiceImpl implements KhachHangService {
 
         return khachHangRepository.save(kh);
     }
+
+
+
 
     @Override
     public KhachHang editKhachHang(Integer idKhachHang, KhachHang khachHang) {
@@ -93,6 +85,12 @@ public class KhachHangServiceImpl implements KhachHangService {
     @Override
     public KhachHang searchKh(String email) {
         KhachHang  khachHang = khachHangRepository.searchKh(email);
+        return khachHang;
+    }
+
+    @Override
+    public KhachHang getidKhachHang(Integer idKhachHang) {
+        KhachHang khachHang= khachHangRepository.findById(idKhachHang).orElse(null);
         return khachHang;
     }
 }

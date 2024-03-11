@@ -21,4 +21,7 @@ public interface MauSacService {
     public List<MauSac> pageMauSac(int limit, int size);
 
     public List<MauSac> searchMauSac(String tenMauSac);
+
+    public boolean isMaMauSacExists(String maMauSac);
+    public MauSac getidMauSac(Integer idMauSac);
 }

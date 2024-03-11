@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.repository.DoiTuongSuDungRepository;
 import com.bags.sixdoBag.service.DoiTuongSuDungService;
@@ -59,5 +60,11 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     public List<DoiTuongSuDung> searchDoiTuongSuDung(String tenDoiTuongSuDung) {
         List<DoiTuongSuDung> doiTuongSuDungs = doiTuongSuDungRepository.searchDoiTuongSuDungTenOrMa(tenDoiTuongSuDung);
         return doiTuongSuDungs;
+    }
+
+    @Override
+    public DoiTuongSuDung getidDTSD(Integer idDTSD) {
+        DoiTuongSuDung doiTuongSuDung = doiTuongSuDungRepository.findById(idDTSD).orElse(null);
+        return doiTuongSuDung;
     }
 }

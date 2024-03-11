@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.MauSac;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,4 +22,5 @@ public interface ChucVuService {
 
     public List<ChucVu>searchChucVu(String tenChucVu);
 
+    public ChucVu getidChucVu(Integer idChucVu);
 }

@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.repository.KhuyenMaiRepository;
 import com.bags.sixdoBag.service.KhuyenMaiService;
@@ -72,5 +73,10 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
     public List<KhuyenMai> searchKhuyenMaiNgay(String dateStart, String dateEnd) {
         List<KhuyenMai> khuyenMais = khuyenMaiRepository.searchKhuyenMaiNgay(dateStart, dateEnd);
         return khuyenMais;
+    }
+    @Override
+    public KhuyenMai getidKhuyenMai(Integer idKhuyenMai) {
+        KhuyenMai khuyenMai = khuyenMaiRepository.findById(idKhuyenMai).orElse(null);
+        return khuyenMai;
     }
 }

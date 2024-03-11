@@ -42,15 +42,20 @@ public class MaGiamGia {
     @Column(name = "ten_ma_giam_gia")
     private String tenMaGiamGia;
 
-    @Min(value = 0, message = "Giá Trị Giảm Không Được Nhỏ Hơn 0")
+//    @Min(value = 0, message = "Giá Trị Giảm Không Được Nhỏ Hơn 0")
     @Column(name = "gia_tri_giam")
     private Double giaTriGiam;
 
-    @Column(name = "ngay_bat_dau")
-    private LocalDateTime ngayBatDau;
+//    @Column(name = "ngay_bat_dau")
+//    private LocalDateTime ngayBatDau;
+@Column(name = "ngay_bat_dau")
+private String ngayBatDau;
+
+//    @Column(name = "ngay_ket_thuc")
+//    private LocalDateTime ngayKetThuc;
 
     @Column(name = "ngay_ket_thuc")
-    private LocalDateTime ngayKetThuc;
+    private String ngayKetThuc;
 
     @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
     @NotEmpty(message = "Mô Tả Không Được Để Trống")
@@ -63,8 +68,8 @@ public class MaGiamGia {
     private Integer soLuong;
 
 
-    @Min(value = 0, message = "Diều Kiện Giảm Phải Lớn Hơn Hoặc = 0")
-    @NotNull(message = "Diều Kiện không được bỏ trống")
+//    @Min(value = 0, message = "Diều Kiện Giảm Phải Lớn Hơn Hoặc = 0")
+//    @NotNull(message = "Diều Kiện không được bỏ trống")
     @Column(name = "dieu_kien")
     private Integer dieuKienGiam;
 

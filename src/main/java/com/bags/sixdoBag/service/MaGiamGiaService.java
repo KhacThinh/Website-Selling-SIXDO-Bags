@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.MauSac;
 import org.springframework.stereotype.Service;
@@ -20,4 +21,6 @@ public interface MaGiamGiaService {
     public MaGiamGia deleteMaGiamGia(Integer idMaGiamGia);
 
     public List<MaGiamGia> pageMaGiamGia(int limit, int size);
+
+    public MaGiamGia getidMaGiamGia(Integer idChucVu);
 }

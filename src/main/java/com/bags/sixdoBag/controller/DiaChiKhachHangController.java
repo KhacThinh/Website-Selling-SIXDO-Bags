@@ -1,47 +1,86 @@
 package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.DiaChiKhachHangRequest;
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.repository.DiaChiKhachHangRepository;
 import com.bags.sixdoBag.service.DiaChiKhachHangService;
+import com.bags.sixdoBag.service.KhachHangService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.List;
+import java.util.Map;
+
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/dia_chi_khach_hang")
 public class DiaChiKhachHangController {
     public final DiaChiKhachHangService diaChiKhachHangService;
+    public final KhachHangService khachHangService;
+    public final DiaChiKhachHangRepository diaChiKhachHangRepository;
 
     @GetMapping("")
-    public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(diaChiKhachHangService.getListDiaChiKhachHang(), HttpStatus.OK);
+    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name) {
+        model.addAttribute("listColors", diaChiKhachHangService.getListDiaChiKhachHang());
+        model.addAttribute("listColors1", khachHangService.getListKhachHang());
+        return "/quan-ly/dia-chi-khach-hang/view";
     }
 
 
-    @PostMapping("")
-    public ResponseEntity<?> addDiaChiKhachHang(@RequestBody @Valid DiaChiKhachHangRequest diaChiKhachHang) {
-        return new ResponseEntity<>(diaChiKhachHangService.addDiaChiKhachHang(diaChiKhachHang), HttpStatus.OK);
+    @PostMapping("/add")
+    public ResponseEntity<?> add(
+
+            @RequestParam("tenDiaChi") String tenDiaChi,
+            @RequestParam("moTa") String moTa,
+            @RequestParam("trangThai") boolean trangThai,
+            @RequestParam("id") Integer id,
+            Model model
+    ) {
+        System.out.println(id);
+        KhachHang khachHang= khachHangService.getKhachHang(id);
+        System.out.println(khachHang);
+        DiaChiKhachHang gg = diaChiKhachHangRepository.searchDiaChiKhachHangByTen(tenDiaChi);
+
+//        if (gg == null) {
+            DiaChiKhachHang dckh = new DiaChiKhachHang();
+            dckh.setKhachHang(khachHang);
+            dckh.setTenDiaChi(tenDiaChi);
+            dckh.setMoTa(moTa);
+            dckh.setTrangThai(trangThai);
+           diaChiKhachHangService.addDiaChiKhachHang(dckh);
+            return ResponseEntity.ok("ok");
+//        } else{
+//            return ResponseEntity.ok("errorTen");
+//        }
+    }
+    @PostMapping("/update")
+    public ResponseEntity<?> suaMauSac(@RequestParam("id") Integer id,
+                                       @RequestParam("tenDiaChi") String tenDiaChi,
+                                       @RequestParam("moTa") String moTa,
+                                       @RequestParam("trangThai") boolean trangThai) {
+
+
+
+
+        DiaChiKhachHang diaChiKhachHang = diaChiKhachHangService.getidDCKH(id);
+        diaChiKhachHang.setTenDiaChi(tenDiaChi);
+        diaChiKhachHang.setMoTa(moTa);
+        diaChiKhachHang.setTrangThai(trangThai);
+        diaChiKhachHangService.editDiaChiKhachHang(id, diaChiKhachHang);
+        return ResponseEntity.ok("ok");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editDiaChiKH(@PathVariable int id, @RequestBody @Valid DiaChiKhachHangRequest khachHang) {
-        return new ResponseEntity<>(diaChiKhachHangService.editDiaChiKhachHang(id,khachHang), HttpStatus.OK);
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> xoaDiaChiKh(@RequestParam("idKhachHang") Integer id) {
+        return ResponseEntity.ok(diaChiKhachHangService.deleteDiaChiKhachHang(id));
+    }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDiaChiKH(@PathVariable int id) {
-        return new ResponseEntity<>(diaChiKhachHangService.deleteDiaChiKhachHang(id), HttpStatus.OK);
-    }
-
-}

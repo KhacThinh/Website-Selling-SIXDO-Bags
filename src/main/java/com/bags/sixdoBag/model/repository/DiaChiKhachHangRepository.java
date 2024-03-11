@@ -2,6 +2,7 @@ package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
+import com.bags.sixdoBag.model.entitys.KhachHang;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ public interface DiaChiKhachHangRepository extends JpaRepository<DiaChiKhachHang
 
     @Query(value = "select * from dia_chi_khach_hang where ten like %:ten%", nativeQuery = true)
     List<DiaChiKhachHang> searchDiaChiKhachHangTen(String ten);
+    @Query(value = "select ms from DiaChiKhachHang ms where ms.tenDiaChi =:ten")
+    DiaChiKhachHang searchDiaChiKhachHangByTen(String ten);
 }

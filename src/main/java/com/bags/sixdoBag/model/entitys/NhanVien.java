@@ -34,7 +34,7 @@ public class NhanVien {
     private String hoTen;
 
     @Column(name = "ngay_sinh")
-    private LocalDateTime ngaySinh;
+    private String ngaySinh;
 
     @Column(name = "sdt")
     private String sdt;
@@ -56,6 +56,9 @@ public class NhanVien {
 
     @Column(name = "thoi_gian_ra")
     private LocalDateTime thoiGianRa;
+
+    @Column(name = "gioiTinh")
+    private Integer gioiTinh;
 
     @Column(name = "trang_thai")
     private Integer trangThai;

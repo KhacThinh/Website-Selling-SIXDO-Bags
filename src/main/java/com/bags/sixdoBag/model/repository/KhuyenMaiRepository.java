@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +32,10 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai, Integer> {
             "   OR ngay_ket_thuc BETWEEN @start_date AND @end_date\n" +
             "   OR (@start_date BETWEEN ngay_bat_dau AND ngay_ket_thuc AND @end_date BETWEEN ngay_bat_dau AND ngay_ket_thuc);", nativeQuery = true)
     List<KhuyenMai> searchKhuyenMaiNgay(String dateStart, String dateEnd);
+
+    @Query(value = "select ms from KhuyenMai ms where ms.maKhuyenMai =:ma")
+    KhuyenMai searchKhuyenMaiByMa(String ma);
+
+    @Query(value = "select ms from KhuyenMai ms where ms.ten =:ten")
+    KhuyenMai searchKhuyenMaiByTen(String ten);
 }

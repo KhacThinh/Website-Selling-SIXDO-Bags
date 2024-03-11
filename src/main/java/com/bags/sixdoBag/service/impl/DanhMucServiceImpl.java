@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.repository.DanhMucRepository;
 import com.bags.sixdoBag.service.DanhMucService;
@@ -62,5 +63,11 @@ public class DanhMucServiceImpl implements DanhMucService {
     public List<DanhMuc> searchDanhMuc(String tenDanhMuc) {
         List<DanhMuc> danhMucs = danhMucRepository.searchDanhMucOrMaDanhMuc(tenDanhMuc);
         return danhMucs;
+    }
+
+    @Override
+    public DanhMuc getidDanhMuc(Integer idDanhMuc) {
+        DanhMuc danhMuc = danhMucRepository.findById(idDanhMuc).orElse(null);
+        return danhMuc;
     }
 }

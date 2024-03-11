@@ -61,4 +61,15 @@ public class MauSacServiceImpl implements MauSacService {
         List<MauSac> mauSacs = mauSacRepository.searchMauSacTenOrMa(tenMauSac);
         return mauSacs;
     }
+
+    @Override
+    public boolean isMaMauSacExists(String maMauSac) {
+        return mauSacRepository.isMaMauSacExists(maMauSac);
+    }
+
+    @Override
+    public MauSac getidMauSac(Integer idMauSac) {
+        MauSac mauSac = mauSacRepository.findById(idMauSac).orElse(null);
+        return mauSac;
+    }
 }

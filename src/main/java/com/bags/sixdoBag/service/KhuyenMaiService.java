@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +24,6 @@ public interface KhuyenMaiService {
     public List<KhuyenMai> pageKhuyenMai(int limit, int size);
 
     public List<KhuyenMai> searchKhuyenMaiNgay(String dateStart, String dateEnd);
+
+    public KhuyenMai getidKhuyenMai(Integer idKhuyenMai);
 }

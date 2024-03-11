@@ -10,11 +10,14 @@ public class NhanVienRequest {
 
     private Integer idTaiKhoan;
 
+    private Integer gioiTinh;
+
+
     private String maNhanVien;
 
     private String hoTen;
 
-    private LocalDateTime ngaySinh;
+    private String ngaySinh;
 
     private String sdt;
 

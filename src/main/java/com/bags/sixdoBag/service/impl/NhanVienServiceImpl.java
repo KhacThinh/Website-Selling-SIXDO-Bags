@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.NhanVienRequest;
+import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.NhanVien;
 import com.bags.sixdoBag.model.entitys.TaiKhoan;
 import com.bags.sixdoBag.model.repository.NhanVienRepository;
@@ -38,7 +39,7 @@ public class NhanVienServiceImpl implements NhanVienService {
     }
 
     @Override
-    public NhanVien addNhanVien(NhanVienRequest nhanVien) {
+    public NhanVien addNhanVien(NhanVien nhanVien) {
         NhanVien nv = new NhanVien();
         nv.setMaNhanVien(nhanVien.getMaNhanVien());
         nv.setHoTen(nhanVien.getHoTen());
@@ -50,22 +51,30 @@ public class NhanVienServiceImpl implements NhanVienService {
         nv.setCccd(nhanVien.getCccd());
         nv.setThoiGianVao(nhanVien.getThoiGianVao());
         nv.setThoiGianRa(nhanVien.getThoiGianRa());
+        nv.setGioiTinh(nhanVien.getGioiTinh());
         nv.setTrangThai(1);
 
-        Integer idChucVu = nhanVien.getIdChucVu();
-        Optional.ofNullable(idChucVu)
-                .ifPresent(idCV -> nv.setChucVu(chucVuService.getChucVu(idCV)));
+        Integer idChucVu = nhanVien.getChucVu().getId();
+        if (idChucVu == null) {
+            nv.setChucVu(null);
+        } else {
+            nv.setChucVu(chucVuService.getChucVu(idChucVu));
+        }
+
+//        Integer idChucVu = nhanVien.getIdChucVu();
+//        Optional.ofNullable(idChucVu)
+//        .ifPresent(idCV -> nv.setChucVu(chucVuService.getChucVu(idCV)));
 
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setTenDangNhap(nhanVien.getEmail());
         taiKhoan.setMatKhau(nhanVien.getMatKhau());
-        taiKhoan.setQuyen("ADMIN");
+        taiKhoan.setQuyen(0);
         nv.setTaiKhoan(taiKhoan);
         return nhanVienRepository.save(nv);
     }
 
     @Override
-    public NhanVien editNhanVien(Integer idNhanVien, NhanVienRequest nhanVien) {
+    public NhanVien editNhanVien(Integer idNhanVien, NhanVien nhanVien) {
         NhanVien nv = getNhanVien(idNhanVien);
         nv.setHoTen(nhanVien.getHoTen());
         nv.setNgaySinh(nhanVien.getNgaySinh());
@@ -75,8 +84,9 @@ public class NhanVienServiceImpl implements NhanVienService {
         nv.setCccd(nhanVien.getCccd());
         nv.setThoiGianVao(nhanVien.getThoiGianVao());
         nv.setThoiGianRa(nhanVien.getThoiGianRa());
+        nv.setGioiTinh(nhanVien.getGioiTinh());
 
-        Integer idChucVu = nhanVien.getIdChucVu();
+        Integer idChucVu = nhanVien.getChucVu().getId();
         if (Objects.isNull(idChucVu)) {
             nv.setChucVu(null);
         } else {
@@ -94,6 +104,17 @@ public class NhanVienServiceImpl implements NhanVienService {
         NhanVien nhanVien = getNhanVien(idNhanVien);
         nhanVien.setTrangThai(0);
         nhanVienRepository.save(nhanVien);
+        return nhanVien;
+    }
+
+    @Override
+    public NhanVien loginNhanVien(String email, String matKhau) {
+        return nhanVienRepository.findByTenEndMatKhau(email,matKhau);
+    }
+
+    @Override
+    public NhanVien getidNhanVien(Integer idNhanVien) {
+        NhanVien nhanVien= nhanVienRepository.findById(idNhanVien).orElse(null);
         return nhanVien;
     }
 }

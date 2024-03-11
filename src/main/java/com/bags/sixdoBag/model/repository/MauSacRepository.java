@@ -19,4 +19,13 @@ public interface MauSacRepository extends JpaRepository<MauSac, Integer> {
 
     @Query(value = "select * from mau_sac where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     List<MauSac> searchMauSacTenOrMa(String tenMa);
+
+    @Query(value = "SELECT COUNT(ms) FROM MauSac ms WHERE ms.maMauSac like : maMauSac")
+    boolean isMaMauSacExists(String maMauSac); // Thêm phương thức kiểm tra tồn tại
+
+    @Query(value = "select ms from MauSac ms where ms.maMauSac =:ma")
+    MauSac searchMauSacByMa(String ma);
+
+    @Query(value = "select ms from MauSac ms where ms.tenMauSac =:ten")
+    MauSac searchMauSacByTen(String ten);
 }

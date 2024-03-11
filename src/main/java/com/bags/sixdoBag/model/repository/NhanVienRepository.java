@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.NhanVien;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,11 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
 
     @Query(value = "select * from nhan_vien where trang_thai = 1 and ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     List<NhanVien> searchSanPhamTenOrMa(String tenMa);
+
+    @Query( "select nv from NhanVien nv where nv.email=?1 and nv.matKhau=?2 and nv.chucVu.id=2")
+    NhanVien findByTenEndMatKhau(String email,String matKhau);
+
+    @Query(value = "select ms from NhanVien ms where ms.maNhanVien =:ma")
+    NhanVien searchNhanVienByMa(String ma);
+
 }
