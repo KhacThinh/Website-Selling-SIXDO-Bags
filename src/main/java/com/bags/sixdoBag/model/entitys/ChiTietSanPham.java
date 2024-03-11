@@ -46,6 +46,9 @@ public class ChiTietSanPham {
     @JoinColumn(name = "id_san_pham")
     private SanPham sanPham;
 
+    @Column(name = "trang_thai")
+    private Integer trangThai;
+
     @ManyToOne
     @JoinColumn(name = "id_mau_sac")
     private MauSac mauSac;
