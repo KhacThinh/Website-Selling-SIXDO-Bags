@@ -94,7 +94,7 @@
             <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
         </button>
 
-        <!-- Add modal -->
+
         <jsp:include page="./them-san-pham-modal.jsp"/>
     </div>
 </div>
@@ -129,7 +129,8 @@
         <div class="col-md-5 mb-3">
             <form action="/san-pham" class="search-form" method="get">
                 <div class="input-group">
-                    <input type="text" name="name" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
+                    <input type="text" name="name" value="${nameSearch}" class="form-control"
+                           placeholder="Tìm kiếm theo mã hoặc tên...">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                     </div>
@@ -177,13 +178,12 @@
 
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal${i.index}">
-                                    <i class="bi bi-exclamation-circle"></i> Chi Tiết</a>
+                                    <i class="bi bi-exclamation-circle"></i> Thông tin</a>
                                 </button>
                             </li>
 
                             <li>
-                                <a class="dropdown-item" href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}"> <i
-                                        class="bi bi-exclamation-circle"></i>Quản Lý Chi Tiết</a>
+                                <a class="dropdown-item" href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}"><i class="bi bi-box-arrow-right"></i> Quản lý sản phẩm chi tiết</a>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item btn-modal-sua" data-bs-toggle="modal"
@@ -191,14 +191,15 @@
                                         class="bi bi-pencil"></i> Sửa
                                 </button>
                             </li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash3"></i> Xóa</a></li>
+                            <li>
+                                <button type="button" class="dropdown-item btn-modal-xoa" data-id-xoa="${sp.id}"
+                                        href="#"><i class="bi bi-trash3"></i> Xóa
+                                </button>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
-
-                            <%--                        <jsp:include page="./sua-san-pham-modal.jsp"/>--%>
-
                             <%-- modal thông tin sản phẩm --%>
                         <div class="modal fade" id="exampleModal${i.index}" tabindex="-1"
                              aria-labelledby="exampleModalLabel"
@@ -250,6 +251,8 @@
     </div>
 </div>
 <jsp:include page="sua-san-pham-modal.jsp"></jsp:include>
+<jsp:include page="xoa-san-pham.jsp"></jsp:include>
+
 
 </body>
 

@@ -43,7 +43,9 @@ public class SanPhamController {
         if (Objects.isNull(name)) {
             model.addAttribute("sanPhams", sanPhamService.getSanPhams());
         } else {
+            model.addAttribute("nameSearch", name);
             model.addAttribute("sanPhams", sanPhamService.searchSanPhamTenOrMa(name));
+
         }
         return "/quan-ly/san-pham/view";
     }
@@ -81,8 +83,7 @@ public class SanPhamController {
     @PostMapping("")
     public String addSanPham(
             @ModelAttribute("sanPhamRequest") SanPhamRequest sanPhamRequest,
-            @RequestParam("hinhAnh") MultipartFile hinhAnh,
-            BindingResult bindingResult
+            @RequestParam("hinhAnh") MultipartFile hinhAnh
     ) {
         if (!hinhAnh.isEmpty()) {
             try {
@@ -104,8 +105,8 @@ public class SanPhamController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteKhuyeMai(@PathVariable int id) {
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteKhuyeMai(@RequestParam(value = "idSanPham") Integer id) {
         return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);
     }
 
@@ -120,7 +121,7 @@ public class SanPhamController {
 
     @PostMapping("/sua")
     public @ResponseBody
-    SanPham hello
+    SanPham suaSanPham
             (@RequestParam(value = "idSanPham") Integer id,
              @RequestBody SanPhamRequest sanPhamRequest
             ) {

@@ -18,12 +18,14 @@
                 <form:form method="POST" action="/san-pham" modelAttribute="sanPhamRequest" id="addSanPhamForm"
                            enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="tenSanPham">Tên Sản Phẩm<span class="required">*</span></label>
                                 <form:input path="tenSanPham" id="tenSanPham" class="form-control"/>
                                 <span id="tenSanPhamError" class="error text-danger"></span>
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="chatLieu">Chất Liệu<span class="required">*</span></label>
                                 <form:input path="chatLieu" id="chatLieu" class="form-control"/>
@@ -46,8 +48,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kichThuoc">Kích Thước<span class="required">*</span></label>
-                                <form:input path="kichThuoc" id="kichThuoc" class="form-control"/>
+                                <label for="kichThuoc">Kích Thước (Cao x dài x rộng)<span class="required">*</span></label>
+                                <form:input path="kichThuoc" id="kichThuoc" class="form-control" placeholder="0cmx0cmx0cm"/>
                                 <span id="kichThuocError" class="error text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -62,8 +64,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="moTa">Mô Tả</label>
-                                <form:textarea path="moTa" id="moTa" class="form-control"/>
-                                    <%--                                <form:errors path="moTa" cssClass="error text-danger"/>--%>
+                                <form:textarea path="moTa" id="moTa" class="form-control" style="height: 100px;"/>
                             </div>
                         </div>
                         <div class="col-md-6">

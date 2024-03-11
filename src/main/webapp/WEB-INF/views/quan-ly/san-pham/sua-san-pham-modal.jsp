@@ -4,7 +4,6 @@
 
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModallll" tabindex="-1"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,19 +58,17 @@
                                 <span id="xuatXuErrorr" class="error text-danger"></span>
                             </div>
                             <div class="form-group">
-<%--                                <label for="hinhAnhSua">Ảnh</label>--%>
-<%--                                <input type="file" id="hinhAnhSua" name="hinhAnhSua"--%>
-<%--                                       class="form-control"/>--%>
-<%--                                <img alt="Ảnh sản phẩm" id="previewImage"--%>
-<%--                                     style="max-width: 100%; height: 100px;"/>--%>
+                                <label for="previewImage">Ảnh</label>
+                                <img id="previewImage"
+                                     style="max-width: 100%; height: 150px;"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kichThuocSua">Kích Thước<span
+                                <label for="kichThuocSua">Kích Thước (Cao x dài x rộng)<span
                                         class="required">*</span></label>
                                 <input type="text" id="kichThuocSua" class="form-control"
-                                       value="${sp.kichThuoc}"/>
+                                       value="${sp.kichThuoc}" placeholder="0cmx0cmx0cm"/>
                                 <span id="kichThuocErrorr"
                                       class="error text-danger"></span>
                             </div>
@@ -88,7 +85,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="moTaSua">Mô Tả</label>
-                                <textarea id="moTaSua" class="form-control"></textarea>
+                                <textarea id="moTaSua" class="form-control" style="height: 120px;"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -149,7 +146,6 @@
         </div>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
@@ -159,12 +155,12 @@
         editButtons.forEach(function (button) {
             button.addEventListener('click', function () {
                 var id = this.getAttribute('data-id');
-                sendDecodeText(id);
+                suaSanPhamModal(id);
             });
         });
     });
 
-    function sendDecodeText(decodeText) {
+    function suaSanPhamModal(decodeText) {
         $.ajax({
             type: "POST",
             url: "/san-pham/findById",
@@ -182,6 +178,7 @@
                 $('#idThuongHieuSua').val(response.thuongHieu.id);
                 $('#idDanhMucSua').val(response.danhMuc.id);
                 $('#idDoiTuongSuDungSua').val(response.doiTuongSuDung.id);
+                $('#previewImage').attr('src', response.anh);
             },
             error: function (xhr, status, error) {
                 console.error("Error:", error);
@@ -199,7 +196,7 @@
         var khoiLuong = $("#khoiLuongSua").val();
         var kichThuoc = $("#kichThuocSua").val();
         var idThoiGianBaoHanh = $("#idThoiGianBaoHanhSua").val();
-        var idThuongHieu = $("#idThuongHieu").val();
+        var idThuongHieu = $("#idThuongHieuSua").val();
         var idDanhMuc = $("#idDanhMucSua").val();
         // var idDoiTuongSuDung = $("#idDoiTuongSuDungSua option:selected" ).text(); // cái này là lấy nam hay nữ
         var idDoiTuongSuDung = $("#idDoiTuongSuDungSua").val();  // cái này là lấy được value
@@ -261,11 +258,11 @@
         }
 
         if (!hasError) {
-            sendDataToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
+            suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
         }
     });
 
-    function sendDataToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung) {
+    function suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung) {
         const data = {
             idSanPham: idSanPham,
             maSanPham: maSanPham,
@@ -281,12 +278,6 @@
             idDoiTuongSuDung: idDoiTuongSuDung
         };
 
-        // var formData = new FormData();
-        // var file = $('#hinhAnhSua')[0].files[0];
-        // formData.append('idSanPham', idSanPham);
-        // formData.append('hinhAnh', file);
-        // formData.append('sanPhamRequest', JSON.stringify(data));
-
         $.ajax({
             type: 'POST',
             url: '/san-pham/sua?idSanPham=' + idSanPham,
@@ -295,6 +286,12 @@
             processData: false,
             dataType: 'json',
             success: function (response) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Sản phẩm của bạn đã được sửa",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 window.location.href = '/san-pham';
             },
             error: function (xhr, status, error) {

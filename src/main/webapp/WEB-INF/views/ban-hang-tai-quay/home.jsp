@@ -1387,10 +1387,10 @@
             icon: "warning",
             showCancelButton: true,
             reverseButtons: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel"
+            confirmButtonColor: "#2d8826",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Vâng, xoá nó.",
+            cancelButtonText: "Huỷ"
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log("idhoadonnnnnnnnnn " + idTabs);
@@ -1402,6 +1402,12 @@
                         maHoaDon: idTabs
                     }),
                     success: function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Giỏ Hàng đã được xoá",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
                         tabActive = "";
                         $('.gioHangTaiQuay').empty();
                         $('.tab button.tablinks').remove();
@@ -1660,18 +1666,6 @@
 
     // Xóa Sp trong giỏ hàng
     function deleteProduct(productId, event) {
-        // Swal.fire({
-        //     title: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
-        //     text: "Sản phẩm này xoá vĩnh viễn khỏi giỏ hàng!",
-        //     icon: "warning",
-        //     showCancelButton: true,
-        //     reverseButtons: true,
-        //     confirmButtonColor: "##DCDCDC",
-        //     cancelButtonColor: "#DCDCDC",
-        //     confirmButtonText: "OK",
-        //     cancelButtonText: "Huỷ"
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
         // Ngăn chặn hành vi mặc định của nút xóa (chẳng hạn chuyển trang)
         event.stopPropagation();
 
@@ -1694,9 +1688,11 @@
                 console.log("Đã xóa sản phẩm khỏi giỏ hàng:", productId);
                 Swal.fire({
                     title: "Đã xóa sản phẩm khỏi giỏ hàng",
-                    text: "You clicked the button!",
-                    icon: "success"
+                    icon: "success",
+                    timer: 500, // Thời gian đợi tính bằng mili giây (200ms = 0.2 giây)
+                    showConfirmButton: false // Ẩn nút "OK"
                 });
+
             },
             error: function (error) {
                 console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error);
@@ -1733,6 +1729,11 @@
                     openTab({
                         currentTarget: document.getElementById(activeTabId)
                     }, activeTabId);
+
+                    // // Tự động click vào nút mới tạo và thêm lớp active
+                    // var newTabButton = document.querySelector('.tablinks.add');
+                    // newTabButton.click();
+                    // newTabButton.classList.add('active');
                 },
                 error: function (error) {
                     console.error(error);
@@ -1850,6 +1851,7 @@
                     $('.tab').append(newAddTabs);
 
                     successMessage('Thanh Toán Thành Công');
+                    window.location.href = '/ban-tai-quay';
                     console.log("Đã thanh toán thành công. Thông tin đơn hàng:", response);
                 },
                 error: function (error) {
