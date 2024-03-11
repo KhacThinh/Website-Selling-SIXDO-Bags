@@ -4,7 +4,6 @@ import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.service.*;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,18 +38,24 @@ public class SanPhamController {
 
     @GetMapping("")
     public String getSanPham(Model model, @RequestParam(name = "name", required = false) String name) {
-        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().map(ThuongHieu::getTen).collect(Collectors.toSet());
-        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
-        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
-        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
-        model.addAttribute("sanPhamRequest", new SanPhamRequest());
+        extracted(model);
         hienThiChung(model);
         if (Objects.isNull(name)) {
             model.addAttribute("sanPhams", sanPhamService.getSanPhams());
         } else {
+            model.addAttribute("nameSearch", name);
             model.addAttribute("sanPhams", sanPhamService.searchSanPhamTenOrMa(name));
+
         }
         return "/quan-ly/san-pham/view";
+    }
+
+    private void extracted(Model model) {
+        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().filter(th -> th != null && !th.getTen().isEmpty()).map(ThuongHieu::getTen).collect(Collectors.toSet());
+        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
+        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
+        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
+        model.addAttribute("sanPhamRequest", new SanPhamRequest());
     }
 
     private void hienThiChung(Model model) {
@@ -66,11 +71,7 @@ public class SanPhamController {
                          @RequestParam String tenChatLieu,
                          @RequestParam String tenThuongHieu
     ) {
-        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().map(ThuongHieu::getTen).collect(Collectors.toSet());
-        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
-        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
-        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
-        model.addAttribute("sanPhamRequest", new SanPhamRequest());
+        extracted(model);
         List<SanPham> sanPhams = sanPhamService.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
         model.addAttribute("sanPhams", sanPhams);
         model.addAttribute("tenChatLieuSelect", tenChatLieu);
@@ -79,18 +80,11 @@ public class SanPhamController {
     }
 
 
-
-
     @PostMapping("")
     public String addSanPham(
             @ModelAttribute("sanPhamRequest") SanPhamRequest sanPhamRequest,
-            @RequestParam("hinhAnh") MultipartFile hinhAnh,
-            BindingResult bindingResult
+            @RequestParam("hinhAnh") MultipartFile hinhAnh
     ) {
-        if (bindingResult.hasErrors()) {
-            System.out.println("Lỗi");
-        }
-
         if (!hinhAnh.isEmpty()) {
             try {
                 byte[] bytes = hinhAnh.getBytes();
@@ -110,13 +104,30 @@ public class SanPhamController {
         return "redirect:/san-pham";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editSanPham(@PathVariable int id, @RequestBody @Valid SanPhamRequest khuyenMai) {
-        return new ResponseEntity<>(sanPhamService.editSanPham(id, khuyenMai), HttpStatus.OK);
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteKhuyeMai(@RequestParam(value = "idSanPham") Integer id) {
+        return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteKhuyeMai(@PathVariable int id) {
-        return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);
+    @PostMapping("/findById")
+    public @ResponseBody
+    SanPham findBySanPham(@RequestParam(value = "idSanPham") Integer id) {
+        System.out.println(id);
+        System.out.println("hello");
+        SanPham sanPham = sanPhamService.getSanPham(id);
+        return sanPham;
+    }
+
+    @PostMapping("/sua")
+    public @ResponseBody
+    SanPham suaSanPham
+            (@RequestParam(value = "idSanPham") Integer id,
+             @RequestBody SanPhamRequest sanPhamRequest
+            ) {
+        System.out.println(id);
+        String oldAnh = sanPhamService.getSanPham(id).getAnh();
+        sanPhamRequest.setAnh(oldAnh);
+        return sanPhamService.editSanPham(id, sanPhamRequest);
     }
 }

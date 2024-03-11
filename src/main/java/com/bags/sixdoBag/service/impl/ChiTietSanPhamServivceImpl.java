@@ -1,8 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.ChiTietSanPhamRequest;
-import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
-import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
+import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
 import com.bags.sixdoBag.service.KhuyenMaiService;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -125,14 +125,47 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         return chiTietSanPhamRepository.listSearch(tenMa);
     }
 
+    @Override
+    public ChiTietSanPham searchByMaSanPham(String ma) {
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamRepository.searchSanPhamByMa(ma).orElse(null);
+        return chiTietSanPham;
+    }
+
+
+    @Override
+    public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String thuongHieu, String mauSac, String doiTuongSuDung) {
+        List<ChiTietSanPham> chiTietSanPhams = getChiTietSanPhams().stream()
+                .filter(ctsp -> {
+                    SanPham sanPham = ctsp.getSanPham();
+                    MauSac mauSacObj = ctsp.getMauSac();
+                    DoiTuongSuDung dtsd = sanPham.getDoiTuongSuDung();
+                    ThuongHieu th = sanPham.getThuongHieu();
+
+                    boolean tenChatLieu = chatLieu.isEmpty() || sanPham.getChatLieu().equals(chatLieu);
+                    boolean tenMauSac = mauSac.isEmpty() || mauSac.equals(Objects.nonNull(mauSacObj) ? mauSacObj.getTenMauSac() : "");
+                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(Objects.nonNull(dtsd) ? dtsd.getTenDoiTuongSuDung() : "");
+                    boolean tenThuongHieu = thuongHieu.isEmpty() || thuongHieu.equals(Objects.nonNull(th) ? th.getTen() : "");
+
+                    return tenChatLieu && tenThuongHieu && tenMauSac && tenDoiTuong;
+                })
+                .collect(Collectors.toList());
+
+        return chiTietSanPhams;
+    }
 
     @Override
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung) {
         List<ChiTietSanPham> chiTietSanPhams = getChiTietSanPhams().stream()
                 .filter(ctsp -> {
-                    boolean tenChatLieu = chatLieu.isEmpty() || chatLieu.equals(ctsp.getSanPham().getChatLieu());
-                    boolean tenMauSac = mauSac.isEmpty() || mauSac.equals(ctsp.getMauSac().getTenMauSac());
-                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(ctsp.getSanPham().getDoiTuongSuDung().getTenDoiTuongSuDung());
+                    SanPham sanPham = ctsp.getSanPham();
+                    MauSac mauSacObj = ctsp.getMauSac();
+                    DoiTuongSuDung dtsd = sanPham.getDoiTuongSuDung();
+                    ThuongHieu th = sanPham.getThuongHieu();
+
+                    boolean tenChatLieu = chatLieu.isEmpty() || sanPham.getChatLieu().equals(chatLieu);
+                    boolean tenMauSac = mauSac.isEmpty() || mauSac.equals(Objects.nonNull(mauSacObj) ? mauSacObj.getTenMauSac() : "");
+                    boolean tenDoiTuong = doiTuongSuDung.isEmpty() || doiTuongSuDung.equals(Objects.nonNull(dtsd) ? dtsd.getTenDoiTuongSuDung() : "");
+
                     return tenChatLieu && tenMauSac && tenDoiTuong;
                 })
                 .collect(Collectors.toList());

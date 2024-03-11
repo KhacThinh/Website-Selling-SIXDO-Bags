@@ -1,16 +1,9 @@
 package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.ChiTietSanPhamRequest;
-import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
-import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
-import com.bags.sixdoBag.model.entitys.SanPham;
-import com.bags.sixdoBag.model.entitys.ThuongHieu;
+import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
-import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
-import com.bags.sixdoBag.service.KhuyenMaiService;
-import com.bags.sixdoBag.service.MauSacService;
-import com.bags.sixdoBag.service.SanPhamService;
-import com.bags.sixdoBag.service.ThuongHieuService;
+import com.bags.sixdoBag.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
@@ -33,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,8 +40,6 @@ public class ChiTietSanPhamController {
 
     private final ChiTietSanPhamServivce chiTietSanPhamServivce;
 
-    private final ChiTietSanPhamRepository chiTietSanPhamRepository;
-
     private final MauSacService mauSacService;
 
     private final SanPhamService sanPhamService;
@@ -53,6 +47,12 @@ public class ChiTietSanPhamController {
     private final KhuyenMaiService khuyenMaiService;
 
     private final ThuongHieuService thuongHieuService;
+
+    private final ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+
+    private final DoiTuongSuDungService doiTuongSuDungService;
+
 
 
     @PostMapping("/detail")
@@ -63,6 +63,7 @@ public class ChiTietSanPhamController {
 
     @GetMapping("/detailCTSP")
     public String detailSanPhamById(Model model, @RequestParam("id") int id) {
+        extracted(model);
         System.out.println("idddddddddđffffffffffffff" + id);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhamById(id);
         model.addAttribute("listCTSP", listCTSP);
@@ -74,22 +75,51 @@ public class ChiTietSanPhamController {
 
     @GetMapping("")
     public String getCTSP(Model model) {
-
+        extracted(model);
         List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhams();
         model.addAttribute("listCTSP", listCTSP);
+        return "quan-ly/chi-tiet-san-pham/view";
+    }
+
+    private void extracted(Model model) {
+        Set<String> chatLieus = sanPhamService.getSanPhams().stream()
+                .map(SanPham::getChatLieu)
+                .filter(chatLieu -> chatLieu != null && !chatLieu.isEmpty())
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+
+        Set<String> doiTuongSuDungs = new HashSet<>(doiTuongSuDungService.getListDoiTuongSuDung().stream()
+                .map(DoiTuongSuDung::getTenDoiTuongSuDung)
+                .filter(doiTuong -> doiTuong != null && !doiTuong.isEmpty())
+                .map(s -> s.trim())
+                .collect(Collectors.toSet()));
+
+        Set<String> mauSacs = mauSacService.getMauSacs().stream()
+                .map(MauSac::getTenMauSac)
+                .filter(mauSac -> mauSac != null && !mauSac.isEmpty())
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+
+        Set<String> thuongHieus = thuongHieuService.getThuongHieus().stream()
+                .filter(th -> th != null && !th.getTen().isEmpty())
+                .map(ThuongHieu::getTen)
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+
+        model.addAttribute("tenThuongHieuSelects", thuongHieus);
+        model.addAttribute("tenDoiTuongSuDungSelects", doiTuongSuDungs);
+        model.addAttribute("tenChatLieuSelects", chatLieus);
+        model.addAttribute("tenMauSacSelects", mauSacs);
         model.addAttribute("listSp", sanPhamService.getSanPhams());
         model.addAttribute("listMauSac", mauSacService.getMauSacs());
         model.addAttribute("listKhuyenMai", khuyenMaiService.getKhuyenMais());
-
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
-        return "quan-ly/chi-tiet-san-pham/view";
     }
 
 
     @PostMapping("/add")
     public String add(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
                       @RequestParam("images") MultipartFile hinhAnh) {
-
         if (!hinhAnh.isEmpty()) {
             try {
                 byte[] bytes = hinhAnh.getBytes();
@@ -111,46 +141,26 @@ public class ChiTietSanPhamController {
 
     }
 
-    @PostMapping("/update")
-    public String Update(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
-                         @RequestParam("images") MultipartFile hinhAnh) {
 
-        if (!hinhAnh.isEmpty()) {
-            try {
-                byte[] bytes = hinhAnh.getBytes();
-                String UPLOAD_DIR = "src/main/resources/static/images/chi-tiet-san-pham/";
-                // Lưu ảnh vào thư mục trong dự án của bạn hoặc thực hiện xử lý tùy chỉnh khác
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(UPLOAD_DIR + hinhAnh.getOriginalFilename())));
-                stream.write(bytes);
-                System.out.println(hinhAnh.getOriginalFilename());
-                chiTietSanPham.setHinhAnh("../static/images/chi-tiet-san-pham/" + hinhAnh.getOriginalFilename());
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
-        chiTietSanPhamServivce.addChiTietSanPham(chiTietSanPham);
-        return "redirect:/chi-tiet-san-pham";
 
-    }
 
-    @PostMapping("/filter")
-    public String search(Model model,
-                         @RequestParam String tenChatLieu,
-                         @RequestParam String tenThuongHieu
+    @PostMapping("filter")
+    public String filter(
+            Model model,
+            @RequestParam("tenMauSac") String mauSac,
+            @RequestParam("tenDoiTuongSuDung") String doiTuongSuDung,
+            @RequestParam("tenChatLieu") String chatLieu,
+            @RequestParam("tenThuongHieu") String thuongHieu
     ) {
-        Set<String> tenThuongHieuSelects = thuongHieuService.getThuongHieus().stream().map(ThuongHieu::getTen).collect(Collectors.toSet());
-        Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().map(SanPham::getChatLieu).collect(Collectors.toSet());
-        model.addAttribute("tenThuongHieuSelects", tenThuongHieuSelects);
-        model.addAttribute("tenChatLieuSelects", tenChatLieuSelects);
-        model.addAttribute("sanPhamRequest", new SanPhamRequest());
-        List<SanPham> sanPhams = sanPhamService.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
-        model.addAttribute("sanPhams", sanPhams);
-        model.addAttribute("tenChatLieuSelect", tenChatLieu);
-        model.addAttribute("tenThuongHieuSelect", tenThuongHieu);
-        return "/quan-ly/san-pham/view";
+        extracted(model);
+        List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu.trim(), thuongHieu.trim(), mauSac.trim(), doiTuongSuDung.trim());
+        model.addAttribute("listCTSP", listSearchCTSP);
+        model.addAttribute("tenMauSacSelect", mauSac);
+        model.addAttribute("tenDoiTuongSuDungSelect", doiTuongSuDung);
+        model.addAttribute("tenChatLieuSelect", chatLieu);
+        model.addAttribute("tenThuongHieuSelect", thuongHieu);
+        return "quan-ly/chi-tiet-san-pham/view";
     }
 
 
@@ -190,7 +200,7 @@ public class ChiTietSanPhamController {
         }
 
 
-        return new ResponseEntity<>(chiTietSanPhamServivce.editChiTietSanPham(id,chiTietSanPham), HttpStatus.OK);
+        return new ResponseEntity<>(chiTietSanPhamRepository.save(chiTietSanPham), HttpStatus.OK);
     }
 
     @PostMapping("/checkMaUpdate")
@@ -210,6 +220,7 @@ public class ChiTietSanPhamController {
         return new ResponseEntity<>(chiTietSanPhamServivce.searchChiTietSanPhams(name), HttpStatus.OK);
     }
 
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam("id") Integer id, Model model) {
         getCTSP(model);
@@ -220,5 +231,15 @@ public class ChiTietSanPhamController {
     public ResponseEntity<?> viewUpdate(@RequestParam("id") Integer id, Model model) {
         getCTSP(model);
         return new ResponseEntity<>(chiTietSanPhamServivce.getChiTietSanPham(id), HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("ctsp")
+    @ResponseBody
+    public List<ChiTietSanPham> chiTietSanPhams() {
+        List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamServivce.getChiTietSanPhams();
+        return chiTietSanPhams;
+
     }
 }
