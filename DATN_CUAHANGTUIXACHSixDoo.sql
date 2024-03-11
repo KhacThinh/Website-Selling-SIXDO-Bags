@@ -103,6 +103,8 @@ CONSTRAINT FK_MauSac_CTSP FOREIGN KEY(id_mau_sac) REFERENCES mau_sac(id),
 CONSTRAINT FK_KhuyenMai_CTSP FOREIGN KEY(id_khuyen_mai) REFERENCES khuyen_mai(id)
 )
 
+alter table chi_tiet_san_pham add trang_thai int
+
 create table anh_ctsp(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 id_ctsp  int ,

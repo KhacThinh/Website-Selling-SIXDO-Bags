@@ -942,6 +942,9 @@
             <i class="bi bi-qr-code-scan" style="font-size: 24px; color: white;"></i>
         </button>
 
+<%--        thêm sản phẩm--%>
+        <button style="margin-right: 10px" onclick="openModal()"><i class="bi bi-funnel-fill"></i> Thêm Sản Phẩm</button>
+
         <!-- Tạo hoá đơn -->
         <div class="tab">
             <c:forEach var="o" items="${tabs}" varStatus="loop">
@@ -953,9 +956,11 @@
             </c:forEach>
 
             <button class="tablinks add" onclick="addTab()">+</button>
+
         </div>
 
     </div>
+
 
 
 </div>

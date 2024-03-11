@@ -16,8 +16,8 @@ import java.util.Optional;
 @Repository
 public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, Integer> {
 
-    @Query(value = "select * from chi_tiet_san_pham where trang_thai =1", nativeQuery = true)
-    List<ChiTietSanPham>getListCtsp();
+    @Query(value = "select * from chi_tiet_san_pham where trang_thai = 1", nativeQuery = true)
+    List<ChiTietSanPham> getListCtsp();
 
     @Query(value = "select ctsp from ChiTietSanPham ctsp join SanPham sp on ctsp.sanPham = sp join MauSac ms on ctsp.mauSac = ms" +
             " where ctsp.ma like %:tenMa% or sp.tenSanPham like %:tenMa% or ms.tenMauSac like %:tenMa%")
@@ -37,15 +37,15 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
 
 
     @Query(value = "select ctsp from ChiTietSanPham ctsp where ctsp.sanPham.id=:idSanPham")
-    List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham );
+    List<ChiTietSanPham> getChiTietSanPhamById(int idSanPham);
 
 
     @Query(value = "select ctsp.soLuong from ChiTietSanPham ctsp where ctsp.id=:idCtSanPham")
-    int getSoLuongSanPhamById(int idCtSanPham );
+    int getSoLuongSanPhamById(int idCtSanPham);
 
     @Modifying
     @Query("update ChiTietSanPham ctsp set ctsp.soLuong = :newSoLuong where ctsp.id = :idCtSanPham")
-   void updateSoLuongSanPham(int newSoLuong,int idCtSanPham );
+    void updateSoLuongSanPham(int newSoLuong, int idCtSanPham);
 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.ma =:ma")
     ChiTietSanPham getChiTietSanPhamByMa(String ma);
