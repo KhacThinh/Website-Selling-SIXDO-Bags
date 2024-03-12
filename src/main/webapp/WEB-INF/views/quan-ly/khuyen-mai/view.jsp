@@ -95,8 +95,8 @@
                     <td>${km.maKhuyenMai}</td>
                     <td>${km.ten}</td>
                     <td>${km.giaTriGiam}</td>
-                    <td>${km.ngayKetThuc}</td>
                     <td>${km.ngayBatDau}</td>
+                    <td>${km.ngayKetThuc}</td>
                     <td>${km.moTa}</td>
                     <td>${km.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
                     <td>

@@ -77,12 +77,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="ma">Mã Danh Mục</label>
-                            <input  id="ma" class="form-control"/>
+                            <label for="maDanhMuc">Mã Danh Mục</label>
+                            <input  id="maDanhMuc" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="ten">Tên Danh Mục</label>
-                            <input id="ten" class="form-control"/>
+                            <label for="tenDanhMuc">Tên Danh Mục</label>
+                            <input id="tenDanhMuc" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">

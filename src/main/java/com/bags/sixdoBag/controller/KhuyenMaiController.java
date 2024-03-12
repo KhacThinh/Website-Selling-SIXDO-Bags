@@ -86,8 +86,19 @@ public class KhuyenMaiController {
     public final KhuyenMaiRepository khuyenMaiRepository;
 
     @GetMapping("")
+//    public String getKhuyenMai(Model model, @RequestParam(name = "name", required = false) String name) {
+//        model.addAttribute("listKhuyenMai", khuyenMaiService.getKhuyenMais());
+//        return "/quan-ly/khuyen-mai/view";
     public String getKhuyenMai(Model model, @RequestParam(name = "name", required = false) String name) {
-        model.addAttribute("listKhuyenMai", khuyenMaiService.getKhuyenMais());
+        List<KhuyenMai> listKhuyenMai = khuyenMaiService.getKhuyenMais();
+        for (KhuyenMai khuyenMai : listKhuyenMai) {
+            if (khuyenMai.getNgayKetThuc().isBefore(LocalDateTime.now())) {
+                khuyenMai.setTrangThai(false);
+            } else {
+                khuyenMai.setTrangThai(true);
+            }
+        }
+        model.addAttribute("listKhuyenMai", listKhuyenMai);
         return "/quan-ly/khuyen-mai/view";
     }
 

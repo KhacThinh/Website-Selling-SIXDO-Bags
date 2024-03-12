@@ -39,6 +39,8 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai, Integer> {
     @Query(value = "select km from KhuyenMai km where km.ten =:ten")
     KhuyenMai searchKhuyenMaiByTen(String ten);
 
+//    @Query
+
     @Query(value = "select km from KhuyenMai km where km.ngayBatDau =:ngayBatDau")
     KhuyenMai searchNgayBD(String ngayBatDau);
 

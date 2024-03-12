@@ -133,11 +133,15 @@ public class DanhMucController {
     }
 
 
-    @PostMapping("/xoa-danh-muc")
-    public ResponseEntity<?> xoaDanhMuc(@RequestBody Map<String, Object> requestBody) {
-        Integer idDanhMuc = (Integer) requestBody.get("idDanhMuc");
-        danhMucService.deleteDanhMuc(idDanhMuc);
-        List<DanhMuc> danhSachDanhMuc = danhMucService.getDanhMucs();
-        return ResponseEntity.ok(danhSachDanhMuc);
-    }
+//    @PostMapping("/xoa-danh-muc")
+//    public ResponseEntity<?> xoaDanhMuc(@RequestBody Map<String, Object> requestBody) {
+//        Integer idDanhMuc = (Integer) requestBody.get("idDanhMuc");
+//        danhMucService.deleteDanhMuc(idDanhMuc);
+//        List<DanhMuc> danhSachDanhMuc = danhMucService.getDanhMucs();
+//        return ResponseEntity.ok(danhSachDanhMuc);
+//    }
+    @PostMapping("/delete")
+    public ResponseEntity<?> xoaDanhMuc(@RequestParam("idDanhMuc") Integer id) {
+    return ResponseEntity.ok(danhMucService.deleteDanhMuc(id));
+}
 }

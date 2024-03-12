@@ -86,8 +86,9 @@
             <tbody>
             <c:forEach items="${ listDanhMuc }" var="dm" varStatus="i">
                 <tr>
-                    <td>${dm.ma}</td>
-                    <td>${dm.ten}</td>
+                <tr id="record_${dm.id}">
+                    <td>${dm.maDanhMuc}</td>
+                    <td>${dm.tenDanhMuc}</td>
                     <td>${dm.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
 
 
@@ -178,7 +179,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function xoaDanhMuc(idDanhMuc) {
         var confirmation = confirm("Bạn có chắc chắn muốn xóa danh mục này?");
