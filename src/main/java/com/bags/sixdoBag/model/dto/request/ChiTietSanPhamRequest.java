@@ -26,4 +26,6 @@ public class ChiTietSanPhamRequest {
     private Integer idMauSac;
 
     private Integer idKhuyenMai;
+
+    private Integer trangThai;
 }

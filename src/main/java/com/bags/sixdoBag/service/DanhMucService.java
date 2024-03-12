@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
 import org.springframework.stereotype.Service;
 
@@ -21,4 +22,6 @@ public interface DanhMucService {
     public List<DanhMuc> pageDanhMuc(int limit, int size);
 
     public List<DanhMuc> searchDanhMuc(String tenDanhMuc);
+
+    public DanhMuc getidDanhMuc(Integer idDanhMuc);
 }

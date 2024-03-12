@@ -2,6 +2,7 @@ package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
+import com.bags.sixdoBag.model.entitys.MauSac;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,10 @@ public interface ChucVuRepository extends JpaRepository<ChucVu, Integer> {
 
     @Query(value = "select * from chuc_vu where ten_chuc_vu like %:tenMa% or ma_chuc_vu like %:tenMa%", nativeQuery = true)
     List<ChucVu> searchChucVuTenOrMa(String tenMa);
+
+    @Query(value = "select ms from ChucVu ms where ms.maChucVu =:ma")
+    ChucVu searchChucVuByMa(String ma);
+
+    @Query(value = "select ms from ChucVu ms where ms.tenChucVu =:ten")
+    ChucVu searchChucVuByTen(String ten);
 }

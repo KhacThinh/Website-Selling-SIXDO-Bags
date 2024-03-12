@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.repository.ChucVuRepository;
 import com.bags.sixdoBag.service.ChucVuService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class ChucVuServiceImpl implements ChucVuService {
         ChucVu cv = new ChucVu();
         cv.setMaChucVu(chucVu.getMaChucVu().trim());
         cv.setTenChucVu(chucVu.getTenChucVu().trim());
-        cv.setTrangThai(true);
+        cv.setTrangThai(chucVu.getTrangThai());
         chucVuRepository.save(cv);
         return cv;
     }
@@ -62,6 +63,12 @@ public class ChucVuServiceImpl implements ChucVuService {
     @Override
     public List<ChucVu> searchChucVu(String tenChucVu) {
         List<ChucVu> chucVu = chucVuRepository.searchChucVuTenOrMa(tenChucVu);
+        return chucVu;
+    }
+
+    @Override
+    public ChucVu getidChucVu(Integer idChucVu) {
+        ChucVu chucVu = chucVuRepository.findById(idChucVu).orElse(null);
         return chucVu;
     }
 }

@@ -25,5 +25,5 @@ public class TaiKhoan {
     private String matKhau;
 
     @Column(name = "quyen")
-    private String quyen;
+    private Integer quyen;
 }

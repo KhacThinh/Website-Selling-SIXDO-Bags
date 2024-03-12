@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,6 @@ public interface DoiTuongSuDungService {
     public List<DoiTuongSuDung>pageDoiTuongSuDung(int limit, int size);
 
     public List<DoiTuongSuDung>searchDoiTuongSuDung(String tenDoiTuongSuDung);
+
+    public DoiTuongSuDung getidDTSD(Integer idDTSD);
 }

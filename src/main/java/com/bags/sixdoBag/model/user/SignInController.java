@@ -1,7 +1,7 @@
 package com.bags.sixdoBag.model.user;
 
+import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.bags.sixdoBag.model.entitys.KhachHang;
-import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.model.entitys.TaiKhoan;
 import com.bags.sixdoBag.service.KhachHangService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

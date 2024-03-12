@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,12 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia,Integer> {
     @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from ma_gia_gia \n" +
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     List<MaGiamGia> findByPageing(int page, int size);
+
+    @Query(value = "select ms from MaGiamGia ms where ms.maGiamGia =:ma")
+    MaGiamGia searchMaGiamGiaByMa(String ma);
+
+    @Query(value = "select ms from MaGiamGia ms where ms.tenMaGiamGia =:ten")
+    MaGiamGia searchMaGiamGiaByTen(String ten);
 
 //    @Query(value = "DECLARE @start_date datetime = :startDate;" +
 //            "DECLARE @end_date datetime = :endDate;" +

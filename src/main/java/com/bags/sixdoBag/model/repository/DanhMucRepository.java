@@ -19,4 +19,10 @@ public interface DanhMucRepository extends JpaRepository<DanhMuc,Integer> {
 
     @Query(value = "select * from danh_muc where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     List<DanhMuc> searchDanhMucOrMaDanhMuc(String tenMa);
+
+    @Query(value = "select dm from DanhMuc dm where dm.maDanhMuc =:ma")
+    DanhMuc searchDanhMucByMa(String ma);
+
+    @Query(value = "select dm from DanhMuc dm where dm.tenDanhMuc =:ten")
+    DanhMuc searchDanhMucByTen(String ten);
 }

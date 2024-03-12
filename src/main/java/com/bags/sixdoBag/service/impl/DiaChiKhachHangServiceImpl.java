@@ -2,6 +2,7 @@ package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.DiaChiKhachHangRequest;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
+import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.DiaChiKhachHangRepository;
 import com.bags.sixdoBag.service.DiaChiKhachHangService;
 import com.bags.sixdoBag.service.KhachHangService;
@@ -28,23 +29,23 @@ public class DiaChiKhachHangServiceImpl implements DiaChiKhachHangService {
     }
 
     @Override
-    public DiaChiKhachHang addDiaChiKhachHang(DiaChiKhachHangRequest diaChiKhachHang) {
+    public DiaChiKhachHang addDiaChiKhachHang(DiaChiKhachHang diaChiKhachHang) {
         DiaChiKhachHang dc = new DiaChiKhachHang();
         dc.setTenDiaChi(diaChiKhachHang.getTenDiaChi());
         dc.setMoTa(diaChiKhachHang.getMoTa());
         dc.setTrangThai(true);
-        Integer idKhachHang = diaChiKhachHang.getIdKhachHang();
+        Integer idKhachHang = diaChiKhachHang.getKhachHang().getId();
         if(idKhachHang== null){
             dc.setKhachHang(null);
         }else{
             dc.setKhachHang(khachHangService.getKhachHang(idKhachHang));
         }
-        diaChiKhachHangRepository.save(dc);
-        return dc;
+        return diaChiKhachHangRepository.save(dc);
+//        return dc;
     }
 
     @Override
-    public DiaChiKhachHang editDiaChiKhachHang(Integer idDiaChi, DiaChiKhachHangRequest diaChiKhachHang) {
+    public DiaChiKhachHang editDiaChiKhachHang(Integer idDiaChi, DiaChiKhachHang diaChiKhachHang) {
         DiaChiKhachHang dc= getDiaChiKhachHang(idDiaChi);
         dc.setTenDiaChi(diaChiKhachHang.getTenDiaChi());
         dc.setMoTa(diaChiKhachHang.getMoTa());
@@ -69,5 +70,11 @@ public class DiaChiKhachHangServiceImpl implements DiaChiKhachHangService {
     @Override
     public List<DiaChiKhachHang> pageDiaChiKhachHang(int limit, int size) {
         return null;
+    }
+
+    @Override
+    public DiaChiKhachHang getidDCKH(Integer idDCKH) {
+        DiaChiKhachHang diaChiKhachHang = diaChiKhachHangRepository.findById(idDCKH).orElse(null);
+        return diaChiKhachHang;
     }
 }

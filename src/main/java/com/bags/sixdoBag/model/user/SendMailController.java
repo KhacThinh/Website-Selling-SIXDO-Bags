@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.model.user;
 
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -9,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.bags.sixdoBag.model.repository.KhachHangRepository;
 
 @Controller
 public class SendMailController {

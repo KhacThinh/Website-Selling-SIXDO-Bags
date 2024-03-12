@@ -97,10 +97,13 @@ gia_nhap float,
 gia_ban float,
 thoi_gian datetime,
 anh_ctsp varchar(100),
+trang_thai int,
 CONSTRAINT FK_SanPham_CTSP FOREIGN KEY(id_san_pham) REFERENCES san_pham(id),
 CONSTRAINT FK_MauSac_CTSP FOREIGN KEY(id_mau_sac) REFERENCES mau_sac(id),
 CONSTRAINT FK_KhuyenMai_CTSP FOREIGN KEY(id_khuyen_mai) REFERENCES khuyen_mai(id)
 )
+
+alter table chi_tiet_san_pham add trang_thai int
 
 create table anh_ctsp(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
@@ -129,6 +132,9 @@ trang_thai int,
 mat_khau varchar(100),
 CONSTRAINT FK_TaiKhoan FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
+select * from khach_hang
+ALTER TABLE khach_hang
+ADD UNIQUE (sdt);
 
 create table dia_chi_khach_hang(
 id int IDENTITY(1, 1) PRIMARY KEY,
@@ -330,6 +336,22 @@ delete from chi_tiet_gio_hang where id_ctsp = 6
 select * from chi_tiet_gio_hang
 select * from khach_hang
 select * from chi_tiet_san_pham
+
+select ctsp.* from chi_tiet_san_pham as ctsp join san_pham as sp on ctsp.id_san_pham = sp.id join
+                   mau_sac as ms on ctsp.id_mau_sac = ms.id join thuong_hieu as th on sp.id_thuong_hieu = th.id
+                                             join doi_tuong_su_dung as dtsd on sp.id_doi_tuong_su_dung = dtsd.id
+where sp.chat_lieu like N'%Titan%' and dtsd.ten like N'%%' and ms.ten like N'%%' and th.ten like N'%%'
+
+SELECT ctsp.*
+FROM chi_tiet_san_pham AS ctsp
+         LEFT JOIN san_pham AS sp ON ctsp.id_san_pham = sp.id
+         LEFT JOIN mau_sac AS ms ON ctsp.id_mau_sac = ms.id
+         LEFT JOIN thuong_hieu AS th ON sp.id_thuong_hieu = th.id
+         LEFT JOIN doi_tuong_su_dung AS dtsd ON sp.id_doi_tuong_su_dung = dtsd.id
+WHERE sp.chat_lieu LIKE N'%Da%'
+  AND (dtsd.ten LIKE N'%%' OR dtsd.ten IS NULL)
+  AND (ms.ten LIKE N'%%' OR ms.ten IS NULL)
+  AND (th.ten LIKE N'%%' OR th.ten IS NULL);
 
 
 

@@ -21,4 +21,5 @@ public interface HoaDonService {
 
     Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDon();
     void saveHoaDon (HoaDon hoaDon);
+    void xacNhanDonHang(int trangThai, String maHd);
 }

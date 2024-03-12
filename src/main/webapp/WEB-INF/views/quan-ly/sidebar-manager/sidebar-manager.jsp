@@ -30,6 +30,40 @@
         font-family: 'Poppins', sans-serif;
     }
 
+    .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: inline-block;
+        border-top: 4px solid #413aa7;
+        border-right: 4px solid transparent;
+        box-sizing: border-box;
+        animation: rotation 0.5s linear infinite;
+        justify-content: center;
+        text-align: center;
+    }
+    .loader::after {
+        content: '';
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border-left: 4px solid #FF3D00;
+        border-bottom: 4px solid transparent;
+        animation: rotation 0.25s linear infinite reverse;
+    }
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
     :root {
         /* ===== Colors ===== */
         --primary-color: #0E4BF1;
@@ -565,7 +599,9 @@
 </style>
 
 <body>
+
 <nav>
+
     <div class="logo-name">
         <div class="logo-image">
             <img src="images/logo.png" alt="">
@@ -597,6 +633,19 @@
                     <li><a href="/chi-tiet-san-pham" id="btnMauSac">
                         <i class="uil uil-palette"></i>
                         <span class="link-name">Sản Phẩm Chi Tiết</span>
+                    </a></li>
+                    <li><a href="/khach_hang" id="btnKhachHang">
+                        <i class="bi bi-people-fill"></i>
+                        <span class="link-name">Khách Hàng</span>
+                    </a></li>
+
+                    <li><a href="/nhan-vien" id="btnNhanVien">
+                        <i class="bi bi-person-fill-gear"></i>
+                        <span class="link-name">Nhân Viên</span>
+                    </a></li>
+                    <li><a href="/nhan-vien" id="btnMaGiamGia">
+                       <i class="bi bi-tag"></i>
+                        <span class="link-name">Mã Giảm Giá</span>
                     </a></li>
                 </ul>
 
@@ -637,6 +686,9 @@
         </ul>
     </div>
 </nav>
+<div id="loading-spinner" class="spinner-container loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
+    <div class="spinner"></div>
+</div>
 <select>
 
 </select>
@@ -651,6 +703,15 @@
     //         subMenu.classList.toggle("active");
     //     });
     // });
+    document.addEventListener("DOMContentLoaded", function() {
+        // Hiển thị spinner
+        document.getElementById("loading-spinner").style.display = "block";
+
+        // Ẩn spinner sau 3 giây
+        setTimeout(function() {
+            document.getElementById("loading-spinner").style.display = "none";
+        }, 150);
+    });
     function toggleSubMenu() {
         var subMenu = document.getElementById("subMenu");
         subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active

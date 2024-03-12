@@ -181,7 +181,6 @@ s
                     success: function (response) {
                         var formattedGiaBan = gia.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
                             if (selectedId===colorSelectQuickView.options[i].value){
-                                console.log("hhhhhhhhhhhhhh")
                                 document.getElementById('price-product-quick-view').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
                                 return;
                             }

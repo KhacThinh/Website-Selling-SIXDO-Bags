@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
 import com.bags.sixdoBag.service.MaGiamGiaService;
@@ -66,5 +67,10 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
         List<MaGiamGia> list = maGiamGiaRepository.findByPageing(limit, size);
 
         return list;
+    }
+    @Override
+    public MaGiamGia getidMaGiamGia(Integer idMaGiamGia) {
+        MaGiamGia maGiamGia = maGiamGiaRepository.findById(idMaGiamGia).orElse(null);
+        return maGiamGia;
     }
 }

@@ -91,5 +91,11 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDonRepository.save(hoaDon);
     }
 
+    @Override
+    public void xacNhanDonHang(int trangThai,String maHd) {
+        hoaDonRepository.setTrangThaiDonHang(trangThai,maHd);
+
+    }
+
 
 }

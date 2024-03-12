@@ -3,7 +3,6 @@ package com.bags.sixdoBag.service.impl;
 import com.bags.sixdoBag.model.dto.request.AnhSlideShowRequest;
 import com.bags.sixdoBag.model.entitys.AnhSlideShow;
 import com.bags.sixdoBag.model.repository.AnhSlideShowRepository;
-import com.bags.sixdoBag.model.repository.SlideShowRepository;
 import com.bags.sixdoBag.service.AnhSlideShowService;
 import com.bags.sixdoBag.service.SlideShowService;
 import lombok.RequiredArgsConstructor;

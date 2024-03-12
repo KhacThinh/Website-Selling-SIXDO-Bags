@@ -38,4 +38,12 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, In
     void insertHoaDonChiTiet(@Param("idhoadon") int idhoadon, @Param("idchitietsp") int idchitietsp, @Param("soluong") int soluong, @Param("dongia") double dongia);
 
 
+    @Query(value = "delete from chi_tiet_hoa_don where id_hoa_don =:idHd and id_ctsp =:id",nativeQuery = true)
+    void deleteChiTietHoaDonByIdChiTietSp(Integer idHd,Integer id);
+
+    @Query("select hdct from ChiTietHoaDon hdct where hdct.hoaDon.maHoaDon =:maHd")
+    List<ChiTietHoaDon> getListCTHDByMaHd(String maHd);
+
+    void deleteChiTietHoaDonByIdHoaDonAndIdCtSanPham(Integer idHoaDon,Integer idCtSanPham);
+
 }

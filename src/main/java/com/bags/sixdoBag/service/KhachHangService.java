@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.NhanVien;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,5 @@ public interface KhachHangService {
     public KhachHang deleteKhachHang(Integer idKhachHang);
 
     public KhachHang searchKh(String email);
+    public KhachHang getidKhachHang(Integer idKhachHang);
 }

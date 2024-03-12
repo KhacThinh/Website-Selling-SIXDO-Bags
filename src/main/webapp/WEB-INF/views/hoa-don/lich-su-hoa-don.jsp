@@ -20,6 +20,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <style type="text/css">
         #test {
             width: auto;
@@ -315,10 +317,13 @@
                                             Tổng Thanh Toán : ${tongTien} đ</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-success">Xác Nhận</button>
-                                        <button type="button" class="btn btn-success">    <i class="bi bi-truck"></i>
-                                            Đang Giao Hàng</button>
-                                        <button type="button" class="btn btn-success"> <i class="bi bi-cash-coin"></i>  Đã Thanh Toán</button>
+                                        <button class="btn btn-success" onclick="xacNhanDonHang('${hd.key.maHoaDon}')">Xác Nhận</button>
+                                        <button type="button" class="btn btn-success"><i class="bi bi-truck"></i>
+                                            Đang Giao Hàng
+                                        </button>
+                                        <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã
+                                            Thanh Toán
+                                        </button>
 
                                         <button type="button" class="btn btn-danger">Hủy Đơn</button>
 
@@ -344,6 +349,25 @@
 
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    function xacNhanDonHang(ma){
+        $.ajax({
+            url: '/hoa-don/xac-nhan-don-hang',
+            type: 'POST',
+            data: {
+                maChucVu: ma
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    window.location.reload();
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+            }
+        });
+    }
+</script>
 </body>
 
 </html>
