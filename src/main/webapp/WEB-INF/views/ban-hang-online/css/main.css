@@ -588,9 +588,8 @@ body{
 }
 
 /*---------------------------------------------*/
-.main-menu > li.active-menu > a {
-  color: #6c7ae0;
-}
+
+
 
 
 
@@ -1161,7 +1160,7 @@ body{
 }
 
 .item-slick1 {
-  height: calc(100vh - 40px);
+  height: 700px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;

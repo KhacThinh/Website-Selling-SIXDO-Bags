@@ -411,8 +411,11 @@
 
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<script src="js/slick-custom.js"></script>
 
+<%--<script type="text/javascript">--%>
+<%--    <%@include file="../../../views/ban-hang-online/js/slick-custom.js" %>--%>
+
+<%--</script>--%>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/parallax100@1.1.3/parallax100.js"></script>
 <script>

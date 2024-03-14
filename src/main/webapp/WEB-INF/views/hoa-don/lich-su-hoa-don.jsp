@@ -319,7 +319,7 @@
                                     <div class="modal-footer">
                                         <button class="btn btn-success" onclick="xacNhanDonHang('${hd.key.maHoaDon}')">Xác Nhận</button>
                                         <button type="button" class="btn btn-success"><i class="bi bi-truck"></i>
-                                            Đang Giao Hàng
+                                           Xử Lý Đơn Hàng
                                         </button>
                                         <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã
                                             Thanh Toán
