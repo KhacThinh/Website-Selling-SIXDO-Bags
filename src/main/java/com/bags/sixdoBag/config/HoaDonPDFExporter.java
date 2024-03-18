@@ -228,7 +228,7 @@ public class HoaDonPDFExporter {
 
         document.add(table1);
 
-        Paragraph p11 = new Paragraph("Tổng tiền thanh toán bằng chữ:  " + convertToVietnameseCurrency(hoaDon.getTongTien().longValue()), fontNormal);
+        Paragraph p11 = new Paragraph("Số tiền thanh toán bằng chữ:   " + convertToVietnameseCurrency(hoaDon.getTongTien().longValue()) + " đồng", fontNormal);
         p11.setAlignment(Paragraph.ALIGN_RIGHT);
         p11.setSpacingBefore(10);
         document.add(p11);
@@ -262,72 +262,55 @@ public class HoaDonPDFExporter {
         return baos.toByteArray();
     }
 
-    private static final String[] NUMBERS = {"không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"};
-    private static final String[] UNITS = {"", "nghìn", "triệu", "tỷ"};
-    private static final String[] TEENS = {"mười", "mười một", "mười hai", "mười ba", "mười bốn", "mười lăm", "mười sáu", "mười bảy", "mười tám", "mười chín"};
+    private static final String[] ones = {"", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"};
+    private static final String[] tens = {"", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"};
+    private static final String[] groups = {"", "nghìn", "triệu", "tỷ"};
 
-    public static String convertToVietnameseCurrency(Long amount) {
-        if (amount == 0) {
+    private static String convertLessThanThousand(long number) {
+        String current;
+
+        if (number % 100 < 10) {
+            current = ones[(int) (number % 10)];
+            number /= 10;
+            if (number % 10 == 1) {
+                current = "mười " + current;
+            } else if (number % 10 != 0) {
+                current = ones[(int) (number % 10)] + " mươi " + current;
+            }
+            number /= 10;
+        } else {
+            current = ones[(int) (number % 10)];
+            number /= 10;
+            if (number % 10 != 0) {
+                current = tens[(int) (number % 10)] + " " + current;
+            } else {
+                current = tens[(int) (number % 10)] + current;
+            }
+            number /= 10;
+        }
+        if (number == 0) return current;
+        return ones[(int) number] + " trăm " + current;
+    }
+
+    public static String convertToVietnameseCurrency(long number) {
+        if (number == 0) {
             return "không đồng";
         }
 
-        String strAmount = String.valueOf(amount);
-        String[] parts = strAmount.split("\\.");
         String result = "";
+        int group = 0;
 
-        // Xử lý phần nguyên
-        int integerPart = Integer.parseInt(parts[0]);
-        int index = 0;
-        while (integerPart > 0) {
-            int group = integerPart % 1000;
-            integerPart /= 1000;
-
-            if (group > 0) {
-                result = convertGroupToVietnamese(group) + " " + UNITS[index] + " " + result;
+        do {
+            long n = number % 1000;
+            if (n != 0) {
+                String s = convertLessThanThousand(n);
+                result = s + " " + groups[group] + " " + result;
             }
-
-            index++;
-        }
-
-        // Xử lý phần thập phân
-        if (parts.length == 2 && Integer.parseInt(parts[1]) > 0) {
-            result += " phẩy";
-            String decimalPart = parts[1].substring(0, Math.min(parts[1].length(), 2));
-            for (char c : decimalPart.toCharArray()) {
-                result += " " + NUMBERS[Character.getNumericValue(c)];
-            }
-        }
+            group++;
+            number /= 1000;
+        } while (number > 0);
 
         return result.trim();
-    }
-
-    private static String convertGroupToVietnamese(int group) {
-        String result = "";
-
-        int hundreds = group / 100;
-        int tens = (group % 100) / 10;
-        int ones = group % 10;
-
-        if (hundreds > 0) {
-            result += NUMBERS[hundreds] + " trăm ";
-        }
-
-        if (tens == 0 && ones > 0) {
-            result += "lẻ ";
-        } else if (tens == 1) {
-            result += TEENS[ones] + " ";
-        } else if (tens > 1) {
-            result += TEENS[tens] + " ";
-            if (ones > 0) {
-                result += NUMBERS[ones] + " ";
-            }
-        }
-
-        if (tens != 1 && ones > 0) {
-            result += NUMBERS[ones] + " ";
-        }
-
-        return result;
     }
 
 }

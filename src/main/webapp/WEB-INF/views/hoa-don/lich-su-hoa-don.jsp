@@ -196,8 +196,9 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">HOÁ ĐƠN CHI TIẾT</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                        <button class="btn btn-success" onclick="inHoaDon('${hd.key.maHoaDon}')">
+                                            <i class="bi bi-printer"></i> In Hoá Đơn
+                                        </button>
                                     </div>
                                     <p style="font-size: 15px; font-weight: bold; margin: 10px 0px 0px 23px;background-color: #d3ead9 ; padding: 7px;border-radius: 5px ">
                                         Thông Tin</p>
@@ -355,6 +356,24 @@
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
+    function inHoaDon(maHD) {
+        var form = document.createElement('form');
+        form.setAttribute('action', '/ban-tai-quay/export');
+        form.setAttribute('method', 'get');
+        form.style.display = 'none'; // Ẩn form đi để tránh hiển thị trên giao diện
+
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', 'maHoaDon');
+        input.setAttribute('value', maHD); // Truyền giá trị tabActive vào biến maHoaDon
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+
+        form.submit();
+        // Redirect();
+    }
+
     function xacNhanDonHang(ma) {
         $.ajax({
             url: '/hoa-don/xac-nhan-don-hang',
