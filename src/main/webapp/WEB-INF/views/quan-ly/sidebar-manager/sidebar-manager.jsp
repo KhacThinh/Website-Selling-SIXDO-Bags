@@ -630,10 +630,7 @@
                         <i class="uil uil-file-alt"></i>
                         <span class="link-name">Lịch Sử Hoá đơn</span>
                     </a></li>
-                    <li><a href="/chi-tiet-san-pham" id="btnMauSac">
-                        <i class="uil uil-palette"></i>
-                        <span class="link-name">Sản Phẩm Chi Tiết</span>
-                    </a></li>
+
                     <li><a href="/khach_hang" id="btnKhachHang">
                         <i class="bi bi-people-fill"></i>
                         <span class="link-name">Khách Hàng</span>

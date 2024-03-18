@@ -117,7 +117,7 @@
         </div>
 
         <div class="col-md-5 mb-3">
-            <form action="/san-pham" class="search-form" method="get">
+            <form action="/chi-tiet-san-pham/searchCTSP" class="search-form" method="get">
                 <div class="input-group">
                     <input type="text" name="name" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
                     <div class="input-group-append">
@@ -128,7 +128,6 @@
         </div>
     </div>
 </div>
-
 
 
 <div class="container">
@@ -186,7 +185,7 @@
                         </li>
                     </ul>
                         <%--                    Modal Update--%>
-                    <div class="modal"  id="modalUpdate${sp.id}" tabindex="-1"
+                    <div class="modal" id="modalUpdate${sp.id}" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content">
@@ -233,7 +232,8 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="images" class="form-label">Ảnh</label>
-                                                <input type="file" value="${sp.hinhAnh}" id="images${sp.id}" name="images"
+                                                <input type="file" value="${sp.hinhAnh}" id="images${sp.id}"
+                                                       name="images"
                                                        class="form-control"/>
                                             </div>
                                         </div>
@@ -273,7 +273,8 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-lable">Trạng Thái</label><br>
-                                                <input type="radio" name="trangThai" id="trangThai${sp.id}" value="1" checked>
+                                                <input type="radio" name="trangThai" id="trangThai${sp.id}" value="1"
+                                                       checked>
                                                 <label for="trangThaiHoatDong${sp.id}">Hoạt Động</label><br>
                                                 <input type="radio" name="trangThai" id="trangThai${sp.id}" value="0">
                                                 <label for="trangThaiKhongHoatDong${sp.id}">Không Hoạt Động</label>
@@ -447,8 +448,8 @@
         var giaBan = document.getElementById('giaBanUpdate' + id).value;
         var sanPham = document.getElementById('sanPham' + id).value;
         var mauSac = document.getElementById('mauSac' + id).value;
-        var khuyenMai = document.getElementById('khuyenMai' +id).value;
-        var trangThai = document.getElementById('trangThai' +id).value;
+        var khuyenMai = document.getElementById('khuyenMai' + id).value;
+        var trangThai = document.getElementById('trangThai' + id).value;
         var fileInput = document.getElementById('images' + id);
         var file = fileInput.files[0];
         console.log(file);
@@ -464,8 +465,6 @@
         formData.append('khuyenMai', khuyenMai);
         formData.append('trangThai', trangThai);
         formData.append('images', file);
-
-
 
 
         var isValid = true;
@@ -502,38 +501,27 @@
         }
         if (isValid === true || isValid === false) {
             $.ajax({
-                url: '/chi-tiet-san-pham/checkMaUpdate',
-                type: 'POST',
-                data: {
-                    ma: ma
-                },
-                success: function (response) {
-                    if (response === "ok") {
-                        document.getElementById('maUpdateError' + id).innerText = 'Mã Trùng';
-                    } else {
-                        document.getElementById('maUpdateError' + id).innerText = '';
-                        $.ajax({
-                            url: '/chi-tiet-san-pham/update',
-                            type: 'Put',
-                            data: formData,
-                            processData: false, // Ngăn việc xử lý dữ liệu formData
-                            contentType: false,
-                            success: function (result) {
-                                alert("update thanh cong");
+                url: '/chi-tiet-san-pham/update',
+                type: 'Put',
+                data: formData,
+                processData: false, // Ngăn việc xử lý dữ liệu formData
+                contentType: false,
+                success: function (result) {
+                    alert("update thanh cong");
 
-                            },
-                            error: function (xhr, status, error) {
-                                console.error('Lỗi khi xóa: ', error);
-                            }
-                        });
-
-                    }
                 },
-                error: function (error) {
-                    console.error("Lỗi khi kiểm tra mã:", error);
+                error: function (xhr, status, error) {
+                    console.error('Lỗi khi xóa: ', error);
                 }
-            });
+        ,
+            error: function (error) {
+                console.error("Lỗi khi kiểm tra mã:", error);
+            }
         }
+
+    )
+    ;
+    }
     }
 
     function isNumeric(value) {
@@ -552,10 +540,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 09bd914ce26007ae90e8155f6cc69531554ffcbb
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>

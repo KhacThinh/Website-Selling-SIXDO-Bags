@@ -55,23 +55,20 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="sanPham" class="form-label">Sản Phẩm</label>
-                                <form:select path="sanPham" class="form-control">
-                                    <option value="" label="Chọn Sản Phẩm"/>
-                                    <c:forEach items="${listSp}" var="c">
-                                        <option value="${c.id}">${c.tenSanPham}</option>
-                                    </c:forEach>
-                                </form:select>
+                                <label for="" class="form-label">Sản Phẩm</label>
+                                <input value="${sp.tenSanPham}" name="tenSanPham" readonly
+                                       class="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label for="mauSac" class="form-label">Màu Sắc</label>
                                 <form:select path="mauSac" class="form-control">
                                     <option value="" label="Chọn Màu Sắc"/>
-                                    <c:forEach items="${listMauSac}" var="c">
-
+                                    <c:forEach items="${MauSacs}" var="c">
                                         <option value="${c.id}">${c.tenMauSac}</option>
                                     </c:forEach>
                                 </form:select>
+                                <span id="mauSacError" style="color: red;font-size: 0.8em; display: none;">Vui lòng chọn một màu sắc.</span>
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -87,9 +84,10 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                        <button type="submit" id="uploadButton" class="btn btn-primary">Lưu</button>
+                        <button type="submit" id="uploadButton" class="btn btn-primary" >Lưu</button>
                     </div>
                 </form:form>
             </div>
@@ -109,8 +107,15 @@
         var soLuong = document.getElementById('soLuong').value;
         var giaNhap = document.getElementById('giaNhap').value;
         var giaBan = document.getElementById('giaBan').value;
+        var selectedValue = document.getElementById("mauSac").value;
         var isValid = true;
 
+        if (selectedValue === "") {
+            document.getElementById("mauSacError").style.display = "block";
+            isValid = false;
+        } else {
+            document.getElementById("mauSacError").style.display = "none";
+        }
         if (soLuong.trim() === '') {
             document.getElementById('soLuongError').innerText = 'Vui lòng nhập số lượng.';
             isValid = false;
@@ -141,6 +146,7 @@
             document.getElementById('giaBanError').innerText = '';
         }
 
+
         return isValid;
     }
 
@@ -148,4 +154,5 @@
         return /^\d+$/.test(value);
     }
 </script>
+
 
