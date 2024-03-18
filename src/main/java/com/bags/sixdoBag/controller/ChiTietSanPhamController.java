@@ -73,7 +73,7 @@ public class ChiTietSanPhamController {
         List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhamById(id);
 
         if (listCTSP.isEmpty()) {
-            model.addAttribute("listMauSac", listMauSac);
+            model.addAttribute("MauSacs", listMauSac);
         } else {
 
             for (int i = 0; i < listCTSP.size(); i++) {
