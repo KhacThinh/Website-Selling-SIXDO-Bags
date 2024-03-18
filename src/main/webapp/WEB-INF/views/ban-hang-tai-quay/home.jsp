@@ -1148,7 +1148,7 @@
                 <h2>Tìm Kiếm Sản Phẩm</h2>
 
                 <div class="search-form" id="searchForm">
-                    <input type="text" name="name" id="searchInput" value="${nameSearch}" class="form-control"
+                    <input type="text" name="name" id="searchMaTenMau" value="${nameSearch}" class="form-control"
                            placeholder="Tìm kiếm mã, tên, màu">
                     <button type="button" id="searchButton" class="btn btn-primary">Tìm Kiếm</button>
                 </div>
@@ -1461,7 +1461,6 @@
         });
     }
 
-
     function addToCart(button, giaBan) {
         // Lấy id sản phẩm từ thuộc tính dữ liệu
         var productId = button.getAttribute("data-product-id");
@@ -1483,52 +1482,77 @@
                 });
                 return;
             }
-
-            // Gửi id sản phẩm lên backend thông qua AJAX
+            var quantity = prompt("Nhập số lượng sản phẩm:");
+            if (quantity === null || quantity === "" || isNaN(quantity) || quantity <= 0) {
+                quantity = 1; // Đặt giá trị mặc định thành 1 nếu không hợp lệ
+            }
             $.ajax({
-                url: '/ban-tai-quay/them-gio-hang',
+                url: 'ban-tai-quay/kiem-tra-so-luong-trong-kho',
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
+
+                data:{
                     productId: productId,
-                    tabActive: tabActive,
-                    giaBan: giaBan,
-
-                }),
+                    quantity: parseInt(quantity)
+                },
                 success: function (response) {
-                    // Xử lý phản hồi từ backend nếu cần
-                    $.ajax({
-                        url: '/ban-tai-quay/get-gio-hang',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            maHoaDon: tabActive
-                        }), // Gửi maHoaDon của tab
-                        success: function (ok) {
-                            updateProductList(ok);
-                            updateTotalPrice();
+                    if (response=== "ok") {
+                        $.ajax({
+                            url: '/ban-tai-quay/them-gio-hang',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                productId: productId,
+                                tabActive: tabActive,
+                                giaBan: giaBan,
+                                quantity: quantity
+                            }),
+                            success: function (response) {
+                                // Xử lý phản hồi từ backend nếu cần
+                                $.ajax({
+                                    url: '/ban-tai-quay/get-gio-hang',
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        maHoaDon: tabActive
+                                    }), // Gửi maHoaDon của tab
+                                    success: function (ok) {
+                                        updateProductList(ok);
+                                        updateTotalPrice();
 
-                            fillSoLuong();
-                            // Xử lý kết quả trả về (danh sách sản phẩm)
-                            console.log("Danh sách sản phẩm của tab " + tabActive + ":", ok);
-                            // Cập nhật giao diện người dùng với danh sách sản phẩm mới
-                            // listDataGioHang = response;
-                        },
-                        error: function (error) {
-                            console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
-                        }
-                    });
-                    console.log("Sản phẩm đã được thêm vào giỏ hàng." + response);
+                                        fillSoLuong();
+                                        // Xử lý kết quả trả về (danh sách sản phẩm)
+                                        console.log("Danh sách sản phẩm của tab " + tabActive + ":", ok);
+                                        // Cập nhật giao diện người dùng với danh sách sản phẩm mới
+                                        // listDataGioHang = response;
+                                    },
+                                    error: function (error) {
+                                        console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
+                                    }
+                                });
+                                console.log("Sản phẩm đã được thêm vào giỏ hàng." + response);
 
+                            },
+                            error: function (error) {
+                                // Xử lý lỗi nếu có
+                                console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+                            }
+                        });
+                    } else {
+                        // Số lượng yêu cầu lớn hơn số lượng hiện có trong kho
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Số lượng sản phẩm trong kho không đủ!"
+                        });
+                    }
                 },
                 error: function (error) {
-                    // Xử lý lỗi nếu có
-                    console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+                    console.error("Lỗi khi kiểm tra số lượng trong kho:", error);
                 }
             });
-
         }
     }
+
 
     // check sp trong giỏ hàng
 
@@ -1642,6 +1666,17 @@
 
     }
 
+    function checkQuantityInput(input) {
+        // Chuyển đổi giá trị nhập vào thành một số nguyên
+        var quantity = parseInt(input.value);
+
+        // Kiểm tra nếu giá trị không phải là một số hoặc là một số âm
+        if (isNaN(quantity) || quantity < 0) {
+            // Nếu giá trị không hợp lệ, đặt giá trị của input thành 1
+            input.value = 1;
+        }
+    }
+
 
     // tăng số lượng
     function increaseQuantity(productId, giaBan, soLuongSanPhamKho) {
@@ -1659,14 +1694,55 @@
 
 
     // sửa số lượng
+    // function updateSoLuong(id, soLuong, giaBan, soLuongSanPhamKho) {
+    //     var idTemp = id;
+    //     var updateGiaSanPham = document.querySelector('.returnPriceCart' + idTemp);
+    //
+    //
+    //     if (soLuong > soLuongSanPhamKho) {
+    //         updateGiaSanPham.textContent = giaBan.toLocaleString('vi-VN', {style: 'decimal'});
+    //         ;
+    //         updateTotalPrice();
+    //         errorAdd('Số lượng sản phẩm không đủ');
+    //         $('.quantityInput').val(1);
+    //         return;
+    //     } else {
+    //         $.ajax({
+    //             url: '/ban-tai-quay/update-so-luong-san-pham',
+    //             type: 'POST',
+    //             contentType: 'application/json',
+    //             data: JSON.stringify({
+    //                 maHoaDon: tabActive,
+    //                 idChiTietSanPham: id,
+    //                 soLuong: soLuong,
+    //                 giaSanPham: giaBan * soLuong
+    //             }),
+    //
+    //             success: function (ok) {
+    //                 let sum = giaBan * soLuong;
+    //                 document.getElementById('quantities' + id).value = soLuong;
+    //                 updateGiaSanPham.textContent = sum.toLocaleString('vi-VN', {style: 'decimal'}); // Định dạng giá tiền sau khi cập nhật
+    //                 updateTotalPrice();
+    //                 fillSoLuong();
+    //             },
+    //             error: function (error) {
+    //                 console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
+    //             }
+    //         });
+    //     }
+    // }
     function updateSoLuong(id, soLuong, giaBan, soLuongSanPhamKho) {
         var idTemp = id;
         var updateGiaSanPham = document.querySelector('.returnPriceCart' + idTemp);
 
+        // Kiểm tra nếu số lượng không hợp lệ (âm hoặc không phải số), đặt giá trị thành 1
+        if (isNaN(soLuong) || soLuong <= 0) {
+            soLuong = 1;
+            document.getElementById('quantities' + id).value = soLuong;
+        }
 
         if (soLuong > soLuongSanPhamKho) {
             updateGiaSanPham.textContent = giaBan.toLocaleString('vi-VN', {style: 'decimal'});
-            ;
             updateTotalPrice();
             errorAdd('Số lượng sản phẩm không đủ');
             $('.quantityInput').val(1);
@@ -1696,6 +1772,7 @@
             });
         }
     }
+
 
 
     // Xóa Sp trong giỏ hàng
@@ -1953,13 +2030,20 @@
                     console.log(response);
                     $("#cartBody").empty();
                     $.each(response, function (index, item) {
-                        var row = "<tr class='cartItem' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "' data-product-price='" + item.giaBan + "'>";
+                        var row = "<tr>";
                         row += "<td>" + item.ma + "</td>";
                         row += "<td>" + item.sanPham.tenSanPham + "</td>";
                         row += "<td>" + item.mauSac.tenMauSac + "</td>";
                         row += "<td>" + item.soLuong + "</td>";
-                        row += "<td class='price'>" + item.giaBan.toLocaleString('vi-VN', {style: 'decimal'});
-                        +"</td>";
+                        row += "<td>" + item.giaBan + "</td>";
+
+                        // Thêm button vào cột cuối cùng của hàng
+                        row += "<td><button class='btnAdd' onclick='addToCart(this, " + item.giaBan + ")' data-product-id='" + item.id + "'>";
+                        row += "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus-circle' viewBox='0 0 16 16'>";
+                        row += "<path fill-rule='evenodd' d='M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm.5-9a.5.5 0 0 1 0 1H11a.5.5 0 0 1 0 1H8.5v2a.5.5 0 0 1-1 0V8H5a.5.5 0 0 1 0-1h2.5V5a.5.5 0 0 1 1 0v2h2.5z'/>";
+                        row += "</svg>";
+                        row += "</button></td>";
+
                         row += "</tr>";
                         $("#cartBody").append(row);
                     });
@@ -1982,7 +2066,7 @@
 <script>
     $(document).ready(function () {
         $('#searchButton').click(function () {
-            var searchData = $('#searchInput').val();
+            var searchData = $('#searchMaTenMau').val();
             $.ajax({
                 type: 'post',
                 url: '/ban-tai-quay/search',
