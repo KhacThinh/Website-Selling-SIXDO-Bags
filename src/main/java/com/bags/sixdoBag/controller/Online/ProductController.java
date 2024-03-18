@@ -59,6 +59,18 @@ public class ProductController {
     Utils utils = new Utils();
 
 
+    @GetMapping("")
+    public String homePage(Model model) {
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+        for (ProductHomeRequest o : productHomeRequestList) {
+            System.out.println("list là : " + o.getId());
+        }
+
+        model.addAttribute("listSp", productHomeRequestList);
+
+        return "ban-hang-online/home/home-page";
+    }
+
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
@@ -70,6 +82,7 @@ public class ProductController {
 
         return "ban-hang-online/home/index";
     }
+
 
     @GetMapping("/product/{id}")
     public String productDetailById(Model model, @PathVariable int id) {

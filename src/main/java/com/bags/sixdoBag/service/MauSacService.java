@@ -1,6 +1,9 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.MauSac;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +23,12 @@ public interface MauSacService {
 
     public List<MauSac> pageMauSac(int limit, int size);
 
-    public List<MauSac> searchMauSac(String tenMauSac);
+//    public List<MauSac> searchMauSac(String tenMauSac);
 
     public boolean isMaMauSacExists(String maMauSac);
+
     public MauSac getidMauSac(Integer idMauSac);
+
+    ////////////////////////////////////////////////////////////////////
+    public Page<MauSac> searchMauSacTenOrMa(String tenMa, Pageable pageable);
 }

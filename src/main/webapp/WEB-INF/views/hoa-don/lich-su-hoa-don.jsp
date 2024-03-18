@@ -317,20 +317,26 @@
                                             Tổng Thanh Toán : ${tongTien} đ</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-success" onclick="xacNhanDonHang('${hd.key.maHoaDon}')">Xác Nhận</button>
-                                        <button type="button" class="btn btn-success"><i class="bi bi-truck"></i>
-                                            Đang Giao Hàng
-                                        </button>
-                                        <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã
-                                            Thanh Toán
-                                        </button>
+                                        <c:choose>
+                                            <c:when test="${hd.key.trangThai == 2}">
+                                                <button class="btn btn-success" onclick="xacNhanDonHang('${hd.key.maHoaDon}')">Xác Nhận</button>
+                                                <a href="/ban-tai-quay/${hd.key.id}" target="_blank"> <button type="button" class="btn btn-success"><i class="bi bi-truck"></i> Xử Lý Đơn Hàng</button></a>
+                                                <%--                                                <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã Thanh Toán</button>--%>
+                                                <button type="button" class="btn btn-danger">Hủy Đơn</button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
 
-                                        <button type="button" class="btn btn-danger">Hủy Đơn</button>
+                                            </c:when>
+                                            <c:when test="${hd.key.trangThai == 3}">
+                                                <a href="/ban-tai-quay/${hd.key.id}" target="_blank"> <button type="button" class="btn btn-success"><i class="bi bi-truck"></i> Xử Lý Đơn Hàng</button></a>
+                                                <%--                                                <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã Thanh Toán</button>--%>
+                                                <button type="button" class="btn btn-danger">Hủy Đơn</button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
 
-
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng
-                                        </button>
-
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>

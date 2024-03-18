@@ -1,8 +1,11 @@
 package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.MauSac;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,4 +26,10 @@ public interface MaGiamGiaService {
     public List<MaGiamGia> pageMaGiamGia(int limit, int size);
 
     public MaGiamGia getidMaGiamGia(Integer idChucVu);
+
+    ////////////////////////////////////////////////////////////////////
+    public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable);
+    public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable);
+    ///////////////////////////////////////////////////////////////////
+
 }

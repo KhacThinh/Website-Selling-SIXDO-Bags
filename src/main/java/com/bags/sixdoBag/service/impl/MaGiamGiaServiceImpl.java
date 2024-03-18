@@ -1,10 +1,13 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
 import com.bags.sixdoBag.service.MaGiamGiaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,4 +76,14 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
         MaGiamGia maGiamGia = maGiamGiaRepository.findById(idMaGiamGia).orElse(null);
         return maGiamGia;
     }
+    ////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable) {
+        return maGiamGiaRepository.searchMGGTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable) {
+        return maGiamGiaRepository.searchCbb(name,pageable);
+    }
+    //////////////////////////////////////////////////////////////////////////
 }

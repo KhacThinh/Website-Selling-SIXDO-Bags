@@ -2,12 +2,16 @@ package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.MauSacRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
+import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.repository.MauSacRepository;
 import com.bags.sixdoBag.service.*;
 import com.bags.sixdoBag.service.impl.MauSacServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,9 +36,26 @@ public class MauSacController {
     private final MauSacServiceImpl mauSacServiceImpl;
 
 
+//    @GetMapping("")
+//    public String getMauSac(Model model, @RequestParam(name = "name", required = false) String name) {
+//        model.addAttribute("listColors", mauSacService.getMauSacs());
+//        return "/quan-ly/mau-sac/view";
+//    }
+
     @GetMapping("")
-    public String getMauSac(Model model, @RequestParam(name = "name", required = false) String name) {
-        model.addAttribute("listColors", mauSacService.getMauSacs());
+    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name,
+                         @RequestParam(defaultValue = "0", name = "page") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<MauSac> khuyenMais;
+
+        if (name != null && !name.isEmpty()) {
+            model.addAttribute("nameSearch", name);
+            khuyenMais = mauSacService.searchMauSacTenOrMa(name, pageable);
+        }else {
+            khuyenMais = mauSacRepository.findAll(pageable);
+        }
+
+        model.addAttribute("listColors", khuyenMais);
         return "/quan-ly/mau-sac/view";
     }
     @PostMapping("/add")
@@ -78,5 +99,7 @@ public class MauSacController {
     public ResponseEntity<?> xoaDiaChiKh(@RequestParam("idMauSac") Integer id) {
         return ResponseEntity.ok(mauSacService.deleteMauSac(id));
     }
+
+
 }
 

@@ -78,7 +78,7 @@
             <nav class="limiter-menu-desktop container">
 
 
-                <a href="/sixdo-shop/product" class="logo">
+                <a href="/sixdo-shop" class="logo">
                     <img src="${pageContext.request.contextPath}/../static/images/logo1.jpg"
                          alt="IMG-PRODUCT">
                 </a>
@@ -87,7 +87,7 @@
                 <div class="menu-desktop">
                     <ul class="main-menu">
                         <li>
-                            <a href="/sixdo-shop/product">Home</a>
+                            <a href="/sixdo-shop">Home</a>
                             <ul class="sub-menu">
                                 <li><a href="index.html">Homepage 1</a></li>
                                 <li><a href="home-02.html">Homepage 2</a></li>
@@ -96,7 +96,7 @@
                         </li>
 
                         <li class="active-menu">
-                            <a href="product.html">Shop</a>
+                            <a href="/sixdo-shop/product">Shop</a>
                         </li>
 
                         <li class="label1" data-label1="hot">
@@ -140,7 +140,7 @@
     <div class="wrap-header-mobile">
 
         <div class="logo-mobile">
-            <a href="/user/ban-hang" class="logo">
+            <a href="/sixdo-shop" class="logo">
                 <img src="${pageContext.request.contextPath}/static/image/logo1.jpg"
                      alt="IMG-PRODUCT">
             </a>        </div>
@@ -213,7 +213,7 @@
             </li>
 
             <li>
-                <a href="product.html">Shop</a>
+                <a href="/sixdo-shop/product">Shop</a>
             </li>
 
             <li>
@@ -259,6 +259,8 @@
         setTimeout(function() {
             document.getElementById("loading-spinner").style.display = "none";
         }, 150);
+
+
     });
 </script>
 

@@ -1,6 +1,10 @@
 package com.bags.sixdoBag.model.repository;
 
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
+import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,4 +28,13 @@ public interface ThuongHieuRepository extends JpaRepository<ThuongHieu, Integer>
 
     @Query(value = "select th from ThuongHieu th where th.ten=:tenThuongHieu")
     ThuongHieu searchThuongHieuByTen(String tenThuongHieu);
+
+    //////////////
+    Page<ThuongHieu> findAll(Pageable pageable);
+
+    @Query(value = "select * from thuong_hieu where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
+    Page<ThuongHieu> searchThuongHieuTenOrMa(String tenMa,Pageable pageable);
+
+    @Query("select x from ThuongHieu x where x.trangThai = :name")
+    Page<ThuongHieu> searchCbb(boolean name, Pageable pageable);
 }

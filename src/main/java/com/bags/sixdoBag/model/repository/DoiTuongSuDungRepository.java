@@ -2,6 +2,10 @@ package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
+import com.bags.sixdoBag.model.entitys.MauSac;
+import com.bags.sixdoBag.model.entitys.ThuongHieu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,5 +27,12 @@ public interface DoiTuongSuDungRepository extends JpaRepository<DoiTuongSuDung, 
     @Query(value = "select ms from DoiTuongSuDung ms where ms.maDoiTuongSuDung =:ma")
     DoiTuongSuDung searchDoiTuongSuDungByMa(String ma);
 
+    //////////////////////////////////////////////////////
+    Page<DoiTuongSuDung> findAll(Pageable pageable);
 
+    @Query(value = "select * from doi_tuong_su_dung where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
+    Page<DoiTuongSuDung> searchDTSDTenOrMa(String tenMa, Pageable pageable);
+
+    @Query("select x from DoiTuongSuDung x where x.trangThai = :name")
+    Page<DoiTuongSuDung> searchCbb(boolean name, Pageable pageable);
 }

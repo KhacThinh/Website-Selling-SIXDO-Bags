@@ -180,10 +180,10 @@ s
                     }),
                     success: function (response) {
                         var formattedGiaBan = gia.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
-                            if (selectedId===colorSelectQuickView.options[i].value){
-                                document.getElementById('price-product-quick-view').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
-                                return;
-                            }
+                        if (selectedId===colorSelectQuickView.options[i].value){
+                            document.getElementById('price-product-quick-view').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
+                            return;
+                        }
 
 
                     },
@@ -205,7 +205,7 @@ s
         var selectedId = selectElement.value;
         console.log("idddddđ"+selectedId)
 
-       <c:forEach var="o" items="${product}" varStatus="loop">
+        <c:forEach var="o" items="${product}" varStatus="loop">
         if (selectedId == ${o.id}) {
             console.log("day roi "+${o.giaBan})
             document.getElementById('product-price').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
@@ -216,7 +216,7 @@ s
             return;
         }
 
-       </c:forEach>
+        </c:forEach>
 
 
     }

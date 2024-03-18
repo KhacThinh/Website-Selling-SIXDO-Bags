@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.NhanVienRequest;
+import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.NhanVien;
 import com.bags.sixdoBag.model.entitys.TaiKhoan;
@@ -9,6 +10,8 @@ import com.bags.sixdoBag.service.ChucVuService;
 import com.bags.sixdoBag.service.NhanVienService;
 import com.bags.sixdoBag.service.TaiKhoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +37,7 @@ public class NhanVienServiceImpl implements NhanVienService {
 
     @Override
     public List<NhanVien> getNhanViens() {
-        List<NhanVien> nhanViens = nhanVienRepository.findAll();
+        List<NhanVien> nhanViens = nhanVienRepository.findNhanVienByAll();
         return nhanViens;
     }
 
@@ -85,7 +88,7 @@ public class NhanVienServiceImpl implements NhanVienService {
         nv.setThoiGianVao(nhanVien.getThoiGianVao());
         nv.setThoiGianRa(nhanVien.getThoiGianRa());
         nv.setGioiTinh(nhanVien.getGioiTinh());
-
+        nhanVien.setTrangThai(nhanVien.getTrangThai());
         Integer idChucVu = nhanVien.getChucVu().getId();
         if (Objects.isNull(idChucVu)) {
             nv.setChucVu(null);
@@ -116,5 +119,24 @@ public class NhanVienServiceImpl implements NhanVienService {
     public NhanVien getidNhanVien(Integer idNhanVien) {
         NhanVien nhanVien= nhanVienRepository.findById(idNhanVien).orElse(null);
         return nhanVien;
+    }
+
+    /////////////////////////////////////////////////
+    @Override
+    public Page<NhanVien> searchNhanVienTenOrMa(String tenMa, Pageable pageable) {
+        return nhanVienRepository.searchNhanVienTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<NhanVien> searchcbb(Integer name, Pageable pageable) {
+        return nhanVienRepository.searchCbb(name,pageable);
+    }
+    @Override
+    public Page<NhanVien> searchcbb1(String name, Pageable pageable) {
+        return nhanVienRepository.searchCbb1(name,pageable);
+    }
+
+    @Override
+    public Page<NhanVien> searchDCKHByChucVuId(Long khachHangId, Pageable pageable) {
+        return nhanVienRepository.findByChucVuId(khachHangId, pageable);
     }
 }

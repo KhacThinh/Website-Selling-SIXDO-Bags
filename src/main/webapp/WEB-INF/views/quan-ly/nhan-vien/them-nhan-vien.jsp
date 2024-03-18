@@ -75,87 +75,95 @@
 
 
         <div class="modal-content">
-            <h1>Nhân Viên</h1>
+            <h1 class="modal-title">Nhân Viên</h1>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="mb-3 row">
-                            <label for="chucVu" class="col-sm-3 col-form-label" >Chức Vụ</label>
-                            <select id="chucVu" name="chucVu" class="form-select" >
-                                <c:forEach items="${listColors2}" var="cv">
-                                    <option value="${cv.id}"> ${cv.tenChucVu} </option>
-                                </c:forEach>
+                            <label for="chucVu" class="col-sm-4 col-form-label">Chức Vụ</label>
+                            <div class="col-sm-8">
+                                <select id="chucVu" name="chucVu" class="form-select">
+                                    <c:forEach items="${listColors2}" var="cv">
+                                        <option value="${cv.id}">${cv.tenChucVu}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="maNhanVien" class="form-label">Mã Nhân Viên</label>
+                            <input id="maNhanVien" class="form-control" placeholder="Nhập mã nhân viên"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hoTen" class="form-label">Họ Tên</label>
+                            <input id="hoTen" class="form-control" placeholder="Nhập họ tên"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gioiTinh" class="form-label">Giới Tính</label>
+                            <select id="gioiTinh" name="gioiTinh" class="form-select">
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="maNhanVien">Mã Nhân Viên</label>
-                            <input id="maNhanVien" class="form-control"/>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="ngaySinh" class="form-label">Ngày Sinh</label>
+                                <input type="date" id="ngaySinh" class="form-control"/>
+                            </div>
+                            <div class="col">
+                                <label for="sdt" class="form-label">SDT</label>
+                                <input id="sdt" class="form-control" placeholder="Nhập số điện thoại"/>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="hoTen">Họ Tên</label>
-                            <input id="hoTen" class="form-control"/>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input id="email" class="form-control" placeholder="Nhập địa chỉ email"/>
                         </div>
-                        <label>Giới Tính</label>
-                        <select id="gioiTinh" name="gioiTinh">
-                            <option value="1">Nam</option>
-                            <option value="0">Nữ</option>
-
-                        </select>
-                        <div class="form-group">
-                            <label for="ngaySinh">Ngày Sinh</label>
-                            <input type="date" id="ngaySinh" class="form-control"/>
+                        <div class="mb-3">
+                            <label for="matKhau" class="form-label">Mật Khẩu</label>
+                            <input type="password" id="matKhau" class="form-control" placeholder="Nhập mật khẩu"/>
                         </div>
-
-                        <div class="form-group">
-                            <label for="sdt">SDT</label>
-                            <input id="sdt" class="form-control"/>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="cccd" class="form-label">Số Căn Cước</label>
+                                <input id="cccd" class="form-control" placeholder="Nhập số căn cước"/>
+                            </div>
+                            <div class="col">
+                                <label for="queQuan" class="form-label">Quê Quán</label>
+                                <input id="queQuan" class="form-control" placeholder="Nhập quê quán"/>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input id="email" class="form-control"/>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="thoiGianVao" class="form-label">Thời Gian Vào Làm</label>
+                                <input type="datetime-local" id="thoiGianVao" class="form-control"/>
+                            </div>
+                            <div class="col">
+                                <label for="thoiGianRa" class="form-label">Thời Gian Ra Làm</label>
+                                <input type="datetime-local" id="thoiGianRa" class="form-control"/>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="matKhau">Mật Khẩu</label>
-                            <input id="matKhau" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cccd">Số Căn Cước</label>
-                            <input id="cccd" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="queQuan">Quê Quán</label>
-                            <input id="queQuan" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="thoiGianVao">Thời Gian Vào Làm</label>
-                            <input type="datetime-local" id="thoiGianVao" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="thoiGianRa">Thời Gian Ra Làm</label>
-                            <input type="datetime-local" id="thoiGianRa" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="trangThai">Trạng Thái:</label>
-                            <select id="trangThai" name="trangThai">
+                        <div class="mb-3">
+                            <label for="trangThai" class="form-label">Trạng Thái</label>
+                            <select id="trangThai" name="trangThai" class="form-select">
                                 <option value="1">Hoạt Động</option>
-                                <%--                            <option value="0">Không Hoạt Động</option>--%>
+                                <!-- <option value="0">Không Hoạt Động</option> -->
                             </select>
                         </div>
                     </div>
                 </div>
-
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addNhanVien()">
-                        Lưu
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addNhanVien()">Lưu</button>
             </div>
         </div>
+
+
+
+
+
     </div>
 </div>
 <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">

@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.TaiKhoan;
@@ -8,6 +9,8 @@ import com.bags.sixdoBag.model.repository.TaiKhoanRepository;
 import com.bags.sixdoBag.service.KhachHangService;
 import com.bags.sixdoBag.service.TaiKhoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -93,4 +96,16 @@ public class KhachHangServiceImpl implements KhachHangService {
         KhachHang khachHang= khachHangRepository.findById(idKhachHang).orElse(null);
         return khachHang;
     }
+
+
+    ////////////////////////////////////////////////////////
+    @Override
+    public Page<KhachHang> searchKhachHangTenOrMa(String tenMa, Pageable pageable) {
+        return khachHangRepository.searchKhachHangTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<KhachHang> searchcbb(Integer name, Pageable pageable) {
+        return khachHangRepository.searchCbb(name,pageable);
+    }
+
 }

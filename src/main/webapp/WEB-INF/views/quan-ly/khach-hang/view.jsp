@@ -56,6 +56,56 @@
         .detail-product {
             background-color: #f8f9fa;
         }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        }
+        /*/////*/
+        .search-form .input-group-append .btn {
+            border-radius: 20px;
+            padding: 10px 20px; /* Điều chỉnh lề và padding của nút tìm kiếm */
+        }
+        .search-form .input-group,
+        .search-form .input-group-append .btn,
+        .search-form .input-group-prepend .input-group-text,
+        .search-form .input-group input {
+            height: 100%; /* Đảm bảo rằng tất cả các phần tử trong dòng có chiều cao bằng nhau */
+        }
+        .search-form .input-group-append .btn {
+            border: none; /* Loại bỏ viền của nút */
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+        .search-form .input-group-append .btn {
+            border: none; /* Loại bỏ viền của nút */
+            border-radius: 20px;
+            padding: 0; /* Xóa bỏ padding */
+            margin: 0; /* Xóa bỏ margin */
+            height: 100%; /* Đảm bảo chiều cao của nút bằng với ô nhập liệu */
+        }
+        .search-form .input-group-append .btn:active {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Đổ bóng khi nút được click */
+        }
+        .search-form .input-group,
+        .search-form .input-group-append {
+            border: none; /* Loại bỏ viền */
+        }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        }
+        .input-group .form-control {
+            height: 100%;
+        }
+
     </style>
 </head>
 <body>
@@ -72,11 +122,43 @@
         <jsp:include page="them-khach-hang.jsp"/>
     </div>
 </div>
+<div class="container mt-4">
+    <div class="row justify-content-between">
+        <div class="col-md-4">
+            <form action="/khach_hang" class="search-form" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="form-select" name="trangThai" id="trangThaiSelect">
+                            <option value="">Tất Cả</option>
+                            <option  value="1">Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <form action="/khach_hang" class="search-form" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    </div>
+                    <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div id="test">
         <table class="table table-sm table-hover table-striped mb-5">
             <thead>
             <tr>
+                <th scope="col">Stt</th>
                 <th scope="col">Tài Khoản</th>
                 <th scope="col">Mã Khách Hàng</th>
                 <th scope="col">Tên Khách Hàng</th>
@@ -84,14 +166,14 @@
                 <th scope="col">Ngày Sinh</th>
                 <th scope="col">Sdt</th>
                 <th scope="col">Email</th>
-                <th scope="col">Mật Khẩu</th>
                 <th scope="col">Trạng Thái</th>
                 <th scope="col">Khác</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${listColors}" var="sp" varStatus="i">
+            <c:forEach items="${listColors.content}" var="sp" varStatus="i">
                 <tr  id="record_${sp.id}">
+                    <td>${i.index + 1}</td>
                     <td>${sp.taiKhoan.tenDangNhap}</td>
                     <td>${sp.maKhachHang}</td>
                     <td>${sp.tenKhachHang}</td>
@@ -99,7 +181,6 @@
                     <td>${sp.ngaySinh}</td>
                     <td>${sp.sdt}</td>
                     <td>${sp.email}</td>
-                    <td>${sp.matKhau}</td>
                     <td>${sp.trangThai == 1 ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
 
 
@@ -173,8 +254,8 @@
                                                 <label for="trangThai" class="col-sm-3 col-form-label">Trạng Thái <span>*</span></label>
                                                 <div class="col-sm-9">
                                                     <select name="trangThai" class="form-select" id="trangThaiUpdate${sp.id}">
-                                                        <option value="1">Hoạt động</option>
-                                                        <option value="0">Không hoạt động</option>
+                                                        <option value="1"${sp.trangThai == 1 ? 'selected' : ''}>Hoạt động</option>
+                                                        <option value="0"${sp.trangThai == 0 ? 'selected' : ''}>Không hoạt động</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -187,15 +268,23 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </td>
                 </tr>
 
             </c:forEach>
             </tbody>
         </table>
+        <div aria-label="Page navigation example">
+            <ul class="pagination">
+                <c:forEach begin="1" end="${listColors.totalPages}" varStatus="loop">
+                    <li class="page-item">
+                        <a class="page-link" href="/khuyen_mai?page=${loop.begin+loop.count-2}">
+                                ${loop.begin+loop.count-1}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
     </div>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -204,25 +293,43 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 <script>
 
-        function xoaKhachHang(idKhachHang) {
-            $.ajax({
-                url: '/khach_hang/delete',
-                type: 'POST',
-                data: ({idKhachHang: idKhachHang}),
-                success: function (response) {
-                    $('#record_' + idKhachHang).remove();
+    function xoaKhachHang(id) {
+        $.ajax({
+            url: '/khach_hang/delete/' + id,
+            type: 'POST',
+            success: function(response) {
+                if (response === "ok") {
                     Swal.fire({
                         title: "Good job!",
-                        text: "Xóa Thành Công!",
+                        text: "Thành Công!",
                         icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
                     });
-                },
-                error: function (error) {
-                    console.error("Lỗi khi xóa màu sắc:", error);
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Lỗi khi xóa Khách Hàng",
+                        icon: "error"
+                    });
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                console.error("Có lỗi xảy ra:", error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Có lỗi xảy ra khi xóa Khách Hàng",
+                    icon: "error"
+                });
+            }
+        });
     }
 
     function addKhachHang() {
@@ -234,22 +341,37 @@
         var email = document.getElementById("email").value;
         var matKhau = document.getElementById("matKhau").value;
         var trangThai = document.getElementById("trangThai").value;
-        // var taiKhoan = document.getElementById("taiKhoan").value;
-
-
-
-        // console.log(maGiamGia);
-        // console.log(tenMaGiamGia);
         if (
-            // maKhachHang.trim() === ""
              tenKhachHang.trim() === ""
             || sdt.trim() === ""
-
-
         ) {
-            alert("Vui lòng điền đầy đủ thông tin ");
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }   var phoneNumberRegex = /^(0\d{9,9})$/;
+        if (!phoneNumberRegex.test(sdt)) {
+            toastr.error("Số điện thoại không đúng định dạng");
             return false;
         }
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            toastr.error("Email không đúng định dạng.");
+            return false;
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (matKhau.trim().length < 6) {
+            toastr.error("Mật khẩu phải có ít nhất 6 kí tự.");
+            return false;
+        }
+        var dob = new Date(ngaySinh);
+        var currentDate = new Date();
+        if (dob >= currentDate) {
+            toastr.error("Ngày sinh không đúng định dạng.");
+            return false;
+        }
+
+
         $.ajax({
             url: '/khach_hang/add',
             type: 'POST',
@@ -266,7 +388,15 @@
             },
             success: function (response) {
                 if (response === "ok") {
-                    window.location.reload(); // Load lại trang nếu thành công
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 }
                 // else if (response === "errorMa") {
                 //     alert("mã trùng");
@@ -276,6 +406,7 @@
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
             }
         });
 
@@ -297,32 +428,32 @@
 
 
             ) {
-                alert("Vui lòng điền đầy đủ thông tin ");
+                toastr.error("Vui lòng điền đầy đủ thông tin ");
                 return false;
             }
             var phoneNumberRegex = /^(0\d{9,9})$/;
             if (!phoneNumberRegex.test(sdt)) {
-                alert("Số điện thoại phải có 10 số và bắt đầu bằng số 0.");
+                toastr.error("Số điện thoại không đúng định dạng");
                 return false;
             }
 
             // Kiểm tra định dạng email
             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                alert("Email không đúng định dạng.");
+                toastr.error("Email không đúng định dạng.");
                 return false;
             }
 
             // Kiểm tra độ dài mật khẩu
             if (matKhau.trim().length < 6) {
-                alert("Mật khẩu phải có ít nhất 6 kí tự.");
+                toastr.error("Mật khẩu phải có ít nhất 6 kí tự.");
                 return false;
             }
 
             var dob = new Date(ngaySinh);
             var currentDate = new Date();
             if (dob >= currentDate) {
-                alert("Ngày sinh phải trước ngày hiện tại.");
+                toastr.error("Ngày sinh không đúng định dạng");
                 return false;
             }
 
@@ -342,9 +473,15 @@
                 },
                 success: function (response) {
                     if (response === "ok") {
-                        window.location.reload(); // Load lại trang nếu thành công
-                        alert("Thành Công")
-                    }
+                        Swal.fire({
+                            title: "Good job!",
+                            text: "Sửa Thành Công!",
+                            icon: "success"
+                        }).then((result) => {
+                            if (result.isConfirmed || result.isDismissed) {
+                                window.location.reload(); // Load lại trang nếu thành công
+                            }
+                        });
                     // else if (response === "errorEmail") {
                     //     alert("Email Đã tồn tại");
                     // } else if (response === "errorTen") {
@@ -353,10 +490,27 @@
                 },
                 error: function (error) {
                     console.error("Có lỗi xảy ra:", error);
+                    toastr.error("Có lỗi xảy ra");
                 }
             });
 
         }
+    document.getElementById('trangThaiSelect').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue !== '') {
+            window.location.href = '/khach_hang?trangThai=' + selectedValue;
+        } else {
+            window.location.href = '/khach_hang';
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var trangThaiValue = urlParams.get('trangThai');
+        if (trangThaiValue !== null) {
+            document.getElementById('trangThaiSelect').value = trangThaiValue;
+        }
+    });
 </script>
 </body>
 

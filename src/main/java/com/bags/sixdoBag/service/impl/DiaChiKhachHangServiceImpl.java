@@ -2,11 +2,14 @@ package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.dto.request.DiaChiKhachHangRequest;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.DiaChiKhachHangRepository;
 import com.bags.sixdoBag.service.DiaChiKhachHangService;
 import com.bags.sixdoBag.service.KhachHangService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,4 +80,24 @@ public class DiaChiKhachHangServiceImpl implements DiaChiKhachHangService {
         DiaChiKhachHang diaChiKhachHang = diaChiKhachHangRepository.findById(idDCKH).orElse(null);
         return diaChiKhachHang;
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    @Override
+    public Page<DiaChiKhachHang> searchDCKHTenOrMa(String tenMa, Pageable pageable) {
+        return diaChiKhachHangRepository.searchDCKHTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<DiaChiKhachHang> searchcbb(boolean name, Pageable pageable) {
+        return diaChiKhachHangRepository.searchCbb(name,pageable);
+    }
+    @Override
+    public Page<DiaChiKhachHang> searchcbb1(String name, Pageable pageable) {
+        return diaChiKhachHangRepository.searchCbb1(name,pageable);
+    }
+
+    @Override
+    public Page<DiaChiKhachHang> searchDCKHByKhachHangId(Long khachHangId, Pageable pageable) {
+        return diaChiKhachHangRepository.findByKhachHangId(khachHangId, pageable);
+    }
+    /////////////////////////////////////////////////////////////////////////
 }

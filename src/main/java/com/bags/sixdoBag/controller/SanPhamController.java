@@ -78,7 +78,7 @@ public class SanPhamController {
         model.addAttribute("tenThuongHieuSelect", tenThuongHieu);
         return "/quan-ly/san-pham/view";
     }
-
+//    nameSearch
 
     @PostMapping("")
     public String addSanPham(

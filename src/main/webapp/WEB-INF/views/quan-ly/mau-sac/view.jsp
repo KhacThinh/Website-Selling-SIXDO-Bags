@@ -56,6 +56,56 @@
         .detail-product {
             background-color: #f8f9fa;
         }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        }
+        /*//*/
+        .search-form .input-group-append .btn {
+            border-radius: 20px;
+            padding: 10px 20px; /* Điều chỉnh lề và padding của nút tìm kiếm */
+        }
+        .search-form .input-group,
+        .search-form .input-group-append .btn,
+        .search-form .input-group-prepend .input-group-text,
+        .search-form .input-group input {
+            height: 100%; /* Đảm bảo rằng tất cả các phần tử trong dòng có chiều cao bằng nhau */
+        }
+        .search-form .input-group-append .btn {
+            border: none; /* Loại bỏ viền của nút */
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+        .search-form .input-group-append .btn {
+            border: none; /* Loại bỏ viền của nút */
+            border-radius: 20px;
+            padding: 0; /* Xóa bỏ padding */
+            margin: 0; /* Xóa bỏ margin */
+            height: 100%; /* Đảm bảo chiều cao của nút bằng với ô nhập liệu */
+        }
+        .search-form .input-group-append .btn:active {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Đổ bóng khi nút được click */
+        }
+        .search-form .input-group,
+        .search-form .input-group-append {
+            border: none; /* Loại bỏ viền */
+        }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        }
+        .input-group .form-control {
+            height: 100%;
+        }
+
     </style>
 </head>
 <body>
@@ -67,9 +117,28 @@
     <div class="row">
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-            <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
+            <i class="bi bi-bag-plus-fill"></i> <span>THÊM MÀU SẮC</span>
         </button>
         <jsp:include page="them-mau-sac.jsp"/>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row justify-content-between">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <form action="/mau-sac" class="search-form" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    </div>
+                    <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <div class="container">
@@ -77,14 +146,16 @@
         <table class="table table-sm table-hover table-striped mb-5">
             <thead>
             <tr>
-                <th scope="col">MÃ</th>
-                <th scope="col">TÊN</th>
-                <th scope="col">HOẠT ĐỘNG</th>
+                <th scope="col">Stt</th>
+                <th scope="col">Mã</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Hoạt Động</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${listColors}" var="sp" varStatus="i">
+            <c:forEach items="${listColors.content}" var="sp" varStatus="i">
                 <tr id="record_${sp.id}">
+                    <td>${i.index + 1}</td>
                     <td>${sp.maMauSac}</td>
                     <td>${sp.tenMauSac}</td>
                     <td>
@@ -96,69 +167,11 @@
                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalUpdate${sp.id}"><i class="bi bi-pencil"></i> Sửa
                             </button>
                             </li>
-<%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
                             <a class="dropdown-item delete-color" href="#" onclick="xoaMauSac(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
-
-
-<%--update--%>
-<%--                        <div class="modal fade" id="modalUpdate${sp.id}" tabindex="-1"--%>
-<%--                             aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
-<%--                            <div class="modal-dialog modal-dialog-centered modal-xl">--%>
-<%--                                <div class="modal-content">--%>
-<%--                                    <div class="modal-header">--%>
-<%--                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Thương Hiệu</h1>--%>
-<%--                                        <button type="button" class="btn-close" data-bs-dismiss="modal"--%>
-<%--                                                aria-label="Close"></button>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="col-md-6">--%>
-<%--                                        <div class="form-group" hidden>--%>
-<%--                                            <label  class="form-label">Id--%>
-<%--                                                <span>*</span></label>--%>
-<%--                                            <input value="${sp.id}" name="id" id="id" class="form-control"/>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="modal-body">--%>
-<%--                                        <div class="row">--%>
-
-<%--                                            <div class="col-md-6">--%>
-<%--                                                <div class="form-group">--%>
-<%--                                                    <label  class="form-label">Mã--%>
-<%--                                                        <span>*</span></label>--%>
-<%--                                                    <input value="${sp.maMauSac}" name="maMauSac" id="maUpdate${sp.id}" class="form-control"/>--%>
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-
-<%--                                        <div class="row">--%>
-<%--                                            <div class="col-md-6">--%>
-<%--                                                <div class="form-group">--%>
-<%--                                                    <label  class="form-label">Tên--%>
-<%--                                                        <span>*</span></label>--%>
-<%--                                                    <input value="${sp.tenMauSac}" name="ten" id="tenUpdate${sp.id}" class="form-control"/>--%>
-
-<%--                                                </div>--%>
-<%--                                            </div>--%>
-
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="modal-footer justify-content-between">--%>
-<%--                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">--%>
-<%--                                            Thoát--%>
-<%--                                        </button>--%>
-<%--                                        <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateMauSac(${sp.id})">Lưu</button>--%>
-<%--                                    </div>--%>
-
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-
-
-
-
                         <div class="modal fade" id="modalUpdate${sp.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
@@ -189,16 +202,22 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
                     </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
+        <div aria-label="Page navigation example">
+            <ul class="pagination">
+                <c:forEach begin="1" end="${listColors.totalPages}" varStatus="loop">
+                    <li class="page-item">
+                        <a class="page-link" href="/mau-sac?page=${loop.begin+loop.count-2}">
+                                ${loop.begin+loop.count-1}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
     </div>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -208,6 +227,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 <script>
     function xoaMauSac(idMauSac) {
             $.ajax({
@@ -239,7 +261,7 @@
                 maMauSac.trim() === ""
             || tenMauSac.trim() === ""
         ) {
-            alert("Vui lòng điền đầy đủ thông tin ");
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
             return false;
         }
         $.ajax({
@@ -251,17 +273,26 @@
             },
             success: function (response) {
                 if(response === "ok"){
-                    window.location.reload(); // Load lại trang nếu thành công
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 }
                 else if(response === "errorMa"){
-                    alert("mã trùng");
+                    toastr.error("mã trùng");
                 }else if(response === "errorTen"){
-                    alert("Trùng Tên");
+                    toastr.error("Trùng Tên");
                 }
 
             },
             error: function (error) {
                 console.error("Lỗi khi thanh toán:", error);
+                toastr.error("Có lỗi xảy ra");
             }
         });
     }
@@ -274,7 +305,7 @@
 
         console.log(maMauSac);
         if (maMauSac.trim() === "" || tenMauSac.trim() === "") {
-            alert("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
             return false;
         }
 
@@ -289,16 +320,24 @@
             },
             success: function (response) {
                 if (response === "ok") {
-                    window.location.reload(); // Load lại trang nếu thành công
-                    alert("Thành Công")
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Sửa Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 } else if (response === "errorMa") {
-                    alert("Mã trùng");
+                    toastr.error("Mã trùng");
                 } else if (response === "errorTen") {
-                    alert("Trùng Tên");
+                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
             }
         });
 

@@ -2,6 +2,9 @@ package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,4 +26,9 @@ public interface DoiTuongSuDungService {
     public List<DoiTuongSuDung>searchDoiTuongSuDung(String tenDoiTuongSuDung);
 
     public DoiTuongSuDung getidDTSD(Integer idDTSD);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    public Page<DoiTuongSuDung> searchDTSDTenOrMa(String tenMa, Pageable pageable);
+    public Page<DoiTuongSuDung> searchcbb(boolean name, Pageable pageable);
+    ///////////////////////////////////////////////////////////////////////////////////
 }

@@ -5,14 +5,15 @@ import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.repository.KhuyenMaiRepository;
 import com.bags.sixdoBag.service.KhuyenMaiService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class KhuyenMaiServiceImpl implements KhuyenMaiService {
-
     private final KhuyenMaiRepository khuyenMaiRepository;
 
     @Override
@@ -40,7 +41,7 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
         km.setNgayBatDau(khuyenMai.getNgayBatDau());
         km.setNgayKetThuc(khuyenMai.getNgayKetThuc());
         km.setMoTa(khuyenMai.getMoTa());
-        km.setTrangThai(true);
+        km.setTrangThai(khuyenMai.getTrangThai());
         return khuyenMaiRepository.save(km);
     }
 
@@ -57,11 +58,6 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
         return km;
     }
 
-    @Override
-    public List<KhuyenMai> searchKhuyenMaiTenOrMa(String tenMa) {
-        List<KhuyenMai> khuyenMais = khuyenMaiRepository.searchKhuyenMaiTenOrMa(tenMa);
-        return khuyenMais;
-    }
 
     @Override
     public List<KhuyenMai> pageKhuyenMai(int limit, int size) {
@@ -74,9 +70,21 @@ public class KhuyenMaiServiceImpl implements KhuyenMaiService {
         List<KhuyenMai> khuyenMais = khuyenMaiRepository.searchKhuyenMaiNgay(dateStart, dateEnd);
         return khuyenMais;
     }
+
     @Override
     public KhuyenMai getidKhuyenMai(Integer idKhuyenMai) {
         KhuyenMai khuyenMai = khuyenMaiRepository.findById(idKhuyenMai).orElse(null);
         return khuyenMai;
     }
+
+    /////////////////////////////////////////////////////////////
+    @Override
+    public Page<KhuyenMai> searchKhuyenMaiTenOrMa(String tenMa, Pageable pageable) {
+        return khuyenMaiRepository.searchKhuyenMaiTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<KhuyenMai> searchcbb(boolean name, Pageable pageable) {
+        return khuyenMaiRepository.searchCbb(name,pageable);
+    }
+    ////////////////////////////////////////////////////////////////
 }

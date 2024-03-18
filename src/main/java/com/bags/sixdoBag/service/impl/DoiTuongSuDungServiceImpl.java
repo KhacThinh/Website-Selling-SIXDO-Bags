@@ -2,9 +2,12 @@ package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
+import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.DoiTuongSuDungRepository;
 import com.bags.sixdoBag.service.DoiTuongSuDungService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,4 +70,15 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
         DoiTuongSuDung doiTuongSuDung = doiTuongSuDungRepository.findById(idDTSD).orElse(null);
         return doiTuongSuDung;
     }
+
+    ///////////////////////////////////////
+    @Override
+    public Page<DoiTuongSuDung> searchDTSDTenOrMa(String tenMa, Pageable pageable) {
+        return doiTuongSuDungRepository.searchDTSDTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<DoiTuongSuDung> searchcbb(boolean name, Pageable pageable) {
+        return doiTuongSuDungRepository.searchCbb(name,pageable);
+    }
+    ////////////////////////////////////////////////////////////////
 }

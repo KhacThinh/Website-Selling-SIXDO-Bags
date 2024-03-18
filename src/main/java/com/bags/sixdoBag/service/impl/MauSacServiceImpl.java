@@ -1,9 +1,12 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.repository.MauSacRepository;
 import com.bags.sixdoBag.service.MauSacService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +20,7 @@ public class MauSacServiceImpl implements MauSacService {
     @Override
     public MauSac getMauSac(Integer idMauSac) {
         MauSac mauSac = mauSacRepository.findById(idMauSac)
-                .orElseThrow(()-> new IllegalArgumentException("Màu Sắc không tồn tại id " + idMauSac));
+                .orElseThrow(() -> new IllegalArgumentException("Màu Sắc không tồn tại id " + idMauSac));
         return mauSac;
     }
 
@@ -56,11 +59,11 @@ public class MauSacServiceImpl implements MauSacService {
         return mauSacs;
     }
 
-    @Override
-    public List<MauSac> searchMauSac(String tenMauSac) {
-        List<MauSac> mauSacs = mauSacRepository.searchMauSacTenOrMa(tenMauSac);
-        return mauSacs;
-    }
+//    @Override
+//    public List<MauSac> searchMauSac(String tenMauSac) {
+//        List<MauSac> mauSacs = mauSacRepository.searchMauSacTenOrMa(tenMauSac);
+//        return mauSacs;
+//    }
 
     @Override
     public boolean isMaMauSacExists(String maMauSac) {
@@ -72,4 +75,11 @@ public class MauSacServiceImpl implements MauSacService {
         MauSac mauSac = mauSacRepository.findById(idMauSac).orElse(null);
         return mauSac;
     }
+
+    //////////////////////////////////////////////////
+    @Override
+    public Page<MauSac> searchMauSacTenOrMa(String tenMa, Pageable pageable) {
+        return mauSacRepository.searchMauSacTenOrMa(tenMa, pageable);
+    }
+    ////////////////////////////////////////////
 }

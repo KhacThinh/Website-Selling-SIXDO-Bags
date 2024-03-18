@@ -57,8 +57,8 @@ public class MaGiamGia {
     @Column(name = "ngay_ket_thuc")
     private String ngayKetThuc;
 
-    @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
-    @NotEmpty(message = "Mô Tả Không Được Để Trống")
+//    @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
+//    @NotEmpty(message = "Mô Tả Không Được Để Trống")
     @Column(name = "mo_ta")
     private String moTa;
 

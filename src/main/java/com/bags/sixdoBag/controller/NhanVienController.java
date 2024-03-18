@@ -12,6 +12,9 @@ import com.bags.sixdoBag.service.NhanVienService;
 import com.bags.sixdoBag.service.TaiKhoanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,14 +32,40 @@ public class NhanVienController {
     private final TaiKhoanService taiKhoanService;
     private final ChucVuService chucVuService;
     private final NhanVienRepository nhanVienRepository;
+//    @GetMapping("")
+//    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name) {
+//        model.addAttribute("listColors", nhanVienService.getNhanViens());
+//        model.addAttribute("listColors1", taiKhoanService.getTaiKhoans());
+//        model.addAttribute("listColors2", chucVuService.getListChucVu());
+//        return "/quan-ly/nhan-vien/view";
+//    }
     @GetMapping("")
-    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name) {
-        model.addAttribute("listColors", nhanVienService.getNhanViens());
+    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name,
+                         @RequestParam(defaultValue = "0", name = "page") int page,
+                         @RequestParam(name = "trangThai", required = false) Integer trangThai,
+                         @RequestParam(name = "chucVu", required = false) String chucVu,
+                         @RequestParam(name = "chucVuId", required = false) Long chucVuId) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<NhanVien> khuyenMais;
+
+        if (chucVuId != null) {
+            khuyenMais = nhanVienService.searchDCKHByChucVuId(chucVuId, pageable);
+        } else if (name != null && !name.isEmpty()) {
+            model.addAttribute("nameSearch", name);
+            khuyenMais = nhanVienService.searchNhanVienTenOrMa(name, pageable);
+        } else if (trangThai != null) {
+            khuyenMais = nhanVienService.searchcbb(trangThai, pageable);
+        } else if (chucVu != null) {
+            khuyenMais = nhanVienService.searchcbb1(chucVu, pageable);
+        } else {
+            khuyenMais = nhanVienRepository.findAll(pageable);
+        }
+
+        model.addAttribute("listColors", khuyenMais);
         model.addAttribute("listColors1", taiKhoanService.getTaiKhoans());
         model.addAttribute("listColors2", chucVuService.getListChucVu());
         return "/quan-ly/nhan-vien/view";
     }
-
     @PostMapping("/add")
     public ResponseEntity<?> add(
 
@@ -123,9 +152,16 @@ public class NhanVienController {
         return ResponseEntity.ok("ok");
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<?> xoaChucVu(@RequestParam("idNhanVien") Integer id) {
-        return ResponseEntity.ok(nhanVienService.deleteNhanVien(id));
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deleteKhuyenMai(@PathVariable("id") Integer id) {
+        NhanVien khuyenMai = nhanVienService.getidNhanVien(id);
+        if (khuyenMai != null) {
+            khuyenMai.setTrangThai(0); // Đánh dấu là không hoạt động thay vì xóa
+            nhanVienService.editNhanVien(id, khuyenMai); // Cập nhật khuyến mãi
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.ok("error");
+        }
     }
 
 }

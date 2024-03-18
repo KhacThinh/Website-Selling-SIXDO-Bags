@@ -72,74 +72,56 @@
 
 <div class="modal modal-xl" id="modalAddKhachHang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-
-
         <div class="modal-content">
-            <h1>KHÁCH HÀNG</h1>
+            <h1 class="modal-title">KHÁCH HÀNG</h1>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <%--                        <div class="form-group">--%>
-                        <%--                            <label for="taiKhoan">Tài Khoản</label>--%>
-                        <%--                            <select id="taiKhoan" name="taiKhoan" class="form-control">--%>
-                        <%--                                <c:forEach items="${listColors1}" var="cv">--%>
-                        <%--                                    <option value="${cv.id}">--%>
-                        <%--                                            ${cv.tenDangNhap}--%>
-                        <%--                                    </option>--%>
-                        <%--                                </c:forEach>--%>
-                        <%--                            </select>--%>
-                        <%--                        </div>--%>
-
-                        <%--                        <div class="form-group">--%>
-                        <%--                            <label for="maKhachHang">Mã Khách Hàng</label>--%>
-                        <%--                            <input  id="maKhachHang" class="form-control"/>--%>
-                        <%--                        </div>--%>
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="tenKhachHang">Tên Khách Hàng</label>
-                            <input id="tenKhachHang" class="form-control"/>
+                            <label for="tenKhachHang" class="form-label">Tên Khách Hàng</label>
+                            <input id="tenKhachHang" class="form-control" placeholder="Nhập tên khách hàng"/>
                         </div>
-                        <label>Giới Tính</label>
-                        <select id="gioiTinh" name="gioiTinh">
-                            <option value="1">Nam</option>
-                            <option value="0">Nữ</option>
-
-                        </select>
                         <div class="form-group">
-                            <label for="ngaySinh">Ngày Sinh</label>
+                            <label for="gioiTinh" class="form-label">Giới Tính</label>
+                            <select id="gioiTinh" name="gioiTinh" class="form-select">
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ngaySinh" class="form-label">Ngày Sinh</label>
                             <input type="date" id="ngaySinh" class="form-control"/>
                         </div>
-
                         <div class="form-group">
-                            <label for="sdt">SDT</label>
-                            <input id="sdt" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input id="email" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="matKhau">Mật Khẩu</label>
-                            <input id="matKhau" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="trangThai">Trạng Thái:</label>
-                            <select id="trangThai" name="trangThai">
+                            <label for="trangThai" class="form-label">Trạng Thái:</label>
+                            <select id="trangThai" name="trangThai" class="form-select">
                                 <option value="1">Hoạt Động</option>
-                                <%--                            <option value="0">Không Hoạt Động</option>--%>
+                                <!-- <option value="0">Không Hoạt Động</option> -->
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addKhachHang()">
-                        Lưu
-                    </button>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sdt" class="form-label">SDT</label>
+                            <input id="sdt" class="form-control" placeholder="Nhập số điện thoại"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input id="email" class="form-control" placeholder="Nhập địa chỉ email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="matKhau" class="form-label">Mật Khẩu</label>
+                            <input  id="matKhau" class="form-control" placeholder="Nhập mật khẩu"/>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addKhachHang()">Lưu</button>
+            </div>
         </div>
+
     </div>
 </div>
 <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">

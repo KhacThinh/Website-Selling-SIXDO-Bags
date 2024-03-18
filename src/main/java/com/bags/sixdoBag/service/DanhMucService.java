@@ -2,6 +2,9 @@ package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,4 +27,9 @@ public interface DanhMucService {
     public List<DanhMuc> searchDanhMuc(String tenDanhMuc);
 
     public DanhMuc getidDanhMuc(Integer idDanhMuc);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    public Page<DanhMuc> searchDanhMucTenOrMa(String tenMa, Pageable pageable);
+    public Page<DanhMuc> searchcbb(boolean name, Pageable pageable);
+    ///////////////////////////////////////////////////////////////////////////////////
 }

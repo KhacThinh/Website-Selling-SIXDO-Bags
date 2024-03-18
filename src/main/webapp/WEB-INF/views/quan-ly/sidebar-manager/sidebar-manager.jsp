@@ -643,7 +643,7 @@
                         <i class="bi bi-person-fill-gear"></i>
                         <span class="link-name">Nhân Viên</span>
                     </a></li>
-                    <li><a href="/nhan-vien" id="btnMaGiamGia">
+                    <li><a href="/ma_giam_gia?trangThai=true" id="btnMaGiamGia">
                        <i class="bi bi-tag"></i>
                         <span class="link-name">Mã Giảm Giá</span>
                     </a></li>

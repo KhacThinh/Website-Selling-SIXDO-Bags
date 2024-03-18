@@ -1,8 +1,8 @@
 package com.bags.sixdoBag.model.repository;
 
-import com.bags.sixdoBag.model.entitys.ChucVu;
-import com.bags.sixdoBag.model.entitys.KhachHang;
-import com.bags.sixdoBag.model.entitys.NhanVien;
+import com.bags.sixdoBag.model.entitys.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,4 +26,16 @@ public interface KhachHangRepository extends JpaRepository<KhachHang,Integer> {
 //
 //    @Query(value = "select ms from KhachHang ms where ms.email =:email")
 //    KhachHang searchKhByGM(String gmail);
+
+    ///////////////////////////////////////////////////////////
+    Page<KhachHang> findAll(Pageable pageable);
+
+    @Query(value = "select * from khach_hang where ten_khach_hang like %:tenMa% or ma_khach_hang like %:tenMa%", nativeQuery = true)
+    Page<KhachHang> searchKhachHangTenOrMa(String tenMa, Pageable pageable);
+
+
+    @Query("select x from KhachHang x where x.trangThai = :name")
+    Page<KhachHang> searchCbb(Integer name, Pageable pageable);
+
+    ////////////////////////////////////////////////////////////
 }

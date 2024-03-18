@@ -1,9 +1,12 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.ThuongHieuRepository;
 import com.bags.sixdoBag.service.ThuongHieuService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,4 +63,15 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
         List<ThuongHieu> thuongHieus = thuongHieuRepository.searchTenThuongHieuOrMa(tenThuongHieu);
         return thuongHieus;
     }
+
+    /////////////////////////////////////////////////////////////
+    @Override
+    public Page<ThuongHieu> searchThuongHieuTenOrMa(String tenMa, Pageable pageable) {
+        return thuongHieuRepository.searchThuongHieuTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<ThuongHieu> searchcbb(boolean name, Pageable pageable) {
+        return thuongHieuRepository.searchCbb(name,pageable);
+    }
+    ////////////////////////////////////////////////////////////////
 }

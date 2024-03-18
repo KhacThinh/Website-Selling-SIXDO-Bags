@@ -99,6 +99,14 @@
         .toggle-input:checked + .toggle-label + .options {
             display: block;
         }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        }
     </style>
 </head>
 <body>
@@ -120,6 +128,7 @@
         <table class="table table-sm table-hover table-striped mb-5">
             <thead>
             <tr>
+                <th scope="col">STT</th>
                 <th scope="col">MÃ CHỨC VỤ</th>
                 <th scope="col">TÊN CHỨC VỤ</th>
                 <th scope="col">TRẠNG THÁI</th>
@@ -129,6 +138,7 @@
             <tbody>
             <c:forEach items="${listColors}" var="sp" varStatus="i">
                 <tr id="record_${sp.id}">
+                    <td>${i.index + 1}</td>
                     <td>${sp.maChucVu}</td>
                     <td>${sp.tenChucVu}</td>
                     <td>${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
@@ -211,6 +221,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 <script>
     function xoaChucVu(idChucVu) {
@@ -240,7 +252,7 @@
         console.log(maChucVu);
         console.log(tenChucVu);
         if (maChucVu.trim() === "" || tenChucVu.trim() === "") {
-            alert("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
             return false;
         }
         $.ajax({
@@ -253,15 +265,24 @@
             },
             success: function (response) {
                 if (response === "ok") {
-                    window.location.reload(); // Load lại trang nếu thành công
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 } else if (response === "errorMa") {
-                    alert("mã trùng");
+                    toastr.error("mã trùng");
                 } else if (response === "errorTen") {
-                    alert("Trùng Tên");
+                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
             }
         });
 
@@ -275,7 +296,7 @@
 
         console.log(maChucVu);
         if (maChucVu.trim() === "" || tenChucVu.trim() === "") {
-            alert("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
             return false;
         }
 
@@ -291,16 +312,24 @@
             },
             success: function (response) {
                 if (response === "ok") {
-                    window.location.reload(); // Load lại trang nếu thành công
-                    alert("Thành Công")
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Sửa Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 } else if (response === "errorMa") {
-                    alert("Mã trùng");
+                    toastr.error("Mã trùng");
                 } else if (response === "errorTen") {
-                    alert("Trùng Tên");
+                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
             }
         });
 

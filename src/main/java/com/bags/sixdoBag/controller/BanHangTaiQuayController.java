@@ -46,14 +46,22 @@ public class BanHangTaiQuayController {
 
     @GetMapping("")
     public String hienThi(Model model) {
-        extracted(model);
+        extracted(model, -1);
         return "/ban-hang-tai-quay/home";
     }
+
+    @GetMapping("/{id}")
+    public String hienThiProductById(Model model,  @PathVariable int id) {
+        extracted(model, id);
+
+        return "/ban-hang-tai-quay/edit-invoice";
+    }
+
 
     @PostMapping("/search")
     public ResponseEntity<?> hienThiSanPham(Model model, @RequestParam(value = "name", required = false) String name) {
         System.out.println("name: " + name);
-        extracted(model);
+        extracted(model, -1);
 
         List<ChiTietSanPham> list = new ArrayList<>();
         if (Objects.isNull(name)) {
@@ -65,14 +73,24 @@ public class BanHangTaiQuayController {
         }
     }
 
-    private void extracted(Model model) {
+    private void extracted(Model model, int id) {
         Set<String> tenChatLieuSelects = sanPhamService.getSanPhams().stream().filter(sp -> sp.getChatLieu() != null && !sp.getChatLieu().isEmpty()).map(SanPham::getChatLieu).collect(Collectors.toSet());
-
         List<String> doiTuongSuDungs = doiTuongSuDungService.getListDoiTuongSuDung().stream().map(DoiTuongSuDung::getTenDoiTuongSuDung).collect(Collectors.toList());
         List<String> mauSacs = mauSacService.getMauSacs().stream().map(MauSac::getTenMauSac).toList();
         model.addAttribute("chatLieus", tenChatLieuSelects);
         model.addAttribute("doiTuongSuDungs", doiTuongSuDungs);
         model.addAttribute("mauSacs", mauSacs);
+
+        if (id > 0) {
+            List<ChiTietHoaDon> listHoaDonChiTiet = hoaDonChiTietService.getGioHangTaiQuay(id);
+            HoaDon hoaDonEdit = hoaDonService.getHoaDonById(id);
+            model.addAttribute("tabs", hoaDonEdit);
+            model.addAttribute("productsEdit", listHoaDonChiTiet);
+
+            return;
+        }
+
+
         List<HoaDon> listTab = hoaDonService.getTabHoaDon();
         List<HoaDon> danhSachTab = new ArrayList<>();
         for (HoaDon o : listTab) {
@@ -160,7 +178,7 @@ public class BanHangTaiQuayController {
              @RequestParam("doiTuongSuDung") String doiTuongSuDung,
              @RequestParam("mauSac") String mauSac, Model model
             ) {
-        extracted(model);
+        extracted(model, -1);
         List<ChiTietSanPham> listSearchCTSP = chiTietSanPhamServivce.filterTaiQuay(chatLieu, mauSac, doiTuongSuDung);
 
         return listSearchCTSP;
@@ -288,7 +306,7 @@ public class BanHangTaiQuayController {
 
     @PostMapping("/searchModal")
     public ResponseEntity<?> searchModal(@RequestParam("keyword") String keyword, Model model) {
-        extracted(model);
+        extracted(model, -1);
         List<ChiTietSanPham> list = chiTietSanPhamServivce.searchChiTietSanPhams(keyword);
         return ResponseEntity.ok(list);
     }

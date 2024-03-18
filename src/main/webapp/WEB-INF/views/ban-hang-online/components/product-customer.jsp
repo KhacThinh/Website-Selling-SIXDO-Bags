@@ -173,7 +173,7 @@
 
                                         <span class="stext-102 cl6 size-206 inf">
                                             ${product[0].sanPham.khoiLuong}
-											</span>
+                                        </span>
                                     </li>
 
                                     <li class="flex-w flex-t p-b-7 ">
@@ -193,7 +193,7 @@
 
                                         <span class="stext-102 cl6 size-206 inf">
                                             ${product[0].sanPham.chatLieu}
-											</span>
+                                        </span>
                                     </li>
 
                                     <li class="flex-w flex-t p-b-7">

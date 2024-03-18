@@ -1,10 +1,14 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.ThuongHieuRepository;
 import com.bags.sixdoBag.service.ThuongHieuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +32,29 @@ public class ThuongHieuController {
     public final ThuongHieuService thuongHieuService;
     public final ThuongHieuRepository thuongHieuRepository;
 
+    //    @GetMapping("")
+//    public String getThuongHieu(Model model, @RequestParam(name = "name", required = false) String name) {
+//        model.addAttribute("listThuongHieu", thuongHieuService.getThuongHieus());
+//        return "/quan-ly/thuong-hieu/view";
+//    }
     @GetMapping("")
-    public String getThuongHieu(Model model, @RequestParam(name = "name", required = false) String name) {
-        model.addAttribute("listThuongHieu", thuongHieuService.getThuongHieus());
+    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name,
+                         @RequestParam(defaultValue = "0", name = "page") int page,
+                         @RequestParam(name = "trangThai", required = false) Boolean trangThai) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<ThuongHieu> khuyenMais;
+
+        if (name != null && !name.isEmpty()) {
+            model.addAttribute("nameSearch", name);
+            khuyenMais = thuongHieuService.searchThuongHieuTenOrMa(name, pageable);
+        } else if (trangThai != null) {
+            khuyenMais = thuongHieuService.searchcbb(trangThai, pageable);
+        } else {
+            khuyenMais = thuongHieuRepository.findAll(pageable);
+
+        }
+
+        model.addAttribute("listColors", khuyenMais);
         return "/quan-ly/thuong-hieu/view";
     }
 
@@ -85,8 +109,19 @@ public class ThuongHieuController {
         return ResponseEntity.ok(danhSachThuongHieu);
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<?> xoaChucVu(@RequestParam("idThuongHieu") Integer id) {
-        return ResponseEntity.ok(thuongHieuService.deleteThuongHieu(id));
+    //    @PostMapping("/delete")
+//    public ResponseEntity<?> xoaChucVu(@RequestParam("idThuongHieu") Integer id) {
+//        return ResponseEntity.ok(thuongHieuService.deleteThuongHieu(id));
+//    }
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deleteKhuyenMai(@PathVariable("id") Integer id) {
+        ThuongHieu khuyenMai = thuongHieuService.getidThuongHieu(id);
+        if (khuyenMai != null) {
+            khuyenMai.setTrangThai(false); // Đánh dấu là không hoạt động thay vì xóa
+            thuongHieuService.editThuongHieu(id, khuyenMai); // Cập nhật khuyến mãi
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.ok("error");
+        }
     }
 }

@@ -99,6 +99,55 @@
         .toggle-input:checked + .toggle-label + .options {
             display: block;
         }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        } /*//*/
+        .search-form .input-group-append .btn {
+            border-radius: 20px;
+            padding: 10px 20px; /* Điều chỉnh lề và padding của nút tìm kiếm */
+        }
+        .search-form .input-group,
+        .search-form .input-group-append .btn,
+        .search-form .input-group-prepend .input-group-text,
+        .search-form .input-group input {
+            height: 100%; /* Đảm bảo rằng tất cả các phần tử trong dòng có chiều cao bằng nhau */
+        }
+        .search-form .input-group-append .btn {
+            border: none; /* Loại bỏ viền của nút */
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+        .search-form .input-group-append .btn {
+            border: none; /* Loại bỏ viền của nút */
+            border-radius: 20px;
+            padding: 0; /* Xóa bỏ padding */
+            margin: 0; /* Xóa bỏ margin */
+            height: 100%; /* Đảm bảo chiều cao của nút bằng với ô nhập liệu */
+        }
+        .search-form .input-group-append .btn:active {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Đổ bóng khi nút được click */
+        }
+        .search-form .input-group,
+        .search-form .input-group-append {
+            border: none; /* Loại bỏ viền */
+        }
+        #test th,
+        #test td {
+            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
+        }
+        /* CSS styles */
+        #test th {
+            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
+        }
+        .input-group .form-control {
+            height: 100%;
+        }
+
     </style>
 </head>
 <body>
@@ -115,11 +164,43 @@
         <jsp:include page="them-doi-tuong-su-dung.jsp"/>
     </div>
 </div>
+<div class="container mt-4">
+    <div class="row justify-content-between">
+        <div class="col-md-4">
+            <form action="/doi-tuong-su-dung" class="search-form" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="form-select" name="trangThai" id="trangThaiSelect">
+                            <option value="">Tất Cả</option>
+                            <option  value="true">Hoạt động</option>
+                            <option value="false">Không hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <form action="/doi-tuong-su-dung" class="search-form" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    </div>
+                    <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div id="test">
         <table class="table table-sm table-hover table-striped mb-5">
             <thead>
             <tr>
+                <th scope="col">Stt</th>
                 <th scope="col">Mã </th>
                 <th scope="col">Tên Đối Tượng</th>
                 <th scope="col">Trạng Thái</th>
@@ -127,8 +208,9 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${listColors}" var="sp" varStatus="i">
+            <c:forEach items="${listColors.content}" var="sp" varStatus="i">
                 <tr id="record_${sp.id}">
+                    <td>${i.index + 1}</td>
                     <td>${sp.maDoiTuongSuDung}</td>
                     <td>${sp.tenDoiTuongSuDung}</td>
                     <td>${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
@@ -179,9 +261,9 @@
                                             <div class="mb-3 row">
                                                 <label for="trangThaiUpdate${sp.id}" class="col-sm-3 col-form-label">Trạng Thái <span>*</span></label>
                                                 <div class="col-sm-9">
-                                                    <select name="trangThai" id="trangThaiUpdate${sp.id}" class="form-control custom-select">
-                                                        <option value="true">Hoạt động</option>
-                                                        <option value="false">Không hoạt động</option>
+                                                    <select name="trangThai" id="trangThaiUpdate${sp.id}" class="form-select">
+                                                        <option value="true"${sp.trangThai == true ? 'selected' : ''}>Hoạt động</option>
+                                                        <option value="false" ${sp.trangThai == false? 'selected' : ''}>Không hoạt động</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -202,6 +284,17 @@
             </c:forEach>
             </tbody>
         </table>
+        <div aria-label="Page navigation example">
+            <ul class="pagination">
+                <c:forEach begin="1" end="${listColors.totalPages}" varStatus="loop">
+                    <li class="page-item">
+                        <a class="page-link" href="/doi-tuong-su-dung?page=${loop.begin+loop.count-2}">
+                                ${loop.begin+loop.count-1}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
     </div>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -211,27 +304,44 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 <script>
-    function xoaDTSD(idDTSD) {
-        $.ajax({
-            url: '/doi-tuong-su-dung/delete',
-            type: 'POST',
-            data: ({idDTSD: idDTSD}),
-            success: function (response) {
-                $('#record_' + idDTSD).remove();
-                Swal.fire({
-                    title: "Good job!",
-                    text: "Xóa Thành Công!",
-                    icon: "success"
-                });
-            },
-            error: function (error) {
-                console.error("Lỗi khi xóa đối tượng:", error);
-            }
-        });
 
-    }
+        function xoaDTSD(id) {
+            $.ajax({
+                url: '/doi-tuong-su-dung/delete/' + id,
+                type: 'POST',
+                success: function(response) {
+                    if (response === "ok") {
+                        Swal.fire({
+                            title: "Good job!",
+                            text: "Xóa Thành Công!",
+                            icon: "success"
+                        }).then((result) => {
+                            if (result.isConfirmed || result.isDismissed) {
+                                window.location.reload(); // Load lại trang nếu thành công
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Lỗi khi xóa khuyến mãi",
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Có lỗi xảy ra:", error);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Có lỗi xảy ra khi xóa khuyến mãi",
+                        icon: "error"
+                    });
+                }
+            });
+        }
 
     function addDTSD() {
         var maDoiTuongSuDung = document.getElementById("maDoiTuongSuDung").value;
@@ -239,7 +349,7 @@
         var trangThai = document.getElementById("trangThai").value;
 
         if (maDoiTuongSuDung.trim() === "" || tenDoiTuongSuDung.trim() === "") {
-            alert("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
             return false;
         }
         $.ajax({
@@ -252,13 +362,22 @@
             },
             success: function (response) {
                 if (response === "ok") {
-                    window.location.reload(); // Load lại trang nếu thành công
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 } else if (response === "errorMa") {
-                    alert("mã trùng");
+                    toastr.error("mã trùng");
                 }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
             }
         });
 
@@ -272,7 +391,7 @@
 
 
         if (maDoiTuongSuDung.trim() === "" || tenDoiTuongSuDung.trim() === "") {
-            alert("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
             return false;
         }
 
@@ -288,18 +407,42 @@
             },
             success: function (response) {
                 if (response === "ok") {
-                    window.location.reload(); // Load lại trang nếu thành công
-                    alert("Thành Công")
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Sửa Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
                 } else if (response === "errorMa") {
-                    alert("Mã trùng");
+                    toastr.error("Mã trùng");
                 }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
+                toastr.error
             }
         });
 
     }
+        document.getElementById('trangThaiSelect').addEventListener('change', function() {
+            var selectedValue = this.value;
+            if (selectedValue !== '') {
+                window.location.href = '/doi-tuong-su-dung?trangThai=' + selectedValue;
+            } else {
+                window.location.href = '/doi-tuong-su-dung';
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var trangThaiValue = urlParams.get('trangThai');
+            if (trangThaiValue !== null) {
+                document.getElementById('trangThaiSelect').value = trangThaiValue;
+            }
+        });
 </script>
 </body>
 

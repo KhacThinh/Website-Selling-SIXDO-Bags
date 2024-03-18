@@ -2,9 +2,12 @@ package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
+import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.DanhMucRepository;
 import com.bags.sixdoBag.service.DanhMucService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,4 +73,15 @@ public class DanhMucServiceImpl implements DanhMucService {
         DanhMuc danhMuc = danhMucRepository.findById(idDanhMuc).orElse(null);
         return danhMuc;
     }
+
+    //////////////////////////////////////////
+    @Override
+    public Page<DanhMuc> searchDanhMucTenOrMa(String tenMa, Pageable pageable) {
+        return danhMucRepository.searchDanhMucTenOrMa(tenMa, pageable);
+    }
+    @Override
+    public Page<DanhMuc> searchcbb(boolean name, Pageable pageable) {
+        return danhMucRepository.searchCbb(name,pageable);
+    }
+    ////////////////////////////////////////////////////////////////
 }

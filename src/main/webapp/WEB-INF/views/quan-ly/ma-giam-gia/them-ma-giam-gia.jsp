@@ -72,10 +72,10 @@
 <div class="modal modal-xl" id="modalAddMaGiamGia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <h1> MÃ GIẢM GIÁ</h1>
+            <h1 class="text-center mb-4"> MÃ GIẢM GIÁ</h1>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="maGiamGia">Mã Giảm Giá</label>
                             <input id="maGiamGia" class="form-control"/>
@@ -92,8 +92,8 @@
                             <label for="soLuong">Số lượng</label>
                             <input id="soLuong" class="form-control"/>
                         </div>
-
-
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="ngayBatDau">Ngày Bắt Đầu</label>
                             <input type="date" id="ngayBatDau" class="form-control"/>
@@ -110,26 +110,23 @@
                             <label for="moTa">Mô Tả</label>
                             <input id="moTa" class="form-control"/>
                         </div>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="trangThai">Trạng Thái:</label>
-                        <select id="trangThai" name="trangThai">
-                            <option value="1">Hoạt Động</option>
-                            <%--                            <option value="0">Không Hoạt Động</option>--%>
-                        </select>
+                        <div class="form-group">
+                            <label for="trangThai" class="col-sm-3 col-form-label">Trạng Thái:</label>
+                            <select id="trangThai" name="trangThai" class="form-select" disabled>
+                                <option value="1" >Hoạt Động</option>
+                                <!-- <option value="0">Không Hoạt Động</option> -->
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addMaGiamGia()">
-                        Lưu
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addMaGiamGia()">Lưu</button>
             </div>
         </div>
     </div>
-</div>
+    </div>
 </body>
 </html>
 
