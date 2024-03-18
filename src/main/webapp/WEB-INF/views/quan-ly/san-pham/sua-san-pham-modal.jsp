@@ -240,8 +240,8 @@
         } else if (isNaN(khoiLuong)) {
             document.getElementById('khoiLuongErrorr').innerText = 'Khối Lượng phải là số.';
             hasError = true;
-        } else if (khoiLuong <= 0) {
-            document.getElementById('khoiLuongErrorr').innerText = 'Khối Lượng phải lớn hơn 0.';
+        } else if (khoiLuong <= 1) {
+            document.getElementById('khoiLuongErrorr').innerText = 'Khối Lượng phải lớn hơn 1.';
             hasError = true;
         } else {
             document.getElementById('khoiLuongErrorr').innerText = '';

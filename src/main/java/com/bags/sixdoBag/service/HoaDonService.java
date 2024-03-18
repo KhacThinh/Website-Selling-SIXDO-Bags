@@ -20,6 +20,12 @@ public interface HoaDonService {
     void deleteHoaDonById(int id);
 
     Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDon();
-    void saveHoaDon (HoaDon hoaDon);
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSearchMaSdtSortHoaDon(String maSdt);
+
+    Map<HoaDon, List<ChiTietHoaDon>> filterNgayBatDauKetThuc(String ngayBatDau, String ngayKetThuc);
+
+    void saveHoaDon(HoaDon hoaDon);
+
     void xacNhanDonHang(int trangThai, String maHd);
 }

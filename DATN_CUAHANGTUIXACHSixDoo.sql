@@ -215,6 +215,10 @@ FOREIGN KEY(id_chuc_vu) REFERENCES chuc_vu(id),
 FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
 
+select * from nhan_vien
+
+--alter table nhan_vien set gioiTinh int
+
 
 create table hoa_don(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
@@ -352,6 +356,8 @@ WHERE sp.chat_lieu LIKE N'%Da%'
   AND (dtsd.ten LIKE N'%%' OR dtsd.ten IS NULL)
   AND (ms.ten LIKE N'%%' OR ms.ten IS NULL)
   AND (th.ten LIKE N'%%' OR th.ten IS NULL);
+
+  select * from tai_khoan
 
 
 

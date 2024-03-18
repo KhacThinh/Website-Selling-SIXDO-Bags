@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.controller;
 
 
+import com.bags.sixdoBag.config.HoaDonPDFExporter;
 import com.bags.sixdoBag.model.dto.request.XoaSanPhamRequest;
 import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.ChiTietHoaDonRepository;
@@ -8,12 +9,22 @@ import com.bags.sixdoBag.model.repository.HoaDonRepository;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.service.*;
 import com.bags.sixdoBag.service.impl.Utils;
+import com.lowagie.text.DocumentException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -292,5 +303,33 @@ public class BanHangTaiQuayController {
         List<ChiTietSanPham> list = chiTietSanPhamServivce.searchChiTietSanPhams(keyword);
         return ResponseEntity.ok(list);
     }
+
+
+    @GetMapping("/export")
+    public void exportToPDF(HttpServletResponse response, @RequestParam(value = "maHoaDon") String maHd) {
+        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
+        System.out.println("hello000001" + hoaDon.getThoiGianTao());
+        if (Objects.nonNull(hoaDon)) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=" + hoaDon.getMaHoaDon() + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+
+            HoaDonPDFExporter exporter = new HoaDonPDFExporter(hoaDon, chiTietHoaDons);
+            try {
+                byte[] pdfBytes = exporter.export();
+                response.getOutputStream().write(pdfBytes);
+            } catch (IOException | DocumentException e) {
+                // Xử lý ngoại lệ nếu có
+                e.printStackTrace();
+            }
+        }
+//        return "redirect:/ban-tai_quay";
+    }
+
+
 
 }

@@ -200,7 +200,7 @@
 
         .buttonTimKiemSp button {
             background-color: #007bff;
-             color: #fff;
+            color: #fff;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
@@ -1262,7 +1262,7 @@
 
 
     <!-- Right column -->
-    <div class="info-panel thanh-toan"  >
+    <div class="info-panel thanh-toan">
         <h2>Thông tin đơn hàng</h2>
         <div>
             <input type="text" id="soDienThoai" placeholder="Số điện thoại">
@@ -1886,11 +1886,34 @@
                     var newAddTabs = '<button class="tablinks add" onclick="addTab()">+</button>';
                     $('.tab').append(newAddTabs);
 
-
-                    setTimeout('Redirect()', 1000);
                     console.log("Đã thanh toán thành công. Thông tin đơn hàng:", response);
                     successMessage('Thanh Toán Thành Công');
 
+                    Swal.fire({
+                        title: "Bạn có muốn in hoá đơn không?",
+                        icon: "success",
+                        showCancelButton: true,
+                        confirmButtonText: "In hóa đơn",
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = document.createElement('form');
+                            form.setAttribute('action', '/ban-tai-quay/export');
+                            form.setAttribute('method', 'get');
+                            form.style.display = 'none'; // Ẩn form đi để tránh hiển thị trên giao diện
+
+                            var input = document.createElement('input');
+                            input.setAttribute('type', 'hidden');
+                            input.setAttribute('name', 'maHoaDon');
+                            input.setAttribute('value', tabActive); // Truyền giá trị tabActive vào biến maHoaDon
+
+                            form.appendChild(input);
+                            document.body.appendChild(form);
+
+                            form.submit();
+                            // Redirect();
+                        }
+                    });
                 },
                 error: function (error) {
                     console.error("Lỗi khi thanh toán:", error);
