@@ -64,4 +64,10 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.ma =:ma")
     ChiTietSanPham getChiTietSanPhamByMa(String ma);
 
+    @Query("select ctsp from ChiTietSanPham  ctsp where ctsp.mauSac.tenMauSac =:mauSac")
+    ChiTietSanPham getChiTietSanPhamByMauSac(String mauSac);
+
+    @Query("select ctsp from ChiTietSanPham ctsp where ctsp.sanPham =:idSp and ctsp.ma like %:name% or ctsp.sanPham.tenSanPham like %:name% ")
+    List<ChiTietSanPham> getChiTietSanPhamByTenSpAndMa(Integer idSp,String name);
+
 }
