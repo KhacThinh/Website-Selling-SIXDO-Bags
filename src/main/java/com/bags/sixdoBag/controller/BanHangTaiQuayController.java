@@ -1,19 +1,31 @@
 package com.bags.sixdoBag.controller;
 
 
+import com.bags.sixdoBag.config.HoaDonPDFExporter;
 import com.bags.sixdoBag.model.dto.request.XoaSanPhamRequest;
 import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.ChiTietHoaDonRepository;
+import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.model.repository.HoaDonRepository;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.service.*;
 import com.bags.sixdoBag.service.impl.Utils;
+import com.lowagie.text.DocumentException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,6 +55,7 @@ public class BanHangTaiQuayController {
 
     private final KhachHangService khachHangService;
 
+    private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @GetMapping("")
     public String hienThi(Model model) {
@@ -59,13 +72,13 @@ public class BanHangTaiQuayController {
 
 
     @PostMapping("/search")
-    public ResponseEntity<?> hienThiSanPham(Model model, @RequestParam(value = "name", required = false) String name) {
+    public ResponseEntity<?> hienThiSanPham(Model model, @RequestParam("name") String name) {
         System.out.println("name: " + name);
         extracted(model, -1);
 
         List<ChiTietSanPham> list = new ArrayList<>();
         if (Objects.isNull(name)) {
-            list = chiTietSanPhamServivce.getChiTietSanPhams();
+            list = chiTietSanPhamRepository.getListCtspTaiQuay();
             return ResponseEntity.ok(list);
         } else {
             list = chiTietSanPhamServivce.searchChiTietSanPhams(name);
@@ -118,18 +131,35 @@ public class BanHangTaiQuayController {
         return ResponseEntity.ok(danhSachTab);
     }
 
+    @PostMapping("/kiem-tra-so-luong-trong-kho")
+    public ResponseEntity<?> checkQuantity(@RequestParam("productId") Integer id, @RequestParam("quantity") Integer quantity){
+        ChiTietSanPham chiTietSanPham= chiTietSanPhamServivce.getChiTietSanPham(id);
+        if(chiTietSanPham != null){
+            if(chiTietSanPham.getSoLuong()>= quantity){
+                return ResponseEntity.ok("ok");
+
+            }else{
+                return ResponseEntity.ok("no");
+            }
+        }else{
+            return ResponseEntity.ok("no");
+        }
+
+    }
+
     @PostMapping("/them-gio-hang")
     public ResponseEntity<?> themGioHang(@RequestBody Map<String, Object> requestBody) {
         String productId = String.valueOf(requestBody.get("productId"));
         String idTabString = String.valueOf(requestBody.get("tabActive"));
         String giaBanString = String.valueOf(requestBody.get("giaBan"));
+        String soLuongString = String.valueOf(requestBody.get("quantity"));
 
         int idTab = Integer.parseInt(idTabString.substring(2));
         System.out.println("tabsstring" + idTab);
 
         ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
         chiTietHoaDon.setIdCtSanPham(Integer.valueOf(productId));
-        chiTietHoaDon.setSoLuong(1);
+        chiTietHoaDon.setSoLuong(Integer.valueOf(soLuongString));
         chiTietHoaDon.setGia((double) Integer.valueOf(giaBanString));
         chiTietHoaDon.setIdHoaDon(idTab);
         hoaDonChiTietService.addGioHang(chiTietHoaDon);
@@ -310,5 +340,33 @@ public class BanHangTaiQuayController {
         List<ChiTietSanPham> list = chiTietSanPhamServivce.searchChiTietSanPhams(keyword);
         return ResponseEntity.ok(list);
     }
+
+
+    @GetMapping("/export")
+    public void exportToPDF(HttpServletResponse response, @RequestParam(value = "maHoaDon") String maHd) {
+        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
+        System.out.println("hello000001" + hoaDon.getThoiGianTao());
+        if (Objects.nonNull(hoaDon)) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=" + hoaDon.getMaHoaDon() + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+
+            HoaDonPDFExporter exporter = new HoaDonPDFExporter(hoaDon, chiTietHoaDons);
+            try {
+                byte[] pdfBytes = exporter.export();
+                response.getOutputStream().write(pdfBytes);
+            } catch (IOException | DocumentException e) {
+                // Xử lý ngoại lệ nếu có
+                e.printStackTrace();
+            }
+        }
+//        return "redirect:/ban-tai_quay";
+    }
+
+
 
 }

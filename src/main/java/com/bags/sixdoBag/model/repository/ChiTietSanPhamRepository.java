@@ -19,9 +19,23 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     @Query(value = "select * from chi_tiet_san_pham where trang_thai = 1", nativeQuery = true)
     List<ChiTietSanPham> getListCtsp();
 
-    @Query(value = "select ctsp from ChiTietSanPham ctsp join SanPham sp on ctsp.sanPham = sp join MauSac ms on ctsp.mauSac = ms" +
-            " where ctsp.ma like %:tenMa% or sp.tenSanPham like %:tenMa% or ms.tenMauSac like %:tenMa%")
-    List<ChiTietSanPham> listSearch(String tenMa);
+    @Query(value = "select * from chi_tiet_san_pham as ctsp where ctsp.trang_thai=1 and ctsp.so_luong>0", nativeQuery = true)
+    List<ChiTietSanPham> getListCtspTaiQuay();
+
+    @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp " +
+            "JOIN SanPham sp ON ctsp.sanPham = sp " +
+            "JOIN MauSac ms ON ctsp.mauSac = ms " +
+            "WHERE ctsp.trangThai = 1 " +
+            "AND ctsp.soLuong > 0 " +
+            "AND (ctsp.ma LIKE %:tenMa% " +
+            "OR sp.tenSanPham LIKE %:tenMa% " +
+            "OR ms.tenMauSac LIKE %:tenMa%)")
+    List<ChiTietSanPham> listSearch(@Param("tenMa") String tenMa);
+
+
+    @Query(value = "select ctsp from ChiTietSanPham ctsp where ctsp.trangThai=1 and ctsp.soLuong >0 ")
+    List<ChiTietSanPham> listSearchTaiQuay(String tenMa);
+
 
     @Query(value = "select ctsp from ChiTietSanPham ctsp join SanPham sp on ctsp.sanPham = sp join MauSac ms on ctsp.mauSac = ms" +
             " where ctsp.ma = :ma")

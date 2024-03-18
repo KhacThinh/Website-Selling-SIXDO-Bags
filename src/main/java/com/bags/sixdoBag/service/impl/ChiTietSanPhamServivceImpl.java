@@ -155,7 +155,7 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
 
     @Override
     public List<ChiTietSanPham> filterTaiQuay(String chatLieu, String mauSac, String doiTuongSuDung) {
-        List<ChiTietSanPham> chiTietSanPhams = getChiTietSanPhams().stream()
+        List<ChiTietSanPham> chiTietSanPhams = chiTietSanPhamRepository.getListCtspTaiQuay().stream()
                 .filter(ctsp -> {
                     SanPham sanPham = ctsp.getSanPham();
                     MauSac mauSacObj = ctsp.getMauSac();

@@ -78,23 +78,15 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-7 mb-3">
-            <form action="/san-pham/filter" class="filter-form" method="post">
-                <div class="row">
+            <form action="/hoa-don/filter" class="filter-form" method="post">
+                <div class="row align-items-end">
                     <div class="col-md-4 mb-3">
-                        <select name="tenChatLieu" class="form-select" name="category">
-                            <option value="">Chọn Chất Liệu</option>
-                            <c:forEach items="${tenChatLieuSelects}" var="cl">
-                                <option value="${cl}" ${tenChatLieuSelect eq cl ? 'selected' : ''}>${cl}</option>
-                            </c:forEach>
-                        </select>
+                        <label for="ngayBatDau" class="form-label">Từ Ngày:</label>
+                        <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau" value="${ngayBatDau}">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <select name="tenThuongHieu" class="form-select" name="category">
-                            <option value="">Chọn thương hiệu</option>
-                            <c:forEach items="${tenThuongHieuSelects}" var="th">
-                                <option value="${th}" ${tenThuongHieuSelect eq th ? 'selected' : ''}>${th}</option>
-                            </c:forEach>
-                        </select>
+                        <label for="ngayKetThuc" class="form-label">Đến Ngày:</label>
+                        <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc" value="${ngayKetThuc}">
                     </div>
                     <div class="col-md-4 mb-3">
                         <button type="submit" class="btn btn-primary">Lọc</button>
@@ -102,16 +94,19 @@
                 </div>
             </form>
         </div>
-
         <div class="col-md-5 mb-3">
-            <form action="/san-pham" class="search-form" method="get">
+            <form action="/hoa-don/search-hoa-don" class="search-form" method="get">
                 <div class="input-group">
-                    <input type="text" name="name" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
+                    <input type="text" name="nameSearch" value="${nameSearch}" class="form-control"
+                           placeholder="Tìm kiếm theo mã hoá đơn">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                     </div>
                 </div>
             </form>
+            <%--            <input type="text" id="searchInput" name="nameSearch" class="form-control"--%>
+            <%--                   placeholder="Tìm kiếm theo mã hoá đơn">--%>
+            <%--            <div id="searchResults"></div>--%>
         </div>
     </div>
 </div>
@@ -138,7 +133,15 @@
                 <tr>
                     <th scope="col">${i.index + 1}</th>
                     <td>${hd.key.maHoaDon}</td>
-                    <td>${hd.key.tenNguoiNhan}</td>
+                        <%--                    <td>${hd.key.tenNguoiNhan}</td>--%>
+                    <c:choose>
+                        <c:when test="${hd.key.tenNguoiNhan eq ''}">
+                            <td>Khách lẻ</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>${hd.key.tenNguoiNhan}</td>
+                        </c:otherwise>
+                    </c:choose>
                     <td>${hd.key.sdtNguoiNhan}</td>
                     <td>${hd.key.thoiGianTao}</td>
                     <td>${hd.value.size()}</td>
@@ -193,8 +196,9 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">HOÁ ĐƠN CHI TIẾT</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                        <button class="btn btn-success" onclick="inHoaDon('${hd.key.maHoaDon}')">
+                                            <i class="bi bi-printer"></i> In Hoá Đơn
+                                        </button>
                                     </div>
                                     <p style="font-size: 15px; font-weight: bold; margin: 10px 0px 0px 23px;background-color: #d3ead9 ; padding: 7px;border-radius: 5px ">
                                         Thông Tin</p>
@@ -323,7 +327,7 @@
                                                 <a href="/ban-tai-quay/${hd.key.id}" target="_blank"> <button type="button" class="btn btn-success"><i class="bi bi-truck"></i> Xử Lý Đơn Hàng</button></a>
                                                 <%--                                                <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã Thanh Toán</button>--%>
                                                 <button type="button" class="btn btn-danger">Hủy Đơn</button>
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button
 
                                             </c:when>
                                             <c:when test="${hd.key.trangThai == 3}">
@@ -356,7 +360,25 @@
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
-    function xacNhanDonHang(ma){
+    function inHoaDon(maHD) {
+        var form = document.createElement('form');
+        form.setAttribute('action', '/ban-tai-quay/export');
+        form.setAttribute('method', 'get');
+        form.style.display = 'none'; // Ẩn form đi để tránh hiển thị trên giao diện
+
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', 'maHoaDon');
+        input.setAttribute('value', maHD); // Truyền giá trị tabActive vào biến maHoaDon
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+
+        form.submit();
+        // Redirect();
+    }
+
+    function xacNhanDonHang(ma) {
         $.ajax({
             url: '/hoa-don/xac-nhan-don-hang',
             type: 'POST',
@@ -373,6 +395,31 @@
             }
         });
     }
+
+    // Lắng nghe sự kiện khi người dùng gõ phím trên trường nhập liệu
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        // Lấy giá trị từ trường nhập liệu
+        var searchValue = this.value;
+
+        // Gửi yêu cầu Ajax chỉ khi có ít nhất 3 ký tự được nhập
+        if (searchValue.length >= 3) {
+            // Gửi yêu cầu Ajax
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/hoa-don/search-hoa-don?nameSearch=' + searchValue, true);
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // Xử lý kết quả Ajax
+                    var responseData = xhr.responseText;
+                    // Cập nhật nội dung của phần tử có id là 'test' (hoặc bất kỳ phần tử nào bạn muốn cập nhật)
+                    document.getElementById('test').innerHTML = responseData;
+                } else {
+                    console.error('Request failed with status ' + xhr.status);
+                }
+            };
+            xhr.send();
+        }
+    });
+
 </script>
 </body>
 

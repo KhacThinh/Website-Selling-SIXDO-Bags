@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -87,13 +89,53 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSearchMaSdtSortHoaDon(String maSdt) {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.getHoaDomByMaHoaDonOrSdt(maSdt);
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;
+    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> filterNgayBatDauKetThuc(String ngayBatDau, String ngayKetThuc) {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        LocalDateTime batDau = ngayBatDau.isEmpty() ? LocalDateTime.MIN : LocalDateTime.parse(ngayBatDau + "T00:00:00");
+        LocalDateTime ketThuc = ngayKetThuc.isEmpty() ? LocalDateTime.MAX : LocalDateTime.parse(ngayKetThuc + "T23:59:59");
+        List<HoaDon> hoaDons = hoaDonRepository.findAll()
+                .stream()
+                .filter(hd -> {
+                    boolean start = hd.getThoiGianTao() != null && (batDau.isBefore(hd.getThoiGianTao()) || batDau.isEqual(hd.getThoiGianTao()));
+                    boolean end = hd.getThoiGianTao() != null && (ketThuc.isAfter(hd.getThoiGianTao()) || ketThuc.isEqual(hd.getThoiGianTao()));
+                    return start && end;
+                }).collect(Collectors.toList());
+
+
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;
+    }
+
+    @Override
     public void saveHoaDon(HoaDon hoaDon) {
         hoaDonRepository.save(hoaDon);
     }
 
     @Override
-    public void xacNhanDonHang(int trangThai,String maHd) {
-        hoaDonRepository.setTrangThaiDonHang(trangThai,maHd);
+    public void xacNhanDonHang(int trangThai, String maHd) {
+        hoaDonRepository.setTrangThaiDonHang(trangThai, maHd);
 
     }
 

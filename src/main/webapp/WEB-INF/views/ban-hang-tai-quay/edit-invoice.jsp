@@ -1596,7 +1596,7 @@
         <div style="display: flex; align-items: center;height: 53px">
             <p style="margin-left:8px ; font-weight: bold">Khách Thanh Toán :
             </p>
-            <input type="text" value="0" required
+            <input type="text" value="0" required onkeyup="calculateTotal2(this)" id="khach-thanh-toan"
                    style="height: 20px;width: 150px;background-color:#f9f9f9;font-size: 18px;
                     border: none;border-bottom: 2px solid blue; margin-top: 7px; margin-left: 180px">
         </div>
@@ -1604,12 +1604,12 @@
         <div style="display: flex;height: 53px">
             <p style="margin-left:8px ; font-weight: bold">Đơn Hàng Thu Hộ :
             </p>
-            <p style="margin-left: 196px; font-size: 18px" class="total_order">0</p>
+            <p style="margin-left: 196px; font-size: 18px" id="cash-in-return">0</p>
         </div>
 
         <div style="display: flex; text-align: center;margin-top: 30px">
             <button style="margin-right: 20px;margin-left: 40px" class="custom-btn btn-2 checkout" onclick="checkout()">GIAO HÀNG</button>
-            <button class="saveInvoice">LƯU</button>
+            <button class="saveInvoice" >LƯU</button>
         </div>
 
 
@@ -1629,6 +1629,39 @@
     var button = document.getElementById("${tabs.maHoaDon}");
     var tabActive = button.id.substring(2)
     var listDataGioHang;
+
+    function calculateTotal2(input) {
+
+        let value = input.value;
+
+        // Loại bỏ các ký tự không phải số
+        value = value.replace(/\D/g, '');
+
+        // Định dạng số có dấu phẩy
+        value = Number(value).toLocaleString('en');
+
+        // Cập nhật giá trị vào input
+        input.value = value;
+        // Lấy giá trị phí vận chuyển từ input
+        let totalOrder =  parseFloat(document.getElementById('khach-thanh-toan').value.replace(/,/g, ''));
+        console.log("odđ "+totalOrder)
+
+        let shippingFee = parseFloat( document.getElementById('customer-need-to-pay').innerText.replace(/,/g, ''));
+        console.log("jhjjh "+shippingFee)
+
+        // Lấy giá trị tổng tiền hàng từ thẻ p
+
+        // Chuyển đổi giá trị phí vận chuyển từ chuỗi sang số
+
+        // Tính tổng tiền đơn hàng và phí vận chuyển
+        let d = shippingFee -  totalOrder ;
+        console.log("shippingFee"+shippingFee +" totalOrder"+totalOrder);
+        console.log("jhhj"+d)
+
+        // Hiển thị giá trị của Khách Cần Trả
+        document.getElementById('cash-in-return').innerText = d.toLocaleString('en');
+    }
+
 
     function calculateTotal(input) {
 
