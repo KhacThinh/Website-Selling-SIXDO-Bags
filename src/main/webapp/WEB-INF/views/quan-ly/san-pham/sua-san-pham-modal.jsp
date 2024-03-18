@@ -286,7 +286,7 @@
             processData: false,
             dataType: 'json',
             success: function (response) {
-                setTimeout('Redirect()', 2000);
+                setTimeout('Redirect()', 1000);
                 Swal.fire({
                     icon: "success",
                     title: "Sản phẩm của bạn đã được sửa",

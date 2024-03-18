@@ -1,12 +1,10 @@
 package com.bags.sixdoBag.model.entitys;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,7 +54,6 @@ public class ChiTietSanPham {
     @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")
     private KhuyenMai khuyenMai;
-
 
     @OneToMany(mappedBy = "chiTietSanPham")
     List<HinhAnhCTSP>anhChiTietSanPhams;

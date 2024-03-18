@@ -235,6 +235,8 @@
                                                 <input type="file" value="${sp.hinhAnh}" id="images${sp.id}"
                                                        name="images"
                                                        class="form-control"/>
+                                                <img id="previewImage" src="${sp.hinhAnh}"
+                                                     style="max-width: 100%; height: 150px; margin-top: 4px"/>
                                             </div>
                                         </div>
                                     </div>
@@ -254,8 +256,10 @@
                                                 <label for="mauSac" class="form-label">Màu Sắc</label>
                                                 <select name="mauSac" id="mauSac${sp.id}" class="form-control">
                                                     <option value="" label="Chọn Màu Sắc"/>
-                                                    <c:forEach items="${listMauSac}" var="c">
-                                                        <option value="${c.id}"  ${c.id==sp.mauSac.id ? 'selected':''}>${c.tenMauSac}</option>
+                                                    <option value="${sp.mauSac.id}"
+                                                            selected>${sp.mauSac.tenMauSac}</option>
+                                                    <c:forEach items="${MauSacs}" var="c">
+                                                        <option value="${c.id}">${c.tenMauSac}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -266,7 +270,6 @@
                                                 <select name="khuyenMai" id="khuyenMai${sp.id}" class="form-control">
                                                     <option value="" label="Chọn Khuyến Mãi"/>
                                                     <c:forEach items="${listKhuyenMai}" var="c">
-
                                                         <option value="${c.id}" ${c.id==sp.khuyenMai.id ? 'selected':''}>${c.ten}</option>
                                                     </c:forEach>
                                                 </select>
@@ -312,7 +315,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close close-thanh-cong" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="detailForm">
@@ -464,7 +467,11 @@
         formData.append('mauSac', mauSac);
         formData.append('khuyenMai', khuyenMai);
         formData.append('trangThai', trangThai);
-        formData.append('images', file);
+
+        // Kiểm tra xem người dùng đã chọn ảnh hay không
+        if (file) {
+            formData.append('images', file);
+        }
 
 
         var isValid = true;
@@ -502,26 +509,36 @@
         if (isValid === true || isValid === false) {
             $.ajax({
                 url: '/chi-tiet-san-pham/update',
-                type: 'Put',
+                type: 'PUT',
                 data: formData,
-                processData: false, // Ngăn việc xử lý dữ liệu formData
+                processData: false,
                 contentType: false,
                 success: function (result) {
-                    alert("update thanh cong");
-
+                    var id = result.sanPham.id;
+                    setTimeout(function () {
+                        window.location.href = '/chi-tiet-san-pham/detailCTSP?id=' + id;
+                    }, 1000);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Sản phẩm chi tiết của bạn đã được sửa",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 },
                 error: function (xhr, status, error) {
-                    console.error('Lỗi khi xóa: ', error);
+                    if (xhr.status === 400) {
+                        console.error("Lỗi khi kiểm tra mã:", error);
+                    } else {
+                        console.error('Lỗi khi xóa: ', error);
+                    }
                 }
-        ,
-            error: function (error) {
-                console.error("Lỗi khi kiểm tra mã:", error);
-            }
-        }
+            });
 
-    )
-    ;
+        }
     }
+
+    function Redirect(id) {
+        window.location = '/chi-tiet-san-pham/detailCTSP?id=' + id;
     }
 
     function isNumeric(value) {

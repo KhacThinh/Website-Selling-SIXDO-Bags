@@ -63,7 +63,7 @@ public class HoaDonPDFExporter {
         table.addCell(cell);
     }
 
-    private void writeTableData(PdfPTable table) {
+    private void writeTableData(PdfPTable table, Font font) {
         int stt = 1;
         Locale localeEN = new Locale("en", "EN");
         NumberFormat en = NumberFormat.getInstance(localeEN);
@@ -72,29 +72,29 @@ public class HoaDonPDFExporter {
             cell.setPadding(5);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            cell.setPhrase(new Phrase(String.valueOf(stt), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            cell.setPhrase(new Phrase(String.valueOf(stt), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getMaSanPham(), FontFactory.getFont(FontFactory.TIMES_ROMAN))); // Font căn giữa
+            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getMaSanPham(), font)); // Font căn giữa
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getTenSanPham(), FontFactory.getFont(FontFactory.TIMES_ROMAN))); // Font căn giữa
+            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getTenSanPham(), font)); // Font căn giữa
             table.addCell(cell);
 
             if (Objects.nonNull(chiTietHoaDon.getChiTietSanPham().getSanPham().getThoiGianBaoHanh())) {
                 cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getChiTietSanPham().getSanPham().getThoiGianBaoHanh().getThoiGian()), FontFactory.getFont(FontFactory.TIMES_ROMAN))); // Font căn giữa
             } else {
-                cell.setPhrase(new Phrase("", FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+                cell.setPhrase(new Phrase("", font));
             }
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getSoLuong()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getSoLuong()), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(en.format(chiTietHoaDon.getChiTietSanPham().getGiaBan()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            cell.setPhrase(new Phrase(en.format(chiTietHoaDon.getChiTietSanPham().getGiaBan()), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(en.format(chiTietHoaDon.getGia()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            cell.setPhrase(new Phrase(en.format(chiTietHoaDon.getGia()), font));
             table.addCell(cell);
 
             stt++;
@@ -118,15 +118,10 @@ public class HoaDonPDFExporter {
         p0.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(p0);
 
-//        Font fontArial = FontFactory.getFont("/fonts/Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18);
         String fontPath = "src/main/resources/fonts/Manuale-ExtraBold.ttf";
         BaseFont bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         Font font = new Font(bf);
         font.setSize(16);
-
-
-//        Font font = FontFactory.getFont("Arial Unicode MS", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18);
-//        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18); // Use a Vietnamese-friendly font and encoding
 
         Paragraph p1 = new Paragraph("CỬA HÀNG TÚI XÁCH SIXDO", font);
         p1.setAlignment(Paragraph.ALIGN_CENTER);
@@ -136,7 +131,7 @@ public class HoaDonPDFExporter {
         BaseFont bff = BaseFont.createFont("src/main/resources/fonts/Manuale-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         Font fontNormal = new Font(bff);
         fontNormal.setSize(12);
-//        Font fontNormal = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12);
+
         Paragraph p2 = new Paragraph("Địa chỉ: số 24 Hai Bà Trưng, Quận Hoàn Kiếm, Thành Phố Hà Nội", fontNormal);
         p2.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(p2);
@@ -196,12 +191,12 @@ public class HoaDonPDFExporter {
 
         PdfPTable table = new PdfPTable(7);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[]{1f, 2f, 4f, 1.5f, 1.5f, 3.5f, 3.5f});
+        table.setWidths(new float[]{1f, 2f, 7f, 1.5f, 1.5f, 2.5f, 2.5f});
         table.setSpacingBefore(10);
 
 
         writeTableHeader(table);
-        writeTableData(table);
+        writeTableData(table, fontNormal);
         document.add(table);
 
         Locale localeEN = new Locale("en", "EN");
