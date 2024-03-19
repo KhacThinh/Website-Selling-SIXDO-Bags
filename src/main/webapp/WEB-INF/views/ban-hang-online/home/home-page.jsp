@@ -86,7 +86,7 @@
 
 
 
-<!-- Product -->
+<!-- Product search filter -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/product-home.jsp"/>
 
 

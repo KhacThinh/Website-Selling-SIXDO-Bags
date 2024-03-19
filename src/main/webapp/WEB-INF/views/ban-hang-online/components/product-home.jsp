@@ -1,17 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %><html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<html>
 <head>
     <title>Title</title>
 </head>
-<body style="font-family: 'Poppins', sans-serif ; font-size: 30px">
+<body>
+<a href="#ChiTietSanPhamHomeOnline"></a>
 <!-- Footer -->
-<section class="bg0 p-t-23 p-b-140">
+<section id="ChiTietSanPhamHomeOnline" class="bg0 p-t-23 p-b-140">
     <div class="container">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
-                Product Overview
+             BỘ SƯU TẬP
             </h3>
         </div>
 
@@ -59,15 +61,32 @@
 
             <!-- Search product -->
             <div class="dis-none panel-search w-full p-t-10 p-b-15">
-                <div class="bor8 dis-flex p-l-15">
-                    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                <form action="/sixdo-shop/search" method="GET" class="bor8 dis-flex p-l-15">
+                    <button type="submit" class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                         <i class="zmdi zmdi-search"></i>
                     </button>
-
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
-                           placeholder="Search">
-                </div>
+                    <input id="search-input-product-home" value="${nameHomeSearch}"
+                           class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="name"
+                           placeholder="Tìm Tên Sản Phẩm">
+                </form>
             </div>
+
+
+            <%--JavaScript Search--%>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <!-- In ra giá trị của biến moveToProductDetail -->
+            <script>
+                if(${moveToProductDetail}){
+                    var element = document.querySelector('a[href="#ChiTietSanPhamHomeOnline"]');
+                    if (element) {
+                        element.click();
+                    }
+                }
+            </script>
+
+
 
             <!-- Filter -->
             <div class="dis-none panel-filter w-full p-t-10">
@@ -118,7 +137,7 @@
 
                     <div class="filter-col2 p-r-15 p-b-27">
                         <div class="mtext-102 cl2 p-b-15">
-                            Price
+                            Thương Hiệu
                         </div>
 
                         <ul>
@@ -162,7 +181,7 @@
 
                     <div class="filter-col3 p-r-15 p-b-27">
                         <div class="mtext-102 cl2 p-b-15">
-                            Color
+                            Màu Sắc
                         </div>
 
                         <ul>
@@ -264,7 +283,8 @@
             </div>
         </div>
 
-        <div class="row isotope-grid">
+        <%--        Hiển thị sản phẩm trang home--%>
+        <div id="search-results" class="row isotope-grid">
             <c:forEach var="o" items="${listSp}" varStatus="loop">
 
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
@@ -272,7 +292,8 @@
                         <div class="block2-pic hov-img0">
                             <img src="${o.hinhAnh}" alt="Product">
                             <a href="#"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="${o.id}">
+                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                               data-id="${o.id}">
                                 Xem Nhanh
                             </a>
                         </div>
@@ -285,7 +306,10 @@
                                 </a>
 
                                 <span class="stext-105 cl3">
-								<fmt:formatNumber value="${o.giaBan}" type="currency"/>
+<%--								<fmt:formatNumber value="${o.giaBan}" type="currency"/>--%>
+                                    <fmt:formatNumber pattern="#,###" var="donGia"
+                                                      value="${o.giaBan}"></fmt:formatNumber>
+                                    ${donGia} đồng
 								  </span>
                             </div>
 

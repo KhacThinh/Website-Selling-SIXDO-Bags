@@ -2,14 +2,17 @@ package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
@@ -36,7 +39,13 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
 
 //    List<SanPham> findSanPhamsByChatLieuContainingIgnoreCase(String chatLieu);
 
-
+    @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp " +
+            "JOIN SanPham sp ON ctsp.sanPham = sp " +
+            "JOIN MauSac ms ON ctsp.mauSac = ms " +
+            "WHERE ctsp.trangThai = 1 " +
+            "AND ctsp.soLuong > 0 " +
+            "AND sp.tenSanPham LIKE %:ten% ")
+    List<ChiTietSanPham> searchSanPhamTen(String ten);
 
 
 }
