@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -52,4 +53,42 @@ public class HoaDonController {
 //    public ResponseEntity<?> lichSuHoaDon(){
 //        return new ResponseEntity<>(hoaDonService.getSortHoaDon(), HttpStatus.OK);
 //    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> suaMGG(@RequestParam("id") Integer id,
+                                    @RequestParam("tenNguoiNhan") String tenNguoiNhan,
+                                    @RequestParam("sdtNguoiNhan") String sdtNguoiNhan,
+                                    @RequestParam("emailNguoiNhan") String emailNguoiNhan,
+                                    @RequestParam("diaChiNguoiNhan") String diaChiNguoiNhan,
+                                    @RequestParam("khachThanhToan") double khachThanhToan,
+                                    @RequestParam("phiVanChuyen") double phiVanChuyen,
+                                    @RequestParam("soTienNo") double soTienNo
+    )
+    {
+
+
+        HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+        hoaDon.setTenNguoiNhan(tenNguoiNhan);
+        hoaDon.setSdtNguoiNhan(sdtNguoiNhan);
+        hoaDon.setEmailNguoiNhan(emailNguoiNhan);
+        hoaDon.setDiaChiNguoiNhan(diaChiNguoiNhan);
+        hoaDon.setKhachThanhToan(khachThanhToan);
+        hoaDon.setPhiVanChuyen(phiVanChuyen);
+        hoaDon.setSoTienNo(soTienNo);
+        hoaDonService.editHoaDon(id, hoaDon);
+        return ResponseEntity.ok("ok");
+
+    }
+
+    @PostMapping("/update2")
+    public ResponseEntity<?> suaMGG1(@RequestParam("id") Integer id
+    )
+    {
+        HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+
+        hoaDon.setTrangThai(5);
+
+        hoaDonService.editHoaDon(id, hoaDon);
+        return ResponseEntity.ok("ok");
+    }
 }

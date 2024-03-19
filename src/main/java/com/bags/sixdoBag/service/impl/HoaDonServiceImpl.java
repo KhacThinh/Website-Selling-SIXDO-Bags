@@ -139,5 +139,17 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     }
 
+    @Override
+    public HoaDon editHoaDon(Integer idHoaDon, HoaDon hoaDon) {
+        HoaDon ms = getHoaDonById(idHoaDon);
+        ms.setTenNguoiNhan(hoaDon.getTenNguoiNhan());
+        ms.setEmailNguoiNhan(hoaDon.getEmailNguoiNhan());
+        ms.setSdtNguoiNhan(hoaDon.getSdtNguoiNhan());
+        ms.setDiaChiNguoiNhan(hoaDon.getDiaChiNguoiNhan());
+        ms.setPhiVanChuyen(hoaDon.getPhiVanChuyen());
+        ms.setKhachThanhToan(hoaDon.getKhachThanhToan());
+        ms.setSoTienNo(hoaDon.getSoTienNo());
 
+        return hoaDonRepository.save(ms);
+    }
 }
