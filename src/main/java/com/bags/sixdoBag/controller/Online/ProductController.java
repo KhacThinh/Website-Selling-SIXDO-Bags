@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +71,20 @@ public class ProductController {
 
         return "ban-hang-online/home/home-page";
     }
+
+
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam("name") String keyword) {
+        List<ProductHomeRequest> searchResults = sanPhamService.searchSanPhamOnlines(keyword);
+        model.addAttribute("listSp", searchResults);
+        model.addAttribute("nameHomeSearch", keyword);
+
+        // Gọi hàm JavaScript sau khi trả về kết quả từ controller
+        model.addAttribute("moveToProductDetail", true);
+        return "ban-hang-online/home/home-page";
+    }
+
+
 
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
