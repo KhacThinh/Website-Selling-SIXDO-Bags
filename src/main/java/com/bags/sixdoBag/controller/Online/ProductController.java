@@ -90,7 +90,7 @@ public class ProductController {
         List<ChiTietSanPham> sortedList = list.stream()
                 .sorted(Comparator.comparingDouble(ChiTietSanPham::getGiaBan))
                 .collect(Collectors.toList());
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.displayedByBrand(list.get(0).getSanPham().getThuongHieu().getId());
 
         model.addAttribute("product", sortedList);
         model.addAttribute("listSp", productHomeRequestList);

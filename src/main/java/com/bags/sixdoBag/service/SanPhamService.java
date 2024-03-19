@@ -33,4 +33,6 @@ public interface SanPhamService {
     List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu);
 
     List<ProductHomeRequest> listHienThiSanPham();
+    List<ProductHomeRequest> displayedByBrand(int idThuongHieu);
+
 }

@@ -133,7 +133,25 @@ public class BanHangTaiQuayController {
 
     @PostMapping("/kiem-tra-so-luong-trong-kho")
     public ResponseEntity<?> checkQuantity(@RequestParam("productId") Integer id, @RequestParam("quantity") Integer quantity){
+        System.out.println("dfjkhffh"+id);
         ChiTietSanPham chiTietSanPham= chiTietSanPhamServivce.getChiTietSanPham(id);
+        if(chiTietSanPham != null){
+            if(chiTietSanPham.getSoLuong()>= quantity){
+                return ResponseEntity.ok("ok");
+
+            }else{
+                return ResponseEntity.ok("no");
+            }
+        }else{
+            return ResponseEntity.ok("no");
+        }
+
+    }
+
+    @PostMapping("ban-tai-quay/kiem-tra-so-luong-trong-kho-online")
+    public ResponseEntity<?> checkQuantityOnline(@RequestParam("productId") Integer id, @RequestParam("quantity") Integer quantity){
+        ChiTietSanPham chiTietSanPham= chiTietSanPhamServivce.getChiTietSanPham(id);
+        System.out.println(id + " " + quantity);
         if(chiTietSanPham != null){
             if(chiTietSanPham.getSoLuong()>= quantity){
                 return ResponseEntity.ok("ok");

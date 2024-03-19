@@ -1297,8 +1297,8 @@
 
     <!-- Right column -->
     <div class="info-panel thanh-toan">
-        <h2>Thông tin đơn hàng</h2>
-        <div>
+        <p style="font-size: 19px; font-weight: bold; margin: 30px 0px 10px 1px;background-color: #d3ead9 ; padding: 5px;border-radius: 5px ">
+            Thông Tin Đơn Hàng</p>        <div>
             <input type="text" id="soDienThoai" placeholder="Số điện thoại">
             <span id="soDienThoaiError" class="error" style="color: red;font-size: small"></span><br>
             <input type="text" id="tenKhachHang" placeholder="Tên khách hàng">
@@ -1399,14 +1399,7 @@
 
         </script>
 
-        <div>
-            <select name="discountCode" id="discountCode">
-                <option value="">Chọn mã giảm giá</option>
-                <option value="code1">Mã giảm giá 1</option>
-                <option value="code2">Mã giảm giá 2</option>
-                <option value="code3">Mã giảm giá 3</option>
-            </select>
-        </div>
+
         <div>
             <p>Số lượng sản phẩm: <span id="totalQuantity"></span></p>
         </div>

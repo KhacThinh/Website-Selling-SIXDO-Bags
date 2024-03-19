@@ -5,7 +5,7 @@
 <head>
     <title>Title</title>
 </head>
-<body>
+<body style="font-family: 'Poppins', sans-serif ; font-size: 30px">
 <!-- Footer -->
 <section class="bg0 p-t-23 p-b-140">
     <div class="container">

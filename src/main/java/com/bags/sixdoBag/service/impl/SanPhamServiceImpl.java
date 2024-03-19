@@ -147,4 +147,9 @@ public class SanPhamServiceImpl implements SanPhamService {
     public List<ProductHomeRequest> listHienThiSanPham() {
         return queryJpa.temp();
     }
+
+    @Override
+    public List<ProductHomeRequest> displayedByBrand(int idThuongHieu) {
+        return queryJpa.displayedByBrand(idThuongHieu);
+    }
 }

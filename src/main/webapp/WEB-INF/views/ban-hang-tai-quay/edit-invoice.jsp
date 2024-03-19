@@ -1627,7 +1627,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var button = document.getElementById("${tabs.maHoaDon}");
-    var tabActive = button.id.substring(2)
+    var tabActive = button.id.substring(2);
     var listDataGioHang;
 
     function calculateTotal2(input) {
@@ -1691,7 +1691,6 @@
         document.getElementById('customer-need-to-pay').innerText = d.toLocaleString('en');
     }
     function addToCart(button, giaBan) {
-        console.log("dffff" + tabActive)
         // Lấy id sản phẩm từ thuộc tính dữ liệu
         var productId = button.getAttribute("data-product-id");
         if (tabActive == "") {
@@ -1712,50 +1711,74 @@
                 });
                 return;
             }
-
-            // Gửi id sản phẩm lên backend thông qua AJAX
+            var quantity = prompt("Nhập số lượng sản phẩm:");
+            if (quantity === null || quantity === "" || isNaN(quantity) || quantity <= 0) {
+                quantity = 1; // Đặt giá trị mặc định thành 1 nếu không hợp lệ
+            }
             $.ajax({
-                url: '/ban-tai-quay/them-gio-hang',
+                url:'ban-tai-quay/kiem-tra-so-luong-trong-kho-online',
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
+
+                data:{
                     productId: productId,
-                    tabActive: tabActive,
-                    giaBan: giaBan,
-
-                }),
+                    quantity: parseInt(quantity)
+                },
                 success: function (response) {
-                    // Xử lý phản hồi từ backend nếu cần
-                    $.ajax({
-                        url: '/ban-tai-quay/get-gio-hang',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            maHoaDon: tabActive
-                        }), // Gửi maHoaDon của tab
-                        success: function (ok) {
-                            updateProductList(ok);
-                            updateTotalPrice();
+                    if (response=== "ok") {
+                        $.ajax({
+                            url: '/ban-tai-quay/them-gio-hang',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                productId: productId,
+                                tabActive: tabActive,
+                                giaBan: giaBan,
+                                quantity: quantity
+                            }),
+                            success: function (response) {
+                                // Xử lý phản hồi từ backend nếu cần
+                                $.ajax({
+                                    url: '/ban-tai-quay/get-gio-hang',
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        maHoaDon: tabActive
+                                    }), // Gửi maHoaDon của tab
+                                    success: function (ok) {
+                                        updateProductList(ok);
+                                        updateTotalPrice();
 
-                            fillSoLuong();
-                            // Xử lý kết quả trả về (danh sách sản phẩm)
-                            console.log("Danh sách sản phẩm của tab " + tabActive + ":", ok);
-                            // Cập nhật giao diện người dùng với danh sách sản phẩm mới
-                            // listDataGioHang = response;
-                        },
-                        error: function (error) {
-                            console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
-                        }
-                    });
-                    console.log("Sản phẩm đã được thêm vào giỏ hàng." + response);
+                                        fillSoLuong();
+                                        // Xử lý kết quả trả về (danh sách sản phẩm)
+                                        console.log("Danh sách sản phẩm của tab " + tabActive + ":", ok);
+                                        // Cập nhật giao diện người dùng với danh sách sản phẩm mới
+                                        // listDataGioHang = response;
+                                    },
+                                    error: function (error) {
+                                        console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
+                                    }
+                                });
+                                console.log("Sản phẩm đã được thêm vào giỏ hàng." + response);
 
+                            },
+                            error: function (error) {
+                                // Xử lý lỗi nếu có
+                                console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+                            }
+                        });
+                    } else {
+                        // Số lượng yêu cầu lớn hơn số lượng hiện có trong kho
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Số lượng sản phẩm trong kho không đủ!"
+                        });
+                    }
                 },
                 error: function (error) {
-                    // Xử lý lỗi nếu có
-                    console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+                    console.error("Lỗi khi kiểm tra số lượng trong kho:", error);
                 }
             });
-
         }
     }
 
