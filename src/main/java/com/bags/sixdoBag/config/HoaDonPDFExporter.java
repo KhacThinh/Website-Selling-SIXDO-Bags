@@ -50,7 +50,10 @@ public class HoaDonPDFExporter {
         cell.setPhrase(new Phrase("Tên sản phẩm", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Bảo hành", font));
+        cell.setPhrase(new Phrase("Màu sắc", font));
+        table.addCell(cell);
+
+        cell.setPhrase(new Phrase("Kích Thước", font));
         table.addCell(cell);
 
         cell.setPhrase(new Phrase("Số lượng", font));
@@ -75,17 +78,20 @@ public class HoaDonPDFExporter {
             cell.setPhrase(new Phrase(String.valueOf(stt), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getMaSanPham(), font)); // Font căn giữa
+            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getMaSanPham(), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getTenSanPham(), font)); // Font căn giữa
+            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getTenSanPham(), font));
             table.addCell(cell);
 
-            if (Objects.nonNull(chiTietHoaDon.getChiTietSanPham().getSanPham().getThoiGianBaoHanh())) {
-                cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getChiTietSanPham().getSanPham().getThoiGianBaoHanh().getThoiGian()), FontFactory.getFont(FontFactory.TIMES_ROMAN))); // Font căn giữa
+            if (Objects.nonNull(chiTietHoaDon.getChiTietSanPham().getMauSac())) {
+                cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getMauSac().getTenMauSac(), font));
             } else {
                 cell.setPhrase(new Phrase("", font));
             }
+            table.addCell(cell);
+
+            cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getChiTietSanPham().getSanPham().getKichThuoc()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
             table.addCell(cell);
 
             cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getSoLuong()), font));
@@ -116,6 +122,7 @@ public class HoaDonPDFExporter {
 
         Paragraph p0 = new Paragraph("SIXDO", fontLogo);
         p0.setAlignment(Paragraph.ALIGN_CENTER);
+        p0.setSpacingBefore(20); // Đặt khoảng cách phía trên đoạn văn bản
         document.add(p0);
 
         String fontPath = "src/main/resources/fonts/Manuale-ExtraBold.ttf";
@@ -189,9 +196,9 @@ public class HoaDonPDFExporter {
         document.add(p9);
 
 
-        PdfPTable table = new PdfPTable(7);
+        PdfPTable table = new PdfPTable(8);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[]{1f, 2f, 7f, 1.5f, 1.5f, 2.5f, 2.5f});
+        table.setWidths(new float[]{1f, 2f, 7f, 2f, 4f, 1.5f, 2.5f, 2.5f});
         table.setSpacingBefore(10);
 
 

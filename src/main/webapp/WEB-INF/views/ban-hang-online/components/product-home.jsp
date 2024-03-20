@@ -19,7 +19,7 @@
 
         <div class="flex-w flex-sb-m p-b-52">
             <div id="display-filter-hien-thi" class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <%-- Hiển thị Fillter--%>
+                <%-- Hiển thị Fillter đối tượng--%>
             </div>
 
             <div class="flex-w flex-c-m m-tb-10">
@@ -219,6 +219,18 @@
                     $.each(filters, function (index, filter) {
                         productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".' + filter + '" onclick="filterProducts(\'' + filter + '\')">' + filter + '</button>';
                         container.append(productHTML);
+                    });
+
+                    container.find('.stext-106').click(function () {
+                        var isActive = $(this).hasClass('how-active1');
+
+                        // Loại bỏ lớp filter-link-active từ tất cả các nút
+                        container.find('.stext-106').removeClass('how-active1');
+
+                        // Nếu nút hiện tại chưa có lớp filter-link-active, thêm lớp này vào
+                        if (!isActive) {
+                            $(this).addClass('how-active1');
+                        }
                     });
                 }
 

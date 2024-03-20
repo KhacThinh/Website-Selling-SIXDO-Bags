@@ -65,10 +65,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kichThuocSua">Kích Thước (Cao x dài x rộng)<span
+                                <label for="kichThuocSua">Kích Thước (cm)<span
                                         class="required">*</span></label>
                                 <input type="text" id="kichThuocSua" class="form-control"
-                                       value="${sp.kichThuoc}" placeholder="0cmx0cmx0cm"/>
+                                       value="${sp.kichThuoc}" placeholder="RộngxDàixCao"/>
                                 <span id="kichThuocErrorr"
                                       class="error text-danger"></span>
                             </div>
@@ -249,6 +249,9 @@
 
         if (kichThuoc === '') {
             document.getElementById('kichThuocErrorr').innerText = 'Vui lòng nhập Kích Thước.';
+            hasError = true;
+        } else if (!isKichCo(kichThuoc)) {
+            document.getElementById('kichThuocError').innerText = 'Vui lòng nhập đúng định dạng rộngxDàixCao.';
             hasError = true;
         } else if (kichThuoc.length > 200) {
             document.getElementById('kichThuocErrorr').innerText = 'Kích Thước không được vượt quá 200 ký tự.';

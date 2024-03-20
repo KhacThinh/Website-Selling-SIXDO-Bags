@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <title>SIXDO</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/logoSixDo.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
