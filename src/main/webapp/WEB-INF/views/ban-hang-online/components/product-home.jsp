@@ -13,35 +13,13 @@
     <div class="container">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
-             BỘ SƯU TẬP
+                BỘ SƯU TẬP
             </h3>
         </div>
 
         <div class="flex-w flex-sb-m p-b-52">
-            <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-                    All Products
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
-                    Women
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
-                    Men
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
-                    Bag
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
-                    Shoes
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
-                    Watches
-                </button>
+            <div id="display-filter-hien-thi" class="flex-w flex-l-m filter-tope-group m-tb-10">
+<%--                fillter--%>
             </div>
 
             <div class="flex-w flex-c-m m-tb-10">
@@ -61,32 +39,98 @@
 
             <!-- Search product -->
             <div class="dis-none panel-search w-full p-t-10 p-b-15">
-                <form action="/sixdo-shop/search" method="GET" class="bor8 dis-flex p-l-15">
+                <form id="search-form" class="bor8 dis-flex p-l-15">
                     <button type="submit" class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                         <i class="zmdi zmdi-search"></i>
                     </button>
-                    <input id="search-input-product-home" value="${nameHomeSearch}"
+                    <input id="search-input-product-home"
                            class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="name"
                            placeholder="Tìm Tên Sản Phẩm">
                 </form>
             </div>
 
-
             <%--JavaScript Search--%>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-            <!-- In ra giá trị của biến moveToProductDetail -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
-                if(${moveToProductDetail}){
-                    var element = document.querySelector('a[href="#ChiTietSanPhamHomeOnline"]');
-                    if (element) {
-                        element.click();
-                    }
+                $(document).ready(function () {
+                    // Gọi hàm loadData khi tài liệu đã sẵn sàng
+                    loadData();
+                    loadFilterHienThi();
+
+                    // Sự kiện khi form tìm kiếm được submit
+                    $('#search-form').submit(function (event) {
+                        event.preventDefault(); // Ngăn chặn form gửi đi
+                        var searchTerm = $('#search-input-product-home').val(); // Lấy giá trị từ ô tìm kiếm
+                        searchProducts(searchTerm); // Gọi hàm tìm kiếm
+                    });
+                });
+
+                // tải tự động dữ liệu lên từ product controller
+                function loadData() {
+                    $.get('/load-du-Lieu/product-home', function (data) {
+                        displayProducts(data);
+                    });
+                }
+
+                // Hàm tìm kiếm sản phẩm dựa trên từ khóa
+                function searchProducts(searchTerm) {
+                    $.get('/load-du-Lieu/search', {name: searchTerm}, function (data) {
+                        if (data) {
+                            displayProducts(data);
+                        } else {
+                            console.error("Không tìm thấy kết quả cho từ khóa: " + searchTerm);
+                        }
+                    });
+                }
+
+
+                // lấy dữ liệu trong method filterComponentProductHome
+                function loadFilterHienThi() {
+                    $.get('/load-du-Lieu/hien-thi-loc-components-product-home', function (data) {
+                        displayFilterHienThi(data);
+                    });
+                }
+
+                function displayFilterHienThi(filters) {
+                    const container = $('#display-filter-hien-thi');
+                    container.empty();
+                    var productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*" onclick="loadData()">Tất cả sản phẩm</button>';
+                    container.append(productHTML);
+                    $.each(filters, function(index, filter) {
+                        productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".' + filter + '" onclick="filterProducts(\'' + filter + '\')">' + filter + '</button>';
+                        container.append(productHTML);
+                    });
+                }
+
+                function filterProducts(filter) {
+                    // Gửi tên filter về controller
+                    $.get('/load-du-Lieu/hien-thi-loc-components-product-home/filter', { tenDoiTuongSuDung: filter }, function(data) {
+                        displayProducts(data);
+                    });
+                }
+
+                // Hàm hiển thị sản phẩm lên trang
+                function displayProducts(products) {
+                    const container = $('#search-results');
+                    container.empty();
+
+                    $.each(products, function (index, product) {
+                        var productHTML = '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">';
+                        productHTML += '<a class="block2" href="/sixdo-shop/product/' + product.id + '">';
+                        productHTML += '<div class="block2-pic hov-img0">';
+                        productHTML += '<img src="' + product.hinhAnh + '" alt="Product">';
+                        productHTML += '<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="' + product.id + '">Xem Nhanh</a>';
+                        productHTML += '</div>';
+                        productHTML += '<div class="block2-txt flex-w flex-t p-t-14">';
+                        productHTML += '<div class="block2-txt-child1 flex-col-l ">';
+                        productHTML += '<a href="product-detail.jsp" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size: 20px; color: #1d1d1d;">' + product.tenSanPham + '</a>';
+                        productHTML += '<span class="stext-105 cl3" style="font-size: 15px">' + product.giaBan.toLocaleString() + ' đồng</span>';
+                        productHTML += '</div></div></a></div>';
+
+                        container.append(productHTML);
+                    });
                 }
             </script>
-
-
 
             <!-- Filter -->
             <div class="dis-none panel-filter w-full p-t-10">
@@ -284,42 +328,9 @@
         </div>
 
         <%--        Hiển thị sản phẩm trang home--%>
-        <div id="search-results" class="row isotope-grid">
-            <c:forEach var="o" items="${listSp}" varStatus="loop">
-
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                    <a class="block2" href="/sixdo-shop/product/${o.id}">
-                        <div class="block2-pic hov-img0">
-                            <img src="${o.hinhAnh}" alt="Product">
-                            <a href="#"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                               data-id="${o.id}">
-                                Xem Nhanh
-                            </a>
-                        </div>
-
-                        <div class="block2-txt flex-w flex-t p-t-14">
-                            <div class="block2-txt-child1 flex-col-l ">
-                                <a href="product-detail.jsp"
-                                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                        ${o.tenSanPham}
-                                </a>
-
-                                <span class="stext-105 cl3">
-<%--								<fmt:formatNumber value="${o.giaBan}" type="currency"/>--%>
-                                    <fmt:formatNumber pattern="#,###" var="donGia"
-                                                      value="${o.giaBan}"></fmt:formatNumber>
-                                    ${donGia} đồng
-								  </span>
-                            </div>
-
-
-                        </div>
-                    </a>
-                </div>
-
-            </c:forEach>
+        <div id="search-results" class="row">
         </div>
+
         <!-- Load more -->
         <div class="flex-c-m flex-w w-full p-t-45">
             <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">

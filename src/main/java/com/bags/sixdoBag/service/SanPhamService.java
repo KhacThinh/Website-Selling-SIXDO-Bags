@@ -36,7 +36,5 @@ public interface SanPhamService {
 
     List<ProductHomeRequest> displayedByBrand(int idThuongHieu);
 
-
-
     List<ProductHomeRequest> searchSanPhamOnlines(String name);
 }
