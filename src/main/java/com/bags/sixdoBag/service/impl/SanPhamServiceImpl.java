@@ -154,8 +154,15 @@ public class SanPhamServiceImpl implements SanPhamService {
         return queryJpa.displayedByBrand(idThuongHieu);
 
     }
+
     public List<ProductHomeRequest> searchSanPhamOnlines(String name) {
 
         return queryJpa.searchProductByName(name);
+    }
+
+    @Override
+    public List<ProductHomeRequest> filterMaMauSacOrThuongHieuOnlineProductHome(String maMau, String tenThuongHieu) {
+        List<ProductHomeRequest> productHomeRequestList = queryJpa.filterMauSacThuongHieuProductHome(maMau, tenThuongHieu);
+        return productHomeRequestList;
     }
 }

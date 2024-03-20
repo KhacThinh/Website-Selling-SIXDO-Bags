@@ -262,5 +262,61 @@ public class QueryJpa {
         }
     }
 
+    public List<ProductHomeRequest> filterMauSacThuongHieuProductHome(String maMau, String tenThuongHieu) {
+        List<ProductHomeRequest> productHomeRequests = new ArrayList<>();
+
+        // Kết nối tới cơ sở dữ liệu
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            // Chuẩn bị câu truy vấn SQL với các tham số muaMua và tenThuongHieu
+            String sqlQuery = "WITH MinPrices AS ( " +
+                    "    SELECT " +
+                    "        san_pham.id, " +
+                    "        san_pham.ten, " +
+                    "        chi_tiet_san_pham.gia_ban, " +
+                    "        chi_tiet_san_pham.anh_ctsp, " +
+                    "        ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) AS RowNumber " +
+                    "    FROM " +
+                    "        san_pham " +
+                    "    JOIN  chi_tiet_san_pham on " +
+                    "        san_pham.id = chi_tiet_san_pham.id_san_pham " +
+                    "    join thuong_hieu on thuong_hieu.id = san_pham.id_thuong_hieu " +
+                    "    join mau_sac on mau_sac.id = chi_tiet_san_pham.id_mau_sac " +
+                    "    where thuong_hieu.ten like ? and mau_sac.ma like ? " +
+                    ") " +
+                    "SELECT " +
+                    "    id, " +
+                    "    ten, " +
+                    "    gia_ban, " +
+                    "    anh_ctsp " +
+                    "FROM " +
+                    "    MinPrices " +
+                    "WHERE " +
+                    "    RowNumber = 1";
+
+            // Thực thi câu truy vấn với các tham số tenThuongHieu và maMau
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                statement.setString(1, "%" + tenThuongHieu + "%");
+                statement.setString(2, "%" + maMau + "%");
+                ResultSet resultSet = statement.executeQuery();
+                // Duyệt qua kết quả trả về
+                while (resultSet.next()) {
+                    // Tạo một đối tượng ProductHomeRequest và đặt các giá trị từ cơ sở dữ liệu
+                    ProductHomeRequest productHomeRequest = new ProductHomeRequest();
+                    productHomeRequest.setId(resultSet.getInt("id"));
+                    productHomeRequest.setTenSanPham(resultSet.getString("ten"));
+                    productHomeRequest.setGiaBan(resultSet.getFloat("gia_ban"));
+                    productHomeRequest.setHinhAnh(resultSet.getString("anh_ctsp"));
+                    // Thêm đối tượng vào danh sách
+                    productHomeRequests.add(productHomeRequest);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Xử lý ngoại lệ nếu có
+        }
+        // Trả về danh sách các ProductHomeRequest
+        return productHomeRequests;
+    }
+
 
 }

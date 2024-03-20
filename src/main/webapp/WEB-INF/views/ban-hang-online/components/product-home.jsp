@@ -19,7 +19,7 @@
 
         <div class="flex-w flex-sb-m p-b-52">
             <div id="display-filter-hien-thi" class="flex-w flex-l-m filter-tope-group m-tb-10">
-<%--                fillter--%>
+                <%-- Hiển thị Fillter--%>
             </div>
 
             <div class="flex-w flex-c-m m-tb-10">
@@ -27,13 +27,13 @@
                         class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
                     <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
                     <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-                    Filter
+                    Lọc
                 </div>
 
                 <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
                     <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
                     <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-                    Search
+                    Tìm Kiếm
                 </div>
             </div>
 
@@ -55,7 +55,9 @@
                 $(document).ready(function () {
                     // Gọi hàm loadData khi tài liệu đã sẵn sàng
                     loadData();
+                    loadFilterThuongHieu();
                     loadFilterHienThi();
+                    loadFilterMauSac();
 
                     // Sự kiện khi form tìm kiếm được submit
                     $('#search-form').submit(function (event) {
@@ -67,14 +69,14 @@
 
                 // tải tự động dữ liệu lên từ product controller
                 function loadData() {
-                    $.get('/load-du-Lieu/product-home', function (data) {
+                    $.get('/load-du-lieu/product-home', function (data) {
                         displayProducts(data);
                     });
                 }
 
                 // Hàm tìm kiếm sản phẩm dựa trên từ khóa
                 function searchProducts(searchTerm) {
-                    $.get('/load-du-Lieu/search', {name: searchTerm}, function (data) {
+                    $.get('/load-du-lieu/search', {name: searchTerm}, function (data) {
                         if (data) {
                             displayProducts(data);
                         } else {
@@ -84,9 +86,127 @@
                 }
 
 
+                // Thương Hiệu Hiển Thị
+                function loadFilterThuongHieu() {
+                    $.get('/load-du-lieu/hien-thi-thuong-hieu-components-product-home', function (data) {
+                        displayFilterThuongHieuHienThi(data);
+                    });
+                }
+
+                // Màu Sắc Hiển Thị
+                function loadFilterMauSac() {
+                    $.get('/load-du-lieu/hien-thi-mau-sac-components-product-home', function (data) {
+                        displayFilterMauSacHienThi(data);
+                    });
+                }
+
+
+                var selectedFilters = {
+                    maMauSac: '',
+                    tenThuongHieu: ''
+                };
+
+                function displayFilterThuongHieuHienThi(thuongHieus) {
+                    const container = $('#display-filter-thuong-hieu-hien-thi');
+                    container.empty();
+                    var productHTML = '<div class="mtext-102 cl2 p-b-15">Thương hiệu </div>';
+                    productHTML += '<ul>';
+                    $.each(thuongHieus, function (index, thuongHieu) {
+                        productHTML += '<li class="p-b-6">';
+                        productHTML += '<button class="filter-link stext-106 trans-04" data-brand="' + thuongHieu + '">' + thuongHieu + '</button>';
+                        productHTML += '</li>';
+                    });
+                    productHTML += '</ul>';
+                    container.append(productHTML);
+
+                    // Xử lý sự kiện khi người dùng nhấp vào nút thương hiệu
+                    container.find('.filter-link').click(function () {
+                        // Kiểm tra xem nút hiện tại đã có lớp filter-link-active chưa
+                        var isActive = $(this).hasClass('filter-link-active');
+
+                        // Loại bỏ lớp filter-link-active từ tất cả các nút
+                        container.find('.filter-link').removeClass('filter-link-active');
+
+                        // Nếu nút hiện tại chưa có lớp filter-link-active, thêm lớp này vào
+                        if (!isActive) {
+                            $(this).addClass('filter-link-active');
+                        }
+
+                        // Lấy giá trị của data-brand
+                        var selectedBrand = $(this).data('brand');
+
+
+                        if (selectedFilters.tenThuongHieu === selectedBrand) {
+                            selectedFilters.tenThuongHieu = '';
+                        } else {
+                            selectedFilters.tenThuongHieu = selectedBrand;
+                        }
+                        sendFiltersToController(selectedFilters);
+                    });
+                }
+
+                function displayFilterMauSacHienThi(mauSacs) {
+                    const container = $('#display-filter-mau-sac-hien-thi');
+                    container.empty();
+                    var productHTML = '<div class="mtext-102 cl2 p-b-15">Màu Sắc </div>';
+                    productHTML += '<ul>';
+
+                    $.each(mauSacs, function (index, mauSac) {
+                        productHTML += '<li class="p-b-6">';
+                        productHTML += '<span class="fs-15 lh-12 m-r-6" style="color: ' + mauSac.maMauSac + ';">';
+                        productHTML += '<i class="zmdi zmdi-circle"></i>';
+                        productHTML += '</span>';
+                        productHTML += '<button class="filter-link stext-106 trans-04" data-color=' + mauSac.maMauSac + '>' + mauSac.tenMauSac + '</button>';
+                        productHTML += '</li>';
+                    });
+
+                    productHTML += '</ul>';
+                    container.append(productHTML);
+
+                    // Xử lý sự kiện khi người dùng nhấp vào nút màu sắc
+                    container.find('.filter-link').click(function () {
+                        // Kiểm tra xem nút hiện tại đã có lớp filter-link-active chưa
+                        var isActive = $(this).hasClass('filter-link-active');
+
+                        // Loại bỏ lớp filter-link-active từ tất cả các nút
+                        container.find('.filter-link').removeClass('filter-link-active');
+
+                        // Nếu nút hiện tại chưa có lớp filter-link-active, thêm lớp này vào
+                        if (!isActive) {
+                            $(this).addClass('filter-link-active');
+                        }
+
+                        // Lấy giá trị của data-color
+                        var selectColor = $(this).data('color');
+
+                        if (selectedFilters.maMauSac === selectColor) {
+                            selectedFilters.maMauSac = '';
+                        } else {
+                            selectedFilters.maMauSac = selectColor;
+                        }
+
+                        sendFiltersToController(selectedFilters);
+                    });
+                }
+
+                function sendFiltersToController(filters) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/load-du-lieu/filter/loc-thuong-hieu-mau-sac-components-product-home',
+                        data: filters,
+                        success: function (response) {
+                            displayProducts(response);
+                        },
+                        error: function (xhr, status, error) {
+                            // Xử lý lỗi nếu có
+                        }
+                    });
+                }
+
+
                 // lấy dữ liệu trong method filterComponentProductHome
                 function loadFilterHienThi() {
-                    $.get('/load-du-Lieu/hien-thi-loc-components-product-home', function (data) {
+                    $.get('/load-du-lieu/hien-thi-loc-components-product-home', function (data) {
                         displayFilterHienThi(data);
                     });
                 }
@@ -96,7 +216,7 @@
                     container.empty();
                     var productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*" onclick="loadData()">Tất cả sản phẩm</button>';
                     container.append(productHTML);
-                    $.each(filters, function(index, filter) {
+                    $.each(filters, function (index, filter) {
                         productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".' + filter + '" onclick="filterProducts(\'' + filter + '\')">' + filter + '</button>';
                         container.append(productHTML);
                     });
@@ -104,7 +224,7 @@
 
                 function filterProducts(filter) {
                     // Gửi tên filter về controller
-                    $.get('/load-du-Lieu/hien-thi-loc-components-product-home/filter', { tenDoiTuongSuDung: filter }, function(data) {
+                    $.get('/load-du-lieu/hien-thi-loc-components-product-home/filter', {tenDoiTuongSuDung: filter}, function (data) {
                         displayProducts(data);
                     });
                 }
@@ -179,116 +299,12 @@
                         </ul>
                     </div>
 
-                    <div class="filter-col2 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Thương Hiệu
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    All
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $0.00 - $50.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $50.00 - $100.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $100.00 - $150.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $150.00 - $200.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $200.00+
-                                </a>
-                            </li>
-                        </ul>
+                    <div id="display-filter-thuong-hieu-hien-thi" class="filter-col2 p-r-15 p-b-27">
+                        <%--  filter thuong hiệu hiển thị ở đây --%>
                     </div>
 
-                    <div class="filter-col3 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Màu Sắc
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #222;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Black
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Blue
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Grey
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Green
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Red
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-										<i class="zmdi zmdi-circle-o"></i>
-									</span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    White
-                                </a>
-                            </li>
-                        </ul>
+                    <div id="display-filter-mau-sac-hien-thi" class="filter-col3 p-r-15 p-b-27">
+                        <%--  filter màu sắc hiển thị ở đây --%>
                     </div>
 
                     <div class="filter-col4 p-b-27">
