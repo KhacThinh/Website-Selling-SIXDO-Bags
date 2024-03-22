@@ -80,4 +80,18 @@ public class HoaDon {
     @JsonIgnore
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     private List<ChiTietHoaDon> chiTietHoaDons;
+
+
+//        case 0:
+//            trangThaiString = 'Đã Thanh Toán';
+//        case 1:
+//            trangThaiString = 'Hóa Đơn Tạm';
+//        case 2:
+//            trangThaiString = 'Chưa Xác Nhận';
+//        case 3:
+//            trangThaiString = 'Đã Xác Nhận';
+//        case 4:
+//            trangThaiString = 'Đã Hủy';
+//        case 5:
+//            trangThaiString = 'Đang Giao Hàng';
 }

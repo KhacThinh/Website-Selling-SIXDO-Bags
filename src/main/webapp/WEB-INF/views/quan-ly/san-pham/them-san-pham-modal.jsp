@@ -48,8 +48,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kichThuoc">Kích Thước (Cao x dài x rộng)<span class="required">*</span></label>
-                                <form:input path="kichThuoc" id="kichThuoc" class="form-control" placeholder="0cmx0cmx0cm"/>
+                                <label for="kichThuoc">Kích Thước (cm)<span
+                                        class="required">*</span></label>
+                                <form:input path="kichThuoc" id="kichThuoc" class="form-control"
+                                            placeholder="RộngxDàixCao"/>
                                 <span id="kichThuocError" class="error text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -72,14 +74,18 @@
                                 <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
                                 <form:select path="idThoiGianBaoHanh" class="form-control">
                                     <form:option value="" label="Chọn Thời Gian Bảo Hành"/>
-                                    <form:options items="${thoiGianBaoHanhForm}" itemValue="id" itemLabel="thoiGian"/>
+                                    <c:forEach items="${thoiGianBaoHanhForm}" var="tgbhForm">
+                                        <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
+                                    </c:forEach>
                                 </form:select>
                             </div>
                             <div class="form-group">
                                 <label for="idThuongHieu">Thương Hiệu</label>
                                 <form:select path="idThuongHieu" class="form-control">
                                     <form:option value="" label="Chọn Thương Hiệu"/>
-                                    <form:options items="${thuongHieuForm}" itemValue="id" itemLabel="ten"/>
+                                    <c:forEach items="${thuongHieuForm}" var="thForm">
+                                        <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
+                                    </c:forEach>
                                 </form:select>
                             </div>
                         </div>
@@ -90,7 +96,9 @@
                                 <label for="idDanhMuc">Danh Mục</label>
                                 <form:select path="idDanhMuc" class="form-control">
                                     <form:option value="" label="Chọn Danh Mục"/>
-                                    <form:options items="${danhMucForm}" itemValue="id" itemLabel="tenDanhMuc"/>
+                                    <c:forEach items="${danhMucForm}" var="dmForm">
+                                        <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
+                                    </c:forEach>
                                 </form:select>
                             </div>
                         </div>
@@ -99,8 +107,9 @@
                                 <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
                                 <form:select path="idDoiTuongSuDung" class="form-control">
                                     <form:option value="" label="Chọn Đối Tượng Sử Dụng"/>
-                                    <form:options items="${doiTuongSuDungForm}" itemValue="id"
-                                                  itemLabel="tenDoiTuongSuDung"/>
+                                    <c:forEach items="${doiTuongSuDungForm}" var="dtsdForm">
+                                        <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
+                                    </c:forEach>
                                 </form:select>
                             </div>
                         </div>
@@ -174,6 +183,9 @@
         if (kichThuoc === '') {
             document.getElementById('kichThuocError').innerText = 'Vui lòng nhập Kích Thước.';
             hasError = true;
+        } else if (!isKichCo(kichThuoc)) {
+            document.getElementById('kichThuocError').innerText = 'Vui lòng nhập đúng định dạng rộngxDàixCao.';
+            hasError = true;
         } else if (kichThuoc.length > 200) {
             document.getElementById('kichThuocError').innerText = 'Kích Thước không được vượt quá 200 ký tự.';
             hasError = true;
@@ -181,12 +193,13 @@
             document.getElementById('kichThuocError').innerText = '';
         }
 
-        // if (tenSanPham !== '' && chatLieu !== '' && xuatXu !== '' && khoiLuong !== '' && kichThuoc !== '') {
-        //     document.getElementById('addSanPhamForm').submit();
-        // }
-
-        if(!hasError){
+        if (!hasError) {
             document.getElementById('addSanPhamForm').submit();
         }
+
     });
+
+    function isKichCo(value) {
+        return /^\d+x\d+x\d+$/.test(value);
+    }
 </script>
