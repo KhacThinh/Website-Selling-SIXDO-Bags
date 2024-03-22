@@ -1335,35 +1335,37 @@
                     Thông Tin</p>
                 <div class="row" style="display: flex ; margin: 35px 0px 0px 6px ; height: 60px ">
                     <div class="groupInfo" style=" margin-right: 30px; padding-bottom: 10px">
-                        <input type="text" value="${tabs.tenNguoiNhan}" required
+                        <input type="text" value="${tabs.tenNguoiNhan}" name="tenNguoiNhan" id="tenNguoiNhanUpdate" required
                                style="height: 20px; border: none;border-bottom: 1px solid #757575">
                         <span class="highlight"></span>
-                        <label class="textInPut">Tên Người Nhận</label>
+                        <label for="tenNguoiNhanUpdate${tabs.id}" class="textInPut">Tên Người Nhận</label>
                     </div>
 
                     <div class="groupInfo">
-                        <input type="text" value="${tabs.sdtNguoiNhan}" required
+                        <input type="text" value="${tabs.sdtNguoiNhan}" name="sdtNguoiNhan" id="sdtNguoiNhanUpdate"required
                                style="height: 20px; border: none;border-bottom: 1px solid #757575">
                         <span class="highlight"></span>
-                        <label class="textInPut">Số Điện Thoại</label>
+                        <label for="sdtNguoiNhanUpdate${tabs.id}"  class="textInPut">Số Điện Thoại</label>
                     </div>
                 </div>
                 <div class="row" style=" margin: 0px 0px 0px 6px ; width: 600px; height: 60px">
                     <div class="groupInfo" style=" margin-right: 30px; padding-bottom: 10px; width: 504px">
-                        <input type="text" value="${tabs.emailNguoiNhan}" required
+                        <input type="text" value="${tabs.emailNguoiNhan}"  name="emailNguoiNhan" id="emailNguoiNhanUpdate" required
                                style="height: 20px; border: none;border-bottom: 1px solid #757575">
                         <span class="highlight"></span>
-                        <label class="textInPut">Email</label>
+                        <label for="emailNguoiNhanUpdate${tabs.id}"  class="textInPut">Email</label>
                     </div>
                 </div>
+
                 <div class="row" style=" margin: 0px 0px 0px 6px ; width: 600px">
                     <div class="groupInfo" style=" margin-right: 30px;margin-bottom: 7px; width: 504px">
-                        <input type="text" value="${tabs.diaChiNguoiNhan}" required
+                        <input type="text" value="${tabs.diaChiNguoiNhan}"  name="diaChiNguoiNhan" id="diaChiNguoiNhanUpdate" required
                                style="height: 20px; border: none;border-bottom: 1px solid #757575">
                         <span class="highlight"></span>
-                        <label class="textInPut">Địa Chỉ</label>
+                        <label for="diaChiNguoiNhanUpdate${tabs.id}" class="textInPut">Địa Chỉ</label>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -1582,36 +1584,37 @@
         </div>
 
         <div style="display: flex; align-items: center;height: 53px">
-            <p style="margin-left:8px ; font-weight: bold">Phí Vận Chuyển :</p>
-            <input type="text" value="0" id="shipping-fee" required onkeyup="calculateTotal(this)"
-                   style="height: 20px;width: 150px;background-color:#f9f9f9;font-size: 18px;
+            <p style="margin-left:8px ; font-weight: bold" for="shipping-fee${tabs.id}" >Phí Vận Chuyển :</p>
+            <input  type="text" value="${tabs.phiVanChuyen}" id="shipping-fee"  required onkeyup="calculateTotal(this)"
+                    style="height: 20px;width: 150px;background-color:#f9f9f9;font-size: 18px;
             border: none;border-bottom: 2px solid blue; margin-top: 7px; margin-left: 206px">
         </div>
 
         <div style="display: flex;height: 53px">
             <p style="margin-left:8px ; font-weight: bold">Khách Cần Trả :</p>
-            <p style="margin-left: 220px; font-size: 18px" id="customer-need-to-pay" class="total_order">0</p>
+            <p style="margin-left: 220px; font-size: 18px" id="customer-need-to-pay" class="total_order">${tabs.phiVanChuyen + tabs.tongTien}</p>
+
         </div>
 
+
         <div style="display: flex; align-items: center;height: 53px">
-            <p style="margin-left:8px ; font-weight: bold">Khách Thanh Toán :
+            <p style="margin-left:8px ; font-weight: bold" for="khach-thanh-toan${tabs.id}">Khách Thanh Toán :
             </p>
-            <input type="text" value="0" required onkeyup="calculateTotal2(this)" id="khach-thanh-toan"
+            <input type="text" value="${tabs.khachThanhToan}" required onkeyup="calculateTotal2(this)" id="khach-thanh-toan"
                    style="height: 20px;width: 150px;background-color:#f9f9f9;font-size: 18px;
                     border: none;border-bottom: 2px solid blue; margin-top: 7px; margin-left: 180px">
         </div>
 
         <div style="display: flex;height: 53px">
-            <p style="margin-left:8px ; font-weight: bold">Đơn Hàng Thu Hộ :
+            <p style="margin-left:8px ; font-weight: bold" for="cash-in-return${tabs.id}">Đơn Hàng Thu Hộ :
             </p>
-            <p style="margin-left: 196px; font-size: 18px" id="cash-in-return">0</p>
+            <p style="margin-left: 196px; font-size: 18px"  id="cash-in-return">${tabs.soTienNo}</p>
         </div>
 
         <div style="display: flex; text-align: center;margin-top: 30px">
-            <button style="margin-right: 20px;margin-left: 40px" class="custom-btn btn-2 checkout" onclick="checkout()">GIAO HÀNG</button>
-            <button class="saveInvoice" >LƯU</button>
+            <button style="margin-right: 20px;margin-left: 40px" class="custom-btn btn-2 checkout" onclick="updateHoaDon2(${tabs.id})">GIAO HÀNG</button>
+            <button class="saveInvoice" onclick="updateHoaDon(${tabs.id})" >LƯU</button>
         </div>
-
 
 
     </div>
@@ -1626,6 +1629,134 @@
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function updateHoaDon(id) {
+        var tenNguoiNhan = document.getElementById("tenNguoiNhanUpdate" ).value;
+        var sdtNguoiNhan = document.getElementById("sdtNguoiNhanUpdate" ).value;
+        var emailNguoiNhan = document.getElementById("emailNguoiNhanUpdate" ).value;
+        var diaChiNguoiNhan = document.getElementById("diaChiNguoiNhanUpdate").value;
+        var khachThanhToan = document.getElementById("khach-thanh-toan" ).value;
+        var phiVanChuyen = document.getElementById("shipping-fee" ).value;
+        var soTienNo = document.getElementById("cash-in-return" ).innerText;
+
+        phiVanChuyen = parseFloat(phiVanChuyen.replace(/,/g, ''));
+        khachThanhToan = parseFloat(khachThanhToan.replace(/,/g, ''));
+        soTienNo = parseFloat(soTienNo.replace(/,/g, ''));
+
+        console.log("tenNguoiNhan"+tenNguoiNhan)
+        console.log("phiVanChuyen "+phiVanChuyen)
+        console.log("khachThanhToan "+khachThanhToan)
+
+
+        // if (tenNguoiNhan.trim() === ""
+        //     || sdtNguoiNhan.trim() === ""
+        //     || emailNguoiNhan.trim() === ""
+        //     || diaChiNguoiNhan.trim() === ""
+        //     || khachThanhToan.trim() === ""
+        //     || phiVanChuyen.trim() === ""
+        //
+        //
+        //
+        // ) {
+        //     toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+        //     return false;
+        // }
+
+        $.ajax({
+            url: '/hoa-don/update',
+            type: 'POST',
+            data: {
+                id: id,
+                tenNguoiNhan : tenNguoiNhan,
+                sdtNguoiNhan: sdtNguoiNhan,
+                emailNguoiNhan: emailNguoiNhan,
+                diaChiNguoiNhan: diaChiNguoiNhan,
+                khachThanhToan: khachThanhToan,
+                phiVanChuyen: phiVanChuyen,
+                soTienNo: soTienNo,
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Cập Nhật Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                        }
+                    });
+                }
+                // else if (response === "errorMa") {
+                //     toastr.error("Mã trùng");
+                // }
+                // else if (response === "errorTen") {
+                //     toastr.error("Trùng Tên");
+                // }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+
+            }
+        });
+
+    }
+
+
+    function updateHoaDon2(id) {
+        var tenNguoiNhan = document.getElementById("tenNguoiNhanUpdate" ).value;
+        var sdtNguoiNhan = document.getElementById("sdtNguoiNhanUpdate" ).value;
+        var emailNguoiNhan = document.getElementById("emailNguoiNhanUpdate" ).value;
+        var diaChiNguoiNhan = document.getElementById("diaChiNguoiNhanUpdate").value;
+        var khachThanhToan = document.getElementById("khach-thanh-toan" ).value;
+        var phiVanChuyen = document.getElementById("shipping-fee" ).value;
+        var soTienNo = document.getElementById("cash-in-return" ).innerText;
+        var trangThai
+
+
+
+        phiVanChuyen = parseFloat(phiVanChuyen.replace(/,/g, ''));
+        khachThanhToan = parseFloat(khachThanhToan.replace(/,/g, ''));
+        soTienNo = parseFloat(soTienNo.replace(/,/g, ''));
+
+        console.log("tenNguoiNhan"+tenNguoiNhan)
+        console.log("phiVanChuyen "+phiVanChuyen)
+        console.log("khachThanhToan "+khachThanhToan)
+
+
+        // if (maDanhMuc.trim() === "" || tenDanhMuc.trim() === "") {
+        //     toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+        //     return false;
+        // }
+
+        $.ajax({
+            url: '/hoa-don/update2',
+            type: 'POST',
+            data: {
+                id: id,
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Đơn hàng đã được giao",
+                        icon: "success"
+                    });
+
+                    setTimeout(function() {
+                        window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                    }, 2000); // Đợi 2 giây trước khi chuyển trang
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+
+            }
+        });
+
+    }
+
+
+
     var button = document.getElementById("${tabs.maHoaDon}");
     var tabActive = button.id.substring(2);
     var listDataGioHang;
