@@ -565,30 +565,28 @@
         </div>
 
         <div class="card">
-            <div>
-                <div class="numbers">80</div>
-                <div class="cardName">Sales</div>
+            <div id="so-luong-san-pham">
+                <%--               số lượng sản phẩm --%>
             </div>
 
             <div class="iconBx">
-                <ion-icon name="cart-outline"></ion-icon>
-            </div>
-        </div>
-
-        <div class="card">
-            <div>
-                <div class="numbers">705,934,600</div>
-                <div class="cardName">Doanh Thu</div>
-            </div>
-
-            <div class="iconBx">
-                <ion-icon name="chatbubbles-outline"></ion-icon>
+                <ion-icon name="bag-handle-outline"></ion-icon>
             </div>
         </div>
 
         <div class="card">
             <div id="tong-doanh-thu">
                 <%--                doanh thu--%>
+            </div>
+
+            <div class="iconBx">
+                <ion-icon name="cash-outline"></ion-icon>
+            </div>
+        </div>
+
+        <div class="card">
+            <div id="so-tien-lai">
+                <%--                số tiền lãi --%>
             </div>
 
             <div class="iconBx">
@@ -823,7 +821,29 @@
         doanhThuTheoThang();
         topNamSanPhamBanChay();
         tongDoanhThu();
+        soLuongSanPhamThongKe();
+        soTienLai();
     });
+
+    function soTienLai() {
+        $.get('/thong-ke/tong-tien-lai', function (data) {
+            const container = $('#so-tien-lai');
+            container.empty();
+            var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
+            productHTML += '<div class="cardName">Lãi</div>';
+            container.append(productHTML);
+        });
+    }
+
+    function soLuongSanPhamThongKe() {
+        $.get('/thong-ke/so-luong-san-pham', function (data) {
+            const container = $('#so-luong-san-pham');
+            container.empty();
+            var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
+            productHTML += '<div class="cardName">Sản Phẩm</div>';
+            container.append(productHTML);
+        });
+    }
 
     function tongDoanhThu() {
         $.get('/thong-ke/tong-doanh-thu', function (data) {

@@ -268,6 +268,59 @@ link varchar(300),
 CONSTRAINT FK_Anh_Slide_Show FOREIGN KEY(id_slide_show) REFERENCES slide_show(id),
 )
 
+ALTER TABLE mau_sac
+ADD CONSTRAINT constraint_nameTMS UNIQUE (ten);
+
+
+	ALTER TABLE thuong_hieu
+ADD CONSTRAINT constraint_nameTTH UNIQUE (ten);
+
+
+	ALTER TABLE ma_giam_gia
+ADD CONSTRAINT constraint_nameTMGG UNIQUE (ten_ma_giam_gia);
+
+
+ALTER TABLE khuyen_mai
+ADD CONSTRAINT constraint_nameTKM UNIQUE (ten);
+
+
+ALTER TABLE doi_tuong_su_dung
+ADD CONSTRAINT constraint_nameDTSD UNIQUE (ten);
+
+
+ALTER TABLE danh_muc
+ADD CONSTRAINT constraint_nameTDM UNIQUE (ten);
+
+ALTER TABLE chuc_vu
+ADD CONSTRAINT constraint_nameTCV UNIQUE (ten_chuc_vu);
+
+ALTER TABLE nhan_vien 
+    ADD  gioiTinh int
+ALTER TABLE khach_hang
+ADD CONSTRAINT constraint_name UNIQUE (sdt);
+ALTER TABLE nhan_vien
+ADD CONSTRAINT constraint_name1 UNIQUE (cccd);
+ALTER TABLE nhan_vien
+ADD CONSTRAINT constraint_name2 UNIQUE (sdt);                             
+select*from hoa_don
+
+
+
+	 ALTER TABLE hoa_don
+    ADD   khach_thanh_toan float
+
+	 ALTER TABLE hoa_don
+    ADD   phi_van_chuyen float
+
+	 ALTER TABLE hoa_don
+    ADD   so_tien_no float
+
+
+
+
+   ALTER TABLE chi_tiet_san_pham 
+    ADD   trang_thai int
+
 
 ---- Câu 1
 INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)

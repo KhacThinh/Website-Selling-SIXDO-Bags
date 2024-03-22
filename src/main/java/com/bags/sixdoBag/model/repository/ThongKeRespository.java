@@ -91,21 +91,22 @@ public class ThongKeRespository {
         Map<Integer, ThongKeResponse> thongKeResponses = new LinkedHashMap<>();
         try {
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-            String query = "DECLARE @Year INT = ?;" +
+            String query = "DECLARE @Year INT =?;" +
                     "SELECT" +
                     "    MONTH(hd.thoi_gian_tao) AS DOANHTHUTHEOTHANG," +
-                    "    SUM(cthd.so_luong * ctsp.gia_ban) AS SOTIENBANSANPHAM," +
-                    "SUM(cthd.so_luong) AS SOLUONGBANTHEOTUNGSANPHAM " +
-                    "FROM" +
-                    "    hoa_don hd " +
-                    "JOIN" +
-                    "    chi_tiet_hoa_don cthd ON hd.id = cthd.id_hoa_don " +
-                    "WHERE" +
-                    "    YEAR(hd.thoi_gian_tao) = @Year AND hd.trang_thai = 0" +
-                    "GROUP BY" +
-                    "    MONTH(hd.thoi_gian_tao)" +
-                    "ORDER BY" +
-                    "    MONTH(hd.thoi_gian_tao);";
+                    "SUM(cthd.so_luong * ctsp.gia_ban) AS SOTIENBANSANPHAM," +
+                    "SUM(cthd.so_luong) AS SOLUONGBANTHEOTUNGSANPHAM," +
+                    "SUM(cthd.so_luong * ctsp.gia_ban)-SUM(cthd.so_luong * ctsp.gia_nhap) AS SOTIENLAITRENTUNGSANPHAM " +
+                    " FROM " +
+                    "hoa_don hd " +
+                    "JOIN " +
+                    "chi_tiet_hoa_don cthd ON hd.id = cthd.id_hoa_don " +
+                    "JOIN " +
+                    "    chi_tiet_san_pham ctsp ON cthd.id_ctsp = ctsp.id " +
+                    "WHERE " +
+                    "    YEAR(hd.thoi_gian_tao) = @Year and hd.trang_thai = 0 " +
+                    "GROUP BY " +
+                    "    MONTH (hd.thoi_gian_tao)";
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, year);
@@ -115,6 +116,7 @@ public class ThongKeRespository {
                 ThongKeResponse thongKeResponse = new ThongKeResponse();
                 thongKeResponse.setDoanhThuTrenTungSanPham(resultSet.getInt("SOTIENBANSANPHAM"));
                 thongKeResponse.setSoLuongDaBanTrenTungSanPham(resultSet.getInt("SOLUONGBANTHEOTUNGSANPHAM"));
+                thongKeResponse.setSoTienLaiTrenTungSanPham(resultSet.getInt("SOTIENLAITRENTUNGSANPHAM"));
                 int thang = resultSet.getInt("DOANHTHUTHEOTHANG");
                 thongKeResponses.put(thang, thongKeResponse);
             }
