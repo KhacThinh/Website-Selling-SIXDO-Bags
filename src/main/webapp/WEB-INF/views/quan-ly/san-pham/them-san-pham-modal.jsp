@@ -137,6 +137,12 @@
 
         let hasError = false;
 
+        function checkErrorsAndSubmitAdd() {
+            if (!hasError) {
+                document.getElementById('addSanPhamForm').submit();
+            }
+        }
+
         if (tenSanPham === '') {
             document.getElementById('tenSanPhamError').innerText = 'Vui lòng nhập Tên Sản Phẩm.';
             hasError = true;
@@ -194,10 +200,20 @@
         }
 
         if (!hasError) {
-            document.getElementById('addSanPhamForm').submit();
+            $.get('/san-pham/search-name', {tenSanPham: tenSanPham}, function (data) {
+                if (data) {
+                    document.getElementById('tenSanPhamError').innerText = 'Tên sản phẩm đã tồn tại vui lòng để tên khác!';
+                    hasError = true;
+                }
+                checkErrorsAndSubmitAdd();
+            });
+        } else {
+            checkErrorsAndSubmitAdd();
         }
 
+
     });
+
 
     function isKichCo(value) {
         return /^\d+x\d+x\d+$/.test(value);

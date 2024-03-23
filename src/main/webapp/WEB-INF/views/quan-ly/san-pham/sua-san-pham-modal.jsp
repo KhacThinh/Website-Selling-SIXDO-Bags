@@ -186,7 +186,7 @@
         });
     }
 
-    document.getElementById('editSanPham').addEventListener('click', function (event) {
+    document.getElementById('editSanPham').addEventListener('click', function(event) {
         event.preventDefault();
         var idSanPham = $("#idSanPhamSua").val();
         var tenSanPham = $("#tenSanPhamSua").val();
@@ -198,12 +198,20 @@
         var idThoiGianBaoHanh = $("#idThoiGianBaoHanhSua").val();
         var idThuongHieu = $("#idThuongHieuSua").val();
         var idDanhMuc = $("#idDanhMucSua").val();
-        // var idDoiTuongSuDung = $("#idDoiTuongSuDungSua option:selected" ).text(); // cái này là lấy nam hay nữ
-        var idDoiTuongSuDung = $("#idDoiTuongSuDungSua").val();  // cái này là lấy được value
-        var moTa = $("#moTaSua").val()
+        var idDoiTuongSuDung = $("#idDoiTuongSuDungSua").val();
+        var moTa = $("#moTaSua").val();
 
+        // Biến để kiểm tra xem có lỗi không
         let hasError = false;
 
+        // Hàm kiểm tra lỗi và gửi dữ liệu đi
+        function checkErrorsAndSubmit() {
+            if (!hasError) {
+                suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
+            }
+        }
+
+        // Kiểm tra lỗi và hiển thị thông báo tương ứng
         if (tenSanPham === '') {
             document.getElementById('tenSanPhamErrorr').innerText = 'Vui lòng nhập Tên Sản Phẩm.';
             hasError = true;
@@ -251,7 +259,7 @@
             document.getElementById('kichThuocErrorr').innerText = 'Vui lòng nhập Kích Thước.';
             hasError = true;
         } else if (!isKichCo(kichThuoc)) {
-            document.getElementById('kichThuocError').innerText = 'Vui lòng nhập đúng định dạng rộngxDàixCao.';
+            document.getElementById('kichThuocErrorr').innerText = 'Vui lòng nhập đúng định dạng rộngxDàixCao.';
             hasError = true;
         } else if (kichThuoc.length > 200) {
             document.getElementById('kichThuocErrorr').innerText = 'Kích Thước không được vượt quá 200 ký tự.';
@@ -260,8 +268,17 @@
             document.getElementById('kichThuocErrorr').innerText = '';
         }
 
+        // Kiểm tra sự tồn tại của tên sản phẩm (thực hiện AJAX sau khi kiểm tra lỗi)
         if (!hasError) {
-            suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
+            $.get('/san-pham/search-name', { tenSanPham: tenSanPham }, function(data) {
+                if (data) {
+                    document.getElementById('tenSanPhamErrorr').innerText = 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác!';
+                    hasError = true;
+                }
+                checkErrorsAndSubmit();
+            });
+        } else {
+            checkErrorsAndSubmit();
         }
     });
 
@@ -302,6 +319,11 @@
                 console.log('Có lỗi xảy ra: ' + error);
             }
         });
+    }
+
+    // Hàm kiểm tra lỗi và gửi biểu mẫu nếu không có lỗi
+    function checkErrors() {
+
     }
 
     function Redirect() {

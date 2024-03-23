@@ -38,5 +38,7 @@ public interface SanPhamService {
 
     List<ProductHomeRequest> searchSanPhamOnlines(String name);
 
+    public boolean findByNameSanPham(String name);
+
     List<ProductHomeRequest> filterMaMauSacOrThuongHieuOnlineProductHome(String maMau, String tenThuongHieu);
 }

@@ -295,6 +295,7 @@
     }
 
     .chart-title {
+        color: var(--blue);
         text-align: center;
         margin-bottom: 10px;
     }
@@ -357,6 +358,7 @@
     }
 
     .details .recentOrders table tr:last-child {
+        text-align: center;
         border-bottom: none;
     }
 
@@ -366,15 +368,16 @@
     }
 
     .details .recentOrders table tr td {
+        text-align: center;
         padding: 10px;
     }
 
     .details .recentOrders table tr td:last-child {
-        text-align: end;
+        text-align: center;
     }
 
     .details .recentOrders table tr td:nth-child(2) {
-        text-align: end;
+        text-align: left;
     }
 
     .details .recentOrders table tr td:nth-child(3) {
@@ -419,7 +422,7 @@
 
     .recentCustomers {
         position: relative;
-        display: grid;
+        /*display: grid;*/
         min-height: 500px;
         padding: 20px;
         background: var(--white);
@@ -548,7 +551,42 @@
             left: initial;
         }
     }
+
+    #sortBy {
+        padding: 7px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: var(--blue);
+        color: #f0f0f0;
+    }
+
+    #sortBy option {
+        background-color: #ffffff;
+        color: #333333;
+    }
+
+    #thongKeTable tbody td:first-child {
+        font-weight: bold;
+    }
+
+    /* CSS cho dropdown select */
+    .chart-title select {
+        text-align: center;
+        margin-bottom: 10px;
+        color: var(--blue); /* Màu chữ */
+        outline: none; /* Loại bỏ đường viền khi focus */
+        border: transparent;
+    }
+
+    /* Hiệu ứng hover */
+    .chart-title select:hover {
+        background-color: #f0f0f0; /* Màu nền hover */
+    }
+
+
 </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <div class="main">
     <!-- ======================= Cards ================== -->
@@ -602,85 +640,40 @@
             <canvas id="chart-1"></canvas>
         </div>
         <div class="chart" id="chart-2-container">
-            <h3 class="chart-title">Doanh thu theo tháng</h3>
+            <h3 class="chart-title">Doanh thu theo tháng của năm
+                <select id="selectYear">
+                    <option value="2024" selected>2024</option> <!-- Năm hiện tại là mặc định -->
+                </select>
+            </h3>
             <canvas id="chart-2"></canvas>
         </div>
+
     </div>
 
     <!-- ================ Order Details List ================= -->
     <div class="details">
         <div class="recentOrders">
             <div class="cardHeader">
-                <h2>Các đơn đặt hàng gần đây</h2>
-                <a href="#" class="btn">Tất Cả</a>
+                <h2>Thống kê sản phẩm</h2>
+                <select id="sortBy">
+                    <option value="soLuong">Theo số lượng</option>
+                    <option value="doanhThu">Theo doanh thu</option>
+                </select>
             </div>
 
-            <table>
+
+            <table id="thongKeTable">
                 <thead>
                 <tr>
-                    <td>Name</td>
-                    <td>Price</td>
-                    <td>Payment</td>
-                    <td>Status</td>
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Màu sắc</th>
+                    <th>Số lượng đã bán</th>
+                    <th>Giá bán</th>
+                    <th>Doanh thu sản phẩm</th>
                 </tr>
                 </thead>
-
                 <tbody>
-                <tr>
-                    <td>Star Refrigerator</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status delivered">Delivered</span></td>
-                </tr>
-
-                <tr>
-                    <td>Dell Laptop</td>
-                    <td>$110</td>
-                    <td>Due</td>
-                    <td><span class="status pending">Pending</span></td>
-                </tr>
-
-                <tr>
-                    <td>Apple Watch</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status return">Return</span></td>
-                </tr>
-
-                <tr>
-                    <td>Addidas Shoes</td>
-                    <td>$620</td>
-                    <td>Due</td>
-                    <td><span class="status inProgress">In Progress</span></td>
-                </tr>
-
-                <tr>
-                    <td>Star Refrigerator</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status delivered">Delivered</span></td>
-                </tr>
-
-                <tr>
-                    <td>Dell Laptop</td>
-                    <td>$110</td>
-                    <td>Due</td>
-                    <td><span class="status pending">Pending</span></td>
-                </tr>
-
-                <tr>
-                    <td>Apple Watch</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status return">Return</span></td>
-                </tr>
-
-                <tr>
-                    <td>Addidas Shoes</td>
-                    <td>$620</td>
-                    <td>Due</td>
-                    <td><span class="status inProgress">In Progress</span></td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -814,7 +807,22 @@
 
 <%-- jquery--%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+
 <script>
+
+    $(document).ready(function() {
+        // Ngăn chặn hành vi mặc định của select khi chọn năm mới
+        $('#selectYear').change(function(event) {
+            event.preventDefault();
+            var selectedYear = $(this).val(); // Lấy năm đã chọn
+            // Thực hiện các hành động cần thiết khi chọn năm, ví dụ: render biểu đồ tương ứng với năm đã chọn
+        });
+    });
+
 
     $(document).ready(function () {
         // Gọi hàm loadData khi tài liệu đã sẵn sàng
@@ -830,7 +838,7 @@
             const container = $('#so-tien-lai');
             container.empty();
             var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
-            productHTML += '<div class="cardName">Lãi</div>';
+            productHTML += '<div class="cardName">Tiền lãi</div>';
             container.append(productHTML);
         });
     }
@@ -840,7 +848,7 @@
             const container = $('#so-luong-san-pham');
             container.empty();
             var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
-            productHTML += '<div class="cardName">Sản Phẩm</div>';
+            productHTML += '<div class="cardName">Sản phẩm</div>';
             container.append(productHTML);
         });
     }
@@ -850,7 +858,7 @@
             const container = $('#tong-doanh-thu');
             container.empty();
             var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
-            productHTML += '<div class="cardName">Doanh Thu</div>';
+            productHTML += '<div class="cardName">Doanh thu</div>';
             container.append(productHTML);
         });
     }
@@ -961,9 +969,72 @@
 
         });
     }
-
-
 </script>
+
+
+<script>
+    $(document).ready(function() {
+        function getListCtspDesc(sortBy) {
+            fetch('/thong-ke/list-ctsp-desc?sortBy=' + sortBy)
+                .then(response => response.json())
+                .then(data => displayThongKeData(data))
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        getListCtspDesc('soLuong');
+
+        $('#sortBy').change(function() {
+            var sortBy = $(this).val();
+            getListCtspDesc(sortBy);
+            console.log(sortBy);
+        });
+    });
+
+
+    function displayThongKeData(data, sortBy) {
+        console.log(data);
+        var tbody = document.getElementById('thongKeTable').getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+        var stt = 1;
+        data.forEach(function(item) {
+            var row = tbody.insertRow();
+
+            var sttCell = row.insertCell(0);
+            sttCell.textContent = stt;
+
+            var tenCell = row.insertCell(1);
+            var mauSacCell = row.insertCell(2);
+            var soLuongDaBanCell = row.insertCell(3);
+            var giaBanCell = row.insertCell(4);
+            var doanhThuCell = row.insertCell(5);
+
+            tenCell.textContent = truncateText(item.tenSanPham, 30);
+            mauSacCell.textContent = item.mauSac;
+            giaBanCell.textContent = item.giaBan.toLocaleString();
+            soLuongDaBanCell.textContent =item.soLuongDaBanTrenTungSanPham;
+            doanhThuCell.textContent = item.doanhThuTrenTungSanPham.toLocaleString();
+            stt++;
+        });
+
+        if (sortBy === 'soLuong') {
+            $('#sortBy').val('soLuong');
+        }
+    }
+
+    function truncateText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength - 3) + '...'; // Cắt bớt nếu vượt quá maxLength và thêm dấu chấm ba
+        } else {
+            return text;
+        }
+    }
+
+    function formatNumber(number) {
+        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+</script>
+
+
 
 
 <!-- ====== ionicons ======= -->

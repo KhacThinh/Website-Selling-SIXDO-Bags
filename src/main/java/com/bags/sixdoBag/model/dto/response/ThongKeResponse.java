@@ -11,6 +11,10 @@ public class ThongKeResponse {
 
     private String tenSanPham;
 
+    private String mauSac;
+
+    private Integer giaBan;
+
     private Integer doanhThuTrenTungSanPham;
 
     private Integer soLuongDaBanTrenTungSanPham;

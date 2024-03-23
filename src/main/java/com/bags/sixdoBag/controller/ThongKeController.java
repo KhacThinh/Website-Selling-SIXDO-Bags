@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("thong-ke")
@@ -32,6 +30,7 @@ public class ThongKeController {
     public @ResponseBody
     Map<Integer, ThongKeResponse> getThongKeTheoNam(@RequestParam("year") Integer year) {
         Map<Integer, ThongKeResponse> thongKeSanPhamTheoNam = thongKeRespository.getThongKeSanPhamTheoNam(year);
+        System.out.println(thongKeSanPhamTheoNam.size());
         return thongKeSanPhamTheoNam;
     }
 
@@ -69,4 +68,15 @@ public class ThongKeController {
         long soLuong = chiTietSanPhamServivce.getChiTietSanPhams().stream().count();
         return soLuong;
     }
+
+    @GetMapping("list-ctsp-desc")
+    public @ResponseBody List<ThongKeResponse> getListCtspDesc(@RequestParam(required = false) String sortBy) {
+        if (sortBy == null || sortBy.equals("soLuong")) {
+            return thongKeRespository.getAllCTSPOrderByDESCSoLuong();
+        } else if (sortBy.equals("doanhThu")) {
+            return thongKeRespository.getAllCTSPOrderByDESCDoanhThu();
+        }
+        return null;
+    }
+
 }
