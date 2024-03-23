@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class ThongKeController {
     private ThongKeRespository thongKeRespository = new ThongKeRespository();
 
     @GetMapping("")
-    public String getThongKe(){
+    public String getThongKe() {
         return "/quan-ly/thong-ke/thong-ke";
     }
 
@@ -37,7 +38,7 @@ public class ThongKeController {
     public @ResponseBody
     Long getTongDoanhThu() {
         long tongDoanhThu = 0;
-        for(ThongKeResponse thongKeResponse : thongKeRespository.getTongDoanhThu()){
+        for (ThongKeResponse thongKeResponse : thongKeRespository.getTongDoanhThu()) {
             tongDoanhThu += thongKeResponse.getDoanhThuTrenTungSanPham();
         }
         return tongDoanhThu;
@@ -49,4 +50,19 @@ public class ThongKeController {
         List<ThongKeResponse> thongKeSanPhamTheoNam = thongKeRespository.getTop5SanPhamDaBanChay();
         return thongKeSanPhamTheoNam;
     }
+
+    @GetMapping("list-ctsp-desc")
+    public @ResponseBody List<ThongKeResponse> getListCtspDesc(@RequestParam(required = false) String sortBy) {
+        if (sortBy == null || sortBy.equals("soLuong")) {
+            return thongKeRespository.getAllCTSPOrderByDESCSoLuong();
+        } else if (sortBy.equals("doanhThu")) {
+            return thongKeRespository.getAllCTSPOrderByDESCDoanhThu();
+        }
+
+        return null;
+    }
+
+
+
+
 }

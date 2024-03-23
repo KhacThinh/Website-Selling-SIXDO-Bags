@@ -548,6 +548,26 @@
             left: initial;
         }
     }
+
+    #sortBy {
+        padding: 8px 10px; /* Kích thước của lựa chọn */
+        font-size: 16px; /* Kích thước chữ */
+        border: 1px solid #ccc; /* Viền */
+        border-radius: 5px; /* Bo tròn các góc */
+        background-color: var(--blue); /* Màu nền */
+        color: #FFFFFF; /* Màu chữ */
+        cursor: pointer; /* Con trỏ chuột */
+    }
+
+
+    #sortBy:focus {
+        outline: none; /* Loại bỏ đường viền khi được focus */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Hiển thị shadow khi focus */
+    }
+
+
+
+
 </style>
 
 <div class="main">
@@ -613,76 +633,27 @@
     <div class="details">
         <div class="recentOrders">
             <div class="cardHeader">
-                <h2>Các đơn đặt hàng gần đây</h2>
-                <a href="#" class="btn">Tất Cả</a>
+                <h2>Thống Kê Sản Phẩm</h2>
+                <select id="sortBy">
+                    <option value="soLuong">Theo Số Lượng</option>
+                    <option value="doanhThu">Theo Doanh Thu</option>
+                </select>
             </div>
 
-            <table>
+
+            <table id="thongKeTable">
                 <thead>
                 <tr>
-                    <td>Name</td>
-                    <td>Price</td>
-                    <td>Payment</td>
-                    <td>Status</td>
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Màu Sắc</th>
+                    <th>Số lượng Đã Bán</th>
+                    <th>Giá Bán</th>
+
+                    <th>Doanh Thu Sản Phẩm</th>
                 </tr>
                 </thead>
-
                 <tbody>
-                <tr>
-                    <td>Star Refrigerator</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status delivered">Delivered</span></td>
-                </tr>
-
-                <tr>
-                    <td>Dell Laptop</td>
-                    <td>$110</td>
-                    <td>Due</td>
-                    <td><span class="status pending">Pending</span></td>
-                </tr>
-
-                <tr>
-                    <td>Apple Watch</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status return">Return</span></td>
-                </tr>
-
-                <tr>
-                    <td>Addidas Shoes</td>
-                    <td>$620</td>
-                    <td>Due</td>
-                    <td><span class="status inProgress">In Progress</span></td>
-                </tr>
-
-                <tr>
-                    <td>Star Refrigerator</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status delivered">Delivered</span></td>
-                </tr>
-
-                <tr>
-                    <td>Dell Laptop</td>
-                    <td>$110</td>
-                    <td>Due</td>
-                    <td><span class="status pending">Pending</span></td>
-                </tr>
-
-                <tr>
-                    <td>Apple Watch</td>
-                    <td>$1200</td>
-                    <td>Paid</td>
-                    <td><span class="status return">Return</span></td>
-                </tr>
-
-                <tr>
-                    <td>Addidas Shoes</td>
-                    <td>$620</td>
-                    <td>Due</td>
-                    <td><span class="status inProgress">In Progress</span></td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -816,6 +787,13 @@
 
 <%-- jquery--%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+
+
+
+
 <script>
 
     $(document).ready(function () {
@@ -941,9 +919,63 @@
 
         });
     }
-
-
 </script>
+
+
+<script>
+    $(document).ready(function() {
+        function getListCtspDesc(sortBy) {
+            fetch('/thong-ke/list-ctsp-desc?sortBy=' + sortBy)
+                .then(response => response.json())
+                .then(data => displayThongKeData(data))
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        getListCtspDesc('soLuong');
+
+        $('#sortBy').change(function() {
+            var sortBy = $(this).val();
+            getListCtspDesc(sortBy);
+            console.log(sortBy);
+        });
+    });
+
+
+    function displayThongKeData(data, sortBy) {
+        console.log(data);
+        var tbody = document.getElementById('thongKeTable').getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+        var stt = 1;
+        data.forEach(function(item) {
+            var row = tbody.insertRow();
+
+            var sttCell = row.insertCell(0);
+            sttCell.textContent = stt;
+
+            var tenCell = row.insertCell(1);
+            var mauSacCell = row.insertCell(2);
+            var soLuongDaBanCell = row.insertCell(3);
+            var giaBanCell = row.insertCell(4);
+            var doanhThuCell = row.insertCell(5);
+
+            tenCell.textContent = item.tenSanPham;
+            mauSacCell.textContent = item.mauSac;
+            giaBanCell.textContent = formatNumber(item.giaBan);
+            soLuongDaBanCell.textContent =item.soLuongDaBanTrenTungSanPham;
+            doanhThuCell.textContent = formatNumber(item.doanhThuTrenTungSanPham);
+            stt++;
+        });
+
+        if (sortBy === 'soLuong') {
+            $('#sortBy').val('soLuong');
+        }
+    }
+    function formatNumber(number) {
+        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+</script>
+
+
 
 
 <!-- ====== ionicons ======= -->

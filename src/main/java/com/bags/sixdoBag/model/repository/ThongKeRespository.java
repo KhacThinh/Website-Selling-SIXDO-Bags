@@ -91,21 +91,22 @@ public class ThongKeRespository {
         Map<Integer, ThongKeResponse> thongKeResponses = new LinkedHashMap<>();
         try {
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-            String query = "DECLARE @Year INT = ?;" +
+            String query = "DECLARE @Year INT =?;" +
                     "SELECT" +
                     "    MONTH(hd.thoi_gian_tao) AS DOANHTHUTHEOTHANG," +
-                    "    SUM(cthd.so_luong * ctsp.gia_ban) AS SOTIENBANSANPHAM," +
+                    "SUM(cthd.so_luong * ctsp.gia_ban) AS SOTIENBANSANPHAM," +
                     "SUM(cthd.so_luong) AS SOLUONGBANTHEOTUNGSANPHAM " +
-                    "FROM" +
-                    "    hoa_don hd " +
-                    "JOIN" +
-                    "    chi_tiet_hoa_don cthd ON hd.id = cthd.id_hoa_don " +
-                    "WHERE" +
-                    "    YEAR(hd.thoi_gian_tao) = @Year AND hd.trang_thai = 0" +
-                    "GROUP BY" +
-                    "    MONTH(hd.thoi_gian_tao)" +
-                    "ORDER BY" +
-                    "    MONTH(hd.thoi_gian_tao);";
+                    " FROM " +
+                    "hoa_don hd " +
+                    "JOIN " +
+                    "chi_tiet_hoa_don cthd ON hd.id = cthd.id_hoa_don " +
+                    "JOIN " +
+                    "    chi_tiet_san_pham ctsp ON cthd.id_ctsp = ctsp.id " +
+                    "WHERE " +
+                    "    YEAR(hd.thoi_gian_tao) = @Year and hd.trang_thai = 0 " +
+                    "GROUP BY " +
+
+                    "    MONTH (hd.thoi_gian_tao)";
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, year);
@@ -123,5 +124,105 @@ public class ThongKeRespository {
             throwables.printStackTrace();
         }
         return thongKeResponses;
+    }
+
+
+
+    public List<ThongKeResponse> getAllCTSPOrderByDESCSoLuong() {
+        List<ThongKeResponse> productList = new ArrayList<>();
+
+        try {
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            String query = "SELECT " +
+                    "    sp.ten AS 'Tên Sản Phẩm', " +
+                    "    ms.ten AS 'Màu Sắc', " +
+                    "    cts.gia_ban AS 'Giá Bán', " +
+                    "    SUM(cthd.so_luong) AS 'Số lượng đã bán', " +
+                    "    SUM(cthd.so_luong * cts.gia_ban) AS 'DoanhThuTrenTungSanPham' " +
+                    "FROM " +
+                    "    chi_tiet_hoa_don cthd " +
+                    "JOIN " +
+                    "    chi_tiet_san_pham cts ON cthd.id_ctsp = cts.id " +
+                    "JOIN " +
+                    "    san_pham sp ON cts.id_san_pham = sp.id " +
+                    "JOIN hoa_don hd ON hd.id = cthd.id_hoa_don " +
+                    "JOIN mau_sac ms ON ms.id = cts.id_mau_sac " +
+                    "WHERE hd.trang_thai = 0 " +
+                    "GROUP BY " +
+                    "    sp.ten, " +
+                    "    ms.ten, " +
+                    "    cts.gia_ban " +
+                    "ORDER BY " +
+                    "    SUM(cthd.so_luong) DESC;";
+
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    ThongKeResponse productSales = new ThongKeResponse();
+                    productSales.setTenSanPham(resultSet.getString("Tên Sản Phẩm"));
+                    productSales.setMauSac(resultSet.getString("Màu Sắc"));
+                    productSales.setGiaBan(resultSet.getInt("Giá Bán"));
+                    productSales.setSoLuongDaBanTrenTungSanPham(resultSet.getInt("Số lượng đã bán"));
+                    productSales.setDoanhThuTrenTungSanPham(resultSet.getInt("DoanhThuTrenTungSanPham"));
+
+                    productList.add(productSales);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productList;
+    }
+
+
+
+    public List<ThongKeResponse> getAllCTSPOrderByDESCDoanhThu() {
+        List<ThongKeResponse> productList = new ArrayList<>();
+
+        try {
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            String query = "SELECT " +
+                    "    sp.ten AS 'Tên Sản Phẩm', " +
+                    "    ms.ten AS 'Màu Sắc', " +
+                    "    cts.gia_ban AS 'Giá Bán', " +
+                    "    SUM(cthd.so_luong) AS 'Số lượng đã bán', " +
+                    "    SUM(cthd.so_luong * cts.gia_ban) AS 'DoanhThuTrenTungSanPham' " +
+                    "FROM " +
+                    "    chi_tiet_hoa_don cthd " +
+                    "JOIN " +
+                    "    chi_tiet_san_pham cts ON cthd.id_ctsp = cts.id " +
+                    "JOIN " +
+                    "    san_pham sp ON cts.id_san_pham = sp.id " +
+                    "JOIN hoa_don hd ON hd.id = cthd.id_hoa_don " +
+                    "JOIN mau_sac ms ON ms.id = cts.id_mau_sac " +
+                    "WHERE hd.trang_thai = 0 " +
+                    "GROUP BY " +
+                    "    sp.ten, " +
+                    "    ms.ten, " +
+                    "    cts.gia_ban " +
+                    "ORDER BY " +
+                    "    SUM(cthd.so_luong * cts.gia_ban) DESC;";
+
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    ThongKeResponse productSales = new ThongKeResponse();
+                    productSales.setTenSanPham(resultSet.getString("Tên Sản Phẩm"));
+                    productSales.setMauSac(resultSet.getString("Màu Sắc"));
+                    productSales.setGiaBan(resultSet.getInt("Giá Bán"));
+                    productSales.setSoLuongDaBanTrenTungSanPham(resultSet.getInt("Số lượng đã bán"));
+                    productSales.setDoanhThuTrenTungSanPham(resultSet.getInt("DoanhThuTrenTungSanPham"));
+
+                    productList.add(productSales);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productList;
     }
 }
