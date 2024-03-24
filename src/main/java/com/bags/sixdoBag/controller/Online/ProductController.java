@@ -1,16 +1,33 @@
 package com.bags.sixdoBag.controller.Online;
 
 
+import com.bags.sixdoBag.model.dto.request.ChiTietGioHangRequestDto;
+import com.bags.sixdoBag.model.dto.request.GioHangRequest;
 import com.bags.sixdoBag.model.dto.request.OderDataDto;
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietGioHang;
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.entitys.HoaDon;
+import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
+import com.bags.sixdoBag.service.ChiTietGioHangService;
+import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
+import com.bags.sixdoBag.service.GioHangService;
+import com.bags.sixdoBag.service.HoaDonChiTietService;
+import com.bags.sixdoBag.service.HoaDonService;
+import com.bags.sixdoBag.service.KhuyenMaiService;
+import com.bags.sixdoBag.service.MauSacService;
+import com.bags.sixdoBag.service.SanPhamService;
+import com.bags.sixdoBag.service.ThuongHieuService;
+
 import com.bags.sixdoBag.service.*;
+
 import com.bags.sixdoBag.service.impl.Utils;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,29 +66,124 @@ public class ProductController {
     private final HoaDonService hoaDonService;
 
     private final HoaDonChiTietService hoaDonChiTietService;
+
+
+    private final GioHangService gioHangService;
+    private final ChiTietGioHangService chiTietGioHangService;
     Utils utils = new Utils();
+    @Autowired
+    private HttpSession session;
+    private int idKhachHangFinal = 0;
+    private int soLuongSanPhamGioHang = 0;
 
     @GetMapping("")
-    public String homePage() {
+    public String homePage(Model model) {
+
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
+        model.addAttribute("khachHang", khachHang);
+
+        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0);
+        soLuongSanPhamGioHang = khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0;
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+
+
+        model.addAttribute("listSp", productHomeRequestList);
         return "ban-hang-online/home/home-page";
+
+
+    }
+
+
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam("name") String keyword) {
+        List<ProductHomeRequest> searchResults = sanPhamService.searchSanPhamOnlines(keyword);
+        model.addAttribute("listSp", searchResults);
+        model.addAttribute("nameHomeSearch", keyword);
+
+
+        model.addAttribute("moveToProductDetail", true);
+        return "ban-hang-online/home/home-page";
+    }
+
+    @GetMapping("/login")
+    public String buyerLogin(Model model) {
+        return "ban-hang-online/home/buyer-login";
+    }
+    @GetMapping("/logout")
+    public String buyerLogout(Model model) {
+        session.removeAttribute("buyer");
+
+        return "redirect:/sixdo-shop";
     }
 
 
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
+
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
-        for (ProductHomeRequest o : productHomeRequestList) {
-            System.out.println("list là : " + o.getId());
-        }
+
+        model.addAttribute("khachHang", khachHang);
 
         model.addAttribute("listSp", productHomeRequestList);
 
         return "ban-hang-online/home/index";
     }
 
+    @PostMapping("/add-to-cart-buyer")
+    public ResponseEntity<?> addToCartByBuyer(@RequestBody Map<String, Object> requestBody) {
+        String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
+        String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
+        String soLuong = String.valueOf(requestBody.get("soLuong"));
+        int idGioHang = gioHangService.getIdGioHang(Integer.valueOf(idKhachHang));
+        ChiTietGioHangRequestDto ct = new ChiTietGioHangRequestDto();
+        ct.setSoLuong(Integer.parseInt(soLuong));
+        ct.setIdGioHang(idGioHang);
+        ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+        chiTietGioHangService.addChiTietGioHang(ct);
+
+        return ResponseEntity.ok(soLuongSanPhamGioHang+Integer.parseInt(soLuong));
+
+    }
+
+    @PostMapping("/get-cart-by-buyer")
+    public ResponseEntity<?> getCartByBuyer(@RequestBody Map<String, Object> requestBody) {
+        String idKhachHang = String.valueOf(requestBody.get("idKhachHang2"));
+        System.out.println("idkkkkkkkn" + idKhachHang);
+        List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(Integer.parseInt(idKhachHang));
+        System.out.println("ddddddff" + chiTietGioHangList.size());
+        return ResponseEntity.ok(chiTietGioHangList);
+    }
+
+    public int soLuongSanPhamGioHang(int idKhachHang) {
+        int sum = 0;
+        List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(idKhachHang);
+        for (ChiTietGioHang o : chiTietGioHangList) {
+            sum += o.getSoLuong();
+        }
+        return sum;
+
+    }
+
+//    @PostMapping("/thay-doi-so-luong-san-pham")
+//    public ResponseEntity<?> updateSoLuongSanPhamByCart(@RequestBody Map<String, Object> requestBody) {
+//        String idGioHang = String.valueOf(requestBody.get("idGioHang"));
+//        String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
+//        String soLuong = String.valueOf(requestBody.get("soLuong"));
+
+//        List<ChiTietGioHang> chiTietGioHangList=chiTietGioHangService.getChiTietGioHangs(Integer.parseInt(idKhachHang));
+//        System.out.println("ddddddff"+chiTietGioHangList.size());
+//        return ResponseEntity.ok(chiTietGioHangList);
+//    }
 
     @GetMapping("/product/{id}")
     public String productDetailById(Model model, @PathVariable int id) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        model.addAttribute("khachHang", khachHang);
+        model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
+
         List<ChiTietSanPham> list = chiTietSanPhamServivce.getChiTietSanPhamById(id);
         List<ChiTietSanPham> sortedList = list.stream()
                 .sorted(Comparator.comparingDouble(ChiTietSanPham::getGiaBan))
@@ -88,9 +200,6 @@ public class ProductController {
     public ResponseEntity<?> getProductById(@RequestBody Map<String, Object> requestBody) {
         String idProduct2 = String.valueOf(requestBody.get("idProduct"));
         ChiTietSanPham chiTietSanPhamById = chiTietSanPhamServivce.getChiTietSanPham(Integer.valueOf(idProduct2));
-//        System.out.println("iddd ne" + chiTietSanPhamById.getId());
-//        System.out.println("gia ne" + chiTietSanPhamById.getGiaBan());
-
         return ResponseEntity.ok(chiTietSanPhamById);
     }
 
@@ -107,6 +216,12 @@ public class ProductController {
 
     @GetMapping("/shoping-cart")
     public String shopingCart(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(khachHang != null ? khachHang.getId() : -1);
+        model.addAttribute("khachHang", khachHang);
+
+        model.addAttribute("listGioHangBuyer", chiTietGioHangList);
+
 //        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 //        for (ProductHomeRequest o : productHomeRequestList) {
 //            System.out.println("list là : " + o.getId());
@@ -120,6 +235,7 @@ public class ProductController {
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OderDataDto orderData) {
+
         System.out.println("nham neees");
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
@@ -135,7 +251,8 @@ public class ProductController {
             hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
 
         }
-        return "ban-hang-online/home/index";
+//        return "ban-hang-online/home/index";
+        return "redirect:/sixdo-shop";
 
     }
 

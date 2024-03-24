@@ -19,4 +19,5 @@ public interface GioHangService {
     public GioHang editGioHang(Integer idGioHang, GioHangRequest gioHangRequest);
 
     public GioHang deleteGioHang(Integer idGioHang);
+    public int getIdGioHang(int idKhachHang);
 }

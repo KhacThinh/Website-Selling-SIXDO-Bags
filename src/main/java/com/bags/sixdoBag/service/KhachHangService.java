@@ -27,5 +27,6 @@ public interface KhachHangService {
 ////////////////////////////////////////////////////////
     public Page<KhachHang> searchKhachHangTenOrMa(String tenMa, Pageable pageable);
     public Page<KhachHang> searchcbb(Integer name, Pageable pageable);
+    KhachHang getKhachHangByUserNameAndPassword(String email,String matKhau);
 
 }

@@ -11,6 +11,11 @@ import java.util.List;
 
 @Repository
 public interface KhachHangRepository extends JpaRepository<KhachHang,Integer> {
+
+    @Query( "SELECT sp FROM KhachHang sp where  sp.email=?1 and sp.matKhau=?2 and sp.trangThai=1")
+    KhachHang findByTenEndMatKhau(String email,String matKhau);
+
+
     @Query(value = "SELECT sp FROM KhachHang sp where sp.trangThai = 1")
     List<KhachHang> findKhachHangByAll();
     @Query(value = "select kh from KhachHang kh where kh.email =:email ")
