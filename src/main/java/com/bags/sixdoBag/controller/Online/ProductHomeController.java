@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.controller.Online;
 
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
@@ -31,6 +32,8 @@ public class ProductHomeController {
 
     private final DoiTuongSuDungService doiTuongSuDungService;
 
+    private final DanhMucService danhMucService;
+
     private final ThuongHieuService thuongHieuService;
 
     private final MauSacService mauSacService;
@@ -50,7 +53,7 @@ public class ProductHomeController {
         return ResponseEntity.ok(searchResults);
     }
 
-    @GetMapping("/hien-thi-loc-components-product-home")
+    @GetMapping("/hien-thi-loc-doi-tuong-su-dung-components-product-home")
     public ResponseEntity<Set<String>> filterComponentProductHome() {
         Set<String> doiTuongSuDungs = new HashSet<>(doiTuongSuDungService.getListDoiTuongSuDung().stream()
                 .map(DoiTuongSuDung::getTenDoiTuongSuDung)
@@ -70,6 +73,17 @@ public class ProductHomeController {
         return ResponseEntity.ok(thuongHieus);
     }
 
+
+    @GetMapping("/hien-thi-danh-muc-components-product-home")
+    public ResponseEntity<Set<String>> filterDanhMucComponentProductHome() {
+        Set<String> danhMucs = danhMucService.getDanhMucs().stream()
+                .filter(th -> th != null && !th.getTenDanhMuc().isEmpty())
+                .map(DanhMuc::getTenDanhMuc)
+                .map(s -> s.trim())
+                .collect(Collectors.toSet());
+        return ResponseEntity.ok(danhMucs);
+    }
+
     @GetMapping("/hien-thi-mau-sac-components-product-home")
     public ResponseEntity<List<MauSac>> filterMauSacComponentProductHome() {
         List<MauSac> mauSacs = mauSacService.getMauSacs();
@@ -77,8 +91,8 @@ public class ProductHomeController {
     }
 
     @GetMapping("/hien-thi-loc-components-product-home/filter")
-    public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(@RequestParam("tenDoiTuongSuDung") String tenDoiTuongSuDung) {
-        List<ProductHomeRequest> searchResults = doiTuongSuDungService.filterDoiTuongSuDungCTSPOnline(tenDoiTuongSuDung);
+    public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(@RequestParam("tenDanhMuc") String tenDoiTuongSuDung) {
+        List<ProductHomeRequest> searchResults = danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung);
         return ResponseEntity.ok(searchResults);
     }
 

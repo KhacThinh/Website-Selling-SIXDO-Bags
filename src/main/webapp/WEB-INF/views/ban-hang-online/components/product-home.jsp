@@ -206,7 +206,7 @@
 
                 // lấy dữ liệu trong method filterComponentProductHome
                 function loadFilterHienThi() {
-                    $.get('/load-du-lieu/hien-thi-loc-components-product-home', function (data) {
+                    $.get('/load-du-lieu/hien-thi-danh-muc-components-product-home', function (data) {
                         displayFilterHienThi(data);
                     });
                 }
@@ -236,7 +236,7 @@
 
                 function filterProducts(filter) {
                     // Gửi tên filter về controller
-                    $.get('/load-du-lieu/hien-thi-loc-components-product-home/filter', {tenDoiTuongSuDung: filter}, function (data) {
+                    $.get('/load-du-lieu/hien-thi-loc-components-product-home/filter', {tenDanhMuc: filter}, function (data) {
                         displayProducts(data);
                     });
                 }

@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
@@ -28,8 +29,9 @@ public interface DanhMucService {
 
     public DanhMuc getidDanhMuc(Integer idDanhMuc);
 
-    ////////////////////////////////////////////////////////////////////////////////////
     public Page<DanhMuc> searchDanhMucTenOrMa(String tenMa, Pageable pageable);
+
     public Page<DanhMuc> searchcbb(boolean name, Pageable pageable);
-    ///////////////////////////////////////////////////////////////////////////////////
+
+    public List<ProductHomeRequest> filterDanhMucCTSPOnline(String tenDanhMuc);
 }

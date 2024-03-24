@@ -200,7 +200,6 @@
 
 <!-- chuyen-trang  -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         // Lắng nghe sự kiện click của tất cả các phần tử có lớp submenu_item
@@ -222,20 +221,20 @@
     });
 
 
-    $(document).ready(function () {
-        $("#btnThongKe").click(function (e) {
-            e.preventDefault(); // Prevent default link behavior
-            $("#noi-dung-chinh").load("sidebar-manager/hello.html");
-        });
-    });
-
-
     // $(document).ready(function () {
     //     $("#btnThongKe").click(function (e) {
     //         e.preventDefault(); // Prevent default link behavior
-    //         $("#thong-ke-sidebar").show();
+    //         $("#noi-dung-chinh").load("../sidebar-manager/hello.html");
     //     });
     // });
+
+
+    $(document).ready(function () {
+        $("#btnThongKe").click(function (e) {
+            e.preventDefault(); // Prevent default link behavior
+            $("#thong-ke-sidebar").show();
+        });
+    });
 
 
 
