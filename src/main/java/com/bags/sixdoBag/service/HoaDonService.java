@@ -28,4 +28,6 @@ public interface HoaDonService {
     void saveHoaDon(HoaDon hoaDon);
 
     void xacNhanDonHang(int trangThai, String maHd);
+    public HoaDon editHoaDon(Integer idHoaDon, HoaDon hoaDon);
+
 }

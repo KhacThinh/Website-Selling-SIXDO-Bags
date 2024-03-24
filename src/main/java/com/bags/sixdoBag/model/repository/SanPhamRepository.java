@@ -48,4 +48,30 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Integer> {
     List<ChiTietSanPham> searchSanPhamTen(String ten);
 
 
+    @Query(value = "WITH MinPrices AS ( " +
+            "    SELECT " +
+            "        san_pham.id, " +
+            "        san_pham.ten, " +
+            "        chi_tiet_san_pham.gia_ban, " +
+            "        chi_tiet_san_pham.anh_ctsp, " +
+            "        ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) AS RowNumber " +
+            "    FROM " +
+            "        san_pham " +
+            "    JOIN  chi_tiet_san_pham ON " +
+            "        san_pham.id = chi_tiet_san_pham.id_san_pham " +
+            "    JOIN thuong_hieu ON thuong_hieu.id = san_pham.id_thuong_hieu " +
+            "    JOIN mau_sac ON mau_sac.id = chi_tiet_san_pham.id_mau_sac " +
+            "    WHERE thuong_hieu.ten LIKE %:tenThuongHieu% AND mau_sac.ma LIKE %:maMauSac%) " +
+            "SELECT " +
+            "    id, " +
+            "    ten, " +
+            "    gia_ban, " +
+            "    anh_ctsp " +
+            "FROM " +
+            "    MinPrices " +
+            "WHERE " +
+            "    RowNumber = 1", nativeQuery = true)
+    List<ProductHomeRequest> findMinPricesByTenThuongHieuAndMaMauSac(@Param("tenThuongHieu") String tenThuongHieu, @Param("maMauSac") String maMauSac);
+
+
 }

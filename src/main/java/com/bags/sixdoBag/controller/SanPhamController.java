@@ -130,4 +130,13 @@ public class SanPhamController {
         sanPhamRequest.setAnh(oldAnh);
         return sanPhamService.editSanPham(id, sanPhamRequest);
     }
+
+
+    @GetMapping("search-name")
+    public @ResponseBody
+    boolean findByTenSanPham(@RequestParam("tenSanPham") String tenSp) {
+        System.out.println(sanPhamService.findByNameSanPham(tenSp));
+        return sanPhamService.findByNameSanPham(tenSp);
+    }
+
 }

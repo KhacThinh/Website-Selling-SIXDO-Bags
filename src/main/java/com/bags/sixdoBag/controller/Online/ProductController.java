@@ -8,6 +8,7 @@ import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.entitys.ChiTietGioHang;
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
+import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
@@ -20,6 +21,9 @@ import com.bags.sixdoBag.service.KhuyenMaiService;
 import com.bags.sixdoBag.service.MauSacService;
 import com.bags.sixdoBag.service.SanPhamService;
 import com.bags.sixdoBag.service.ThuongHieuService;
+
+import com.bags.sixdoBag.service.*;
+
 import com.bags.sixdoBag.service.impl.Utils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +35,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,6 +54,8 @@ public class ProductController {
 
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
+    private final DoiTuongSuDungService doiTuongSuDungService;
+
     private final MauSacService mauSacService;
 
     private final SanPhamService sanPhamService;
@@ -65,6 +66,7 @@ public class ProductController {
     private final HoaDonService hoaDonService;
 
     private final HoaDonChiTietService hoaDonChiTietService;
+
 
     private final GioHangService gioHangService;
     private final ChiTietGioHangService chiTietGioHangService;
@@ -81,16 +83,15 @@ public class ProductController {
         idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
         model.addAttribute("khachHang", khachHang);
 
-        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) :0);
-        soLuongSanPhamGioHang =  khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) :0;
+        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0);
+        soLuongSanPhamGioHang = khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0;
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
-        for (ProductHomeRequest o : productHomeRequestList) {
-            System.out.println("list là : " + o.getId());
-        }
+
 
         model.addAttribute("listSp", productHomeRequestList);
-
         return "ban-hang-online/home/home-page";
+
+
     }
 
 
@@ -116,15 +117,14 @@ public class ProductController {
         return "redirect:/sixdo-shop";
     }
 
+
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
 
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
-        for (ProductHomeRequest o : productHomeRequestList) {
-            System.out.println("list là : " + o.getId());
-        }
+
         model.addAttribute("khachHang", khachHang);
 
         model.addAttribute("listSp", productHomeRequestList);

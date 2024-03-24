@@ -67,7 +67,31 @@ public class HoaDon {
     @Column(name = "dia_chi_nguoi_nhan")
     private String diaChiNguoiNhan;
 
+    @Column(name = "khach_thanh_toan")
+    private Double khachThanhToan;
+
+    @Column(name = "phi_van_chuyen")
+    private Double phiVanChuyen;
+
+    @Column(name = "so_tien_no")
+    private Double soTienNo;
+
+
     @JsonIgnore
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     private List<ChiTietHoaDon> chiTietHoaDons;
+
+
+//        case 0:
+//            trangThaiString = 'Đã Thanh Toán';
+//        case 1:
+//            trangThaiString = 'Hóa Đơn Tạm';
+//        case 2:
+//            trangThaiString = 'Chưa Xác Nhận';
+//        case 3:
+//            trangThaiString = 'Đã Xác Nhận';
+//        case 4:
+//            trangThaiString = 'Đã Hủy';
+//        case 5:
+//            trangThaiString = 'Đang Giao Hàng';
 }

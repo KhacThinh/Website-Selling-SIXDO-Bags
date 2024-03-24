@@ -103,7 +103,7 @@ public class ChiTietSanPhamController {
     @GetMapping("")
     public String getCTSP(Model model) {
         extracted(model);
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhams();
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.getListCtspTaiQuay();
 
         model.addAttribute("listCTSP", listCTSP);
         return "quan-ly/chi-tiet-san-pham/view";

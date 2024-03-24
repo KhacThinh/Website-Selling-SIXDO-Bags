@@ -56,6 +56,24 @@
                 transform: rotate(360deg);
             }
         }
+
+        .navbar_content {
+            display: flex;
+            align-items: center;
+            column-gap: 25px;
+        }
+        .navbar_content i {
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--grey-color);
+        }
+
+        .limiter-menu-desktop img {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
@@ -185,6 +203,12 @@
 
 
                 </div>
+                <div class="navbar_content">
+                    <i class="bi bi-grid"></i>
+                    <i class='bx bx-sun' id="darkLight"></i>
+                    <i class='bx bx-bell' ></i>
+                    <img src="../static/images/profile.jpg" alt="" class="profile" />
+                </div>
             </nav>
         </div>
     </div>
@@ -303,9 +327,10 @@
                 <button class="flex-c-m trans-04">
                     <i class="zmdi zmdi-search"></i>
                 </button>
-                <input class="plh3" type="text" name="search" placeholder="Search...">
+                <input class="plh3" type="text" name="search" placeholder="Search Tên...">
             </form>
         </div>
+
     </div>
 </header>
 <script>
