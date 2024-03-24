@@ -702,7 +702,19 @@
                 contentType: 'application/json',
                 data: JSON.stringify(orderData),
                 success: function(response) {
-                    // Xử lý phản hồi từ máy chủ nếu cần
+                    $.ajax({
+                        url: '/sixdo-shop/sendMail',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(orderData),
+                        success: function(response) {
+                        },
+                        error: function(error) {
+                            // Xử lý lỗi nếu có
+                            console.error(error);
+                            showAlertAddCart('Order error.','','error');
+                        }
+                    });
                     console.log(response);
                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     showAlertAddCart('Order Success!','The order has been placed','success');
@@ -711,7 +723,6 @@
                     updateCartOnPage(getCartFromCookie());
                     saveCartToCookie();
                     updateCartCount();
-
                 },
                 error: function(error) {
                     // Xử lý lỗi nếu có
@@ -719,10 +730,6 @@
                     showAlertAddCart('Order error.','','error');
                 }
             });
-
-
-
-
 
         });
 

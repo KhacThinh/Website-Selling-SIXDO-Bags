@@ -1070,7 +1070,6 @@
                 });
                 return;
             }
-
             $.ajax({
                 url: '/chi-tiet-san-pham/ctsp',
                 type: 'GET',
@@ -1645,22 +1644,6 @@
         console.log("tenNguoiNhan"+tenNguoiNhan)
         console.log("phiVanChuyen "+phiVanChuyen)
         console.log("khachThanhToan "+khachThanhToan)
-
-
-        // if (tenNguoiNhan.trim() === ""
-        //     || sdtNguoiNhan.trim() === ""
-        //     || emailNguoiNhan.trim() === ""
-        //     || diaChiNguoiNhan.trim() === ""
-        //     || khachThanhToan.trim() === ""
-        //     || phiVanChuyen.trim() === ""
-        //
-        //
-        //
-        // ) {
-        //     toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
-        //     return false;
-        // }
-
         $.ajax({
             url: '/hoa-don/update',
             type: 'POST',
@@ -1673,6 +1656,7 @@
                 khachThanhToan: khachThanhToan,
                 phiVanChuyen: phiVanChuyen,
                 soTienNo: soTienNo,
+
             },
             success: function (response) {
                 if (response === "ok") {
@@ -1686,12 +1670,6 @@
                         }
                     });
                 }
-                // else if (response === "errorMa") {
-                //     toastr.error("Mã trùng");
-                // }
-                // else if (response === "errorTen") {
-                //     toastr.error("Trùng Tên");
-                // }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
@@ -1723,16 +1701,20 @@
         console.log("khachThanhToan "+khachThanhToan)
 
 
-        // if (maDanhMuc.trim() === "" || tenDanhMuc.trim() === "") {
-        //     toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
-        //     return false;
-        // }
 
         $.ajax({
             url: '/hoa-don/update2',
             type: 'POST',
             data: {
                 id: id,
+                tenNguoiNhan : tenNguoiNhan,
+                sdtNguoiNhan: sdtNguoiNhan,
+                emailNguoiNhan: emailNguoiNhan,
+                diaChiNguoiNhan: diaChiNguoiNhan,
+                khachThanhToan: khachThanhToan,
+                phiVanChuyen: phiVanChuyen,
+                soTienNo: soTienNo,
+
             },
             success: function (response) {
                 if (response === "ok") {
@@ -1934,9 +1916,6 @@
 
 
     function updateProductList(products) {
-        // Xóa danh sách sản phẩm hiện tại
-        // $('.tab button.tablinks').remove();
-
         $('.gioHangTaiQuay').empty();
         var gioHangTaiQuayElement = document.querySelector('.gioHangTaiQuay');
         gioHangTaiQuayElement.innerHTML = '';

@@ -10,6 +10,7 @@
         font-size: 0.8em; /* Kích thước chữ nhỏ hơn */
         color: red; /* Màu chữ đỏ */
     }
+
     span {
         color: red; /* Thiết lập màu đỏ cho dấu sao */
     }
@@ -24,24 +25,25 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Sản Phẩm</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" >
-                <form:form method="POST" action="/chi-tiet-san-pham/add" enctype="multipart/form-data" modelAttribute="chiTietSanPham" id="yourFormId">
+            <div class="modal-body">
+                <form:form method="POST" action="/chi-tiet-san-pham/add" enctype="multipart/form-data"
+                           modelAttribute="chiTietSanPham" id="yourFormId">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="soLuong" class="form-label">Số Lượng <span >*</span></label>
+                                <label for="soLuong" class="form-label">Số Lượng <span>*</span></label>
                                 <form:input path="soLuong" id="soLuong" class="form-control"/>
                                 <div id="soLuongError" class="error"></div>
                             </div>
                             <div class="form-group">
-                                <label for="giaNhap" class="form-label">Giá Nhập <span >*</span></label>
+                                <label for="giaNhap" class="form-label">Giá Nhập <span>*</span></label>
                                 <form:input path="giaNhap" id="giaNhap" class="form-control"/>
                                 <div id="giaNhapError" class="error"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="giaBan" class="form-label">Giá Bán <span >*</span></label>
+                                <label for="giaBan" class="form-label">Giá Bán <span>*</span></label>
                                 <form:input path="giaBan" id="giaBan" class="form-control"/>
                                 <div id="giaBanError" class="error"></div>
                             </div>
@@ -56,7 +58,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="" class="form-label">Sản Phẩm</label>
-                                <input value="${sp.tenSanPham}" name="tenSanPham" readonly
+                                <div class="form-control">${sp.tenSanPham}</div>
+                                <input value="${sp.id}" name="idSp" type="hidden"
                                        class="form-control"/>
                             </div>
                             <div class="form-group">
@@ -87,7 +90,7 @@
 
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                        <button type="submit" id="uploadButton" class="btn btn-primary" >Lưu</button>
+                        <button type="submit" id="uploadButton" class="btn btn-primary">Lưu</button>
                     </div>
                 </form:form>
             </div>
@@ -98,11 +101,12 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    document.getElementById("yourFormId").addEventListener("submit", function(event) {
+    document.getElementById("yourFormId").addEventListener("submit", function (event) {
         if (!validateForm()) {
             event.preventDefault(); // Ngăn chặn form gửi đi nếu không hợp lệ
         }
     });
+
     function validateForm() {
         var soLuong = document.getElementById('soLuong').value;
         var giaNhap = document.getElementById('giaNhap').value;
@@ -120,7 +124,7 @@
             document.getElementById('soLuongError').innerText = 'Vui lòng nhập số lượng.';
             isValid = false;
         } else if (!isNumeric(soLuong)) {
-            document.getElementById('soLuongError').innerText = 'Số lượng phải là một số.';
+            document.getElementById('soLuongError').innerText = 'Số lượng phải là một số và Luôn Dương.';
             isValid = false;
         } else {
             document.getElementById('soLuongError').innerText = '';
@@ -130,7 +134,7 @@
             document.getElementById('giaNhapError').innerText = 'Vui lòng nhập giá nhập.';
             isValid = false;
         } else if (!isNumeric(giaNhap)) {
-            document.getElementById('giaNhapError').innerText = 'Giá nhập phải là một số.';
+            document.getElementById('giaNhapError').innerText = 'Giá nhập phải là một số và luôn Dương.';
             isValid = false;
         } else {
             document.getElementById('giaNhapError').innerText = '';
@@ -140,7 +144,7 @@
             document.getElementById('giaBanError').innerText = 'Vui lòng nhập giá bán.';
             isValid = false;
         } else if (!isNumeric(giaBan)) {
-            document.getElementById('giaBanError').innerText = 'Giá bán phải là một số.';
+            document.getElementById('giaBanError').innerText = 'Giá bán phải là một số và luôn Dương.';
             isValid = false;
         } else {
             document.getElementById('giaBanError').innerText = '';
