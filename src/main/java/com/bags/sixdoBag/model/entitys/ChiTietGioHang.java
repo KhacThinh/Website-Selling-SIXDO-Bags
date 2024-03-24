@@ -1,4 +1,6 @@
 package com.bags.sixdoBag.model.entitys;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
+
 @IdClass(GioHangChiTietId.class)
 public class ChiTietGioHang {
     @Id
@@ -32,6 +35,7 @@ public class ChiTietGioHang {
     @JoinColumn(name = "id_ctsp", referencedColumnName = "id", insertable = false, updatable = false)
     private ChiTietSanPham chiTietSanPham;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_gio_hang", referencedColumnName = "id", insertable = false, updatable = false)
     private GioHang gioHang;

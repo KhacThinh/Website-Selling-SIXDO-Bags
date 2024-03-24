@@ -61,24 +61,24 @@ public class GioHangServiceImpl implements GioHangService {
             return newGioHang;
         });
 
-        ChiTietGioHangRequestDto chiTietGioHangRequestDto = gioHangRequest.getChiTietGioHangRequestDto();
-//        ChiTietGioHang chiTietGioHang = gioHang.getChiTietGioHangs().stream()
-//                .filter(ctgh -> ctgh.getIdChiTietSanPham() == chiTietGioHangRequestDto.getIdChiTietSanPham())
-//                .findFirst()
-//                .orElse(null);
-
-        GioHang gh = gioHangRepository.save(gioHang);
-        chiTietGioHangRequestDto.setIdGioHang(gh.getId());
-
-        ChiTietGioHang chiTietGioHang = chiTietGioHangService.addChiTietGioHang(chiTietGioHangRequestDto);
-
-        if (Objects.nonNull(chiTietGioHang)) {
-            int soLuongMoi = chiTietGioHangRequestDto.getSoLuong();
-            int soLuongHienTai = chiTietGioHang.getSoLuong();
-            chiTietGioHang.setSoLuong(soLuongHienTai + soLuongMoi);
-        } else {
-            gioHang.addGioHangChiTiet(chiTietGioHang);
-        }
+//        ChiTietGioHangRequestDto chiTietGioHangRequestDto = gioHangRequest.getChiTietGioHangRequestDto();
+////        ChiTietGioHang chiTietGioHang = gioHang.getChiTietGioHangs().stream()
+////                .filter(ctgh -> ctgh.getIdChiTietSanPham() == chiTietGioHangRequestDto.getIdChiTietSanPham())
+////                .findFirst()
+////                .orElse(null);
+//
+//        GioHang gh = gioHangRepository.save(gioHang);
+//        chiTietGioHangRequestDto.setIdGioHang(gh.getId());
+//
+//        ChiTietGioHang chiTietGioHang = chiTietGioHangService.addChiTietGioHang(chiTietGioHangRequestDto);
+//
+//        if (Objects.nonNull(chiTietGioHang)) {
+//            int soLuongMoi = chiTietGioHangRequestDto.getSoLuong();
+//            int soLuongHienTai = chiTietGioHang.getSoLuong();
+//            chiTietGioHang.setSoLuong(soLuongHienTai + soLuongMoi);
+//        } else {
+//            gioHang.addGioHangChiTiet(chiTietGioHang);
+//        }
 
         return gioHangRepository.save(gioHang);
     }
@@ -127,5 +127,10 @@ public class GioHangServiceImpl implements GioHangService {
     @Override
     public GioHang deleteGioHang(Integer idGioHang) {
         return null;
+    }
+
+    @Override
+    public int getIdGioHang(int idKhachHang) {
+        return gioHangRepository.getIdGioHang(idKhachHang);
     }
 }

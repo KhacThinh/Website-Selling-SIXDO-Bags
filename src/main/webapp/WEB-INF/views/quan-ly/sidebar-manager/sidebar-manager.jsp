@@ -614,6 +614,11 @@
                 <i class="uil uil-estate"></i>
                 <span class="link-name">THỐNG KÊ</span>
             </a></li>
+            <li><a href="/ban-tai-quay">
+                <i class="bi bi-cart-plus"></i>
+                <span class="link-name">BÁN TẠI QUẦY</span>
+            </a></li>
+
             <li>
                 <a href="#" id="manageBtn">
                     <i class="uil uil-files-landscapes"></i>

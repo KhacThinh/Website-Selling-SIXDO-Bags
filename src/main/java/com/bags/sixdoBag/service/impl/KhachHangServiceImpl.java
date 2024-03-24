@@ -108,4 +108,9 @@ public class KhachHangServiceImpl implements KhachHangService {
         return khachHangRepository.searchCbb(name,pageable);
     }
 
+    @Override
+    public KhachHang getKhachHangByUserNameAndPassword(String email, String matKhau) {
+        return khachHangRepository.findByTenEndMatKhau(email,matKhau);
+    }
+
 }

@@ -309,7 +309,7 @@
 <%--								<fmt:formatNumber value="${o.giaBan}" type="currency"/>--%>
                                     <fmt:formatNumber pattern="#,###" var="donGia"
                                                       value="${o.giaBan}"></fmt:formatNumber>
-                                    ${donGia} đồng
+                                    ${donGia}đ
 								  </span>
                             </div>
 
