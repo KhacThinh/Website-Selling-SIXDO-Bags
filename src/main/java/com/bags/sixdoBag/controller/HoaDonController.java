@@ -1,6 +1,10 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
+import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.HoaDon;
+import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
+import com.bags.sixdoBag.service.HoaDonChiTietService;
 import com.bags.sixdoBag.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 //@RestController
 @RequestMapping("hoa-don")
@@ -18,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HoaDonController {
 
     private final HoaDonService hoaDonService;
+
+    private final HoaDonChiTietService hoaDonChiTietService;
+
+    private final ChiTietSanPhamServivce chiTietSanPhamServivce;
 
     @GetMapping("lich-su")
     public String lichSuHoaDon(Model model) {
@@ -68,6 +78,11 @@ public class HoaDonController {
 
 
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+        List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(id);
+        for (ChiTietHoaDon cthd : chiTietHoaDons) {
+            ChiTietSanPham ctsp = (ChiTietSanPham) chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+            ctsp.setSoLuong(ctsp.getSoLuong() - cthd.getSoLuong());
+        }
         hoaDon.setTenNguoiNhan(tenNguoiNhan);
         hoaDon.setSdtNguoiNhan(sdtNguoiNhan);
         hoaDon.setEmailNguoiNhan(emailNguoiNhan);
