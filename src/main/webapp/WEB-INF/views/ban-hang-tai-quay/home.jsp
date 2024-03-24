@@ -1002,7 +1002,7 @@
         <!-- Tạo hoá đơn -->
         <div class="tab">
             <c:forEach var="o" items="${tabs}" varStatus="loop">
-                <button class="tablinks active tab1" style="padding-right: 8px; width: 117px" id="${o.maHoaDon}"
+                <button class="tablinks active tab1" style="padding-right: 8px" id="${o.maHoaDon}"
                         onclick="openTab(event,'${o.maHoaDon}')">
                         ${o.maHoaDon}
                     <span onclick="closeTabs('${o.maHoaDon}')"><i class="bi bi-x-circle closeButtonTab"></i></span>
@@ -1297,6 +1297,7 @@
 
     <!-- Right column -->
     <div class="info-panel thanh-toan">
+        <p>Tên nhân viên : ${nhanVien.hoTen}</p>
         <p style="font-size: 19px; font-weight: bold; margin: 30px 0px 10px 1px;background-color: #d3ead9 ; padding: 5px;border-radius: 5px ">
             Thông Tin Đơn Hàng</p>        <div>
             <input type="text" id="soDienThoai" placeholder="Số điện thoại">
@@ -1472,8 +1473,8 @@
                         $('.tab button.tablinks').remove();
                         response.forEach(function (hoaDon) {
                             var temp = hoaDon.maHoaDon;
-                            var newTabHTML = '<button class="tablinks active tab1"  style="padding-right: 8px" id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
-                                '<span class="closeButtonTab" onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
+                            var newTabHTML = '<button class="tablinks active tab1"  style="padding-right: 7px ;height: 37.6px" id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
+                                '<span style="margin-left: 0px; padding-left: 0px" class="closeButtonTab" onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
                             '</button>';
                             $('.tab').append(newTabHTML);
                         });
@@ -1854,7 +1855,7 @@
                     $('.tab button.tablinks').remove();
                     response.forEach(function (hoaDon) {
                         var temp = hoaDon.maHoaDon;
-                        var newTabHTML = '<button class="tablinks active tab1" style="padding-right: 8px; width: 117px"   id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
+                        var newTabHTML = '<button class="tablinks active tab1" style="padding-right: 8px"   id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
                             '<span  onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
                         '</button>';
                         $('.tab').append(newTabHTML);

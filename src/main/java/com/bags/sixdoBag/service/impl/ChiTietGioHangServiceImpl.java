@@ -28,8 +28,8 @@ public class ChiTietGioHangServiceImpl implements ChiTietGioHangService {
     }
 
     @Override
-    public List<ChiTietGioHang> getChiTietGioHangs() {
-        return null;
+    public List<ChiTietGioHang> getChiTietGioHangs(int idKhachHang) {
+        return chiTietGioHangRepository.getListChiTietGioHangByKhachHang(idKhachHang);
     }
 
     @Override

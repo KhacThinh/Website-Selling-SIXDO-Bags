@@ -7,11 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
-
 @Component
-public class AuthenticateNhanVien implements HandlerInterceptor {
-
-
+public class AuthenticateQuanLy implements HandlerInterceptor {
     @Override
     public boolean preHandle(
             HttpServletRequest request,
@@ -19,8 +16,8 @@ public class AuthenticateNhanVien implements HandlerInterceptor {
             Object handle
     ) throws IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("nhanVien")==null){
-            session.setAttribute("error","nullll");
+        if (session.getAttribute("quanLy")==null){
+            session.setAttribute("error","quan ly null");
             response.sendRedirect(request.getContextPath()+"/login/hien-thi");
             return false;
         }

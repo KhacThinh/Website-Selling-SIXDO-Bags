@@ -1,11 +1,27 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-    <meta charshet="utf-8" />
+    <meta charset="UTF-8">
 
     <style>
-        .loader {
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+    .loader {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -17,6 +33,7 @@
             justify-content: center;
             text-align: center;
         }
+
         .loader::after {
             content: '';
             box-sizing: border-box;
@@ -30,6 +47,7 @@
             border-bottom: 4px solid transparent;
             animation: rotation 0.25s linear infinite reverse;
         }
+
         @keyframes rotation {
             0% {
                 transform: rotate(0deg);
@@ -38,12 +56,31 @@
                 transform: rotate(360deg);
             }
         }
+
+        .navbar_content {
+            display: flex;
+            align-items: center;
+            column-gap: 25px;
+        }
+        .navbar_content i {
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--grey-color);
+        }
+
+        .limiter-menu-desktop img {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
 
 <header class="header-v4">
-    <div id="loading-spinner" class="spinner-container loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
+    <div id="loading-spinner" class="spinner-container loader"
+         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
         <div class="spinner"></div>
     </div>
     <div class="container-menu-desktop">
@@ -124,7 +161,7 @@
                     </div>
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart icon-count-cart"
-                         data-notify="">
+                         data-notify="${soLuongSanPhamGioHang}">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
@@ -132,6 +169,45 @@
                        data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
+
+                    <c:choose>
+                        <c:when test="${khachHang == null}">
+                            <a style=" margin-left: 20px; align-items: center" href="/sixdo-shop/login"
+                               class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
+                                <i style="font-size: 30px" class="zmdi zmdi-account"></i>
+                                <span style="font-size: 15px; align-items: center;
+                                margin-bottom: 15px">
+                                    Đăng Nhập
+                                </span>
+                            </a>
+
+                        </c:when>
+                        <c:otherwise>
+                            <div class="dropdown" style="margin-left: 20px;">
+                                <button class="dropbtn icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
+                                    <i style="font-size: 30px" class="zmdi zmdi-account"></i>
+                                    <span style="font-size: 15px; align-items: center; margin-bottom: 15px"
+                                          id="dropdownMenu">${khachHang.tenKhachHang}</span>
+                                </button>
+                                <div class="dropdown-content" id="dropdownContent">
+                                    <a href="#" id="logoutLink">Đăng Xuất</a><br>
+                                    <a href="#">Tài Khoản</a>
+                                </div>
+                            </div>
+
+                        </c:otherwise>
+                    </c:choose>
+
+
+                    <p id="id-khach-hang">${khachHang.id}</p>
+
+
+                </div>
+                <div class="navbar_content">
+                    <i class="bi bi-grid"></i>
+                    <i class='bx bx-sun' id="darkLight"></i>
+                    <i class='bx bx-bell' ></i>
+                    <img src="../static/images/profile.jpg" alt="" class="profile" />
                 </div>
             </nav>
         </div>
@@ -143,7 +219,7 @@
             <a href="/sixdo-shop" class="logo">
                 <img src="${pageContext.request.contextPath}/static/image/logo1.jpg"
                      alt="IMG-PRODUCT">
-            </a>        </div>
+            </a></div>
 
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
@@ -158,6 +234,12 @@
             <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                data-notify="0">
                 <i class="zmdi zmdi-favorite-outline"></i>
+            </a>
+
+            <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+               data-notify="0">
+                <i class="zmdi zmdi-favorite-outline"></i>
+
             </a>
         </div>
 
@@ -245,21 +327,39 @@
                 <button class="flex-c-m trans-04">
                     <i class="zmdi zmdi-search"></i>
                 </button>
-                <input class="plh3" type="text" name="search" placeholder="Search...">
+                <input class="plh3" type="text" name="search" placeholder="Search Tên...">
             </form>
         </div>
+
     </div>
 </header>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Hiển thị spinner
         document.getElementById("loading-spinner").style.display = "block";
 
         // Ẩn spinner sau 3 giây
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById("loading-spinner").style.display = "none";
         }, 150);
 
+
+    });
+
+    document.getElementById("logoutLink").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "You want to log out ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Log out",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/sixdo-shop/logout";
+            }
+        });
 
     });
 </script>

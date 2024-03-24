@@ -13,6 +13,7 @@ import com.bags.sixdoBag.service.impl.Utils;
 import com.lowagie.text.DocumentException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -57,13 +58,22 @@ public class BanHangTaiQuayController {
 
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
-    @GetMapping("")
-    public String hienThi(Model model) {
+    @GetMapping(value = {"", "/demo"})
+    public String hienThi(Model model, HttpSession session) {
+        NhanVien quanLy = (NhanVien) session.getAttribute("quanLy");
+        NhanVien nv = (NhanVien) session.getAttribute("nhanVien");
+        if (quanLy == null && nv == null) {
+            return "redirect:/login/hien-thi";
+        } else if (quanLy != null) {
+            model.addAttribute("nhanVien", quanLy);
+        } else if (nv != null) {
+            model.addAttribute("nhanVien", nv);
+        }
         extracted(model, -1);
         return "/ban-hang-tai-quay/home";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value ={"/{id}"})
     public String hienThiProductById(Model model,  @PathVariable int id) {
         extracted(model, id);
 

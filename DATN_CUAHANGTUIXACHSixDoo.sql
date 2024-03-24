@@ -268,6 +268,59 @@ link varchar(300),
 CONSTRAINT FK_Anh_Slide_Show FOREIGN KEY(id_slide_show) REFERENCES slide_show(id),
 )
 
+ALTER TABLE mau_sac
+ADD CONSTRAINT constraint_nameTMS UNIQUE (ten);
+
+
+	ALTER TABLE thuong_hieu
+ADD CONSTRAINT constraint_nameTTH UNIQUE (ten);
+
+
+	ALTER TABLE ma_giam_gia
+ADD CONSTRAINT constraint_nameTMGG UNIQUE (ten_ma_giam_gia);
+
+
+ALTER TABLE khuyen_mai
+ADD CONSTRAINT constraint_nameTKM UNIQUE (ten);
+
+
+ALTER TABLE doi_tuong_su_dung
+ADD CONSTRAINT constraint_nameDTSD UNIQUE (ten);
+
+
+ALTER TABLE danh_muc
+ADD CONSTRAINT constraint_nameTDM UNIQUE (ten);
+
+ALTER TABLE chuc_vu
+ADD CONSTRAINT constraint_nameTCV UNIQUE (ten_chuc_vu);
+
+ALTER TABLE nhan_vien 
+    ADD  gioiTinh int
+ALTER TABLE khach_hang
+ADD CONSTRAINT constraint_name UNIQUE (sdt);
+ALTER TABLE nhan_vien
+ADD CONSTRAINT constraint_name1 UNIQUE (cccd);
+ALTER TABLE nhan_vien
+ADD CONSTRAINT constraint_name2 UNIQUE (sdt);                             
+select*from hoa_don
+
+
+
+	 ALTER TABLE hoa_don
+    ADD   khach_thanh_toan float
+
+	 ALTER TABLE hoa_don
+    ADD   phi_van_chuyen float
+
+	 ALTER TABLE hoa_don
+    ADD   so_tien_no float
+
+
+
+
+   ALTER TABLE chi_tiet_san_pham 
+    ADD   trang_thai int
+
 
 ---- Câu 1
 INSERT INTO khuyen_mai (ma_khuyen_mai, ten, gia_tri_giam, ngay_bat_dau, ngay_ket_thuc, mo_ta, trang_thai)
@@ -361,6 +414,84 @@ WHERE sp.chat_lieu LIKE N'%Da%'
   AND (th.ten LIKE N'%%' OR th.ten IS NULL);
 
   select * from tai_khoan
+
+
+select * from san_pham as sp
+                  join chi_tiet_san_pham as ctsp on sp.id = ctsp.id_mau_sac
+                  join chi_tiet_hoa_don as cthd on cthd.id_ctsp = ctsp.id
+                  join hoa_don as hd on hd.id = cthd.id_hoa_don
+
+
+SELECT TOP 5
+    sp.ten AS 'Tên sản phẩm',
+       SUM(cthd.so_luong) AS 'Số lượng đã bán'
+FROM
+    chi_tiet_hoa_don cthd
+        JOIN
+    chi_tiet_san_pham cts ON cthd.id_ctsp = cts.id
+        JOIN
+    san_pham sp ON cts.id_san_pham = sp.id
+        JOIN hoa_don hd ON hd.id = cthd.id_hoa_don
+WHERE hd.trang_thai = 0
+GROUP BY
+    sp.ten
+ORDER BY
+    SUM(cthd.so_luong) DESC;
+
+DECLARE @Year INT = 2024;
+DECLARE @Month INT = 3;-- Thay đổi năm tại đây
+SELECT
+    MONTH(hd.thoi_gian_tao) AS 'Tháng',
+    FORMAT(SUM(cthd.so_luong * cthd.gia), '#,###') AS 'Doanh thu',
+    SUM(cthd.so_luong) AS 'Số Lượng Bán'
+FROM
+    hoa_don hd
+    JOIN
+    chi_tiet_hoa_don cthd ON hd.id = cthd.id_hoa_don
+WHERE
+    YEAR(hd.thoi_gian_tao) = @Year OR
+    MONTH(hd.thoi_gian_tao) = @Month
+GROUP BY
+    MONTH(hd.thoi_gian_tao)
+ORDER BY
+    MONTH(hd.thoi_gian_tao);
+
+
+
+SELECT
+    sp.ten as N'Tên Sản Phẩm', cthd.so_luong as N'Số Lượng Mua'
+FROM
+    chi_tiet_hoa_don cthd
+        JOIN
+    chi_tiet_san_pham cts ON cthd.id_ctsp = cts.id
+        JOIN
+    san_pham sp ON cts.id_san_pham = sp.id
+where sp.ten like N'%Gucci%' order by sp.ten
+
+
+
+SELECT
+    sp.ten AS 'Tên sản phẩm',
+    SUM(cthd.so_luong) AS 'Số lượng đã bán',
+    FORMAT(SUM(cthd.so_luong*cts.gia_ban), '#,###') AS 'Số Tiền Bán',
+    FORMAT(SUM(cthd.so_luong*cts.gia_ban) - SUM(cts.gia_nhap * cthd.so_luong), '#,###') AS 'Tiền Lãi'
+
+FROM
+    chi_tiet_hoa_don cthd
+        JOIN
+    chi_tiet_san_pham cts ON cthd.id_ctsp = cts.id
+        JOIN
+    san_pham sp ON cts.id_san_pham = sp.id
+        JOIN hoa_don hd ON hd.id = cthd.id_hoa_don
+WHERE hd.trang_thai = 0
+GROUP BY
+    sp.ten
+ORDER BY
+    SUM(cthd.so_luong) DESC;
+
+select * from san_pham join chi_tiet_san_pham on san_pham.id = chi_tiet_san_pham.id_san_pham
+where san_pham.ten like N'Iphone x promax'
+
 
 
 

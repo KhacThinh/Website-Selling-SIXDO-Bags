@@ -7,7 +7,6 @@
 <html lang="en">
 <head>
     <title>Product Detail</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!====================================-->
@@ -66,7 +65,9 @@
 
         <%@include file="../../../views/ban-hang-online/css/main.css" %>
         <%@include file="../../../views/ban-hang-online/css/util.css" %>
+
     </style>
+
 </head>
 
 
@@ -74,23 +75,62 @@
 <%--header--%>
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/hd.jsp"/>
 <%--header--%>
-
-<!-- Cart -->
-<jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>
-
-
-<!-- breadcrumb -->
-s
-
-
-<!-- Product Detail -->
-<jsp:include page="/WEB-INF/views/ban-hang-online/components/product-customer.jsp"/>
-
-
-<!-- Related Products -->
-<jsp:include page="/WEB-INF/views/ban-hang-online/components/related_product.jsp"/>
-
-
+<div class="login-wrap">
+    <div class="login-html">
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign
+        In</label>
+        <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+        <div class="login-form">
+            <div class="sign-in-htm">
+                <form method="post" action="/buyer-login/check">
+                    <div class="group">
+                        <label for="username-login" class="label">Emai</label>
+                        <input id="username-login" name="username-login" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="password-login" class="label">Password</label>
+                        <input id="password-login" name="password-login" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <input id="check" type="checkbox" class="check" checked>
+                        <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In">
+                    </div>
+                    <div class="hr"></div>
+                    <div class="foot-lnk">
+                        <a href="">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+            <div class="sign-up-htm">
+                <div class="group">
+                    <label for="username-signup" class="label">Username</label>
+                    <input id="username-signup" type="text" class="input">
+                </div>
+                <div class="group">
+                    <label for="password-signup" class="label">Password</label>
+                    <input id="password-signup" type="password" class="input" data-type="password">
+                </div>
+                <div class="group">
+                    <label for="password-repeat-signup" class="label">Repeat Password</label>
+                    <input id="password-repeat-signup" type="password" class="input" data-type="password">
+                </div>
+                <div class="group">
+                    <label for="email-signup" class="label">Email Address</label>
+                    <input id="email-signup" type="text" class="input">
+                </div>
+                <div class="group">
+                    <input type="submit" class="button" value="Sign Up">
+                </div>
+                <div class="foot-lnk">
+                    <label for="tab-1">Already Member?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Footer -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/footer.jsp"/>
@@ -102,9 +142,6 @@ s
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
 </div>
-
-<!-- QuickView -->
-<jsp:include page="/WEB-INF/views/ban-hang-online/components/quick_view.jsp"/>
 
 
 <!--===============================================================================================-->
@@ -161,138 +198,6 @@ s
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 
 
-<script>
-
-    var products ; // Giả sử product là một List hoặc Array chứa dữ liệu sản phẩm
-
-
-    function updatePriceQuickView(selectElement) {
-        var selectedId = selectElement.value;
-        var colorSelectQuickView = selectElement;
-
-        for (var i = 0; i < colorSelectQuickView.options.length; i++) {
-            if (selectedId===colorSelectQuickView.options[i].value){
-                $.ajax({
-                    url: '/sixdo-shop/quick-view?',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        idProduct: selectedId
-                    }),
-                    success: function (response) {
-                        var formattedGiaBan = gia.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
-                        if (selectedId===colorSelectQuickView.options[i].value){
-                            document.getElementById('price-product-quick-view').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
-                            return;
-                        }
-
-
-                    },
-                    error: function (error) {
-                        console.error("Lỗi khi thanh toán:", error);
-                    }
-                });
-
-
-
-            }
-
-        }
-
-
-    }
-
-    function updatePrice(selectElement) {
-        var selectedId = selectElement.value;
-        console.log("idddddđ"+selectedId)
-
-        <c:forEach var="o" items="${product}" varStatus="loop">
-        if (selectedId == ${o.id}) {
-            console.log("day roi "+${o.giaBan})
-            document.getElementById('product-price').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
-            var newImagePath = "${pageContext.request.contextPath}/" + "${o.hinhAnh}";
-            document.getElementById('product-image').src = newImagePath;
-
-
-            return;
-        }
-
-        </c:forEach>
-
-
-    }
-
-
-    function showAlertAddCart(mess) {
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: '',
-            text: mess,
-            showConfirmButton: false,
-            timer: 1000,
-            customClass: {
-                container: 'swal-custom'
-            }
-        });
-    }
-
-
-
-
-
-
-    //////////
-    $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
-        e.preventDefault();
-    });
-
-    $('.js-addwish-b2').each(function () {
-        var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-        $(this).on('click', function () {
-            swal(nameProduct, "is added to wishlist !", "success");
-
-            $(this).addClass('js-addedwish-b2');
-            $(this).off('click');
-        });
-    });
-
-    $('.js-addwish-detail').each(function () {
-        var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
-        $(this).on('click', function () {
-            swal(nameProduct, "is added to wishlist !", "success");
-
-            $(this).addClass('js-addedwish-detail');
-            $(this).off('click');
-        });
-    });
-
-    /*---------------------------------------------*/
-
-
-
-</script>
-<!--===============================================================================================-->
-<script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
-<script>
-    $('.js-pscroll').each(function () {
-        $(this).css('position', 'relative');
-        $(this).css('overflow', 'hidden');
-        var ps = new PerfectScrollbar(this, {
-            wheelSpeed: 1,
-            scrollingThreshold: 1000,
-            wheelPropagation: false,
-        });
-
-        $(window).on('resize', function () {
-            ps.update();
-        })
-    });
-
-
-
-</script>
 <!--===============================================================================================-->
 <script type="text/javascript">
     <%@include file="../../../views/ban-hang-online/js/main.js" %>

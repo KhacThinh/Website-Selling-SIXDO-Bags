@@ -198,7 +198,8 @@
                 $('.panel-filter').slideUp(400);
             }
         });
-        function showAlertAddCart(mess,title,icon) {
+
+        function showAlertAddCart(mess, title, icon) {
             Swal.fire({
                 position: 'center',
                 icon: icon,
@@ -352,100 +353,52 @@
 
         });
 
-        function getPriceById(id) {
-            var priceList = dataList;
-            for (var i = 0; i < priceList.length; i++) {
-
-                if (priceList[i].id == id) {
-                    return priceList[i].gia;
-                }
-            }
-            return null;
-        }
 
         $('.js-addcart-detail-customer').on('click', function () {
+            var idKhachHang = document.getElementById("id-khach-hang").innerText;
             var selectedIdValue = document.getElementById('select-id-color').value;
             var quantityProduct = 0;
             quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
-            console.log("day là idddddd " + selectedIdValue)
-            console.log("day là soLuong" + quantityProduct)
+            if (idKhachHang == "") {
+                Swal.fire({
+                    title: "Login to add products to cart",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Log in",
+                    cancelButtonText: "Close",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/sixdo-shop/login";
+                    }
+                });
+            }
+
             $.ajax({
-                url: '/sixdo-shop/get-product-by-id',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    idProduct: selectedIdValue
-                }),
-                success: function (response) {
-                    var anh = response.hinhAnh;
-                    var existingProduct = cart.find((product) => product.id == response.id);
-                    if (existingProduct) {
-                        // Nếu đã có trong giỏ hàng, tăng số lượng
-                        existingProduct.soLuong += quantityProduct;
-                    } else {
-                        var product = {
-                            id: selectedIdValue,
-                            idCtSanPham :selectedIdValue,
-                            idSanPham: response.sanPham.id,
-                            name: response.sanPham.tenSanPham,
-                            gia: response.giaBan,
-                            img: anh,
-                            soLuong: quantityProduct,
-                            colorProduct: response.mauSac.tenMauSac
-                        };
-                        cart.push(product);
+                    url: '/sixdo-shop/add-to-cart-buyer',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        idKhachHang: idKhachHang,
+                        idChiTietSanPham: selectedIdValue,
+                        soLuong: quantityProduct
+                    }),
+                    success: function (response) {
+                        const count = document.querySelector('.icon-count-cart');
+                        count.setAttribute('data-notify', response);
+                        showAlertAddCart('Success!', 'Product added to cart!', 'success');
+
+                    },
+                    error: function (error) {
+                        console.error(error);
                     }
-                    saveCartToCookie();
-                    countProductForCart();
-                    updateCartCount();
+                });
 
-                    for (var product2 of cart) {
 
-                        console.log("id san pham " + product2.idProductForDetail)
-                        console.log("số lượng " + product2.soLuong)
-
-                    }
-                },
-                error: function (error) {
-                    console.error("Lỗi khi thanh toán:", error);
-                }
-            });
         });
 
-        var cart = getCartFromCookie() || [];
 
 
-        function getCartFromCookie() {
-            var name = 'cart=';
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var cookieArray = decodedCookie.split(';');
-            for (var i = 0; i < cookieArray.length; i++) {
-                var cookie = cookieArray[i].trim();
-                if (cookie.indexOf(name) === 0) {
-                    var cookieValue = cookie.substring(name.length, cookie.length);
-                    try {
-                        return JSON.parse(decodeURIComponent(cookieValue));
-                    } catch (error) {
-                        console.error("Lỗi khi chuyển đổi cookie thành đối tượng JSON:", error);
-                    }
-                }
-            }
-            return null;
-        }
 
-        function saveCartToCookie() {
-            // Tạo một đối tượng Date để đại diện cho thời điểm hiện tại
-            var currentDate = new Date();
-
-            // Thêm 14 ngày (2 tuần) vào thời điểm hiện tại
-            currentDate.setDate(currentDate.getDate() + 14);
-
-            // Sử dụng phương thức toUTCString() để định dạng thời điểm dưới dạng chuỗi UTC
-            var expires = currentDate.toUTCString();
-
-            // Tạo chuỗi cookie với thời gian sống là 2 tuần
-            document.cookie = 'cart=' + JSON.stringify(cart) + ';path=/;expires=' + expires;
-        }
 
         function countProductForCart() {
             const count = document.querySelector('.icon-count-cart');
@@ -470,147 +423,79 @@
             var cartListElement = document.getElementById('cartProductList');
             cartListElement.innerHTML = ''; // Xóa các mục cũ
             var totalAmount = 0; // Biến để tính tổg giá trị đơn hàng
-            if (cart.length === 0) {
-                cartListElement.innerHTML = '<p>Cart is empty</p>';
-            } else {
-                var formatter = new Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND'
+
+            var idKhachHang = document.getElementById('id-khach-hang').innerText;
+            console.log("l" + idKhachHang)
+                $.ajax({
+                    url: '/sixdo-shop/get-cart-by-buyer',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        idKhachHang2: idKhachHang
+                    }),
+                    success: function (response) {
+                        if (response.length == 0) {
+                            cartListElement.innerHTML = '<p>Cart is empty</p>';
+                        } else {
+                            var formatter = new Intl.NumberFormat('vi-VN', {
+                                style: 'currency',
+                                currency: 'VND'
+                            });
+                            response.forEach(function (product) {
+                                var imageProductForCart = '${pageContext.request.contextPath}/' + product.chiTietSanPham.hinhAnh;
+                                var listItem = document.createElement('li');
+                                listItem.className = 'cart-item';
+                                var itemHTML = ' <li class="header-cart-item flex-w flex-t m-b-12">\n' +
+                                    '                    <div class="header-cart-item-img">\n' +
+                                    '                        <img style="width: 74px; height: 80px; margin-bottom: 16px ;" src="' + imageProductForCart + '" alt="IMG">\n' +
+                                    '                    </div>\n' +
+                                    '\n' +
+                                    '                    <div class="header-cart-item-txt p-t-8">\n' +
+                                    '                        <a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.chiTietSanPham.sanPham.tenSanPham + ' \n' +
+                                    '                        </a> ' +
+                                    '                        <a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '"class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>\n' +
+                                    '\n' +
+                                    '                        <span class="header-cart-item-info" > ' + product.soLuong + '  x  '  +formatter.format(product.chiTietSanPham.giaBan)+ '</span> \n' +
+                                    '                    </div> \n' +
+                                    '                </li> '
+                                ;
+                                listItem.innerHTML = itemHTML;
+                                cartListElement.appendChild(listItem);
+                                totalAmount += product.chiTietSanPham.giaBan* product.soLuong;
+
+                            });
+
+                            var formattedTotalAmount = formatter.format(totalAmount);
+                            var totalAmountElement = document.getElementById('totalCartValues');
+                            totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
                 });
-                // Nếu có sản phẩm, hiển thị danh sách sản phẩm
-                for (var product of cart) {
-                    var imageProductForCart = '${pageContext.request.contextPath}/' + product.img;
-                    var listItem = document.createElement('li');
-                    listItem.className = 'cart-item';
-                    var itemHTML = ' <li class="header-cart-item flex-w flex-t m-b-12">\n' +
-                        '                    <div class="header-cart-item-img">\n' +
-                        '                        <img style="width: 74px; height: 80px; margin-bottom: 16px ;" src="' + imageProductForCart + '" alt="IMG">\n' +
-                        '                    </div>\n' +
-                        '\n' +
-                        '                    <div class="header-cart-item-txt p-t-8">\n' +
-                        '                        <a href="/sixdo-shop/product/' + product.idSanPham + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.name + ' \n' +
-                        '                        </a> ' +
-                        '                        <a href="/sixdo-shop/product/' + product.idSanPham + '"class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.colorProduct + '</a>\n' +
-                        '\n' +
-                        '                        <span class="header-cart-item-info" > ' + product.soLuong + '  x  ' + formatter.format(product.gia) + '</span> \n' +
-                        '                    </div> \n' +
-                        '                </li> '
-                    ;
+                return;
 
-                    listItem.innerHTML = itemHTML;
-                    cartListElement.appendChild(listItem);
-                    totalAmount += product.gia * product.soLuong;
-                }
-                var formattedTotalAmount = formatter.format(totalAmount);
-                var totalAmountElement = document.getElementById('totalCartValues');
 
-                totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+            var formattedTotalAmount = formatter.format(totalAmount);
+            var totalAmountElement = document.getElementById('totalCartValues');
 
-            }
+            totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+
         });
 
         window.onload = function () {
             // Thực hiện các công việc bạn muốn khi trang được tải
-            cart = getCartFromCookie() || [];
             countProductForCart();
 
-            updateCartOnPage(cart);
+            // updateCartOnPage(cart);
             updateCartCount();
 
         };
 
         //////go cart
 
-        function updateCartOnPage(cart) {
-            var cartListTable = document.getElementById('cartTableBody');
-            var imagePath = '${pageContext.request.contextPath}/';
-            var sumCartTag = document.getElementById('sumCart');
-            var lastPrice = document.getElementById('last-price');
 
-            // Xóa nội dung hiện tại của tbody
-            cartListTable.innerHTML = '';
-
-            // Thêm HTML cho mỗi sản phẩm trong giỏ hàng
-            var sumCartValues = 0;
-            cart.forEach(function (product) {
-                // Tạo một hàng mới trong bảng
-                var listItem = document.createElement('tr');
-                listItem.className = 'table_row';
-
-                // Tạo các ô dữ liệu cho sản phẩm
-                var imageCell = document.createElement('td');
-                imageCell.className = 'column-1';
-                var imageDiv = document.createElement('div');
-                imageDiv.className = 'how-itemcart1';
-                var productImage = document.createElement('img');
-                productImage.src = imagePath + product.img;
-                productImage.alt = 'IMG';
-                productImage.style.width = '76px';
-                productImage.style.borderRadius = '4px';
-                imageDiv.appendChild(productImage);
-                imageCell.appendChild(imageDiv);
-
-                var nameCell = document.createElement('td');
-                var colorCell = document.createElement('p');
-                colorCell.className = 'color-product-cart';
-
-                nameCell.className = 'column-2';
-                nameCell.textContent = product.name;
-                colorCell.textContent = product.colorProduct;
-                nameCell.appendChild(colorCell);
-
-                var priceCell = document.createElement('td');
-                priceCell.className = 'column-3';
-                priceCell.textContent = tempNumberForVnd(product.gia);
-
-                var quantityCell = document.createElement('td');
-                quantityCell.className = 'column-4';
-                var quantityDiv = document.createElement('div');
-                quantityDiv.className = 'wrap-num-product flex-w m-l-auto m-r-0';
-                var decreaseButton = document.createElement('div');
-                decreaseButton.className = 'btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m';
-                decreaseButton.innerHTML = '<i class="fs-16 zmdi zmdi-minus"></i>';
-                decreaseButton.onclick = function () {
-                    // Giảm số lượng khi click vào nút trừ
-                    decreaseProductQuantity(product);
-                };
-                var quantityInput = document.createElement('input');
-                quantityInput.className = 'mtext-104 cl3 txt-center num-product';
-                quantityInput.type = 'number';
-                quantityInput.name = 'num-product1';
-                quantityInput.value = product.soLuong;
-                var increaseButton = document.createElement('div');
-                increaseButton.className = 'btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m';
-                increaseButton.innerHTML = '<i class="fs-16 zmdi zmdi-plus"></i>';
-                increaseButton.onclick = function () {
-                    // Tăng số lượng khi click vào nút cộng
-                    increaseProductQuantity(product);
-                };
-                quantityDiv.appendChild(decreaseButton);
-                quantityDiv.appendChild(quantityInput);
-                quantityDiv.appendChild(increaseButton);
-                quantityCell.appendChild(quantityDiv);
-                var deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fs-16 zmdi zmdi-delete';
-
-                var totalCell = document.createElement('td');
-                totalCell.className = 'column-5';
-                totalCell.textContent = tempNumberForVnd(product.soLuong * product.gia);
-                sumCartValues += (product.soLuong * product.gia)
-                sumCartTag.innerText = tempNumberForVnd(sumCartValues);
-                lastPrice.innerText = tempNumberForVnd(sumCartValues)
-                // Thêm các ô vào hàng mới
-                listItem.appendChild(imageCell);
-                listItem.appendChild(nameCell);
-                listItem.appendChild(priceCell);
-                listItem.appendChild(quantityCell);
-                listItem.appendChild(totalCell);
-
-                // Thêm hàng mới vào tbody
-                cartListTable.appendChild(listItem);
-            });
-            countProductForCart();
-        }
 
 
         var citis = document.getElementById("city");
@@ -657,27 +542,7 @@
             };
         }
 
-        function increaseProductQuantity(product) {
-            product.soLuong++;
-            updateCartOnPage(cart);
-            saveCartToCookie();
-            countProductForCart();
-            updateCartCount();
-        }
 
-        function decreaseProductQuantity(product) {
-            if (product.soLuong > 0) {
-                product.soLuong--;
-                if (product.soLuong === 0) {
-                    // Nếu số lượng giảm xuống 0, xóa sản phẩm khỏi giỏ hàng
-                    cart.splice(cart.indexOf(product), 1);
-                }
-            }
-
-            updateCartOnPage(cart);
-            saveCartToCookie();
-            updateCartCount();
-        }
 
         function tempNumberForVnd(totalAmount) {
             var formatter = new Intl.NumberFormat('vi-VN', {
@@ -701,6 +566,7 @@
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(orderData),
+
                 success: function(response) {
                     $.ajax({
                         url: '/sixdo-shop/sendMail',
@@ -715,21 +581,27 @@
                             showAlertAddCart('Order error.','','error');
                         }
                     });
+
+                success: function (response) {
+                    // Xử lý phản hồi từ máy chủ nếu cần
+
                     console.log(response);
                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    showAlertAddCart('Order Success!','The order has been placed','success');
-                   document.getElementById('sumCart').innerText='0 đ';
-                  document.getElementById('last-price').innerText='0 đ';
-                    updateCartOnPage(getCartFromCookie());
-                    saveCartToCookie();
+                    showAlertAddCart('Order Success!', 'The order has been placed', 'success');
+                    document.getElementById('sumCart').innerText = '0 đ';
+                    document.getElementById('last-price').innerText = '0 đ';
+
                     updateCartCount();
                 },
-                error: function(error) {
+                error: function (error) {
                     // Xử lý lỗi nếu có
                     console.error(error);
-                    showAlertAddCart('Order error.','','error');
+                    showAlertAddCart('Order error.', '', 'error');
                 }
             });
+
+
+
 
         });
 
@@ -744,7 +616,7 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
 
-            console.log("kkkkkkkss "+ parseFloat(lastPriceCleaned))
+            console.log("kkkkkkkss " + parseFloat(lastPriceCleaned))
 
 
             var orderData = {
@@ -752,9 +624,9 @@
                 hoadon: {
                     tenNguoiNhan: name,
                     sdtNguoiNhan: phone,
-                    emailNguoiNhan : email,
-                    diaChiNguoiNhan : village + ', ' + ward + ',' + district + ', ' + city,
-                    tongTien :parseFloat(lastPriceCleaned)
+                    emailNguoiNhan: email,
+                    diaChiNguoiNhan: village + ', ' + ward + ',' + district + ', ' + city,
+                    tongTien: parseFloat(lastPriceCleaned)
 
                 }
             };

@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Shoping Cart</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -86,32 +87,48 @@
                                 <th class="column-5">Total</th>
                             </tr>
                             </thead>
+
                             <tbody id="cartTableBody">
+                            <c:set var="totalPrice" value="0"/>
+                            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="loop">
 
-                            <tr class="table_row">
-                                <td class="column-1">
-                                    <div class="how-itemcart1">
-                                        <img id="imageProduct-in-cart" src="images/item-cart-04.jpg" alt="IMG">
-                                    </div>
-                                </td>
-                                <td class="column-2" id="nameProduct-in-cart">Fresh Strawberries</td>
-                                <td class="column-3" id="priceProduct-in-cart">$ 36.00</td>
-                                <td class="column-4">
-                                    <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                            <i class="fs-16 zmdi zmdi-minus"></i>
+                                <tr class="table_row">
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img id="imageProduct-in-cart" src="${o.chiTietSanPham.hinhAnh}" alt="IMG">
                                         </div>
-
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                               name="num-product1" id="quantityProduct-in-cart" value="1">
-
-                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                            <i class="fs-16 zmdi zmdi-plus"></i>
+                                    </td>
+                                    <td class="column-2"
+                                        id="nameProduct-in-cart">${o.chiTietSanPham.sanPham.tenSanPham}</td>
+                                    <td class="column-3" id="priceProduct-in-cart"><fmt:formatNumber pattern="#,###"
+                                                                                                     var="donGia"
+                                                                                                     value="${o.chiTietSanPham.giaBan}"></fmt:formatNumber>
+                                            ${donGia}đ
+                                    </td>
+                                    <td class="column-4">
+                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                   name="num-product${o.chiTietSanPham.id}" id="quantityProduct${o.idChiTietSanPham}" value="${o.soLuong}">
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="column-5" id="sumPrice-in-cart">$ 36.00</td>
-                            </tr>
+                                    </td>
+                                    <td class="column-5" id="sumPrice-in-cart"><fmt:formatNumber pattern="#,###"
+                                                                                                 var="tongTam"
+                                                                                                 value="${o.chiTietSanPham.giaBan*o.soLuong}"></fmt:formatNumber>
+                                            ${tongTam}đ
+                                    </td>
+
+                                    <c:set var="temp" value="${o.chiTietSanPham.giaBan * o.soLuong}"/>
+                                    <c:set var="totalPrice" value="${totalPrice + temp}"/>
+                                </tr>
+
+                            </c:forEach>
+
                             </tbody>
 
                         </table>
@@ -147,8 +164,9 @@
 
                         <div class="size-209">
 								<span class="mtext-110 cl2" id="sumCart">
-									0 đ
-								</span>
+<fmt:formatNumber pattern="#,###" var="tempTongTam"
+                  value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ
+                                </span>
                         </div>
                     </div>
 
@@ -226,8 +244,8 @@
 
                         <div class="size-209 p-t-1">
 								<span class="mtext-110 cl2" id="last-price">
-									0 đ
-								</span>
+<fmt:formatNumber pattern="#,###" var="tempTongTam"
+                  value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ								</span>
                         </div>
                     </div>
 
@@ -266,6 +284,33 @@
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+
+    <%--function tangSoLuong(idChiTietSp) {--%>
+    <%--    var inputElement = document.getElementById('quantityProduct' + idChiTietSp);--%>
+    <%--    inputElement.value = parseInt(inputElement.value) + 1;--%>
+    <%--    $.ajax({--%>
+    <%--        url: '/sixdo-shop/thay-doi-so-luong-san-pham',--%>
+    <%--        type: 'POST',--%>
+    <%--        contentType: 'application/json',--%>
+    <%--        data: JSON.stringify({--%>
+    <%--            idGioHang: ${empty listGioHangBuyer ? 0 : listGioHangBuyer[0].idGioHang},--%>
+    <%--            idChiTietSanPham: idChiTietSp,--%>
+    <%--            soLuong: inputElement.value--%>
+    <%--        }),--%>
+    <%--        success: function (response) {--%>
+
+    <%--        },--%>
+    <%--        error: function (error) {--%>
+    <%--            console.error(error);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
+
+    <%--function giamSoLuong(idGioHang) {--%>
+    <%--    var inputElement = document.getElementById('quantityProduct' + idGioHang);--%>
+    <%--}--%>
+
+
     $(".js-select2").each(function () {
         $(this).select2({
             minimumResultsForSearch: 20,

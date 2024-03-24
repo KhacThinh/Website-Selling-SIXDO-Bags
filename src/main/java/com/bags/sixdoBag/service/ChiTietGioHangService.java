@@ -10,7 +10,7 @@ import java.util.List;
 public interface ChiTietGioHangService {
     public ChiTietGioHang getChiTietGioHang(Integer idChiTietGioHang);
 
-    public List<ChiTietGioHang> getChiTietGioHangs();
+    public List<ChiTietGioHang> getChiTietGioHangs(int idKhachHang);
 
     public ChiTietGioHang addChiTietGioHang(ChiTietGioHangRequestDto chiTietGioHangRequestDto);
 
