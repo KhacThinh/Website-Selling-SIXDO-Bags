@@ -1,10 +1,12 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.entitys.SanPhamYeuThich;
 import com.bags.sixdoBag.model.entitys.SanPhamYeuThichID;
+import com.bags.sixdoBag.model.repository.QueryJpa;
 import com.bags.sixdoBag.model.repository.SanPhamYeuThichRepository;
 import com.bags.sixdoBag.service.KhachHangService;
 import com.bags.sixdoBag.service.SanPhamService;
@@ -12,7 +14,10 @@ import com.bags.sixdoBag.service.SanPhamYeuThichService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
@@ -20,7 +25,9 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
 
     public final SanPhamService sanPhamService;
 
-    public  final KhachHangService khachHangService;
+    public final KhachHangService khachHangService;
+
+    private final QueryJpa queryJpa = new QueryJpa();
 
 
     @Override
@@ -29,14 +36,19 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
     }
 
     @Override
-    public List<SanPhamYeuThich> getListSanPhamYeuThich() {
-        List<SanPhamYeuThich>listSPYT= sanPhamYeuThichRepository.findSanPhamYeuThichByAll();
-        return listSPYT;
+    public List<ProductHomeRequest> getListSanPhamYeuThich(int idKhachHang) {
+        List<ProductHomeRequest> productHomeRequestList = new ArrayList<>();
+        KhachHang khachHang = khachHangService.getidKhachHang(idKhachHang);
+        if (Objects.nonNull(khachHang)) {
+            productHomeRequestList = queryJpa.getSanPhamYeuThich(khachHang.getId());
+        }
+        return productHomeRequestList;
     }
+
 
     @Override
     public SanPhamYeuThich addSanPhamYeuThich(SanPhamYeuThichRequest sanPhamYeuThichRequest) {
-        SanPhamYeuThich sanPhamYeuThich= new SanPhamYeuThich();
+        SanPhamYeuThich sanPhamYeuThich = new SanPhamYeuThich();
         Integer idSanPham = sanPhamYeuThichRequest.getIdSanPham();
         Integer idKhachHang = sanPhamYeuThichRequest.getIdKhachHang();
         SanPham sp = sanPhamService.getSanPham(idSanPham);
@@ -54,9 +66,8 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
     }
 
 
-
     @Override
-    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang) {
+    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham, Integer idKhachHang) {
         SanPhamYeuThich sanPhamYeuThich = sanPhamYeuThichRepository.findSanPhamYeuThichByIdSpAndIdKh(idSanPham, idKhachHang);
 
 

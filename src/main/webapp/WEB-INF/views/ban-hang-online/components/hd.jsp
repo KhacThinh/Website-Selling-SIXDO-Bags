@@ -21,7 +21,7 @@
         }
 
 
-    .loader {
+        .loader {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -62,6 +62,7 @@
             align-items: center;
             column-gap: 25px;
         }
+
         .navbar_content i {
             cursor: pointer;
             font-size: 20px;
@@ -165,10 +166,10 @@
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
-                    <a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                       data-notify="0">
-                        <i class="zmdi zmdi-favorite-outline"></i>
-                    </a>
+                    <div id="product-favorite-header">
+                        <%--                        sản phẩm yêu thích--%>
+                    </div>
+
 
                     <c:choose>
                         <c:when test="${khachHang == null}">
@@ -206,8 +207,8 @@
                 <div class="navbar_content">
                     <i class="bi bi-grid"></i>
                     <i class='bx bx-sun' id="darkLight"></i>
-                    <i class='bx bx-bell' ></i>
-                    <img src="../static/images/profile.jpg" alt="" class="profile" />
+                    <i class='bx bx-bell'></i>
+                    <img src="../static/images/profile.jpg" alt="" class="profile"/>
                 </div>
             </nav>
         </div>
@@ -333,7 +334,29 @@
 
     </div>
 </header>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
+
+    $(document).ready(function () {
+        prouductFavoriteQuantity();
+    });
+
+    function prouductFavoriteQuantity() {
+        $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
+            displaySoLuongSanPhamFavorite(data);
+        });
+    }
+
+    function displaySoLuongSanPhamFavorite(soLuong) {
+        const container = $('#product-favorite-header');
+        container.empty();
+        var productHTML = '<a href="/sixdo-shop/product-favorite" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="' + soLuong + '">';
+        productHTML += '<i class="zmdi zmdi-favorite-outline"></i></a>';
+        container.append(productHTML);
+    }
+
+
     document.addEventListener("DOMContentLoaded", function () {
         // Hiển thị spinner
         document.getElementById("loading-spinner").style.display = "block";
@@ -346,7 +369,7 @@
 
     });
 
-    document.getElementById("logoutLink").addEventListener("click", function(event) {
+    document.getElementById("logoutLink").addEventListener("click", function (event) {
         event.preventDefault();
 
         Swal.fire({

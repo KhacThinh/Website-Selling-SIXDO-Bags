@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.controller.Online;
 
 
+import com.bags.sixdoBag.config.UserLoginKhachHang;
 import com.bags.sixdoBag.model.dto.request.ChiTietGioHangRequestDto;
 import com.bags.sixdoBag.model.dto.request.GioHangRequest;
 import com.bags.sixdoBag.model.dto.request.OderDataDto;
@@ -110,8 +111,10 @@ public class ProductController {
     public String buyerLogin(Model model) {
         return "ban-hang-online/home/buyer-login";
     }
+
     @GetMapping("/logout")
     public String buyerLogout(Model model) {
+        UserLoginKhachHang.idKhachHangFavorite = null;
         session.removeAttribute("buyer");
 
         return "redirect:/sixdo-shop";
@@ -121,7 +124,7 @@ public class ProductController {
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
+        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
 
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
@@ -144,7 +147,7 @@ public class ProductController {
         ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
         chiTietGioHangService.addChiTietGioHang(ct);
 
-        return ResponseEntity.ok(soLuongSanPhamGioHang+Integer.parseInt(soLuong));
+        return ResponseEntity.ok(soLuongSanPhamGioHang + Integer.parseInt(soLuong));
 
     }
 
@@ -182,7 +185,7 @@ public class ProductController {
     public String productDetailById(Model model, @PathVariable int id) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         model.addAttribute("khachHang", khachHang);
-        model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
+        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
 
         List<ChiTietSanPham> list = chiTietSanPhamServivce.getChiTietSanPhamById(id);
         List<ChiTietSanPham> sortedList = list.stream()
@@ -254,6 +257,21 @@ public class ProductController {
 //        return "ban-hang-online/home/index";
         return "redirect:/sixdo-shop";
 
+    }
+
+    @GetMapping("product-favorite")
+    public String productFavorite(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
+        model.addAttribute("khachHang", khachHang);
+
+        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0);
+        soLuongSanPhamGioHang = khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0;
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+
+
+        model.addAttribute("listSp", productHomeRequestList);
+        return "ban-hang-online/home/product-favorite";
     }
 
 }

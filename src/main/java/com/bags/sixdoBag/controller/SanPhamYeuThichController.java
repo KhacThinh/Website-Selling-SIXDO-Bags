@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/san_pham_yeu_thich")
+@RequestMapping("/san-pham-yeu-thich")
 public class SanPhamYeuThichController {
     public final SanPhamYeuThichService sanPhamYeuThichService;
 
     @GetMapping("")
     public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(sanPhamYeuThichService.getListSanPhamYeuThich(), HttpStatus.OK);
+        return new ResponseEntity<>(sanPhamYeuThichService.getListSanPhamYeuThich(1), HttpStatus.OK);
     }
 
 
