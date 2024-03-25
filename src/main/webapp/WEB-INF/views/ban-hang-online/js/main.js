@@ -359,6 +359,7 @@
             var selectedIdValue = document.getElementById('select-id-color').value;
             var quantityProduct = 0;
             quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
+            var isValid;
             if (idKhachHang == "") {
                 Swal.fire({
                     title: "Login to add products to cart",
@@ -372,9 +373,16 @@
                     }
                 });
             }
-
-            $.ajax({
-                    url: '/sixdo-shop/add-to-cart-buyer',
+            if(quantityProduct===0){
+                alert("So luong phai lon hon 0")
+                return isValid= false;
+            }if(quantityProduct< 0){
+                alert("So luong khong duoc am")
+                return isValid =false;
+            }
+            if(isValid!=false){
+                $.ajax({
+                    url: '/sixdo-shop/check-soLuong',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
@@ -383,15 +391,39 @@
                         soLuong: quantityProduct
                     }),
                     success: function (response) {
-                        const count = document.querySelector('.icon-count-cart');
-                        count.setAttribute('data-notify', response);
-                        showAlertAddCart('Success!', 'Product added to cart!', 'success');
-
+                        if(response==="ok"){
+                            $.ajax({
+                                url: '/sixdo-shop/add-to-cart-buyer',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    idKhachHang: idKhachHang,
+                                    idChiTietSanPham: selectedIdValue,
+                                    soLuong: quantityProduct
+                                }),
+                                success: function (response) {
+                                    if(response==="ok"){
+                                        const count = document.querySelector('.icon-count-cart');
+                                        count.setAttribute('data-notify', response);
+                                        showAlertAddCart('Success!', 'Product added to cart!', 'success');
+                                    }
+                                },
+                                error: function (error) {
+                                    console.error(error);
+                                }
+                            });
+                        }else{
+                            alert("Ban Chi duoc them toi da: " + response+"sp");
+                        }
                     },
                     error: function (error) {
                         console.error(error);
                     }
                 });
+            }
+
+
+
 
 
         });
@@ -493,11 +525,6 @@
 
         };
 
-        //////go cart
-
-
-
-
         var citis = document.getElementById("city");
         var districts = document.getElementById("district");
         var wards = document.getElementById("ward");
@@ -582,8 +609,7 @@
                         }
                     });
 
-                success: function (response) {
-                    // Xử lý phản hồi từ máy chủ nếu cần
+
 
                     console.log(response);
                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -638,5 +664,3 @@
     }
 
 )(jQuery);
-
-

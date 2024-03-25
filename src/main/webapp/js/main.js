@@ -521,96 +521,97 @@
 
         //////go cart
 
-        function updateCartOnPage(cart) {
-            var cartListTable = document.getElementById('cartTableBody');
-            var imagePath = '${pageContext.request.contextPath}/';
-            var sumCartTag = document.getElementById('sumCart');
-            var lastPrice = document.getElementById('last-price');
-
-            // Xóa nội dung hiện tại của tbody
-            cartListTable.innerHTML = '';
-
-            // Thêm HTML cho mỗi sản phẩm trong giỏ hàng
-            var sumCartValues = 0;
-            cart.forEach(function (product) {
-                // Tạo một hàng mới trong bảng
-                var listItem = document.createElement('tr');
-                listItem.className = 'table_row';
-
-                // Tạo các ô dữ liệu cho sản phẩm
-                var imageCell = document.createElement('td');
-                imageCell.className = 'column-1';
-                var imageDiv = document.createElement('div');
-                imageDiv.className = 'how-itemcart1';
-                var productImage = document.createElement('img');
-                productImage.src = imagePath + product.img;
-                productImage.alt = 'IMG';
-                productImage.style.width = '76px';
-                productImage.style.borderRadius = '4px';
-                imageDiv.appendChild(productImage);
-                imageCell.appendChild(imageDiv);
-
-                var nameCell = document.createElement('td');
-                var colorCell = document.createElement('p');
-                colorCell.className = 'color-product-cart';
-
-                nameCell.className = 'column-2';
-                nameCell.textContent = product.name;
-                colorCell.textContent = product.colorProduct;
-                nameCell.appendChild(colorCell);
-
-                var priceCell = document.createElement('td');
-                priceCell.className = 'column-3';
-                priceCell.textContent = tempNumberForVnd(product.gia);
-
-                var quantityCell = document.createElement('td');
-                quantityCell.className = 'column-4';
-                var quantityDiv = document.createElement('div');
-                quantityDiv.className = 'wrap-num-product flex-w m-l-auto m-r-0';
-                var decreaseButton = document.createElement('div');
-                decreaseButton.className = 'btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m';
-                decreaseButton.innerHTML = '<i class="fs-16 zmdi zmdi-minus"></i>';
-                decreaseButton.onclick = function () {
-                    // Giảm số lượng khi click vào nút trừ
-                    decreaseProductQuantity(product);
-                };
-                var quantityInput = document.createElement('input');
-                quantityInput.className = 'mtext-104 cl3 txt-center num-product';
-                quantityInput.type = 'number';
-                quantityInput.name = 'num-product1';
-                quantityInput.value = product.soLuong;
-                var increaseButton = document.createElement('div');
-                increaseButton.className = 'btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m';
-                increaseButton.innerHTML = '<i class="fs-16 zmdi zmdi-plus"></i>';
-                increaseButton.onclick = function () {
-                    // Tăng số lượng khi click vào nút cộng
-                    increaseProductQuantity(product);
-                };
-                quantityDiv.appendChild(decreaseButton);
-                quantityDiv.appendChild(quantityInput);
-                quantityDiv.appendChild(increaseButton);
-                quantityCell.appendChild(quantityDiv);
-                var deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fs-16 zmdi zmdi-delete';
-
-                var totalCell = document.createElement('td');
-                totalCell.className = 'column-5';
-                totalCell.textContent = tempNumberForVnd(product.soLuong * product.gia);
-                sumCartValues += (product.soLuong * product.gia)
-                sumCartTag.innerText = tempNumberForVnd(sumCartValues);
-                lastPrice.innerText = tempNumberForVnd(sumCartValues)
-                // Thêm các ô vào hàng mới
-                listItem.appendChild(imageCell);
-                listItem.appendChild(nameCell);
-                listItem.appendChild(priceCell);
-                listItem.appendChild(quantityCell);
-                listItem.appendChild(totalCell);
-
-                // Thêm hàng mới vào tbody
-                cartListTable.appendChild(listItem);
-            });
-            countProductForCart();
-        }
+        // function updateCartOnPage(cart) {
+        //     var cartListTable = document.getElementById('cartTableBody');
+        //     var imagePath = '${pageContext.request.contextPath}/';
+        //     var sumCartTag = document.getElementById('sumCart');
+        //     var lastPrice = document.getElementById('last-price');
+        //     alert("+");
+        //
+        //     // Xóa nội dung hiện tại của tbody
+        //     cartListTable.innerHTML = '';
+        //
+        //     // Thêm HTML cho mỗi sản phẩm trong giỏ hàng
+        //     var sumCartValues = 0;
+        //     cart.forEach(function (product) {
+        //         // Tạo một hàng mới trong bảng
+        //         var listItem = document.createElement('tr');
+        //         listItem.className = 'table_row';
+        //
+        //         // Tạo các ô dữ liệu cho sản phẩm
+        //         var imageCell = document.createElement('td');
+        //         imageCell.className = 'column-1';
+        //         var imageDiv = document.createElement('div');
+        //         imageDiv.className = 'how-itemcart1';
+        //         var productImage = document.createElement('img');
+        //         productImage.src = imagePath + product.img;
+        //         productImage.alt = 'IMG';
+        //         productImage.style.width = '76px';
+        //         productImage.style.borderRadius = '4px';
+        //         imageDiv.appendChild(productImage);
+        //         imageCell.appendChild(imageDiv);
+        //
+        //         var nameCell = document.createElement('td');
+        //         var colorCell = document.createElement('p');
+        //         colorCell.className = 'color-product-cart';
+        //
+        //         nameCell.className = 'column-2';
+        //         nameCell.textContent = product.name;
+        //         colorCell.textContent = product.colorProduct;
+        //         nameCell.appendChild(colorCell);
+        //
+        //         var priceCell = document.createElement('td');
+        //         priceCell.className = 'column-3';
+        //         priceCell.textContent = tempNumberForVnd(product.gia);
+        //
+        //         var quantityCell = document.createElement('td');
+        //         quantityCell.className = 'column-4';
+        //         var quantityDiv = document.createElement('div');
+        //         quantityDiv.className = 'wrap-num-product flex-w m-l-auto m-r-0';
+        //         var decreaseButton = document.createElement('div');
+        //         decreaseButton.className = 'btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m';
+        //         decreaseButton.innerHTML = '<i class="fs-16 zmdi zmdi-minus"></i>';
+        //         decreaseButton.onclick = function () {
+        //             // Giảm số lượng khi click vào nút trừ
+        //             decreaseProductQuantity(product);
+        //         };
+        //         var quantityInput = document.createElement('input');
+        //         quantityInput.className = 'mtext-104 cl3 txt-center num-product';
+        //         quantityInput.type = 'number';
+        //         quantityInput.name = 'num-product1';
+        //         quantityInput.value = product.soLuong;
+        //         var increaseButton = document.createElement('div');
+        //         increaseButton.className = 'btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m';
+        //         increaseButton.innerHTML = '<i class="fs-16 zmdi zmdi-plus"></i>';
+        //         increaseButton.onclick = function () {
+        //             // Tăng số lượng khi click vào nút cộng
+        //             increaseProductQuantity(product);
+        //         };
+        //         quantityDiv.appendChild(decreaseButton);
+        //         quantityDiv.appendChild(quantityInput);
+        //         quantityDiv.appendChild(increaseButton);
+        //         quantityCell.appendChild(quantityDiv);
+        //         var deleteIcon = document.createElement('i');
+        //         deleteIcon.className = 'fs-16 zmdi zmdi-delete';
+        //
+        //         var totalCell = document.createElement('td');
+        //         totalCell.className = 'column-5';
+        //         totalCell.textContent = tempNumberForVnd(product.soLuong * product.gia);
+        //         sumCartValues += (product.soLuong * product.gia)
+        //         sumCartTag.innerText = tempNumberForVnd(sumCartValues);
+        //         lastPrice.innerText = tempNumberForVnd(sumCartValues)
+        //         // Thêm các ô vào hàng mới
+        //         listItem.appendChild(imageCell);
+        //         listItem.appendChild(nameCell);
+        //         listItem.appendChild(priceCell);
+        //         listItem.appendChild(quantityCell);
+        //         listItem.appendChild(totalCell);
+        //
+        //         // Thêm hàng mới vào tbody
+        //         cartListTable.appendChild(listItem);
+        //     });
+        //     countProductForCart();
+        // }
 
 
         var citis = document.getElementById("city");

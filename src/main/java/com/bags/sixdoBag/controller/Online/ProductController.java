@@ -11,6 +11,7 @@ import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.repository.ChiTietGioHangRepository;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 
 import com.bags.sixdoBag.model.user.EmailService;
@@ -85,6 +86,8 @@ public class ProductController {
     private final GioHangService gioHangService;
     private final ChiTietGioHangService chiTietGioHangService;
 
+    private final ChiTietGioHangRepository chiTietGioHangRepository;
+
     @Autowired
     private HttpSession session;
     private int idKhachHangFinal = 0;
@@ -147,22 +150,79 @@ public class ProductController {
         return "ban-hang-online/home/index";
     }
 
+    @PostMapping("/check-soLuong")
+    public ResponseEntity<?>checkSoLuong(@RequestBody Map<String, Object> requestBody){
+        String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
+        String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
+        String soLuong = String.valueOf(requestBody.get("soLuong"));
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+        Integer soLuongCu=0;
+        Integer soLuongCheck=0;
+        Integer soLuongToiDa =0;
+        if(chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang)).isEmpty()){
+            if(Integer.parseInt(soLuong)<=chiTietSanPham.getSoLuong()){
+
+                return ResponseEntity.ok("ok");
+            }else{
+                return ResponseEntity.ok(chiTietSanPham.getSoLuong());
+            }
+        }else{
+            List<ChiTietGioHang>listCTGH= chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
+            for (int i = 0; i <listCTGH.size() ; i++) {
+                if(listCTGH.get(i).getIdChiTietSanPham()==Integer.parseInt(idChiTietSanPham)){
+                    soLuongCu=listCTGH.get(i).getSoLuong();
+                }
+            }
+            soLuongCheck=Integer.parseInt(soLuong)+soLuongCu;
+            soLuongToiDa = chiTietSanPham.getSoLuong()-soLuongCu;
+
+            if(soLuongCheck<=chiTietSanPham.getSoLuong()){
+                return ResponseEntity.ok("ok");
+
+            }else{
+                return ResponseEntity.ok(soLuongToiDa);
+            }
+        }
+    }
+
     @PostMapping("/add-to-cart-buyer")
     public ResponseEntity<?> addToCartByBuyer(@RequestBody Map<String, Object> requestBody) {
         String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
         String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
         String soLuong = String.valueOf(requestBody.get("soLuong"));
         int idGioHang = gioHangService.getIdGioHang(Integer.valueOf(idKhachHang));
-        ChiTietGioHangRequestDto ct = new ChiTietGioHangRequestDto();
-        ct.setSoLuong(Integer.parseInt(soLuong));
-        ct.setIdGioHang(idGioHang);
-        ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-        chiTietGioHangService.addChiTietGioHang(ct);
-
-        return ResponseEntity.ok(soLuongSanPhamGioHang + Integer.parseInt(soLuong));
-
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+        Integer soLuongCu=0;
+        Integer soLuongMoi=0;
+        List<ChiTietGioHang>listCTGH= chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
+        if(listCTGH.isEmpty()){
+            System.out.println("th1");
+                ChiTietGioHangRequestDto ct = new ChiTietGioHangRequestDto();
+                ct.setSoLuong(Integer.parseInt(soLuong));
+                ct.setIdGioHang(idGioHang);
+                ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+                chiTietGioHangService.addChiTietGioHang(ct);
+                return ResponseEntity.ok("ok");
+        }else{
+            System.out.println("th2");
+            for (ChiTietGioHang ctgh:listCTGH
+                 ) {
+                if(ctgh.getIdChiTietSanPham()==Integer.parseInt(idChiTietSanPham)){
+                    soLuongCu=ctgh.getSoLuong();
+                    soLuongMoi=soLuongCu+Integer.parseInt(soLuong);
+                }
+            }
+                ChiTietGioHangRequestDto ct2 = new ChiTietGioHangRequestDto();
+            if(soLuongMoi==0){
+                soLuongMoi=Integer.parseInt(soLuong);
+            }
+                ct2.setSoLuong(soLuongMoi);
+                ct2.setIdGioHang(idGioHang);
+                ct2.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+                chiTietGioHangService.addChiTietGioHang(ct2);
+                return ResponseEntity.ok("ok");
+        }
     }
-
     @PostMapping("/get-cart-by-buyer")
     public ResponseEntity<?> getCartByBuyer(@RequestBody Map<String, Object> requestBody) {
         String idKhachHang = String.valueOf(requestBody.get("idKhachHang2"));
