@@ -14,7 +14,6 @@
 				<span class="mtext-103 cl2">
 					Your Cart
 				</span>
-
             <div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
                 <i class="zmdi zmdi-close"></i>
             </div>
@@ -23,17 +22,15 @@
         <div class="header-cart-content flex-w js-pscroll">
             <ul class="header-cart-wrapitem w-full"  id="cartProductList">
                 <li class="header-cart-item flex-w flex-t m-b-12">
-                    <div class="header-cart-item-img">
+                    <div class="header-cart-item-img" id="header-cart-item-img-cart">
                         <img src="" alt="IMG">
                     </div>
 
                     <div class="header-cart-item-txt p-t-8">
                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-<%--                            White Shirt Pleat--%>
-                        </a>
 
+                        </a>
                         <span class="header-cart-item-info">
-<%--								1 x $19.00--%>
 							</span>
                     </div>
                 </li>
@@ -55,5 +52,31 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Nhúng thư viện SweetAlert -->
+
+<script>
+    // Lấy phần tử div có id là 'header-cart-item-img-cart'
+    var cartItemDiv = document.getElementById('header-cart-item-img-cart');
+
+    // Thêm sự kiện click vào phần tử div
+    cartItemDiv.addEventListener('click', function() {
+        // Hiển thị thông báo khi click vào phần tử div
+        showAlert();
+    });
+
+    // Định nghĩa hàm hiển thị thông báo
+    function showAlert() {
+        Swal.fire({
+            title: 'Thông báo',
+            text: 'Nội dung thông báo của bạn ở đây.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+</script>
+
+
 </body>
 </html>
