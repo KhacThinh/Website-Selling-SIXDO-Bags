@@ -371,9 +371,8 @@
                         window.location.href = "/sixdo-shop/login";
                     }
                 });
-            }
-
-            $.ajax({
+            }else {
+                $.ajax({
                     url: '/sixdo-shop/add-to-cart-buyer',
                     type: 'POST',
                     contentType: 'application/json',
@@ -392,6 +391,9 @@
                         console.error(error);
                     }
                 });
+            }
+
+
 
 
         });
@@ -486,10 +488,6 @@
 
         window.onload = function () {
             // Thực hiện các công việc bạn muốn khi trang được tải
-            countProductForCart();
-
-            // updateCartOnPage(cart);
-            updateCartCount();
 
         };
 
@@ -557,64 +555,8 @@
         ///////////////đặt hàng
 
 
-        $('.submit-oder-by-cart').on('click', function () {
-            var orderData = createOrderData();
-
-            // Gửi dữ liệu giỏ hàng lên máy chủ
-            $.ajax({
-                url: '/sixdo-shop/placeOrder',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(orderData),
-                success: function (response) {
-                    // Xử lý phản hồi từ máy chủ nếu cần
-                    console.log(response);
-                    document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    showAlertAddCart('Order Success!', 'The order has been placed', 'success');
-                    document.getElementById('sumCart').innerText = '0 đ';
-                    document.getElementById('last-price').innerText = '0 đ';
-
-                    updateCartCount();
-
-                },
-                error: function (error) {
-                    // Xử lý lỗi nếu có
-                    console.error(error);
-                    showAlertAddCart('Order error.', '', 'error');
-                }
-            });
 
 
-        });
-
-        function createOrderData() {
-            var name = document.querySelector('input[name="name-for-cart"]').value;
-            var phone = document.querySelector('input[name="phone-for-cart"]').value;
-            var email = document.querySelector('input[name="email-for-cart"]').value;
-            var city = document.getElementById('city').value;
-            var district = document.getElementById('district').value;
-            var ward = document.getElementById('ward').value;
-            var village = document.getElementById('village').value;
-            var lastPrice = document.getElementById('last-price').textContent;
-            var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
-
-            console.log("kkkkkkkss " + parseFloat(lastPriceCleaned))
-
-
-            var orderData = {
-                cart: getCartFromCookie() || [],
-                hoadon: {
-                    tenNguoiNhan: name,
-                    sdtNguoiNhan: phone,
-                    emailNguoiNhan: email,
-                    diaChiNguoiNhan: village + ', ' + ward + ',' + district + ', ' + city,
-                    tongTien: parseFloat(lastPriceCleaned)
-
-                }
-            };
-
-            return orderData;
-        }
 
 
     }

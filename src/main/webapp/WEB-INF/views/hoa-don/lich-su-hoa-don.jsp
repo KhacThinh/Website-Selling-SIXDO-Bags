@@ -206,7 +206,7 @@
                                                 <span> ${hd.key.maHoaDon}</span>
                                             </div>
                                             <div class="form-group">
-                                                <label>Tài Khoản : </label>
+                                                <label>Tài Khoản :<a>${hd.key.khachHang.tenKhachHang} - ${hd.key.khachHang.maKhachHang} </a> </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6" style="margin: 0px">

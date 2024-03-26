@@ -110,6 +110,7 @@ public class ProductController {
     public String buyerLogin(Model model) {
         return "ban-hang-online/home/buyer-login";
     }
+
     @GetMapping("/logout")
     public String buyerLogout(Model model) {
         session.removeAttribute("buyer");
@@ -121,7 +122,7 @@ public class ProductController {
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
+        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
 
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
@@ -144,7 +145,7 @@ public class ProductController {
         ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
         chiTietGioHangService.addChiTietGioHang(ct);
 
-        return ResponseEntity.ok(soLuongSanPhamGioHang+Integer.parseInt(soLuong));
+        return ResponseEntity.ok(soLuongSanPhamGioHang + Integer.parseInt(soLuong));
 
     }
 
@@ -182,7 +183,7 @@ public class ProductController {
     public String productDetailById(Model model, @PathVariable int id) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         model.addAttribute("khachHang", khachHang);
-        model.addAttribute("soLuongSanPhamGioHang",soLuongSanPhamGioHang);
+        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
 
         List<ChiTietSanPham> list = chiTietSanPhamServivce.getChiTietSanPhamById(id);
         List<ChiTietSanPham> sortedList = list.stream()
@@ -235,10 +236,11 @@ public class ProductController {
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OderDataDto orderData) {
-
+        KhachHang khachHang = orderData.getKhachHang();
         System.out.println("nham neees");
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
+        hoaDon.setKhachHang(khachHang);
         hoaDon.setTrangThai(2);
         hoaDonService.saveHoaDon(hoaDon);
         hoaDon.setId(hoaDon.getId());

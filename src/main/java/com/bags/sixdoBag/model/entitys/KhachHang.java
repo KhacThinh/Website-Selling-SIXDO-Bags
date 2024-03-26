@@ -44,6 +44,9 @@ KhachHang {
     @Column(name = "trang_thai")
     private Integer trangThai;
 
+    @Column(name = "dia_chi")
+    private String diaChi;
+
     @ManyToOne
     @JoinColumn(name = "id_tai_khoan")
     private TaiKhoan taiKhoan;

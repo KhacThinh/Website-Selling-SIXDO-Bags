@@ -33,16 +33,28 @@ public class LoginController {
     @Autowired
     private HttpServletRequest request;
 
+
+
     @GetMapping("/login/hien-thi")
     public String hienThiSanPham(Model model) {
+        /////tạo hàm random 4 số
+
+
+
+
         session.removeAttribute("nhanVien");
-        session.removeAttribute("quanLy");
 
         model.addAttribute("action","/login/dang-nhap-nhan-vien");
 
         return "login";
     }
 
+
+    @GetMapping("/logout/quan-ly")
+    public String logOutQuanLy(Model model) {
+        session.removeAttribute("quanLy");
+        return "redirect:/login/hien-thi";
+    }
 
     @PostMapping("/buyer-login/check")
     public String loginByBuyer(@RequestParam("username-login")String userName,
@@ -61,13 +73,14 @@ public class LoginController {
 
 
 
+
+
     }
 
     @PostMapping("/login/dang-nhap-nhan-vien")
     public String dangNhapNhanVien(@RequestParam("email")String email, @RequestParam("mat_khau") String mat_khau, Model model){
         NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
-        session.removeAttribute("nhanVien");
-        session.removeAttribute("quanLy");
+
         if (email.isEmpty() || mat_khau.isEmpty()){
             model.addAttribute("mes","Không được bỏ trống");
             session.setAttribute("error","Không được bỏ trống");

@@ -1,13 +1,17 @@
 package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.DanhSachKhachHangApMgg;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,12 +30,26 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia, Integer> {
 
 
 
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO danh_sach_kh_mgg (id_khach_hang, id_ma_giam_gia) VALUES " +
+            "(:idKhachHang,:idMaGiamGia)", nativeQuery = true)
+    void insertKhachHangApMgg(@Param("idKhachHang") int idKhachHang, @Param("idMaGiamGia") int idMaGiamGia);
+
+
+    @Query(value = "select max (ms.id) from MaGiamGia ms")
+    int top1IdMaGiamGia();
+
     @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from ma_gia_gia \n" +
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     List<MaGiamGia> findByPageing(int page, int size);
 
     @Query(value = "select ms from MaGiamGia ms where ms.maGiamGia =:ma")
     MaGiamGia searchMaGiamGiaByMa(String ma);
+
+
+    @Query(value = "select danh_sach_kh_mgg.id_khach_hang from danh_sach_kh_mgg where id_khach_hang=:idKhachHang and id_ma_giam_gia=:idMaGiamGia", nativeQuery = true)
+    int apDungMaGiamGia(@Param("idKhachHang") int idKhachHang, @Param("idMaGiamGia") int idMaGiamGia);
 
     @Query(value = "select ms from MaGiamGia ms where ms.tenMaGiamGia =:ten")
     MaGiamGia searchMaGiamGiaByTen(String ten);
