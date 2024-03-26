@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.model.dto.request;
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.HoaDon;
+import com.bags.sixdoBag.model.entitys.KhachHang;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,4 +19,5 @@ import java.util.List;
 public class OderDataDto {
     List<ChiTietHoaDon> cart;
     private HoaDon hoadon;
+    private KhachHang khachHang;
 }

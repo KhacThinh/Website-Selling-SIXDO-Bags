@@ -37,16 +37,23 @@ public class LoginController {
     @Autowired
     private HttpServletRequest request;
 
+
+
     @GetMapping("/login/hien-thi")
     public String hienThiSanPham(Model model) {
         session.removeAttribute("nhanVien");
-        session.removeAttribute("quanLy");
 
         model.addAttribute("action", "/login/dang-nhap-nhan-vien");
 
         return "login";
     }
 
+
+    @GetMapping("/logout/quan-ly")
+    public String logOutQuanLy(Model model) {
+        session.removeAttribute("quanLy");
+        return "redirect:/login/hien-thi";
+    }
 
     @PostMapping("/buyer-login/check")
     public String loginByBuyer(@RequestParam("username-login") String userName,
@@ -64,29 +71,25 @@ public class LoginController {
             return "ban-hang-online/home/buyer-login";
         }
 
-
     }
 
     @PostMapping("/login/dang-nhap-nhan-vien")
     public String dangNhapNhanVien(@RequestParam("email") String email, @RequestParam("mat_khau") String mat_khau, Model model) {
-        NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
-//        NhanVien nv = nhanVienService.getidNhanVien(5);
-        session.removeAttribute("nhanVien");
-        session.removeAttribute("quanLy");
-        if (email.isEmpty() || mat_khau.isEmpty()) {
-            model.addAttribute("mes", "Không được bỏ trống");
-            session.setAttribute("error", "Không được bỏ trống");
+   NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
+
+        if (email.isEmpty() || mat_khau.isEmpty()){
+            model.addAttribute("mes","Không được bỏ trống");
+            session.setAttribute("error","Không được bỏ trống");
             return "login";
-        } else if (nv == null) {
-            session.setAttribute("error", "Sai tên hoặc mk");
+        }else if (nv==null){
+            session.setAttribute("error","Sai tên hoặc mk");
 
             return "login";
-        } else if (nv.getChucVu().getId() == 1) {
-            session.setAttribute("quanLy", nv);
+        }else if (nv.getChucVu().getId()==1){
+            session.setAttribute("quanLy",nv);
             return "redirect:/san-pham";
         }
-        session.setAttribute("nhanVien", nv);
+        session.setAttribute("nhanVien",nv);
         return "redirect:/ban-tai-quay";
-
     }
 }

@@ -370,6 +370,7 @@
                         window.location.href = "/sixdo-shop/login";
                     }
                 });
+
             }
             if(quantityProduct===0){
                 alert("So luong phai lon hon 0")
@@ -381,7 +382,7 @@
             if(isValid!=false){
                 $.ajax({
                     url: '/sixdo-shop/check-soLuong',
-                    type: 'POST',
+                  type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
                         idKhachHang: idKhachHang,
@@ -419,8 +420,6 @@
                     }
                 });
             }
-
-
 
 
 
@@ -495,10 +494,6 @@
 
         window.onload = function () {
             // Thực hiện các công việc bạn muốn khi trang được tải
-            countProductForCart();
-
-            // updateCartOnPage(cart);
-            updateCartCount();
 
         };
 
@@ -637,7 +632,6 @@
 
             return orderData;
         }
-
 
     }
 

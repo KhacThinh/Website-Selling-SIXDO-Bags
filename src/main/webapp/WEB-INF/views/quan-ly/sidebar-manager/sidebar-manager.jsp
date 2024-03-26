@@ -18,6 +18,8 @@
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <title>Admin Dashboard Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <style>
     /* ===== Google Font Import - Poppins ===== */
@@ -610,7 +612,7 @@
     </div>
     <div class="menu-items">
         <ul class="nav-links">
-            <li><a href="#">
+            <li><a href="/thong-ke">
                 <i class="uil uil-estate"></i>
                 <span class="link-name">THỐNG KÊ</span>
             </a></li>
@@ -645,7 +647,7 @@
                         <i class="bi bi-person-fill-gear"></i>
                         <span class="link-name">Nhân Viên</span>
                     </a></li>
-                    <li><a href="/ma_giam_gia?trangThai=true" id="btnMaGiamGia">
+                    <li><a href="/ma-giam-gia?trangThai=true" id="btnMaGiamGia">
                        <i class="bi bi-tag"></i>
                         <span class="link-name">Mã Giảm Giá</span>
                     </a></li>
@@ -672,7 +674,7 @@
         </ul>
 
         <ul class="logout-mode">
-            <li><a href="#">
+            <li id="logoutLink"><a href="#">
                 <i class="uil uil-signout"></i>
                 <span class="link-name">Logout</span>
             </a></li>
@@ -705,6 +707,23 @@
     //         subMenu.classList.toggle("active");
     //     });
     // });
+
+    document.getElementById("logoutLink").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "You want to log out ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Log out",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/logout/quan-ly";
+            }
+        });
+
+    });
     document.addEventListener("DOMContentLoaded", function() {
         // Hiển thị spinner
         document.getElementById("loading-spinner").style.display = "block";

@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.DanhSachKhachHangApMgg;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.MauSac;
@@ -14,10 +15,13 @@ import java.util.List;
 public interface MaGiamGiaService {
 
     public MaGiamGia getMaGiamGia(Integer idMaGiamGia);
+    int apDungMaGiamGia(int idKhachHang , int maGiamGia);
 
     public List<MaGiamGia> getListMaGiamGia();
 
     public MaGiamGia addMaGiamGia(MaGiamGia maGiamGia);
+
+    public MaGiamGia searchMaGiamGiaByMa(String maGiamGia);
 
     public MaGiamGia editMaGiamGia(Integer idMaGiamGia, MaGiamGia maGiamGia);
 
@@ -26,7 +30,8 @@ public interface MaGiamGiaService {
     public List<MaGiamGia> pageMaGiamGia(int limit, int size);
 
     public MaGiamGia getidMaGiamGia(Integer idChucVu);
-
+   void insertKhachHangMgg(int idKhachHang, int idMaGiamGia );
+int top1IdMaGiamGia();
     ////////////////////////////////////////////////////////////////////
     public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable);
     public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable);

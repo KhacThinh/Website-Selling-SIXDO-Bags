@@ -275,16 +275,7 @@ public class ProductController {
 
     }
 
-//    @PostMapping("/thay-doi-so-luong-san-pham")
-//    public ResponseEntity<?> updateSoLuongSanPhamByCart(@RequestBody Map<String, Object> requestBody) {
-//        String idGioHang = String.valueOf(requestBody.get("idGioHang"));
-//        String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
-//        String soLuong = String.valueOf(requestBody.get("soLuong"));
 
-//        List<ChiTietGioHang> chiTietGioHangList=chiTietGioHangService.getChiTietGioHangs(Integer.parseInt(idKhachHang));
-//        System.out.println("ddddddff"+chiTietGioHangList.size());
-//        return ResponseEntity.ok(chiTietGioHangList);
-//    }
 
     @GetMapping("/product/{id}")
     public String productDetailById(Model model, @PathVariable int id) {
@@ -343,10 +334,11 @@ public class ProductController {
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OderDataDto orderData) {
-
+        KhachHang khachHang = orderData.getKhachHang();
         System.out.println("nham neees");
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
+        hoaDon.setKhachHang(khachHang);
         hoaDon.setTrangThai(2);
         hoaDonService.saveHoaDon(hoaDon);
         hoaDon.setId(hoaDon.getId());

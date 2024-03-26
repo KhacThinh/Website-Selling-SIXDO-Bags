@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
 import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.entitys.DanhSachKhachHangApMgg;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
@@ -25,6 +26,11 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
     }
 
     @Override
+    public int apDungMaGiamGia(int idKhachHang, int maGiamGia) {
+        return maGiamGiaRepository.apDungMaGiamGia(idKhachHang,maGiamGia);
+    }
+
+    @Override
     public List<MaGiamGia> getListMaGiamGia() {
         List<MaGiamGia> listMaGiamGia = maGiamGiaRepository.findMaGiamGiaByAll();
         return listMaGiamGia;
@@ -32,6 +38,7 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
 
     @Override
     public MaGiamGia addMaGiamGia(MaGiamGia maGiamGia) {
+        System.out.println("ok roi ne");
         MaGiamGia ma = new MaGiamGia();
         ma.setMaGiamGia(maGiamGia.getMaGiamGia().trim());
         ma.setTenMaGiamGia(maGiamGia.getTenMaGiamGia().trim());
@@ -44,6 +51,11 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
         ma.setTrangThai(true);
         maGiamGiaRepository.save(ma);
         return ma;
+    }
+
+    @Override
+    public MaGiamGia searchMaGiamGiaByMa(String maGiamGia) {
+        return maGiamGiaRepository.searchMaGiamGiaByMa(maGiamGia);
     }
 
     @Override
@@ -76,6 +88,17 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
         MaGiamGia maGiamGia = maGiamGiaRepository.findById(idMaGiamGia).orElse(null);
         return maGiamGia;
     }
+
+    @Override
+    public void insertKhachHangMgg(int idKhachHang, int idMaGiamGia) {
+        maGiamGiaRepository.insertKhachHangApMgg(idKhachHang,idMaGiamGia);
+    }
+
+    @Override
+    public int top1IdMaGiamGia() {
+        return  maGiamGiaRepository.top1IdMaGiamGia();
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     @Override
     public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable) {
