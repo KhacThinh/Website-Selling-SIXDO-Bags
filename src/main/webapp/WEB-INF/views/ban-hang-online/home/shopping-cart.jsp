@@ -90,7 +90,7 @@
 
                             <tbody id="cartTableBody">
                             <c:set var="totalPrice" value="0"/>
-                            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="loop">
+                            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
 
                                 <tr class="table_row">
                                     <td class="column-1">
@@ -107,16 +107,42 @@
                                     </td>
                                     <td class="column-4">
                                         <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" id="btn-minus${i.index}" >
                                                 <i class="fs-16 zmdi zmdi-minus"></i>
                                             </div>
                                             <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                   name="num-product${o.chiTietSanPham.id}" id="quantityProduct${o.idChiTietSanPham}" value="${o.soLuong}">
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                   name="num-product${o.chiTietSanPham.id}" id="quantityProduct${i.index}" value="${o.soLuong}">
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" id="btn-plus${i.index}" >
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
+
+                                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Nhúng thư viện SweetAlert -->
+
+                                            <script>
+                                                // Lấy phần tử div có id là 'btn-minus'
+                                                var btnMinus = document.getElementById('btn-minus' + '${i.index}');
+                                                var btnPlus = document.getElementById('btn-plus' + '${i.index}');
+                                                var quantityInput = document.getElementById('quantityProduct' + '${i.index}').value;
+
+                                                // Giam so Luong
+                                                btnMinus.addEventListener('click', function() {
+                                                    var currentQuantity = parseInt(quantityInput.value);
+                                                    if (currentQuantity > 1) { // Đảm bảo số lượng không nhỏ hơn 1
+                                                        document.getElementById('quantityProduct' + '${i.index}').value=currentQuantity - 1;
+                                                    }
+                                                });
+
+                                                // Tang so luong
+                                                btnPlus.addEventListener('click', function() {
+                                                    var currentQuantity = parseInt(quantityInput.value);
+                                                    quantityInput.value = currentQuantity + 1;
+                                                });
+                                            </script>
                                         </div>
                                     </td>
+
                                     <td class="column-5" id="sumPrice-in-cart"><fmt:formatNumber pattern="#,###"
                                                                                                  var="tongTam"
                                                                                                  value="${o.chiTietSanPham.giaBan*o.soLuong}"></fmt:formatNumber>
@@ -271,6 +297,7 @@
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
 </div>
+
 
 <!--===============================================================================================-->
 
