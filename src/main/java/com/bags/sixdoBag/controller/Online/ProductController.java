@@ -188,6 +188,33 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/edit-soLuong-checkout")
+    public ResponseEntity<?>checkSoLuongInput(@RequestBody Map<String, Object> requestBody){
+        String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
+        String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
+        String soLuong = String.valueOf(requestBody.get("soLuong"));
+        int idGioHang = gioHangService.getIdGioHang(Integer.valueOf(idKhachHang));
+        ChiTietGioHangRequestDto chiTietGioHangRequestDto = new ChiTietGioHangRequestDto();
+        chiTietGioHangRequestDto.setSoLuong(Integer.parseInt(soLuong));
+        chiTietGioHangRequestDto.setIdGioHang(idGioHang);
+        chiTietGioHangRequestDto.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+        if(Integer.parseInt(soLuong)<0){
+            return ResponseEntity.ok("am");
+        }else if(Integer.parseInt(soLuong)==0){
+            return ResponseEntity.ok(0);
+        }else {
+            if(chiTietSanPham.getSoLuong()>=Integer.parseInt(soLuong)){
+                chiTietGioHangService.editChiTietGioHang(idGioHang,Integer.parseInt(idChiTietSanPham),chiTietGioHangRequestDto);
+                return ResponseEntity.ok("ok");
+            }else {
+                return ResponseEntity.ok(chiTietSanPham.getSoLuong());
+            }
+        }
+
+    }
+
     @PostMapping("/add-to-cart-buyer")
     public ResponseEntity<?> addToCartByBuyer(@RequestBody Map<String, Object> requestBody) {
         String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
@@ -226,6 +253,8 @@ public class ProductController {
             return ResponseEntity.ok("ok");
         }
     }
+
+
 
     @PostMapping("/get-cart-by-buyer")
     public ResponseEntity<?> getCartByBuyer(@RequestBody Map<String, Object> requestBody) {

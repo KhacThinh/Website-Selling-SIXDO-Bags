@@ -36,7 +36,6 @@ public class ReSetPassController {
             return "redirect:/user";
         }
 
-
     }
     @PostMapping("/config")
     public String updatePass(@RequestParam("email") String email,@RequestParam("pass") String pass){

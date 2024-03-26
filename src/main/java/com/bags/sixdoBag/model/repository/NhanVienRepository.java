@@ -45,4 +45,7 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
 
     Page<NhanVien> findByChucVuId(Long chucVuId, Pageable pageable);
     ////////////////////////////////////////////////////////////
+
+    @Query("select nv from NhanVien nv where nv.email =:email")
+    NhanVien getNhanVienByEmail(String email);
 }
