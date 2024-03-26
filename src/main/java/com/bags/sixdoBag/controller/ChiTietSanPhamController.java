@@ -71,6 +71,18 @@ public class ChiTietSanPhamController {
         System.out.println("idddddddddđffffffffffffff" + id);
         List<MauSac> listMauSac = mauSacService.getMauSacs();
         List<ChiTietSanPham> listCTSP = chiTietSanPhamServivce.getChiTietSanPhamById(id);
+        for (ChiTietSanPham ctsp : listCTSP
+        ) {
+            if (ctsp.getSoLuong() == 0 && ctsp.getTrangThai() != 0) {
+                ctsp.setTrangThai(2);
+                chiTietSanPhamServivce.editChiTietSanPham(ctsp.getId(), ctsp);
+
+            } else if (ctsp.getSoLuong() > 0 && ctsp.getTrangThai() != 0) {
+                ctsp.setTrangThai(1);
+                chiTietSanPhamServivce.editChiTietSanPham(ctsp.getId(), ctsp);
+            }
+
+        }
 
         if (listCTSP.isEmpty()) {
             model.addAttribute("MauSacs", listMauSac);
@@ -98,16 +110,9 @@ public class ChiTietSanPhamController {
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
         extracted(model);
         return "/quan-ly/chi-tiet-san-pham/view";
+
     }
 
-    @GetMapping("")
-    public String getCTSP(Model model) {
-        extracted(model);
-        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.getListCtspTaiQuay();
-
-        model.addAttribute("listCTSP", listCTSP);
-        return "quan-ly/chi-tiet-san-pham/view";
-    }
 
     private void extracted(Model model) {
         Set<String> chatLieus = sanPhamService.getSanPhams().stream()
@@ -146,11 +151,11 @@ public class ChiTietSanPhamController {
 
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, @RequestParam("tenSanPham") String tenSp, Model model,
+    public String add(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, @RequestParam("idSp") Integer idSp, Model model,
                       @RequestParam("images") MultipartFile hinhAnh) {
 
 
-        SanPham sanPham = sanPhamRepository.getSanPhamByTen(tenSp);
+        SanPham sanPham = sanPhamService.getSanPham(idSp);
         System.out.println(sanPham);
         if (!hinhAnh.isEmpty()) {
             try {
@@ -195,26 +200,27 @@ public class ChiTietSanPhamController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<?> editKhuyenMai(@RequestParam("id") Integer id, @RequestParam("ma") String ma,
+    public ResponseEntity<?> editKhuyenMai(@RequestParam("id") Integer id,
                                            @RequestParam("soLuong") Integer soLuong,
                                            @RequestParam("giaNhap") Integer giaNhap,
                                            @RequestParam("giaBan") Integer giaBan,
-                                           @RequestParam("sanPham") Integer idSp, @RequestParam("mauSac") Integer idMs,
+                                           @RequestParam("mauSac") Integer idMs,
                                            @RequestParam("khuyenMai") String idKm,
-                                           @RequestParam("trangThai") Integer trangThai, Model model,
+                                           @RequestParam("trangThai") Integer trangThai,
+                                           Model model,
                                            @RequestParam(value = "images", required = false) MultipartFile hinhAnh) {
         System.out.println(hinhAnh);
         ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(id);
-        chiTietSanPham.setMa(ma);
         chiTietSanPham.setSoLuong(soLuong);
         chiTietSanPham.setGiaNhap(giaNhap);
         chiTietSanPham.setGiaBan(giaBan);
+        chiTietSanPham.setTrangThai(trangThai);
+
         if (!idKm.isEmpty()) {
             chiTietSanPham.setKhuyenMai(khuyenMaiService.getKhuyenMai(Integer.valueOf(idKm)));
-        }else{
+        } else {
             chiTietSanPham.setKhuyenMai(null);
         }
-        chiTietSanPham.setSanPham(sanPhamService.getSanPham(idSp));
         chiTietSanPham.setMauSac(mauSacService.getMauSac(idMs));
         String urlAnh = chiTietSanPham.getHinhAnh();
         if (hinhAnh != null && !hinhAnh.isEmpty()) {
@@ -260,11 +266,15 @@ public class ChiTietSanPhamController {
 
     @GetMapping("/searchCTSP")
     public String searchCTSP(@RequestParam("name") String name, Model model) {
-
+        System.out.println("hihi" +name);
         extracted(model);
         List<ChiTietSanPham> listCTSPDetail = chiTietSanPhamServivce.getChiTietSanPhamById(idtemp);
-        List<ChiTietSanPham> listSearchNew = chiTietSanPhamRepository.getChiTietSanPhamByTenSpAndMa(idtemp, name);
-        model.addAttribute("listCTSP", listSearchNew);
+        if (name != null&& !name.isBlank()) {
+            List<ChiTietSanPham> listSearchNew = chiTietSanPhamRepository.getChiTietSanPhamByTenSpAndMa(idtemp, name);
+            model.addAttribute("listCTSP", listSearchNew);
+        }else{
+            model.addAttribute("listCTSP", listCTSPDetail);
+        }
         model.addAttribute("sp", sanPhamService.getSanPham(idtemp));
         List<MauSac> listMauSac = mauSacService.getMauSacs();
 
@@ -288,16 +298,49 @@ public class ChiTietSanPhamController {
         return "quan-ly/chi-tiet-san-pham/view";
     }
 
+    @GetMapping("/filterCTSP")
+    public String filterCTSP( @RequestParam("tenMauSac") String mauSac, Model model) {
+        extracted(model);
+        List<ChiTietSanPham> listCTSPDetail = chiTietSanPhamServivce.getChiTietSanPhamById(idtemp);
+        if(mauSac !=null&& !mauSac.isEmpty() ){
+            List<ChiTietSanPham>listCTSPByMauSac= chiTietSanPhamRepository.getListCTSPByMauSac(idtemp,mauSac);
+            model.addAttribute("listCTSP", listCTSPByMauSac);
+        }else {
+            model.addAttribute("listCTSP",listCTSPDetail);
+
+        }
+        model.addAttribute("sp", sanPhamService.getSanPham(idtemp));
+        List<MauSac> listMauSac = mauSacService.getMauSacs();
+        if (listCTSPDetail.isEmpty()) {
+            model.addAttribute("listMauSac", listMauSac);
+        } else {
+
+            for (int i = 0; i < listCTSPDetail.size(); i++) {
+                MauSac ms = listCTSPDetail.get(i).getMauSac();
+                for (int j = listMauSac.size() - 1; j >= 0; j--) {
+                    if (ms.equals(listMauSac.get(j))) {
+                        listMauSac.remove(j);
+                    }
+                }
+            }
+            System.out.println(listMauSac.toString());
+            model.addAttribute("MauSacs", listMauSac);
+        }
+
+        return "quan-ly/chi-tiet-san-pham/view";
+    }
+
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam("id") Integer id, Model model) {
-        getCTSP(model);
+        extracted(model);
         return new ResponseEntity<>(chiTietSanPhamServivce.deleteChiTietSanPham(id), HttpStatus.OK);
     }
 
     @GetMapping("/viewUpdate")
     public ResponseEntity<?> viewUpdate(@RequestParam("id") Integer id, Model model) {
-        getCTSP(model);
+        extracted(model);
         return new ResponseEntity<>(chiTietSanPhamServivce.getChiTietSanPham(id), HttpStatus.OK);
     }
 

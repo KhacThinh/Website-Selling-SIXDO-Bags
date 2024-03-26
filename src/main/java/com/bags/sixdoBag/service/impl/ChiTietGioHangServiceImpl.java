@@ -52,16 +52,16 @@ public class ChiTietGioHangServiceImpl implements ChiTietGioHangService {
     }
 
     @Override
-    public ChiTietGioHang editChiTietGioHang(Integer idChiTietGioHang, ChiTietGioHangRequestDto chiTietGioHangRequestDto) {
-        ChiTietGioHang chiTietGioHang = getChiTietGioHang(idChiTietGioHang);
-        Integer idChiTietSanPham = chiTietGioHangRequestDto.getIdChiTietSanPham();
+    public ChiTietGioHang editChiTietGioHang(Integer idChiTietGioHang,Integer idChiTietSanPham, ChiTietGioHangRequestDto chiTietGioHangRequestDto) {
+        ChiTietGioHang chiTietGioHang =chiTietGioHangRepository.getChiTietGioHang(idChiTietGioHang,idChiTietSanPham);
+        Integer idChiTietSanPhamm = chiTietGioHangRequestDto.getIdChiTietSanPham();
         if (Objects.isNull(idChiTietSanPham)) {
             throw new IllegalArgumentException("Giỏ hàng bắt buộc cần sản phẩm");
         }
-        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(idChiTietSanPham);
-        if (chiTietSanPham.getSoLuong() > chiTietGioHangRequestDto.getSoLuong()) {
-            throw new IllegalArgumentException("Số lượng sản phẩm trong giỏ hàng không được vượt quá số lượng kho");
-        }
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(idChiTietSanPhamm);
+//        if (chiTietSanPham.getSoLuong() > chiTietGioHangRequestDto.getSoLuong()) {
+//            throw new IllegalArgumentException("Số lượng sản phẩm trong giỏ hàng không được vượt quá số lượng kho");
+//        }
         chiTietGioHang.setSoLuong(chiTietGioHangRequestDto.getSoLuong());
         chiTietGioHang.setChiTietSanPham(chiTietSanPham);
         chiTietGioHang.setTongTien(Double.valueOf(chiTietSanPham.getGiaBan()) * chiTietGioHang.getSoLuong());

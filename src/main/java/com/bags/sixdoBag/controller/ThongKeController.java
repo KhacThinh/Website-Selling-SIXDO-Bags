@@ -26,6 +26,11 @@ public class ThongKeController {
         return "/quan-ly/thong-ke/thong-ke";
     }
 
+    @GetMapping("quan-ly")
+    public String getQuanLy() {
+        return "/quan-ly/sidebar-manager/sildebar-managent";
+    }
+
     @GetMapping("theo-nam")
     public @ResponseBody
     Map<Integer, ThongKeResponse> getThongKeTheoNam(@RequestParam("year") Integer year) {

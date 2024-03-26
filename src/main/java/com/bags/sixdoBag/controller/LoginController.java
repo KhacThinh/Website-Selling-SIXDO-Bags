@@ -1,5 +1,7 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.config.UserLoginKhachHang;
+import com.bags.sixdoBag.controller.Online.ProductFavoriteController;
 import com.bags.sixdoBag.model.dto.request.GioHangRequest;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.NhanVien;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,14 +41,9 @@ public class LoginController {
 
     @GetMapping("/login/hien-thi")
     public String hienThiSanPham(Model model) {
-        /////tạo hàm random 4 số
-
-
-
-
         session.removeAttribute("nhanVien");
 
-        model.addAttribute("action","/login/dang-nhap-nhan-vien");
+        model.addAttribute("action", "/login/dang-nhap-nhan-vien");
 
         return "login";
     }
@@ -57,29 +56,26 @@ public class LoginController {
     }
 
     @PostMapping("/buyer-login/check")
-    public String loginByBuyer(@RequestParam("username-login")String userName,
-                               @RequestParam("password-login") String passWord, Model model){
+    public String loginByBuyer(@RequestParam("username-login") String userName,
+                               @RequestParam("password-login") String passWord, Model model) {
         GioHangRequest gioHangRequest = new GioHangRequest();
 
-        KhachHang khachHang = khachHangService.getKhachHangByUserNameAndPassword(userName,passWord);
-        if (khachHang!=null ){
-                gioHangRequest.setIdKhachHang(khachHang.getId());
-                gioHangService.addGioHang(gioHangRequest);
-            session.setAttribute("buyer",khachHang);
+        KhachHang khachHang = khachHangService.getKhachHangByUserNameAndPassword(userName, passWord);
+        if (khachHang != null) {
+            UserLoginKhachHang.idKhachHangFavorite = khachHang.getId();
+            gioHangRequest.setIdKhachHang(khachHang.getId());
+            gioHangService.addGioHang(gioHangRequest);
+            session.setAttribute("buyer", khachHang);
             return "redirect:/sixdo-shop";
-        }else{
+        } else {
             return "ban-hang-online/home/buyer-login";
         }
-
-
-
-
 
     }
 
     @PostMapping("/login/dang-nhap-nhan-vien")
-    public String dangNhapNhanVien(@RequestParam("email")String email, @RequestParam("mat_khau") String mat_khau, Model model){
-        NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
+    public String dangNhapNhanVien(@RequestParam("email") String email, @RequestParam("mat_khau") String mat_khau, Model model) {
+   NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
 
         if (email.isEmpty() || mat_khau.isEmpty()){
             model.addAttribute("mes","Không được bỏ trống");

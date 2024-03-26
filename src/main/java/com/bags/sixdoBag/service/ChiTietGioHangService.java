@@ -14,7 +14,7 @@ public interface ChiTietGioHangService {
 
     public ChiTietGioHang addChiTietGioHang(ChiTietGioHangRequestDto chiTietGioHangRequestDto);
 
-    public ChiTietGioHang editChiTietGioHang(Integer idChiTietGioHang, ChiTietGioHangRequestDto chiTietGioHangRequestDto);
+    public ChiTietGioHang editChiTietGioHang(Integer idChiTietGioHang,Integer idChiTietSanPham, ChiTietGioHangRequestDto chiTietGioHangRequestDto);
 
     public ChiTietGioHang deleteChiTietGioHang(Integer idChiTietGioHang);
 }
