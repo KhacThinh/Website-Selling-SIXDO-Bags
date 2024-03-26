@@ -285,7 +285,7 @@
 
             function themVoSanPhamYeuThich() {
                 $('.js-addcart-detail-customer').on('click', function () {
-                    var idKhachHang = document.getElementById("id-khach-hang").innerText;
+                    var idKhachHang = document.getElementById("id-khach-hang").value;
                     var selectedIdValue = document.getElementById('select-id-color').value;
                     var quantityProduct = 0;
                     quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);

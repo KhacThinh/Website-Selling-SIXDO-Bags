@@ -353,7 +353,7 @@
 
 
         $('.js-addcart-detail-customer').on('click', function () {
-            var idKhachHang = document.getElementById("id-khach-hang").innerText;
+            var idKhachHang = document.getElementById("id-khach-hang").value;
             var selectedIdValue = document.getElementById('select-id-color').value;
             var quantityProduct = 0;
             quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
@@ -433,7 +433,7 @@
             cartListElement.innerHTML = ''; // Xóa các mục cũ
             var totalAmount = 0; // Biến để tính tổg giá trị đơn hàng
 
-            var idKhachHang = document.getElementById('id-khach-hang').innerText;
+            var idKhachHang = document.getElementById('id-khach-hang').value;
             console.log("l" + idKhachHang)
                 $.ajax({
                     url: '/sixdo-shop/get-cart-by-buyer',

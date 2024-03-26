@@ -125,7 +125,8 @@
                                         var btnMinus = document.getElementById('btn-minus-${i.index}');
                                         var btnPlus = document.getElementById('btn-plus-${i.index}');
                                         var quantityInput = document.getElementById('quantityProduct-${i.index}');
-                                        var idKhachHang = document.getElementById("id-khach-hang").innerText;
+                                        var idKhachHang = document.getElementById("id-khach-hang").value;
+
 
                                         // Giam so Luong
                                         btnMinus.addEventListener('click', function() {
@@ -171,7 +172,7 @@
                                                     }
                                                     else  {
                                                         alert("Bạn đã vượt quá số lượng tối đa: " + response + " sản phẩm");
-                                                        // Xử lý khi có lỗi
+
                                                     }
                                                 },
                                                 error: function(xhr, status, error) {
@@ -207,7 +208,7 @@
                                         document.getElementById('quantityProduct-${i.index}').addEventListener('blur', function() {
                                             var newQuantity = parseInt(this.value);
                                             var productId = ${o.chiTietSanPham.id};
-                                            var idKhachHang = document.getElementById("id-khach-hang").innerText;
+                                            var idKhachHang = document.getElementById("id-khach-hang").value;
 
                                             // if (newQuantity <= 0) {
                                             //     newQuantity = 1;
