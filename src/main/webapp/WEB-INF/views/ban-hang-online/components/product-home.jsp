@@ -64,6 +64,8 @@
                     loadFilterThuongHieu();
                     loadFilterHienThi();
                     loadFilterMauSac();
+                    checkSanPhamYeuThichTrangChu();
+                    capNhapSoLuongSanPhamYeuThichHearder();
 
                     themSanPhamYeuThich();
                     // Sự kiện khi form tìm kiếm được submit
@@ -86,24 +88,39 @@
                             if (response !== 0) {
                                 console.log('Khách hàng đã đăng nhập với ID:', response);
                                 if (heartFill.css('display') === 'none') {
-                                    heartFill.css('display', 'inline');
-                                    heartOutline.css('display', 'none');
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Đã thêm vào danh sách yêu thích!',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
+                                    $.post('/product-favorite/them-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                                        if(sanPhamCheck != 0){
+                                            heartFill.css('display', 'inline');
+                                            heartOutline.css('display', 'none');
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Đã thêm vào danh sách yêu thích!',
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                            capNhapSoLuongSanPhamYeuThichHearder();
+                                        }else{
+                                            console.log("không thêm được vô sản phẩm yêu thích");
+                                        }
+                                    })
                                 } else {
-                                    // Ngược lại, chuyển về icon đậm và ẩn icon fill
-                                    heartFill.css('display', 'none');
-                                    heartOutline.css('display', 'inline');
-                                    // Hiển thị thông báo hủy thành công
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Đã xóa khỏi danh sách yêu thích!',
-                                        showConfirmButton: false,
-                                        timer: 1500
+                                    $.get('/product-favorite/xoa-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                                        if(sanPhamCheck != 0){
+                                            // Ngược lại, chuyển về icon đậm và ẩn icon fill
+                                            heartFill.css('display', 'none');
+                                            heartOutline.css('display', 'inline');
+                                            // Hiển thị thông báo hủy thành công
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Đã xóa khỏi danh sách yêu thích!',
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                            capNhapSoLuongSanPhamYeuThichHearder();
+                                        }else{
+                                            console.log("không xoá được sản phẩm yêu thích");
+                                            alert("Lỗi");
+                                        }
                                     });
                                 }
                             } else {
@@ -327,6 +344,21 @@
                         container.append(productHTML);
                     });
                 }
+
+                // check xem sản phẩm đã được yêu thích chưa
+                function checkSanPhamYeuThichTrangChu() {
+                    $.get('/product-favorite/check-san-pham-yeu-thich-home', function (data) {
+                        var productIDs = data;
+                        $(".js-addwish-b2").each(function() {
+                            var productID = $(this).data("product-id");
+                            if (productIDs.includes(productID)) {
+                                $(this).find('.bi-heart').hide();
+                                $(this).find('.bi-heart-fill').show();
+                            }
+                        });
+                    });
+                }
+
             </script>
 
             <!-- Filter -->

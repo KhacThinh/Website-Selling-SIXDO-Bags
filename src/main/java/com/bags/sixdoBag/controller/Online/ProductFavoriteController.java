@@ -2,21 +2,17 @@ package com.bags.sixdoBag.controller.Online;
 
 import com.bags.sixdoBag.config.UserLoginKhachHang;
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -69,14 +65,53 @@ public class ProductFavoriteController {
 
     @GetMapping("check-thong-tin-khach-hang")
     public @ResponseBody
-    Integer getCheckLoginKhachHang(){
+    Integer getCheckLoginKhachHang() {
         if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
             System.out.println("đã vô đây");
             KhachHang khachHang = khachHangService.getidKhachHang(UserLoginKhachHang.idKhachHangFavorite);
             return khachHang.getId();
-        } else {
-            System.out.println("chưa vô đây");
-            return 0;
         }
+        return 0;
     }
+
+    @PostMapping("them-san-pham-yeu-thich")
+    public @ResponseBody
+    Integer addThemSanPhamYeuThich(@RequestParam("idSanPham") Integer idSP) {
+        int idKH = UserLoginKhachHang.idKhachHangFavorite;
+        SanPhamYeuThichRequest sanPhamYeuThichRequest = new SanPhamYeuThichRequest();
+        sanPhamYeuThichRequest.setIdSanPham(idSP);
+        sanPhamYeuThichRequest.setIdKhachHang(idKH);
+        if (Objects.nonNull(sanPhamYeuThichService.addSanPhamYeuThich(sanPhamYeuThichRequest))) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @GetMapping("xoa-san-pham-yeu-thich")
+    public @ResponseBody
+    Integer deleteThemSanPhamYeuThich(@RequestParam("idSanPham") Integer idSP) {
+        int idKH = UserLoginKhachHang.idKhachHangFavorite;
+        if (Objects.nonNull(sanPhamYeuThichService.deleteSanPhamYeuThich(idSP, idKH))) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @GetMapping("check-san-pham-yeu-thich-home")
+    public @ResponseBody
+    List<Integer> checkSanPhamYeuThichHome() {
+        List<Integer> idSanPhamYeuThich = new ArrayList<>();
+        if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
+            KhachHang khachHang = khachHangService.getidKhachHang(UserLoginKhachHang.idKhachHangFavorite);
+            if (Objects.nonNull(khachHang)) {
+                idSanPhamYeuThich = sanPhamYeuThichService
+                        .getListSanPhamYeuThich(khachHang.getId())
+                        .stream()
+                        .map(ProductHomeRequest::getId)
+                        .collect(Collectors.toList());
+            }
+        }
+        return idSanPhamYeuThich;
+    }
+
 }

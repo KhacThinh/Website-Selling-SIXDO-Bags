@@ -157,35 +157,6 @@
                                 </a>
                             </li>
 
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Popularity
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Average rating
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Newness
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: Low to High
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: High to Low
-                                </a>
-                            </li>
                         </ul>
                     </div>
 
@@ -204,30 +175,6 @@
                             <li class="p-b-6">
                                 <a href="#" class="filter-link stext-106 trans-04">
                                     $0.00 - $50.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $50.00 - $100.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $100.00 - $150.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $150.00 - $200.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $200.00+
                                 </a>
                             </li>
                         </ul>
@@ -262,25 +209,6 @@
                                 Fashion
                             </a>
 
-                            <a href="#"
-                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Lifestyle
-                            </a>
-
-                            <a href="#"
-                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Denim
-                            </a>
-
-                            <a href="#"
-                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Streetstyle
-                            </a>
-
-                            <a href="#"
-                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Crafts
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -319,50 +247,39 @@
             // sản phẩm yêu thích product favorites
             function themSanPhamYeuThich() {
                 $(document).on('click', '.js-addwish-b2', function () {
-                    var idKhachHang = document.getElementById("id-khach-hang").innerText;
-                    if (idKhachHang == "") {
-                        Swal.fire({
-                            title: "Login to add products to cart",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonText: "Log in",
-                            cancelButtonText: "Close",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "/sixdo-shop/login";
-                            }
-                        });
-                    }
-
                     var heartFill = $(this).find('.bi-heart-fill');
                     var heartOutline = $(this).find('.bi-heart');
-                    // Sử dụng phương thức .data() để lấy dữ liệu từ thuộc tính data-product-id
                     var productId = $(this).data('product-id');
 
-
-                    if (heartFill.css('display') === 'none') {
-                        // Nếu icon fill hiện tại đang ẩn, chuyển sang hiển thị icon fill và ẩn icon đậm
-                        heartFill.css('display', 'inline');
-                        heartOutline.css('display', 'none');
-                        // Hiển thị thông báo thành công
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đã thêm vào danh sách yêu thích!' + productId,
-                            showConfirmButton: false,
-                            timer: 1500 // tự động đóng sau 1.5 giây
-                        });
-                    } else {
-                        // Ngược lại, chuyển về icon đậm và ẩn icon fill
-                        heartFill.css('display', 'none');
-                        heartOutline.css('display', 'inline');
-                        // Hiển thị thông báo hủy thành công
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đã xóa khỏi danh sách yêu thích!',
-                            showConfirmButton: false,
-                            timer: 1500 // tự động đóng sau 1.5 giây
-                        });
-                    }
+                    $.get('/product-favorite/check-thong-tin-khach-hang', function (response) {
+                        if (response !== 0) {
+                            console.log('Khách hàng đã đăng nhập với ID:', response);
+                            if (heartFill.css('display') !== 'none') {
+                                $.get('/product-favorite/xoa-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                                    if(sanPhamCheck != 0){
+                                        // Ngược lại, chuyển về icon đậm và ẩn icon fill
+                                        heartFill.css('display', 'none');
+                                        heartOutline.css('display', 'inline');
+                                        // Hiển thị thông báo hủy thành công
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Đã xóa khỏi danh sách yêu thích!',
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        });
+                                        loadData();
+                                        capNhapSoLuongSanPhamYeuThichHearder();
+                                    }else{
+                                        console.log("không xoá được sản phẩm yêu thích");
+                                        alert("Lỗi");
+                                    }
+                                });
+                            }
+                        }
+                    }).fail(function (xhr, status, error) {
+                        // Xử lý lỗi nếu có
+                        console.error('Lỗi khi gửi yêu cầu kiểm tra thông tin khách hàng:', error);
+                    });
                 });
             }
 
@@ -604,8 +521,7 @@
                     productHTML += '</div>';
                     productHTML += '<div class="block2-txt-child2 flex-r p-t-3">';
                     productHTML += '<a class="btn-addwish-b2 dis-block pos-relative js-addwish-b2 js-addedwish-b2" data-product-id="' + product.id + '" data-wishlist="false">';
-                    productHTML += '<i class="bi bi-heart"></i>';
-                    productHTML += '<i class="bi bi-heart-fill"></i>';
+                    productHTML += '<i class="bi bi-heart-fill bi-heart-fill-favorite"></i>';
                     productHTML += '</a></div>';
                     productHTML += '</div></a></div>';
                     container.append(productHTML);

@@ -493,9 +493,6 @@
 
         });
 
-<<<<<<< HEAD
-
-=======
         window.onload = function () {
             // Thực hiện các công việc bạn muốn khi trang được tải
             countProductForCart();
@@ -504,7 +501,7 @@
             updateCartCount();
 
         };
->>>>>>> e514406ab30788c6089ef2455d02e0539b33be0f
+
 
         var citis = document.getElementById("city");
         var districts = document.getElementById("district");

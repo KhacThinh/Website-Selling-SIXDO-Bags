@@ -3608,4 +3608,8 @@ a {
 	display: inline; /* Hiển thị icon mờ */
 }
 
+.bi-heart-fill-favorite{
+	display: inline;
+}
+
 

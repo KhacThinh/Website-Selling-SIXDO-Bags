@@ -7,17 +7,15 @@
 
     <style>
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+        .dropdown-menu {
+            /* Default styles for the menu (optional) */
+            /* ... */
+            display: none; /* Initially hidden */
         }
 
-        .dropdown:hover .dropdown-content {
-            display: block;
+        /* Add logic to show the menu on hover or click (example using hover) */
+        .dropdown:hover .dropdown-menu {
+            display: block; /* Show menu on hover */
         }
 
 
@@ -60,7 +58,7 @@
         .navbar_content {
             display: flex;
             align-items: center;
-            column-gap: 25px;
+            column-gap: 5px;
         }
 
         .navbar_content i {
@@ -171,44 +169,34 @@
                     </div>
 
 
-                    <c:choose>
-                        <c:when test="${khachHang == null}">
-                            <a style=" margin-left: 20px; align-items: center" href="/sixdo-shop/login"
-                               class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
-                                <i style="font-size: 30px" class="zmdi zmdi-account"></i>
-                                <span style="font-size: 15px; align-items: center;
-                                margin-bottom: 15px">
-                                    Đăng Nhập
-                                </span>
-                            </a>
-
-                        </c:when>
-                        <c:otherwise>
-                            <div class="dropdown" style="margin-left: 20px;">
-                                <button class="dropbtn icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
-                                    <i style="font-size: 30px" class="zmdi zmdi-account"></i>
-                                    <span style="font-size: 15px; align-items: center; margin-bottom: 15px"
-                                          id="dropdownMenu">${khachHang.tenKhachHang}</span>
-                                </button>
-                                <div class="dropdown-content" id="dropdownContent">
-                                    <a href="#" id="logoutLink">Đăng Xuất</a><br>
-                                    <a href="#">Tài Khoản</a>
-                                </div>
-                            </div>
-
-                        </c:otherwise>
-                    </c:choose>
-
-
-                    <p id="id-khach-hang">${khachHang.id}</p>
+                    <input type="hidden" id="id-khach-hang" value="${khachHang.id}"/>
 
 
                 </div>
                 <div class="navbar_content">
-                    <i class="bi bi-grid"></i>
-                    <i class='bx bx-sun' id="darkLight"></i>
-                    <i class='bx bx-bell'></i>
-                    <img src="../static/images/profile.jpg" alt="" class="profile"/>
+                    <c:choose>
+                        <c:when test="${khachHang == null}">
+                            <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login" style="margin-left: 20px;">Đăng nhập</button>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="dropdown" style="margin-left: 20px;">
+                                <button class="dropbtn icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
+                                    <i class='bx bx-sun' id="darkLight"></i>
+                                    <i class='bx bx-bell'></i>
+                                    <img src="../static/images/profile.jpg" alt="" class="profile"/>
+                                    <i class="bi bi-caret-down-fill" style="color: #1d1d1d; font-size: 15px;"></i>
+                                </button>
+                                <div class="dropdown" style="margin-left: 20px;">
+                                    <ul class="dropdown-menu" id="dropdownMenu">
+                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>
+                                        <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" id="logoutLink">Đăng xuất</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </nav>
         </div>
@@ -339,10 +327,34 @@
 <script>
 
     $(document).ready(function () {
-        prouductFavoriteQuantity();
+        capNhapSoLuongSanPhamYeuThichHearder();
     });
 
-    function prouductFavoriteQuantity() {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lắng nghe sự kiện click trên nút "Login"
+        document.getElementById('btn-login').addEventListener('click', function () {
+            // Hiển thị thông báo yêu cầu đăng nhập
+            Swal.fire({
+                title: 'Thông báo',
+                text: 'Bạn cần đăng nhập để tiếp tục.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đăng nhập',
+                cancelButtonText: 'Đóng',
+            }).then((result) => {
+                // Xử lý hành động sau khi người dùng nhấn nút
+                if (result.isConfirmed) {
+                    // Chuyển hướng tới trang đăng nhập khi người dùng nhấn nút "Đăng nhập"
+                    window.location.href = '/sixdo-shop/login';
+                } else {
+                    // Log ra console nếu người dùng nhấn nút "Đóng" hoặc click ra ngoài
+                    console.log('Đã đóng thông báo');
+                }
+            });
+        });
+    });
+
+    function capNhapSoLuongSanPhamYeuThichHearder() {
         $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
             displaySoLuongSanPhamFavorite(data);
         });
@@ -373,18 +385,21 @@
         event.preventDefault();
 
         Swal.fire({
-            title: "You want to log out ?",
-            icon: "warning",
+            title: "Bạn muốn đăng xuất?",
+            icon: "question",
             showCancelButton: true,
-            confirmButtonText: "Log out",
-            cancelButtonText: "No",
+            confirmButtonText: "Đăng xuất",
+            cancelButtonText: "Hủy",
+            cancelButtonColor: "#d33",
+            confirmButtonColor: "#3085d6",
+            reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "/sixdo-shop/logout";
             }
         });
-
     });
+
 </script>
 
 </body>
