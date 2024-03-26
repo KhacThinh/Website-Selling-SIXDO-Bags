@@ -262,6 +262,74 @@ public class QueryJpa {
         }
     }
 
+    public List<ProductHomeRequest> filterDanhMucProductHome(String danhMuc) {
+        try {
+            // Tạo kết nối tới cơ sở dữ liệu
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+
+            // Tạo câu lệnh SQL
+            String sql = "WITH MinPrices AS (" +
+                    "    SELECT " +
+                    "        san_pham.id, " +
+                    "        san_pham.ten, " +
+                    "        chi_tiet_san_pham.gia_ban, " +
+                    "        chi_tiet_san_pham.anh_ctsp, " +
+                    "        ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) AS RowNumber " +
+                    "    FROM " +
+                    "        san_pham " +
+                    "    JOIN " +
+                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham " +
+                    "    JOIN " +
+                    "        danh_muc ON san_pham.id_danh_muc = danh_muc.id ";
+            // Nếu tên được cung cấp, thêm điều kiện tìm kiếm vào câu lệnh SQL
+            if (danhMuc != null && !danhMuc.isEmpty()) {
+                sql += "WHERE danh_muc.ten LIKE ? )";
+            }
+
+            sql += "SELECT " +
+                    "    id, " +
+                    "    ten, " +
+                    "    gia_ban, " +
+                    "    anh_ctsp " +
+                    "FROM " +
+                    "    MinPrices " +
+                    "WHERE " +
+                    "    RowNumber = 1";
+
+            // Tạo đối tượng PreparedStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            // Nếu tên được cung cấp, đặt giá trị tham số cho câu lệnh SQL
+            if (danhMuc != null && !danhMuc.isEmpty()) {
+                statement.setString(1, "%" + danhMuc + "%");
+            }
+
+            // Thực thi câu lệnh SQL và nhận kết quả
+            ResultSet resultSet = statement.executeQuery();
+
+            // Duyệt qua kết quả và tạo danh sách sản phẩm
+            List<ProductHomeRequest> productList = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String ten = resultSet.getString("ten");
+                float giaBan = resultSet.getFloat("gia_ban");
+                String anhCtsp = resultSet.getString("anh_ctsp");
+                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                productList.add(product);
+            }
+
+            // Đóng kết nối, statement và resultSet
+            resultSet.close();
+            statement.close();
+            connection.close();
+            return productList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<ProductHomeRequest> filterMauSacThuongHieuProductHome(String maMau, String tenThuongHieu) {
         List<ProductHomeRequest> productHomeRequests = new ArrayList<>();
 
@@ -316,6 +384,74 @@ public class QueryJpa {
         }
         // Trả về danh sách các ProductHomeRequest
         return productHomeRequests;
+    }
+
+
+    public List<ProductHomeRequest> getSanPhamYeuThich(Integer idKhachHang) {
+        try {
+            // Tạo kết nối tới cơ sở dữ liệu
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+
+            // Tạo câu lệnh SQL
+            String sql = "WITH MinPrices AS (" +
+                    "    SELECT " +
+                    "        san_pham.id, " +
+                    "        san_pham.ten, " +
+                    "        chi_tiet_san_pham.gia_ban, " +
+                    "        chi_tiet_san_pham.anh_ctsp, " +
+                    "        ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) AS RowNumber " +
+                    "    FROM " +
+                    "        san_pham " +
+                    "    JOIN chi_tiet_san_pham ON chi_tiet_san_pham.id_san_pham = san_pham.id "+
+                    "    JOIN san_pham_yeu_thich as spyt ON san_pham.id = spyt.id_san_pham" +
+                    "    JOIN khach_hang kh ON spyt.id_khach_hang = kh.id ";
+            // Nếu tên được cung cấp, thêm điều kiện tìm kiếm vào câu lệnh SQL
+            if (idKhachHang != null) {
+                sql += "WHERE kh.id = ? )";
+            }
+
+            sql += "SELECT " +
+                    "    id, " +
+                    "    ten, " +
+                    "    gia_ban, " +
+                    "    anh_ctsp " +
+                    "FROM " +
+                    "    MinPrices " +
+                    "WHERE " +
+                    "    RowNumber = 1";
+
+            // Tạo đối tượng PreparedStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            // Nếu tên được cung cấp, đặt giá trị tham số cho câu lệnh SQL
+            if (idKhachHang != null) {
+                statement.setInt(1, idKhachHang);
+            }
+
+            // Thực thi câu lệnh SQL và nhận kết quả
+            ResultSet resultSet = statement.executeQuery();
+
+            // Duyệt qua kết quả và tạo danh sách sản phẩm
+            List<ProductHomeRequest> productList = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String ten = resultSet.getString("ten");
+                float giaBan = resultSet.getFloat("gia_ban");
+                String anhCtsp = resultSet.getString("anh_ctsp");
+                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                productList.add(product);
+            }
+
+            // Đóng kết nối, statement và resultSet
+            resultSet.close();
+            statement.close();
+            connection.close();
+            return productList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

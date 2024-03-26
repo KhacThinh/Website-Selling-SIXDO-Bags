@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.controller.Online;
 
 
+import com.bags.sixdoBag.config.UserLoginKhachHang;
 import com.bags.sixdoBag.model.dto.request.ChiTietGioHangRequestDto;
 import com.bags.sixdoBag.model.dto.request.GioHangRequest;
 import com.bags.sixdoBag.model.dto.request.OderDataDto;
@@ -88,6 +89,7 @@ public class ProductController {
 
     private final ChiTietGioHangRepository chiTietGioHangRepository;
 
+
     @Autowired
     private HttpSession session;
     private int idKhachHangFinal = 0;
@@ -130,6 +132,7 @@ public class ProductController {
 
     @GetMapping("/logout")
     public String buyerLogout(Model model) {
+        UserLoginKhachHang.idKhachHangFavorite = null;
         session.removeAttribute("buyer");
 
         return "redirect:/sixdo-shop";
@@ -151,35 +154,35 @@ public class ProductController {
     }
 
     @PostMapping("/check-soLuong")
-    public ResponseEntity<?>checkSoLuong(@RequestBody Map<String, Object> requestBody){
+    public ResponseEntity<?> checkSoLuong(@RequestBody Map<String, Object> requestBody) {
         String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
         String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
         String soLuong = String.valueOf(requestBody.get("soLuong"));
         ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-        Integer soLuongCu=0;
-        Integer soLuongCheck=0;
-        Integer soLuongToiDa =0;
-        if(chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang)).isEmpty()){
-            if(Integer.parseInt(soLuong)<=chiTietSanPham.getSoLuong()){
+        Integer soLuongCu = 0;
+        Integer soLuongCheck = 0;
+        Integer soLuongToiDa = 0;
+        if (chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang)).isEmpty()) {
+            if (Integer.parseInt(soLuong) <= chiTietSanPham.getSoLuong()) {
 
                 return ResponseEntity.ok("ok");
-            }else{
+            } else {
                 return ResponseEntity.ok(chiTietSanPham.getSoLuong());
             }
-        }else{
-            List<ChiTietGioHang>listCTGH= chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
-            for (int i = 0; i <listCTGH.size() ; i++) {
-                if(listCTGH.get(i).getIdChiTietSanPham()==Integer.parseInt(idChiTietSanPham)){
-                    soLuongCu=listCTGH.get(i).getSoLuong();
+        } else {
+            List<ChiTietGioHang> listCTGH = chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
+            for (int i = 0; i < listCTGH.size(); i++) {
+                if (listCTGH.get(i).getIdChiTietSanPham() == Integer.parseInt(idChiTietSanPham)) {
+                    soLuongCu = listCTGH.get(i).getSoLuong();
                 }
             }
-            soLuongCheck=Integer.parseInt(soLuong)+soLuongCu;
-            soLuongToiDa = chiTietSanPham.getSoLuong()-soLuongCu;
+            soLuongCheck = Integer.parseInt(soLuong) + soLuongCu;
+            soLuongToiDa = chiTietSanPham.getSoLuong() - soLuongCu;
 
-            if(soLuongCheck<=chiTietSanPham.getSoLuong()){
+            if (soLuongCheck <= chiTietSanPham.getSoLuong()) {
                 return ResponseEntity.ok("ok");
 
-            }else{
+            } else {
                 return ResponseEntity.ok(soLuongToiDa);
             }
         }
@@ -219,63 +222,39 @@ public class ProductController {
         String soLuong = String.valueOf(requestBody.get("soLuong"));
         int idGioHang = gioHangService.getIdGioHang(Integer.valueOf(idKhachHang));
         ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-        Integer soLuongCu=0;
-        Integer soLuongMoi=0;
-        List<ChiTietGioHang>listCTGH= chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
-        if(listCTGH.isEmpty()){
+        Integer soLuongCu = 0;
+        Integer soLuongMoi = 0;
+        List<ChiTietGioHang> listCTGH = chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
+        if (listCTGH.isEmpty()) {
             System.out.println("th1");
-                ChiTietGioHangRequestDto ct = new ChiTietGioHangRequestDto();
-                ct.setSoLuong(Integer.parseInt(soLuong));
-                ct.setIdGioHang(idGioHang);
-                ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-                chiTietGioHangService.addChiTietGioHang(ct);
-                return ResponseEntity.ok("ok");
-        }else{
+            ChiTietGioHangRequestDto ct = new ChiTietGioHangRequestDto();
+            ct.setSoLuong(Integer.parseInt(soLuong));
+            ct.setIdGioHang(idGioHang);
+            ct.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+            chiTietGioHangService.addChiTietGioHang(ct);
+            return ResponseEntity.ok("ok");
+        } else {
             System.out.println("th2");
-            for (ChiTietGioHang ctgh:listCTGH
-                 ) {
-                if(ctgh.getIdChiTietSanPham()==Integer.parseInt(idChiTietSanPham)){
-                    soLuongCu=ctgh.getSoLuong();
-                    soLuongMoi=soLuongCu+Integer.parseInt(soLuong);
+            for (ChiTietGioHang ctgh : listCTGH
+            ) {
+                if (ctgh.getIdChiTietSanPham() == Integer.parseInt(idChiTietSanPham)) {
+                    soLuongCu = ctgh.getSoLuong();
+                    soLuongMoi = soLuongCu + Integer.parseInt(soLuong);
                 }
             }
-                ChiTietGioHangRequestDto ct2 = new ChiTietGioHangRequestDto();
-            if(soLuongMoi==0){
-                soLuongMoi=Integer.parseInt(soLuong);
+            ChiTietGioHangRequestDto ct2 = new ChiTietGioHangRequestDto();
+            if (soLuongMoi == 0) {
+                soLuongMoi = Integer.parseInt(soLuong);
             }
-                ct2.setSoLuong(soLuongMoi);
-                ct2.setIdGioHang(idGioHang);
-                ct2.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-                chiTietGioHangService.addChiTietGioHang(ct2);
-                return ResponseEntity.ok("ok");
+            ct2.setSoLuong(soLuongMoi);
+            ct2.setIdGioHang(idGioHang);
+            ct2.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
+            chiTietGioHangService.addChiTietGioHang(ct2);
+            return ResponseEntity.ok("ok");
         }
     }
 
-//    @PostMapping("/edit-soLuong-checkout")
-//    public ResponseEntity<?>editQuantityCheckOut(@RequestBody Map<String, Object> requestBody){
-//        String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
-//        String idChiTietSanPham = String.valueOf(requestBody.get("idChiTietSanPham"));
-//        String soLuong = String.valueOf(requestBody.get("soLuong"));
-//        int idGioHang = gioHangService.getIdGioHang(Integer.valueOf(idKhachHang));
-//        int soLuongCheck =0;
-//
-//        ChiTietGioHangRequestDto chiTietGioHangRequestDto = new ChiTietGioHangRequestDto();
-//        chiTietGioHangRequestDto.setSoLuong(Integer.parseInt(soLuong));
-//        chiTietGioHangRequestDto.setIdGioHang(idGioHang);
-//        chiTietGioHangRequestDto.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-//
-//        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(Integer.parseInt(idChiTietSanPham));
-//        chiTietGioHangService.editChiTietGioHang(idGioHang,Integer.parseInt(idChiTietSanPham),chiTietGioHangRequestDto);
-//        if(Integer.parseInt(soLuong)<=chiTietSanPham.getSoLuong()){
-//
-//            return ResponseEntity.ok("ok");
-//        }else {
-//
-//            return ResponseEntity.ok(chiTietSanPham.getSoLuong());
-//
-//        }
-//
-//    }
+
 
     @PostMapping("/get-cart-by-buyer")
     public ResponseEntity<?> getCartByBuyer(@RequestBody Map<String, Object> requestBody) {
@@ -379,69 +358,86 @@ public class ProductController {
             o.setIdHoaDon(hoaDon.getId());
             hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
         }
-            return "ban-hang-online/home/index";
+        return "ban-hang-online/home/index";
 
     }
-        double tongTien = 0;
 
-        @PostMapping("/sendMail")
-        public ResponseEntity<?> sendMailXN (@RequestBody OderDataDto orderData){
-            List<ChiTietHoaDon> cart = orderData.getCart();
-            if (cart == null || cart.isEmpty()) {
-                return new ResponseEntity<>("Cart is empty", HttpStatus.BAD_REQUEST);
-            }
+    double tongTien = 0;
 
-            String email = orderData.getHoadon().getEmailNguoiNhan();
-            String tenKh = orderData.getHoadon().getTenNguoiNhan();
-            DecimalFormat decimalFormat = new DecimalFormat("#,### đ");
-            LocalDate ngayDatHang = LocalDate.now();
-
-            if (email != null && !email.isEmpty()) {
-                for (ChiTietHoaDon chiTietHoaDon : cart) {
-                    tongTien += chiTietHoaDon.getSoLuong() * chiTietHoaDon.getGia();
-                }
-                MimeMessagePreparator messagePreparator = mimeMessage -> {
-                    MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                    messageHelper.setTo(email);
-                    messageHelper.setSubject("Xác nhận đơn hàng từ SixDo Shop");
-
-                    StringBuilder htmlContent = new StringBuilder();
-                    htmlContent.append("<html>");
-                    htmlContent.append("<head><title>Xác nhận đơn hàng</title></head>");
-                    htmlContent.append("<body>");
-                    htmlContent.append("<h2>Xác nhận đơn hàng của bạn</h2>");
-                    htmlContent.append("<p>Kính gửi ").append(tenKh).append(",</p>");
-                    htmlContent.append("<p>Chúng tôi xin trân trọng thông báo rằng đơn hàng của bạn đã được nhận và đang được xử lý.</p>");
-                    htmlContent.append("<p>Dưới đây là các thông tin chi tiết về đơn hàng của bạn:</p>");
-                    htmlContent.append("<ul>");
-                    htmlContent.append("<li>Ngày đặt hàng: ").append(ngayDatHang).append("</li>");
-                    htmlContent.append("<li>Sản phẩm đặt hàng:</li>");
-                    htmlContent.append("<ul>");
-                    for (ChiTietHoaDon chiTietHoaDon : cart) {
-                        htmlContent.append("<li>");
-                        htmlContent.append("Tên sản phẩm: ").append(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getSanPham().getTenSanPham());
-                        htmlContent.append(" ");
-                        htmlContent.append("Màu Sắc: ").append(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getMauSac().getTenMauSac());
-                        htmlContent.append(", Số lượng: ").append(chiTietHoaDon.getSoLuong());
-                        htmlContent.append(", Đơn giá: ").append(decimalFormat.format(chiTietHoaDon.getGia()));
-                        htmlContent.append("</li>");
-                    }
-                    htmlContent.append("</ul>");
-                    htmlContent.append("<li>Tổng số tiền: ").append(decimalFormat.format(tongTien)).append("( Chưa bao gồm phí vận chuyển và thuế)</li>");
-                    htmlContent.append("</ul>");
-                    htmlContent.append("<p>Vui lòng kiểm tra thông tin đơn hàng của bạn. Nếu có bất kỳ thắc mắc hoặc yêu cầu bổ sung, vui lòng liên hệ với chúng tôi ngay qua email hoặc số điện thoại được cung cấp dưới đây.</p>");
-                    htmlContent.append("<p>Chúng tôi sẽ tiếp tục cập nhật thông tin về quá trình xử lý của đơn hàng và sẽ thông báo cho bạn khi đơn hàng được vận chuyển.</p>");
-                    htmlContent.append("<p>Xin chân thành cảm ơn và chúc Quý khách một ngày tốt lành!</p>");
-                    htmlContent.append("<p>Trân trọng,<br>Đội ngũ hỗ trợ khách hàng<br>Cửa Hàng Sixdo</p>");
-                    htmlContent.append("<p>Email: hieutdph29698@gmail.com<br>Điện thoại: 0123 456 789</p>");
-                    htmlContent.append("</body>");
-                    htmlContent.append("</html>");
-
-                    messageHelper.setText(htmlContent.toString(), true);
-                };
-
-                emailService.sendEmail(messagePreparator);
-            }
-            return ResponseEntity.ok("Email sent successfully");
+    @PostMapping("/sendMail")
+    public ResponseEntity<?> sendMailXN(@RequestBody OderDataDto orderData) {
+        List<ChiTietHoaDon> cart = orderData.getCart();
+        if (cart == null || cart.isEmpty()) {
+            return new ResponseEntity<>("Cart is empty", HttpStatus.BAD_REQUEST);
         }
+
+        String email = orderData.getHoadon().getEmailNguoiNhan();
+        String tenKh = orderData.getHoadon().getTenNguoiNhan();
+        DecimalFormat decimalFormat = new DecimalFormat("#,### đ");
+        LocalDate ngayDatHang = LocalDate.now();
+
+        if (email != null && !email.isEmpty()) {
+            for (ChiTietHoaDon chiTietHoaDon : cart) {
+                tongTien += chiTietHoaDon.getSoLuong() * chiTietHoaDon.getGia();
+            }
+            MimeMessagePreparator messagePreparator = mimeMessage -> {
+                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                messageHelper.setTo(email);
+                messageHelper.setSubject("Xác nhận đơn hàng từ SixDo Shop");
+
+                StringBuilder htmlContent = new StringBuilder();
+                htmlContent.append("<html>");
+                htmlContent.append("<head><title>Xác nhận đơn hàng</title></head>");
+                htmlContent.append("<body>");
+                htmlContent.append("<h2>Xác nhận đơn hàng của bạn</h2>");
+                htmlContent.append("<p>Kính gửi ").append(tenKh).append(",</p>");
+                htmlContent.append("<p>Chúng tôi xin trân trọng thông báo rằng đơn hàng của bạn đã được nhận và đang được xử lý.</p>");
+                htmlContent.append("<p>Dưới đây là các thông tin chi tiết về đơn hàng của bạn:</p>");
+                htmlContent.append("<ul>");
+                htmlContent.append("<li>Ngày đặt hàng: ").append(ngayDatHang).append("</li>");
+                htmlContent.append("<li>Sản phẩm đặt hàng:</li>");
+                htmlContent.append("<ul>");
+                for (ChiTietHoaDon chiTietHoaDon : cart) {
+                    htmlContent.append("<li>");
+                    htmlContent.append("Tên sản phẩm: ").append(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getSanPham().getTenSanPham());
+                    htmlContent.append(" ");
+                    htmlContent.append("Màu Sắc: ").append(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getMauSac().getTenMauSac());
+                    htmlContent.append(", Số lượng: ").append(chiTietHoaDon.getSoLuong());
+                    htmlContent.append(", Đơn giá: ").append(decimalFormat.format(chiTietHoaDon.getGia()));
+                    htmlContent.append("</li>");
+                }
+                htmlContent.append("</ul>");
+                htmlContent.append("<li>Tổng số tiền: ").append(decimalFormat.format(tongTien)).append("( Chưa bao gồm phí vận chuyển và thuế)</li>");
+                htmlContent.append("</ul>");
+                htmlContent.append("<p>Vui lòng kiểm tra thông tin đơn hàng của bạn. Nếu có bất kỳ thắc mắc hoặc yêu cầu bổ sung, vui lòng liên hệ với chúng tôi ngay qua email hoặc số điện thoại được cung cấp dưới đây.</p>");
+                htmlContent.append("<p>Chúng tôi sẽ tiếp tục cập nhật thông tin về quá trình xử lý của đơn hàng và sẽ thông báo cho bạn khi đơn hàng được vận chuyển.</p>");
+                htmlContent.append("<p>Xin chân thành cảm ơn và chúc Quý khách một ngày tốt lành!</p>");
+                htmlContent.append("<p>Trân trọng,<br>Đội ngũ hỗ trợ khách hàng<br>Cửa Hàng Sixdo</p>");
+                htmlContent.append("<p>Email: hieutdph29698@gmail.com<br>Điện thoại: 0123 456 789</p>");
+                htmlContent.append("</body>");
+                htmlContent.append("</html>");
+
+                messageHelper.setText(htmlContent.toString(), true);
+            };
+
+            emailService.sendEmail(messagePreparator);
+        }
+        return ResponseEntity.ok("Email sent successfully");
     }
+
+
+    @GetMapping("product-favorite")
+    public String productFavorite(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
+        model.addAttribute("khachHang", khachHang);
+
+        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0);
+        soLuongSanPhamGioHang = khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0;
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+
+
+        model.addAttribute("listSp", productHomeRequestList);
+        return "ban-hang-online/home/product-favorite";
+    }
+}

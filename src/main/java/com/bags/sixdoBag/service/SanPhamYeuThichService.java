@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
 import com.bags.sixdoBag.model.entitys.SanPham;
@@ -12,9 +13,9 @@ import java.util.List;
 public interface SanPhamYeuThichService {
     public SanPhamYeuThich getSanPhamYeuThich(Integer idSanPhamYeuThich);
 
-    public List<SanPhamYeuThich> getListSanPhamYeuThich();
+    public List<ProductHomeRequest> getListSanPhamYeuThich(int idKhachHang);
 
     public SanPhamYeuThich addSanPhamYeuThich(SanPhamYeuThichRequest sanPhamYeuThichRequest);
 
-    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham,Integer idKhachHang);
+    public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham, Integer idKhachHang);
 }

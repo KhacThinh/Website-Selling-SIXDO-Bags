@@ -1,9 +1,11 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.DanhMucRepository;
+import com.bags.sixdoBag.model.repository.QueryJpa;
 import com.bags.sixdoBag.service.DanhMucService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,8 @@ import java.util.List;
 public class DanhMucServiceImpl implements DanhMucService {
 
     private final DanhMucRepository danhMucRepository;
+
+    private QueryJpa queryJpa = new QueryJpa();
 
     @Override
     public DanhMuc getDanhMuc(Integer idDanhMuc) {
@@ -74,7 +78,6 @@ public class DanhMucServiceImpl implements DanhMucService {
         return danhMuc;
     }
 
-    //////////////////////////////////////////
     @Override
     public Page<DanhMuc> searchDanhMucTenOrMa(String tenMa, Pageable pageable) {
         return danhMucRepository.searchDanhMucTenOrMa(tenMa, pageable);
@@ -83,5 +86,10 @@ public class DanhMucServiceImpl implements DanhMucService {
     public Page<DanhMuc> searchcbb(boolean name, Pageable pageable) {
         return danhMucRepository.searchCbb(name,pageable);
     }
-    ////////////////////////////////////////////////////////////////
+
+    @Override
+    public List<ProductHomeRequest> filterDanhMucCTSPOnline(String tenDanhMuc) {
+        List<ProductHomeRequest> productHomeRequest = queryJpa.filterDanhMucProductHome(tenDanhMuc);
+        return productHomeRequest;
+    }
 }

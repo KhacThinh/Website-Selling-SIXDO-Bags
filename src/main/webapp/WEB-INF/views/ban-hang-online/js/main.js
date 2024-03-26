@@ -279,8 +279,6 @@
         /*==================================================================
         [ Show modal1 ]*/
 
-        var dataList = [];
-
         $('.js-show-modal1').on('click', function (e) {
             e.preventDefault();
             $('.js-modal1').addClass('show-modal1');
@@ -429,27 +427,6 @@
         });
 
 
-
-
-
-        function countProductForCart() {
-            const count = document.querySelector('.icon-count-cart');
-            var totalCount = 0;
-            for (var i = 0; i < cart.length; i++) {
-                totalCount += cart[i].soLuong;
-            }
-            count.setAttribute('data-notify', totalCount);
-            return totalCount;
-        }
-
-        function updateCartCount() {
-            var cartCountElement = document.getElementById('totalCartValues');
-
-            if (cartCountElement) {
-                cartCountElement.innerHTML = countProductForCart();
-            }
-        }
-
         $('.js-show-cart').on('click', function () {
             $('.js-panel-cart').addClass('show-header-cart');
             var cartListElement = document.getElementById('cartProductList');
@@ -524,6 +501,7 @@
             updateCartCount();
 
         };
+
 
         var citis = document.getElementById("city");
         var districts = document.getElementById("district");

@@ -3053,6 +3053,7 @@ iframe {border: none;}
 
 .flex-r {
 	justify-content: flex-end;
+	margin-left: -13px;
 }
 
 .flex-c {
@@ -3597,3 +3598,18 @@ a {
 .foot-lnk {
 	text-align: center;
 }
+
+.bi-heart-fill {
+	display: none; /* Ẩn icon đậm ban đầu */
+	color: red;
+}
+
+.bi-heart {
+	display: inline; /* Hiển thị icon mờ */
+}
+
+.bi-heart-fill-favorite{
+	display: inline;
+}
+
+
