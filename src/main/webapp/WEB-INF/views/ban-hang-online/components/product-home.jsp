@@ -80,33 +80,51 @@
                     $(document).on('click', '.js-addwish-b2', function () {
                         var heartFill = $(this).find('.bi-heart-fill');
                         var heartOutline = $(this).find('.bi-heart');
+                        var productId = $(this).data('product-id');
 
-                        if (heartFill.css('display') === 'none') {
-                            // Nếu icon fill hiện tại đang ẩn, chuyển sang hiển thị icon fill và ẩn icon đậm
-                            heartFill.css('display', 'inline');
-                            heartOutline.css('display', 'none');
-                            // Hiển thị thông báo thành công
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Đã thêm vào danh sách yêu thích!',
-                                showConfirmButton: false,
-                                timer: 1500 // tự động đóng sau 1.5 giây
-                            });
-                        } else {
-                            // Ngược lại, chuyển về icon đậm và ẩn icon fill
-                            heartFill.css('display', 'none');
-                            heartOutline.css('display', 'inline');
-                            // Hiển thị thông báo hủy thành công
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Đã xóa khỏi danh sách yêu thích!',
-                                showConfirmButton: false,
-                                timer: 1500 // tự động đóng sau 1.5 giây
-                            });
-                        }
+                        $.get('/product-favorite/check-thong-tin-khach-hang', function (response) {
+                            if (response !== 0) {
+                                console.log('Khách hàng đã đăng nhập với ID:', response);
+                                if (heartFill.css('display') === 'none') {
+                                    heartFill.css('display', 'inline');
+                                    heartOutline.css('display', 'none');
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã thêm vào danh sách yêu thích!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                } else {
+                                    // Ngược lại, chuyển về icon đậm và ẩn icon fill
+                                    heartFill.css('display', 'none');
+                                    heartOutline.css('display', 'inline');
+                                    // Hiển thị thông báo hủy thành công
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã xóa khỏi danh sách yêu thích!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                }
+                            } else {
+                                Swal.fire({
+                                    title: "Login to add products to cart",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Log in",
+                                    cancelButtonText: "Close",
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "/sixdo-shop/login";
+                                    }
+                                });
+                            }
+                        }).fail(function (xhr, status, error) {
+                            // Xử lý lỗi nếu có
+                            console.error('Lỗi khi gửi yêu cầu kiểm tra thông tin khách hàng:', error);
+                        });
                     });
                 }
-
 
 
                 // tải tự động dữ liệu lên từ product controller

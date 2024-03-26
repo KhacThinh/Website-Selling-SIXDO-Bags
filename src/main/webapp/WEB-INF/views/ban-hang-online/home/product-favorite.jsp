@@ -80,7 +80,6 @@
 <!-- Cart -->
 
 
-
 <!-- Product -->
 <div class="bg0 m-t-23 p-b-140">
     <div class="container">
@@ -320,8 +319,26 @@
             // sản phẩm yêu thích product favorites
             function themSanPhamYeuThich() {
                 $(document).on('click', '.js-addwish-b2', function () {
+                    var idKhachHang = document.getElementById("id-khach-hang").innerText;
+                    if (idKhachHang == "") {
+                        Swal.fire({
+                            title: "Login to add products to cart",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Log in",
+                            cancelButtonText: "Close",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/sixdo-shop/login";
+                            }
+                        });
+                    }
+
                     var heartFill = $(this).find('.bi-heart-fill');
                     var heartOutline = $(this).find('.bi-heart');
+                    // Sử dụng phương thức .data() để lấy dữ liệu từ thuộc tính data-product-id
+                    var productId = $(this).data('product-id');
+
 
                     if (heartFill.css('display') === 'none') {
                         // Nếu icon fill hiện tại đang ẩn, chuyển sang hiển thị icon fill và ẩn icon đậm
@@ -330,7 +347,7 @@
                         // Hiển thị thông báo thành công
                         Swal.fire({
                             icon: 'success',
-                            title: 'Đã thêm vào danh sách yêu thích!',
+                            title: 'Đã thêm vào danh sách yêu thích!' + productId,
                             showConfirmButton: false,
                             timer: 1500 // tự động đóng sau 1.5 giây
                         });
@@ -349,6 +366,49 @@
                 });
             }
 
+            function themVoSanPhamYeuThich() {
+                $('.js-addcart-detail-customer').on('click', function () {
+                    var idKhachHang = document.getElementById("id-khach-hang").innerText;
+                    var selectedIdValue = document.getElementById('select-id-color').value;
+                    var quantityProduct = 0;
+                    quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
+                    if (idKhachHang == "") {
+                        Swal.fire({
+                            title: "Login to add products to cart",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Log in",
+                            cancelButtonText: "Close",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/sixdo-shop/login";
+                            }
+                        });
+                    }
+
+                    $.ajax({
+                        url: '/sixdo-shop/add-to-cart-buyer',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            idKhachHang: idKhachHang,
+                            idChiTietSanPham: selectedIdValue,
+                            soLuong: quantityProduct
+                        }),
+                        success: function (response) {
+                            const count = document.querySelector('.icon-count-cart');
+                            count.setAttribute('data-notify', response);
+                            showAlertAddCart('Success!', 'Product added to cart!', 'success');
+
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        }
+                    });
+
+
+                });
+            }
 
 
             // tải tự động dữ liệu lên từ product controller
@@ -588,7 +648,7 @@
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    $(".js-select2").each(function(){
+    $(".js-select2").each(function () {
         $(this).select2({
             minimumResultsForSearch: 20,
             dropdownParent: $(this).next('.dropDownSelect2')
@@ -614,12 +674,12 @@
 <!--===============================================================================================-->
 <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
-    $('.gallery-lb').each(function() { // the containers for all your galleries
+    $('.gallery-lb').each(function () { // the containers for all your galleries
         $(this).magnificPopup({
             delegate: 'a', // the selector for gallery item
             type: 'image',
             gallery: {
-                enabled:true
+                enabled: true
             },
             mainClass: 'mfp-fade'
         });
@@ -634,13 +694,13 @@
 <!--===============================================================================================-->
 
 <script>
-    $('.js-addwish-b2').on('click', function(e){
+    $('.js-addwish-b2').on('click', function (e) {
         e.preventDefault();
     });
 
-    $('.js-addwish-b2').each(function(){
+    $('.js-addwish-b2').each(function () {
         var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-        $(this).on('click', function(){
+        $(this).on('click', function () {
             swal(nameProduct, "is added to wishlist !", "success");
 
             $(this).addClass('js-addedwish-b2');
@@ -648,10 +708,10 @@
         });
     });
 
-    $('.js-addwish-detail').each(function(){
+    $('.js-addwish-detail').each(function () {
         var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
 
-        $(this).on('click', function(){
+        $(this).on('click', function () {
             swal(nameProduct, "is added to wishlist !", "success");
 
             $(this).addClass('js-addedwish-detail');
@@ -662,25 +722,25 @@
     /*---------------------------------------------*/
 
 
-
 </script>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
 <script>
-    $('.js-pscroll').each(function(){
-        $(this).css('position','relative');
-        $(this).css('overflow','hidden');
+    $('.js-pscroll').each(function () {
+        $(this).css('position', 'relative');
+        $(this).css('overflow', 'hidden');
         var ps = new PerfectScrollbar(this, {
             wheelSpeed: 1,
             scrollingThreshold: 1000,
             wheelPropagation: false,
         });
 
-        $(window).on('resize', function(){
+        $(window).on('resize', function () {
             ps.update();
         })
     });
-</script>s
+</script>
+s
 <%--ffffff--%>
 
 <script type="text/javascript">

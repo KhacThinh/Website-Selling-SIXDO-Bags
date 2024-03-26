@@ -65,4 +65,18 @@ public class ProductFavoriteController {
             return 0;
         }
     }
+
+
+    @GetMapping("check-thong-tin-khach-hang")
+    public @ResponseBody
+    Integer getCheckLoginKhachHang(){
+        if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
+            System.out.println("đã vô đây");
+            KhachHang khachHang = khachHangService.getidKhachHang(UserLoginKhachHang.idKhachHangFavorite);
+            return khachHang.getId();
+        } else {
+            System.out.println("chưa vô đây");
+            return 0;
+        }
+    }
 }

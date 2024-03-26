@@ -75,32 +75,9 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-7 mb-3">
-            <form action="/chi-tiet-san-pham/filter" class="filter-form" method="post">
+            <form action="/chi-tiet-san-pham/filterCTSP" class="filter-form" method="get">
                 <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <select name="tenChatLieu" class="form-select">
-                            <option value="">Chọn Chất Liệu</option>
-                            <c:forEach items="${tenChatLieuSelects}" var="cl">
-                                <option value="${cl}" ${tenChatLieuSelect eq cl ? 'selected' : ''}>${cl}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <select name="tenThuongHieu" class="form-select">
-                            <option value="">Chọn thương hiệu</option>
-                            <c:forEach items="${tenThuongHieuSelects}" var="th">
-                                <option value="${th}" ${tenThuongHieuSelect eq th ? 'selected' : ''}>${th}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <select name="tenDoiTuongSuDung" class="form-select">
-                            <option value="">Chọn đối tượng sử dụng</option>
-                            <c:forEach var="doiTuongSuDungItem" items="${tenDoiTuongSuDungSelects}">
-                                <option value="${doiTuongSuDungItem}" ${tenDoiTuongSuDungSelect eq doiTuongSuDungItem ? 'selected' : ''}>${doiTuongSuDungItem}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
+
                     <div class="col-md-4 mb-3">
                         <select name="tenMauSac" class="form-select">
                             <option value="">Chọn màu sắc</option>
@@ -129,6 +106,21 @@
     </div>
 </div>
 
+<script>
+    function getTrangThaiString(trangThai) {
+        switch (trangThai) {
+            case 0:
+                return "Ngừng bán";
+            case 1:
+                return "Đang bán";
+            case 2:
+                return "Hết hàng";
+            default:
+                return "Không xác định";
+        }
+    }
+
+</script>
 
 <div class="container">
     <div id="test">
@@ -143,6 +135,7 @@
                 <th scope="col">SỐ LƯỢNG</th>
                 <th scope="col">GIÁ NHẬP</th>
                 <th scope="col">GIÁ BÁN</th>
+                <th scope="col">TRẠNG THÁI</th>
                 <th scope="col">HOẠT ĐỘNG</th>
             </tr>
             </thead>
@@ -159,6 +152,9 @@
                 <td>${sp.soLuong}</td>
                 <td>${sp.giaNhap}</td>
                 <td>${sp.giaBan}</td>
+                <td><script>document.write(getTrangThaiString(${sp.trangThai}))</script></td>
+
+
                 <td>
                     <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                             class="bi bi-three-dots-vertical"></i></a>
@@ -203,11 +199,10 @@
                                                 <label for="ma" class="form-label">Mã
                                                 </label>
                                                 <input value="${sp.ma}" name="ma" id="maUpdate${sp.id}"
-                                                       class="form-control"/>
-                                                <div id="maUpdateError${sp.id}" class="error"></div>
+                                                       class="form-control" readonly/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="soLuong" class="form-label">Số Lượng
+                                                <label for="soLuong" class="form-label">Số Lượng <span>*</span></label>
                                                 </label>
                                                 <input value="${sp.soLuong}" name="soLuong" id="soLuongUpdate${sp.id}"
                                                        class="form-control"/>
@@ -215,7 +210,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="giaNhap" class="form-label">Giá Nhập
+                                                <label for="giaNhap" class="form-label">Giá Nhập <span>*</span></label>
                                                 </label>
                                                 <input value="${sp.giaNhap}" name="giaNhap" id="giaNhapUpdate${sp.id}"
                                                        class="form-control"/>
@@ -224,7 +219,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="giaBan" class="form-label">Giá Bán
+                                                <label for="giaBan" class="form-label">Giá Bán <span>*</span></label>
                                                 </label>
                                                 <input value="${sp.giaBan}" name="giaBan" id="giaBanUpdate${sp.id}"
                                                        class="form-control"/>
@@ -243,14 +238,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="sanPham" class="form-label">Sản Phẩm</label>
-                                                <select name="sanPham" id="sanPham${sp.id}" class="form-control">
-                                                    <option value="" label="Chọn Sản Phẩm"/>
-                                                    <c:forEach items="${listSp}" var="c">
-                                                        <option value="${c.id}"  ${c.id==sp.sanPham.id ? 'selected':''}
-                                                        >${c.tenSanPham}</option>
-                                                    </c:forEach>
-                                                </select>
+                                                <label for="" class="form-label">Sản Phẩm</label>
+                                                <div class="form-control">${sp.sanPham.tenSanPham}</div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="mauSac" class="form-label">Màu Sắc</label>
@@ -274,14 +263,17 @@
                                                     </c:forEach>
                                                 </select>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="form-lable">Trạng Thái</label><br>
-                                                <input type="radio" name="trangThai" id="trangThai${sp.id}" value="1"
-                                                       checked>
-                                                <label for="trangThaiHoatDong${sp.id}">Hoạt Động</label><br>
-                                                <input type="radio" name="trangThai" id="trangThai${sp.id}" value="0">
-                                                <label for="trangThaiKhongHoatDong${sp.id}">Không Hoạt Động</label>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                <label for="trangThai" class="form-label">Trạng Thái </label>
+                                                    <select name="trangThai" class="form-select" id="trangThaiUpdate${sp.id}">
+                                                        <option value="1"${sp.trangThai == 1 ? 'selected' : ''}>Đang Bán</option>
+                                                        <option value="0"${sp.trangThai == 0? 'selected' : ''}>Ngừng Bán</option>
+                                                    </select>
+                                                </div>
+                                                </div>
                                             </div>
+
 
                                         </div>
                                     </div>
@@ -308,6 +300,7 @@
         </table>
     </div>
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="modalChiTiet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -425,14 +418,18 @@
             type: 'DELETE',
             data: {id: itemId},
             success: function (result) {
-
-                $('#record_' + itemId).remove();
                 Swal.fire({
                     title: "Good job!",
-                    text: "Xóa Thành Công!",
+                    text: "Chuyển Trạng Thái Thành Công!",
                     icon: "success"
                 });
+
+                // Set thời gian đóng thông báo là 2 giây và sau đó load lại trang
+                setTimeout(function () {
+                    location.reload(); // Load lại trang sau 2 giây
+                }, 2000); // 2000 milliseconds = 2 giây
             },
+
             error: function (xhr, status, error) {
                 console.error('Lỗi khi xóa: ', error);
             }
@@ -445,40 +442,33 @@
 <script>
     function validateFormUpdate(id) {
         var soLuong = document.getElementById('soLuongUpdate' + id).value;
-        var ma = document.getElementById('maUpdate' + id).value;
 
         var giaNhap = document.getElementById('giaNhapUpdate' + id).value;
         var giaBan = document.getElementById('giaBanUpdate' + id).value;
-        var sanPham = document.getElementById('sanPham' + id).value;
         var mauSac = document.getElementById('mauSac' + id).value;
         var khuyenMai = document.getElementById('khuyenMai' + id).value;
-        var trangThai = document.getElementById('trangThai' + id).value;
+        var trangThai = document.getElementById('trangThaiUpdate' + id).value;
         var fileInput = document.getElementById('images' + id);
         var file = fileInput.files[0];
         console.log(file);
 
         var formData = new FormData();
         formData.append('id', id);
-        formData.append('ma', ma);
         formData.append('soLuong', soLuong);
         formData.append('giaNhap', giaNhap);
         formData.append('giaBan', giaBan);
-        formData.append('sanPham', sanPham);
         formData.append('mauSac', mauSac);
         formData.append('khuyenMai', khuyenMai);
         formData.append('trangThai', trangThai);
-
-        // Kiểm tra xem người dùng đã chọn ảnh hay không
         if (file) {
             formData.append('images', file);
         }
-
-
         var isValid = true;
-
-
         if (soLuong.trim() === '') {
             document.getElementById('soLuongUpdateError' + id).innerText = 'Vui lòng nhập số lượng.';
+            isValid = false;
+        } else if (parseFloat(soLuong) < 0) {
+            document.getElementById('soLuongUpdateError' + id).innerText = 'Số lượng không thể là số âm.';
             isValid = false;
         } else if (!isNumeric(soLuong)) {
             document.getElementById('soLuongUpdateError' + id).innerText = 'Số lượng phải là một số.';
@@ -490,6 +480,9 @@
         if (giaNhap.trim() === '') {
             document.getElementById('giaNhapUpdateError' + id).innerText = 'Vui lòng nhập giá nhập.';
             isValid = false;
+        } else if (parseFloat(giaNhap) < 0) {
+            document.getElementById('giaNhapUpdateError' + id).innerText = 'Giá nhập không thể là số âm.';
+            isValid = false;
         } else if (!isNumeric(giaNhap)) {
             document.getElementById('giaNhapUpdateError' + id).innerText = 'Giá nhập phải là một số.';
             isValid = false;
@@ -500,13 +493,18 @@
         if (giaBan.trim() === '') {
             document.getElementById('giaBanUpdateError' + id).innerText = 'Vui lòng nhập giá bán.';
             isValid = false;
-        } else if (!isNumeric(giaBan)) {
+        } else if (parseFloat(giaBan) < 0) {
+            document.getElementById('giaBanUpdateError' + id).innerText = 'Giá bán không thể là số âm.';
+            isValid = false;
+        }
+        else if (!isNumeric(giaBan)) {
             document.getElementById('giaBanUpdateError' + id).innerText = 'Giá bán phải là một số.';
             isValid = false;
         } else {
             document.getElementById('giaBanUpdateError' + id).innerText = '';
         }
-        if (isValid === true || isValid === false) {
+
+        if (isValid === true ) {
             $.ajax({
                 url: '/chi-tiet-san-pham/update',
                 type: 'PUT',
@@ -547,8 +545,6 @@
 
 </script>
 
-
-<%--Update--%>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
