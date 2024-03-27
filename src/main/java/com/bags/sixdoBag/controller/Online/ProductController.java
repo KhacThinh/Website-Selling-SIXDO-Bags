@@ -431,4 +431,19 @@ public class ProductController {
         model.addAttribute("listSp", productHomeRequestList);
         return "ban-hang-online/home/product-favorite";
     }
+
+
+    @GetMapping("/manager-oder-customer")
+    public String managerOderCustomer(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
+
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+
+        model.addAttribute("khachHang", khachHang);
+
+        model.addAttribute("listSp", productHomeRequestList);
+
+        return "ban-hang-online/home/manager-order-customer";
+    }
 }

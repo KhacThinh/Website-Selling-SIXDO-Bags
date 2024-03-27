@@ -509,6 +509,16 @@ where san_pham.ten like N'Iphone x promax'
 
 
 
+select * from chi_tiet_san_pham
+
+select * from khach_hang as kh join hoa_don
+as hd on hd.id_khach_hang = kh.id
+where hd.trang_thai = 1 and kh.id = 1 
+
+select * from hoa_don
+
+
+
 
 
 
