@@ -138,7 +138,6 @@ public class ProductFavoriteController {
             @RequestParam("gioiTinh") Integer gioiTinh,
             @RequestParam("sdt") String sdt,
             @RequestParam("ngaySinh") String ngaySinh,
-            @RequestParam("email") String email,
             @RequestParam("diaChi") String diaChi
             // Thêm các @RequestParam khác tương tự nếu cần
 //            @RequestParam(value = "hinhAnh", required = false) MultipartFile hinhAnh // Handle optional file upload
@@ -174,7 +173,6 @@ public class ProductFavoriteController {
                 khachHang.setGioiTinh(gioiTinh);
                 khachHang.setSdt(sdt);
                 khachHang.setNgaySinh(ngaySinh);
-                khachHang.setEmail(email);
                 khachHang.setDiaChi(diaChi);
 //                khachHang.setHinhAnh();
                 khachHangService.editKhachHang(UserLoginKhachHang.idKhachHangFavorite, khachHang);

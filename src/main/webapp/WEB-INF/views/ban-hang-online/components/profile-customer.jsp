@@ -37,7 +37,11 @@
 
     .labels {
         font-size: 14px;
-        margin-top: 5px;
+    }
+
+    .labels-gioi-tinh {
+        font-size: 14px;
+        margin-top: 8px;
     }
 
     .add-experience:hover {
@@ -49,10 +53,6 @@
 
     .modal-profile-customer {
         margin-top: 60px;
-    }
-
-    .profile-gioiTinh {
-        margin-top: 7px;
     }
 
 
@@ -88,24 +88,24 @@
                                                id="js-profile-ten"/>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="labels">Giới Tính</label>
+                                        <label class="labels-gioi-tinh">Giới Tính</label>
                                         <div class="d-flex flex-row">
                                             <div class="form-check me-3">
-                                                <input class="form-check-input profile-gioiTinh" type="radio"
+                                                <input class="form-check-input" type="radio"
                                                        name="gender" id="nam"
                                                        value="1">
                                                 <label class="labels" for="nam">Nam</label>
                                             </div>
                                             <div class="form-check me-3">
-                                                <input class="form-check-input profile-gioiTinh" type="radio"
+                                                <input class="form-check-input" type="radio"
                                                        name="gender"
                                                        id="nu" value="0">
                                                 <label class="labels" for="nu">Nữ</label>
                                             </div>
                                             <div class="form-check me-3">
-                                                <input class="form-check-input profile-gioiTinh" type="radio"
+                                                <input class="form-check-input" type="radio"
                                                        name="gender"
-                                                       id="khong-chon" value="Không chọn" checked>
+                                                       id="khong-chon" value="2" checked>
                                                 <label class="labels" for="khong-chon">Không chọn</label>
                                             </div>
                                         </div>
@@ -126,16 +126,15 @@
                                 <div class="row mt-3">
                                     <div class="col-md-12">
                                         <label class="labels">Email</label>
-                                        <input type="text" class="form-control" placeholder="vidu@gmail.com"
-                                               id="js-profile-email"/>
+                                        <span class="form-control" id="js-profile-email"/>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="labels">Ảnh</label>
+                                        <label class="labels-gioi-tinh">Ảnh</label>
                                         <input type="file" class="form-control"
                                                id="js-profile-hinhAnh"/>
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="labels">Địa Chỉ</label>
+                                        <label class="labels-gioi-tinh">Địa Chỉ</label>
                                         <input type="text" class="form-control" placeholder="Nhập địa chỉ"
                                                id="js-profile-diaChi">
                                     </div>
@@ -200,7 +199,7 @@
             $('#js-profile-ten').val(khachHang.tenKhachHang);
             $('#js-profile-sdt').val(khachHang.sdt);
             $('#js-profile-ngaySinh').val(khachHang.ngaySinh);
-            $('#js-profile-email').val(khachHang.email);
+            $('#js-profile-email').text(khachHang.email);
             $('#js-profile-diaChi').val(khachHang.diaChi);
             if (khachHang.gioiTinh == 1) {
                 $('#nam').prop('checked', true);
@@ -219,7 +218,6 @@
             var gioiTinh = document.querySelector('input[name="gender"]:checked').value;
             var sdt = document.getElementById('js-profile-sdt').value.trim();
             var ngaySinh = document.getElementById('js-profile-ngaySinh').value.trim();
-            var email = document.getElementById('js-profile-email').value.trim();
             var diaChi = document.getElementById('js-profile-diaChi').value.trim();
             var fileImages = document.getElementById('js-profile-hinhAnh').files[0];
 
@@ -235,15 +233,14 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    if (ten === '' || email === '' || sdt === '') {
-                        alert('Vui lòng điền đầy đủ thông tin tên, email và số điện thoại.');
+                    if (ten === '' || sdt === '') {
+                        alert('Vui lòng điền đầy đủ thông tin tên và số điện thoại.');
                     } else {
                         $.post('/product-favorite/input-infomation-profile-header', {
                             ten: ten,
                             gioiTinh: gioiTinh,
                             sdt: sdt,
                             ngaySinh: ngaySinh,
-                            email: email,
                             diaChi: diaChi,
                             hinhAnh: fileImages
                         }, function (data) {
@@ -256,6 +253,12 @@
                                     timer: 1500
                                 });
                             } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Lưu Thất Bại',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
                                 console.error("Lỗi không sửa được thông tin khách hàng");
                             }
                         });
