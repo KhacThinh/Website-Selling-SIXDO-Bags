@@ -29,4 +29,10 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
 
     @Query(value = "select * from hoa_don where thoi_gian_tao between :ngayBatDau and :ngayKetThuc", nativeQuery = true)
     List<HoaDon> filterNgayBatDauKetThuc(String ngayBatDau, String ngayKetThuc);
+
+    @Query(value = "select hd from HoaDon hd join KhachHang as kh on hd.khachHang = kh where hd.trangThai = :trangThai and kh.id = :idKh")
+    List<HoaDon> getHoaDonByTrangThaiAndKhachHang(int idKh, int trangThai);
+
+    @Query(value = "select hd from HoaDon hd join KhachHang as kh on hd.khachHang = kh where kh.id = :idKh")
+    List<HoaDon> getHoaDonByKhachHang(int idKh);
 }

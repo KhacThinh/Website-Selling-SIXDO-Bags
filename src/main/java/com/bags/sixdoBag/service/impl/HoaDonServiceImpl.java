@@ -1,16 +1,15 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.dto.response.DonHangOnlineResponse;
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.repository.HoaDonRepository;
-import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
 import com.bags.sixdoBag.service.HoaDonChiTietService;
 import com.bags.sixdoBag.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -152,4 +151,40 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         return hoaDonRepository.save(ms);
     }
+
+    @Override
+    public List<DonHangOnlineResponse> getSortHoaDonByKhachHangTrangThai(int idKh, int trangThai) {
+        List<DonHangOnlineResponse> hoaDonHangOnlineResponse = new ArrayList<>();
+        List<HoaDon> hoaDons = hoaDonRepository.getHoaDonByTrangThaiAndKhachHang(idKh, trangThai);
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            DonHangOnlineResponse donHangOnlineResponse = new DonHangOnlineResponse();
+            donHangOnlineResponse.setHoaDon(hoaDon);
+            donHangOnlineResponse.setChiTietHoaDons(chiTietHoaDons);
+            hoaDonHangOnlineResponse.add(donHangOnlineResponse);
+        }
+
+        return hoaDonHangOnlineResponse;
+    }
+
+    @Override
+    public Map<Integer, Integer> getSortHoaDonByKhachHang(int idKh) {
+        Map<Integer, Integer> hoaDonSoLuong = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.getHoaDonByKhachHang(idKh);
+        int[] trangThai = {0, 1, 2, 3, 4, 5};
+
+        // Khởi tạo số lượng trạng thái ban đầu là 0
+        for (int i = 0; i < trangThai.length; i++) {
+            hoaDonSoLuong.put(trangThai[i], 0);
+        }
+
+        for (HoaDon hoaDon : hoaDons) {
+            int trangThaiHoaDon = hoaDon.getTrangThai();
+            hoaDonSoLuong.put(trangThaiHoaDon, hoaDonSoLuong.get(trangThaiHoaDon) + 1);
+        }
+
+        return hoaDonSoLuong;
+    }
+
 }

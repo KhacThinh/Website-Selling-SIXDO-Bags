@@ -27,6 +27,9 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, In
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(@Param("idHoaDon") int idHoaDon);
 
+    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.hoaDon.id IN :hoaDonIds")
+    List<ChiTietHoaDon> getGioHangChiTietFromHoaDons(@Param("hoaDonIds") List<Integer> hoaDonIds);
+
 
     @Modifying
     @Query("delete from ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")

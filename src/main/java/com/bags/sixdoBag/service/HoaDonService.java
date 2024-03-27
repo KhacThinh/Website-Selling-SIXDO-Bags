@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.service;
 
+import com.bags.sixdoBag.model.dto.response.DonHangOnlineResponse;
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public interface HoaDonService {
     void saveHoaDon(HoaDon hoaDon);
 
     void xacNhanDonHang(int trangThai, String maHd);
+
     public HoaDon editHoaDon(Integer idHoaDon, HoaDon hoaDon);
+
+    List<DonHangOnlineResponse> getSortHoaDonByKhachHangTrangThai(int idKh, int trangThai);
+
+    Map<Integer, Integer> getSortHoaDonByKhachHang(int idKh);
 
 }

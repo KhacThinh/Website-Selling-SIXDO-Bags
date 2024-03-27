@@ -123,7 +123,6 @@ public class ProductFavoriteController {
     @GetMapping("infomation-profile-header")
     public @ResponseBody
     KhachHang infomationProfileHeader() {
-        System.out.println("Đã Vô Đây");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
             return khachHang;

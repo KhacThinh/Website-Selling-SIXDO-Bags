@@ -279,6 +279,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         grid-gap: 30px;
+        max-width: 100%; /* Đặt chiều rộng tối đa là 100% */
     }
 
     .chartsBx .chart {
@@ -292,6 +293,7 @@
         border-radius: 20px;
         border: 1px solid var(--blue);
     }
+
 
     .chart-title {
         color: var(--blue);
@@ -590,13 +592,12 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
 <div class="main">
     <!-- ======================= Cards ================== -->
     <div class="cardBox">
-        <div class="card">
+        <div class="card" id="click-don-hang-cho-xac-nhan">
             <div>
-                <div class="numbers">2</div>
+                <div class="numbers" id="don-hang-cho-xac-nhan"></div>
                 <div class="cardName">Chờ xác nhận</div>
             </div>
 
@@ -605,9 +606,9 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="click-don-hang-dang-xu-ly">
             <div>
-                <div class="numbers">2</div>
+                <div class="numbers" id="don-hang-dang-xu-ly"></div>
                 <div class="cardName">Đang xử lý</div>
             </div>
 
@@ -616,8 +617,10 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="click-don-hang-dang-giao">
             <div id="so-luong-san-pham">
+                <div class="numbers" id="don-hang-dang-giao"></div>
+                <div class="cardName">Đang giao hàng</div>
                 <%--               Đang Giao --%>
             </div>
 
@@ -627,29 +630,9 @@
             </div>
         </div>
 
-<%--        <div class="card">--%>
-<%--            <div id="tong-doanh-thu">--%>
-<%--                &lt;%&ndash;                doanh thu&ndash;%&gt;--%>
-<%--            </div>--%>
-
-<%--            <div class="iconBx">--%>
-<%--                <ion-icon name="cash-outline"></ion-icon>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="card">--%>
-<%--            <div id="so-tien-lai">--%>
-<%--                &lt;%&ndash;                Số lượng đơn hàng đã mua &ndash;%&gt;--%>
-<%--            </div>--%>
-
-<%--            <div class="iconBx">--%>
-<%--                <i class="bi bi-cart-fill"></i>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-        <div class="card">
+        <div class="card" id="click-don-hang-hoan-thanh">
             <div>
-                <div class="numbers">6</div>
+                <div class="numbers" id="don-hang-hoan-thanh"></div>
                 <div class="cardName">Hoàn Thành</div>
             </div>
 
@@ -658,9 +641,9 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="click-don-hang-da-huy">
             <div>
-                <div class="numbers">6</div>
+                <div class="numbers" id="don-hang-da-huy"></div>
                 <div class="cardName">Đã Huỷ</div>
             </div>
 
@@ -668,6 +651,27 @@
                 <i class="bi bi-x-circle"></i>
             </div>
         </div>
+    </div>
+
+    <!-- ================ Add Charts JS ================= -->
+    <div class="chartsBx">
+        <table class="table table-hover" id="productTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Mã Hoá đơn</th>
+                <th>Tên Người Nhận</th>
+                <th>Địa chỉ người nhận</th>
+                <th>Số điện thoại</th>
+                <th>Thời gian tạo</th>
+                <th>Tổng tiền</th>
+                <th>Trạng Thái</th>
+                <th colspan="2">Hoạt động</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 
 
@@ -687,11 +691,12 @@
                 <thead>
                 <tr>
                     <th>STT</th>
+                    <th>Hình ảnh</th>
                     <th>Tên</th>
                     <th>Màu sắc</th>
-                    <th>Số lượng đã bán</th>
+                    <th>Số lượng mua</th>
                     <th>Giá bán</th>
-                    <th>Doanh thu sản phẩm</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -851,149 +856,147 @@
 
     $(document).ready(function () {
         // Gọi hàm loadData khi tài liệu đã sẵn sàng
-        doanhThuTheoThang();
-        topNamSanPhamBanChay();
-        tongDoanhThu();
-        soLuongSanPhamThongKe();
-        soTienLai();
+        donHangChuaXacNhan();
+        donHangDangXuLy();
+        donHangHoanThanh();
+        donHangDaHuy();
+        donHangDangGiao();
+
+        clickDonHangChuaXacNhan();
+        clickDonHangDãnguLy();
     });
 
-    function soTienLai() {
-        $.get('/thong-ke/tong-tien-lai', function (data) {
-            const container = $('#so-tien-lai');
-            container.empty();
-            var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
-            productHTML += '<div class="cardName">Số Lượng đơn hàng đã mua</div>';
-            container.append(productHTML);
-        });
-    }
-
-    function soLuongSanPhamThongKe() {
-        $.get('/thong-ke/so-luong-san-pham', function (data) {
-            const container = $('#so-luong-san-pham');
-            container.empty();
-            var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
-            productHTML += '<div class="cardName">Đang giao hàng</div>';
-            container.append(productHTML);
-        });
-    }
-
-    function tongDoanhThu() {
-        $.get('/thong-ke/tong-doanh-thu', function (data) {
-            const container = $('#tong-doanh-thu');
-            container.empty();
-            var productHTML = '<div class="numbers">' + data.toLocaleString() + '</div>';
-            productHTML += '<div class="cardName">Doanh thu</div>';
-            container.append(productHTML);
-        });
-    }
-
-    function topNamSanPhamBanChay() {
-        $.get('/thong-ke/top-5-ban-chay', function (data) {
-            var tenSanPhams = [];
-            var doanhThu = [];
-            var soLuong = [];
-            for (var i = 0; i < data.length; i++) {
-                tenSanPhams.push(data[i].tenSanPham);
-                doanhThu.push(data[i].doanhThuTrenTungSanPham);
-                soLuong.push(data[i].soLuongDaBanTrenTungSanPham);
+    function donHangChuaXacNhan() {
+        $.get('/sixdo-shop/manager-order-customer-online/don-chua-xac-nhan', function (data) {
+            if (data > 0) {
+                $('#don-hang-cho-xac-nhan').text(data);
             }
+        });
+    }
 
-            // biểu đồ
-            var ctx1 = document.getElementById('chart-1').getContext('2d');
-            var chart1 = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: tenSanPhams,
-                    datasets: [{
-                        label: 'Doanh thu',
-                        data: doanhThu, // Dữ liệu doanh thu
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        yAxisID: 'y-doanhthu' // Đặt ID cho trục y của doanh thu
-                    }, {
-                        label: 'Số lượng',
-                        data: soLuong, // Dữ liệu số lượng
-                        backgroundColor: 'rgba(255, 206, 86, 0.6)',
-                        yAxisID: 'y-soluong' // Đặt ID cho trục y của số lượng
-                    }]
-                },
-                options: {
-                    indexAxis: 'x',
-                    parsing: {
-                        yAxisKey: 'y',
-                        xAxisKey: 'x'
-                    },
-                    scales: {
-                        'y-doanhthu': { // Trục y cho doanh thu
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Doanh thu (Triệu đồng)'
-                            }
-                        },
-                        'y-soluong': { // Trục y cho số lượng
-                            position: 'right',
-                            title: {
-                                display: true,
-                                text: 'Số lượng'
-                            }
-                        }
-                    }
-                }
+    function clickDonHangChuaXacNhan() {
+        $("#click-don-hang-cho-xac-nhan").click(function () {
+            $.get('/sixdo-shop/manager-order-customer-online/list-don-chua-xac-nhan', function (data) {
+                $('#productTable tbody').empty();
+                $.each(data, function (index, item) {
+                    var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
+
+                    var row = "<tr>" +
+                        "<th>" + rowIndex + "</th>" +
+                        "<td>" + item.hoaDon.maHoaDon + "</td>" +
+                        "<td>" + item.hoaDon.tenNguoiNhan + "</td>" +
+                        "<td>" + item.hoaDon.diaChiNguoiNhan + "</td>" +
+                        "<td>" + item.hoaDon.sdtNguoiNhan + "</td>" +
+                        "<td>" + item.hoaDon.thoiGianTao + "</td>" +
+                        "<td>" + item.hoaDon.tongTien + "</td>" +
+                        "<td>" + 'Chờ xác nhận' + "</td>" +
+                        "<td> <button class='btn btn-primary'>Sửa</button></td>" +
+                        "<td><button class='btn btn-danger'>Chi Tiết</button></td>" +
+                        "</tr>";
+                        $("#productTable tbody").append(row);
+                });
+
+
+                // $.each(item.chiTietHoaDons, function (idx, chiTietHoaDon) {
+                //     $("#productTable").css("display", "block");
+                //     var row = "<tr>" +
+                //         "<td>" + rowIndex + "</td>" +
+                //         "<td><img src='" + chiTietHoaDon.chiTietSanPham.hinhAnh + "' alt='Ảnh sản phẩm' style='width: 100px'></td>" +
+                //         "<td>" + chiTietHoaDon.chiTietSanPham.sanPham.tenSanPham + "</td>" +
+                //         "<td>" + chiTietHoaDon.chiTietSanPham.mauSac.tenMauSac + "</td>" +
+                //         "<td>" + chiTietHoaDon.length + "</td>" +
+                //         "<td>" + item.hoaDon.tongTien + "</td>" +
+                //         "<td>" +
+                //         "<button class='btn btn-primary'>Sửa</button>" +
+                //         "<button class='btn btn-danger'>Huỷ</button>" +
+                //         "</td>" +
+                //         "</tr>";
+                //
+                //     // Thêm dòng vào tbody của bảng
+                //     $("#productTable tbody").append(row);
+                // });
+            });
+        });
+    }
+
+    function clickDonHangDãnguLy() {
+        $("#click-don-hang-dang-xu-ly").click(function () {
+            $.get('/sixdo-shop/manager-order-customer-online/list-don-hang-dang-xu-ly', function (data) {
+                $('#productTable tbody').empty();
+                $.each(data, function (index, item) {
+                    var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
+
+                    var row = "<tr>" +
+                        "<th>" + rowIndex + "</th>" +
+                        "<td>" + item.hoaDon.maHoaDon + "</td>" +
+                        "<td>" + item.hoaDon.tenNguoiNhan + "</td>" +
+                        "<td>" + item.hoaDon.diaChiNguoiNhan + "</td>" +
+                        "<td>" + item.hoaDon.sdtNguoiNhan + "</td>" +
+                        "<td>" + item.hoaDon.thoiGianTao + "</td>" +
+                        "<td>" + item.hoaDon.tongTien + "</td>" +
+                        "<td>" + 'Chờ xác nhận' + "</td>" +
+                        "<td> <button class='btn btn-primary'>Sửa</button></td>" +
+                        "<td><button class='btn btn-danger'>Huỷ</button></td>" +
+                        "</tr>";
+                    $("#productTable tbody").append(row);
+                });
+
+
+                // $.each(item.chiTietHoaDons, function (idx, chiTietHoaDon) {
+                //     $("#productTable").css("display", "block");
+                //     var row = "<tr>" +
+                //         "<td>" + rowIndex + "</td>" +
+                //         "<td><img src='" + chiTietHoaDon.chiTietSanPham.hinhAnh + "' alt='Ảnh sản phẩm' style='width: 100px'></td>" +
+                //         "<td>" + chiTietHoaDon.chiTietSanPham.sanPham.tenSanPham + "</td>" +
+                //         "<td>" + chiTietHoaDon.chiTietSanPham.mauSac.tenMauSac + "</td>" +
+                //         "<td>" + chiTietHoaDon.length + "</td>" +
+                //         "<td>" + item.hoaDon.tongTien + "</td>" +
+                //         "<td>" +
+                //         "<button class='btn btn-primary'>Sửa</button>" +
+                //         "<button class='btn btn-danger'>Huỷ</button>" +
+                //         "</td>" +
+                //         "</tr>";
+                //
+                //     // Thêm dòng vào tbody của bảng
+                //     $("#productTable tbody").append(row);
+                // });
             });
         });
     }
 
 
-    function doanhThuTheoThang() {
-        $.get('/thong-ke/theo-nam?year=2024', function (data) {
-            var labels = [];
-            var doanhThuTheoThang = [];
-
-            // Lặp qua các cặp key-value trong Map
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    var thongKeResponse = data[key];
-                    // Thêm tháng vào mảng nhãn
-                    labels.push(key);
-                    // Thêm doanh thu vào mảng doanhThuTheoThang
-                    doanhThuTheoThang.push(thongKeResponse.doanhThuTrenTungSanPham);
-                }
+    function donHangDangXuLy() {
+        $.get('/sixdo-shop/manager-order-customer-online/don-hang-dang-xu-ly', function (data) {
+            if (data > 0) {
+                $('#don-hang-dang-xu-ly').text(data);
             }
-
-            var ctx2 = document.getElementById('chart-2').getContext('2d');
-            var chart2 = new Chart(ctx2, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Doanh thu',
-                        data: doanhThuTheoThang,
-                        borderColor: 'rgba(255, 99, 132, 0.6)',
-                        fill: false
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Triệu đồng'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Tháng'
-                            }
-                        }
-                    }
-                }
-            });
-
         });
     }
+
+    function donHangDangGiao() {
+        $.get('/sixdo-shop/manager-order-customer-online/don-hang-dang-duoc-giao', function (data) {
+            if (data > 0) {
+                $('#don-hang-dang-giao').text(data);
+            }
+        });
+    }
+
+    function donHangHoanThanh() {
+        $.get('/sixdo-shop/manager-order-customer-online/don-hang-hoan-thanh', function (data) {
+            if (data > 0) {
+                $('#don-hang-hoan-thanh').text(data);
+            }
+        });
+    }
+
+    function donHangDaHuy() {
+        $.get('/sixdo-shop/manager-order-customer-online/don-hang-da-huy', function (data) {
+            if (data > 0) {
+                $('#don-hang-da-huy').text(data);
+            }
+        });
+    }
+
 </script>
 
 
