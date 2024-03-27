@@ -70,9 +70,9 @@
                     <div class="row">
                         <div class="col-md-3 border-right">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img class="rounded-circle mt-5" width="150px"
+                                <img class="rounded-circle mt-5" width="150px" id="js-rounded-circle-avt"
                                      src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"/>
-                                <span class="font-weight-bold" id="ten-profile-mac-dinh"></span>
+                                <span class="font-weight-bold mt-3" id="ten-profile-mac-dinh"></span>
                                 <span class="text-black-50" id="email-profile-mac-dinh"></span>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                                     <div class="col-md-12">
                                         <label class="labels-gioi-tinh">Ảnh</label>
                                         <input type="file" class="form-control"
-                                               id="js-profile-hinhAnh"/>
+                                               id="js-profile-hinhAnh" multiple/>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="labels-gioi-tinh">Địa Chỉ</label>
@@ -186,6 +186,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         loadInfomationProfileCustumer();
@@ -201,6 +202,15 @@
             $('#js-profile-ngaySinh').val(khachHang.ngaySinh);
             $('#js-profile-email').text(khachHang.email);
             $('#js-profile-diaChi').val(khachHang.diaChi);
+            if (khachHang.hinhAnh == null || khachHang.hinhAnh === '') {
+                var urlHinhAnh = 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg';
+                $('#js-rounded-circle-avt').attr('src', urlHinhAnh);
+                $('#js-rounded-circle-avt-hearder').attr('src', urlHinhAnh);
+            } else {
+                $('#js-rounded-circle-avt').attr('src', khachHang.hinhAnh);
+                $('#js-rounded-circle-avt-hearder').attr('src', khachHang.hinhAnh);
+            }
+
             if (khachHang.gioiTinh == 1) {
                 $('#nam').prop('checked', true);
             } else if (khachHang.gioiTinh == 0) {
@@ -219,9 +229,8 @@
             var sdt = document.getElementById('js-profile-sdt').value.trim();
             var ngaySinh = document.getElementById('js-profile-ngaySinh').value.trim();
             var diaChi = document.getElementById('js-profile-diaChi').value.trim();
-            var fileImages = document.getElementById('js-profile-hinhAnh').files[0];
+            var file = $('#js-profile-hinhAnh')[0].files[0];
 
-            console.log(fileImages);
             Swal.fire({
                 title: 'Xác nhận',
                 text: 'Bạn có muốn lưu thông tin không?',
@@ -236,30 +245,41 @@
                     if (ten === '' || sdt === '') {
                         alert('Vui lòng điền đầy đủ thông tin tên và số điện thoại.');
                     } else {
-                        $.post('/product-favorite/input-infomation-profile-header', {
-                            ten: ten,
-                            gioiTinh: gioiTinh,
-                            sdt: sdt,
-                            ngaySinh: ngaySinh,
-                            diaChi: diaChi,
-                            hinhAnh: fileImages
-                        }, function (data) {
-                            if (data == 1) {
-                                loadInfomationProfileCustumer();
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Lưu Thành Công',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'Lưu Thất Bại',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                console.error("Lỗi không sửa được thông tin khách hàng");
+                        var data = new FormData();
+                        data.append('ten', ten);
+                        data.append('gioiTinh', gioiTinh);
+                        data.append('sdt', sdt);
+                        data.append('ngaySinh', ngaySinh);
+                        data.append('diaChi', diaChi);
+                        if (file) {
+                            data.append('hinhAnh', file);
+                        }
+
+                        $.ajax({
+                            url: '/product-favorite/input-infomation-profile-header',
+                            data: data,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            method: 'POST',
+                            success: function(data){
+                                if (data == 1) {
+                                    loadInfomationProfileCustumer();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Lưu Thành Công',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Lưu Thất Bại',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    console.error("Lỗi không sửa được thông tin khách hàng");
+                                }
                             }
                         });
                     }

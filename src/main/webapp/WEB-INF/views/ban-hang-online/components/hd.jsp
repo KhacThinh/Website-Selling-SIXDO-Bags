@@ -73,6 +73,7 @@
             object-fit: cover;
             border-radius: 50%;
         }
+
     </style>
 </head>
 <body>
@@ -89,7 +90,7 @@
 
 
                 <a href="/sixdo-shop" class="logo">
-                    <img src="${pageContext.request.contextPath}/../static/images/logo1.jpg"
+                    <img src="../static/images/logo1.jpg"
                          alt="IMG-PRODUCT">
                 </a>
 
@@ -121,9 +122,10 @@
                             <a href="about.html">About</a>
                         </li>
 
-                        <li>
-                            <a href="contact.html">Contact</a>
-                        </li>
+                        <div id="don-mua-menu-item">
+<%--                            menu đơn mua--%>
+                        </div>
+
                     </ul>
                 </div>
 
@@ -138,7 +140,7 @@
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
-                    <div id="product-favorite-header">
+                    <div  id="product-favorite-header">
                         <%--                        sản phẩm yêu thích--%>
                     </div>
 
@@ -150,21 +152,26 @@
                 <div class="navbar_content">
                     <c:choose>
                         <c:when test="${khachHang == null}">
-                            <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login" style="margin-left: 20px;">Đăng nhập</button>
+                            <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
+                                    style="margin-left: 20px;">Đăng nhập
+                            </button>
                         </c:when>
                         <c:otherwise>
                             <div class="dropdown" style="margin-left: 20px;">
                                 <button class="dropbtn icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
                                     <i class='bx bx-sun' id="darkLight"></i>
                                     <i class='bx bx-bell'></i>
-                                    <img src="../static/images/profile.jpg" alt="" class="profile"/>
+                                    <img src="../static/images/profile.jpg" id="js-rounded-circle-avt-hearder" alt="" class="profile"/>
                                     <i class="bi bi-caret-down-fill" style="color: #1d1d1d; font-size: 15px;"></i>
                                 </button>
                                 <div class="dropdown" style="margin-left: 20px;">
                                     <ul class="dropdown-menu" id="dropdownMenu">
                                         <li><a class="dropdown-item" href="#">Cài đặt</a></li>
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalProfile">Hồ sơ</a></li>
-                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                               data-bs-target="#exampleModalProfile">Hồ sơ</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
                                         <li><a class="dropdown-item" href="#" id="logoutLink">Đăng xuất</a></li>
                                     </ul>
                                 </div>
@@ -180,7 +187,7 @@
 
         <div class="logo-mobile">
             <a href="/sixdo-shop" class="logo">
-                <img src="${pageContext.request.contextPath}/static/image/logo1.jpg"
+                <img src="../static/images/logo1.jpg"
                      alt="IMG-PRODUCT">
             </a></div>
 
@@ -216,34 +223,6 @@
 
     <!-- Menu Mobile -->
     <div class="menu-mobile">
-        <ul class="topbar-mobile">
-            <li>
-                <div class="left-top-bar">
-                    Free shipping for standard order over $100
-                </div>
-            </li>
-
-            <li>
-                <div class="right-top-bar flex-w h-full">
-                    <a href="#" class="flex-c-m p-lr-10 trans-04">
-                        Help & FAQs
-                    </a>
-
-                    <a href="#" class="flex-c-m p-lr-10 trans-04">
-                        My Account
-                    </a>
-
-                    <a href="#" class="flex-c-m p-lr-10 trans-04">
-                        EN
-                    </a>
-
-                    <a href="#" class="flex-c-m p-lr-10 trans-04">
-                        USD
-                    </a>
-                </div>
-            </li>
-        </ul>
-
         <ul class="main-menu-m">
             <li>
                 <a href="/user/ban-hang">Home</a>
@@ -274,7 +253,7 @@
             </li>
 
             <li>
-                <a href="contact.html">Contact</a>
+                <a href="contact.html">Đơn mua</a>
             </li>
         </ul>
     </div>
@@ -332,7 +311,17 @@
     function capNhapSoLuongSanPhamYeuThichHearder() {
         $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
             displaySoLuongSanPhamFavorite(data);
+            displayMenuDonMua();
         });
+    }
+
+    function displayMenuDonMua() {
+        const containerDonMua = $('#don-mua-menu-item');
+        containerDonMua.empty();
+        var donMuaHTML = '<li>'
+        donMuaHTML += '<a href="contact.html">Đơn mua</a>'
+        donMuaHTML += '</li>'
+        containerDonMua.append(donMuaHTML);
     }
 
     function displaySoLuongSanPhamFavorite(soLuong) {
