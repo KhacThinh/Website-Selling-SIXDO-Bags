@@ -101,8 +101,6 @@ public class ProductHomeController {
             @RequestParam("tenThuongHieu") String tenThuongHieu,
             @RequestParam("maMauSac") String maMauSac
     ) {
-        System.out.println("Ten Thuong hieu" + tenThuongHieu);
-        System.out.println("ma Mau" + maMauSac);
         List<ProductHomeRequest> searchResults = sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu);
         System.out.println(searchResults.size());
         return ResponseEntity.ok(searchResults);

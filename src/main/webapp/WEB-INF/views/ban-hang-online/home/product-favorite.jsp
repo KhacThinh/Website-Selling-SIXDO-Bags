@@ -283,51 +283,6 @@
                 });
             }
 
-            function themVoSanPhamYeuThich() {
-                $('.js-addcart-detail-customer').on('click', function () {
-                    var idKhachHang = document.getElementById("id-khach-hang").value;
-                    var selectedIdValue = document.getElementById('select-id-color').value;
-                    var quantityProduct = 0;
-                    quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
-                    if (idKhachHang == "") {
-                        Swal.fire({
-                            title: "Login to add products to cart",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonText: "Log in",
-                            cancelButtonText: "Close",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "/sixdo-shop/login";
-                            }
-                        });
-                    }
-
-                    $.ajax({
-                        url: '/sixdo-shop/add-to-cart-buyer',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            idKhachHang: idKhachHang,
-                            idChiTietSanPham: selectedIdValue,
-                            soLuong: quantityProduct
-                        }),
-                        success: function (response) {
-                            const count = document.querySelector('.icon-count-cart');
-                            count.setAttribute('data-notify', response);
-                            showAlertAddCart('Success!', 'Product added to cart!', 'success');
-
-                        },
-                        error: function (error) {
-                            console.error(error);
-                        }
-                    });
-
-
-                });
-            }
-
-
             // tải tự động dữ liệu lên từ product controller
             function loadData() {
                 $.get('/product-favorite/load-data', function (data) {

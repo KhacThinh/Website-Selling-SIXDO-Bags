@@ -8,7 +8,12 @@ import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +72,6 @@ public class ProductFavoriteController {
     public @ResponseBody
     Integer getCheckLoginKhachHang() {
         if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
-            System.out.println("đã vô đây");
             KhachHang khachHang = khachHangService.getidKhachHang(UserLoginKhachHang.idKhachHangFavorite);
             return khachHang.getId();
         }
@@ -102,7 +106,7 @@ public class ProductFavoriteController {
     List<Integer> checkSanPhamYeuThichHome() {
         List<Integer> idSanPhamYeuThich = new ArrayList<>();
         if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
-            KhachHang khachHang = khachHangService.getidKhachHang(UserLoginKhachHang.idKhachHangFavorite);
+            KhachHang khachHang = khachHangService.getKhachHang(UserLoginKhachHang.idKhachHangFavorite);
             if (Objects.nonNull(khachHang)) {
                 idSanPhamYeuThich = sanPhamYeuThichService
                         .getListSanPhamYeuThich(khachHang.getId())
@@ -112,6 +116,74 @@ public class ProductFavoriteController {
             }
         }
         return idSanPhamYeuThich;
+    }
+
+    @GetMapping("infomation-profile-header")
+    public @ResponseBody
+    KhachHang infomationProfileHeader() {
+        System.out.println("Đã Vô Đây");
+        if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
+            KhachHang khachHang = khachHangService.getKhachHang(UserLoginKhachHang.idKhachHangFavorite);
+            if (Objects.nonNull(khachHang)) {
+                return khachHang;
+            }
+        }
+        return null;
+    }
+
+    @PostMapping("input-infomation-profile-header")
+    public @ResponseBody
+    int inputInfomationProfileHeader(
+            @RequestParam("ten") String ten,
+            @RequestParam("gioiTinh") Integer gioiTinh,
+            @RequestParam("sdt") String sdt,
+            @RequestParam("ngaySinh") String ngaySinh,
+            @RequestParam("email") String email,
+            @RequestParam("diaChi") String diaChi
+            // Thêm các @RequestParam khác tương tự nếu cần
+//            @RequestParam(value = "hinhAnh", required = false) MultipartFile hinhAnh // Handle optional file upload
+    ) {
+//        System.out.println("Hình Ảnh");
+
+//        try {
+//            // Implement your business logic to save customer profile information
+//            // Validate and sanitize user input (ten, gioiTinh, sdt, ngaySinh, email, diaChi)
+//
+//            // Handle file upload (if applicable)
+//            if (hinhAnh != null && !hinhAnh.isEmpty()) {
+//                // Save the uploaded file (consider using a file storage service or local storage)
+//                String fileName = hinhAnh.getOriginalFilename();
+//                System.out.println(fileName);
+//                // ... (file saving logic)
+//            }
+//
+//            // Save customer information to database (replace with your actual database interaction)
+//            // Customer customer = new Customer(ten, gioiTinh, sdt, ngaySinh, email, diaChi);
+//            // customerService.saveCustomer(customer); // Assuming a customerService and saveCustomer method
+//
+//            return 1;// Success response (consider using a more informative message)
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return 0;
+//        }
+
+        if (Objects.nonNull(UserLoginKhachHang.idKhachHangFavorite)) {
+            KhachHang khachHang = khachHangService.getKhachHang(UserLoginKhachHang.idKhachHangFavorite);
+            if (Objects.nonNull(khachHang)) {
+                khachHang.setTenKhachHang(ten);
+                khachHang.setGioiTinh(gioiTinh);
+                khachHang.setSdt(sdt);
+                khachHang.setNgaySinh(ngaySinh);
+                khachHang.setEmail(email);
+                khachHang.setDiaChi(diaChi);
+//                khachHang.setHinhAnh();
+                khachHangService.editKhachHang(UserLoginKhachHang.idKhachHangFavorite, khachHang);
+                System.out.println(khachHang.toString());
+                return 1;
+            }
+        }
+
+        return 0;
     }
 
 }

@@ -125,11 +125,12 @@
                                 }
                             } else {
                                 Swal.fire({
-                                    title: "Login to add products to cart",
-                                    icon: "warning",
+                                    title: 'Thông báo',
+                                    text: 'Bạn cần đăng nhập để tiếp tục.',
+                                    icon: 'warning',
                                     showCancelButton: true,
-                                    confirmButtonText: "Log in",
-                                    cancelButtonText: "Close",
+                                    confirmButtonText: 'Đăng nhập',
+                                    cancelButtonText: 'Đóng',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.href = "/sixdo-shop/login";

@@ -125,7 +125,7 @@
                     <input type="submit" class="button" value="Sign Up">
                 </div>
                 <div class="foot-lnk">
-                    <label for="tab-1">Already Member?</a>
+                    <a href="#">Already Member?</a>
                 </div>
             </div>
         </div>

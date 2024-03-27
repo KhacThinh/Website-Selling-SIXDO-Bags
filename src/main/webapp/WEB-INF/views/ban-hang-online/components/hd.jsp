@@ -84,32 +84,6 @@
     </div>
     <div class="container-menu-desktop">
 
-        <div class="top-bar">
-            <div class="content-topbar flex-sb-m h-full container">
-                <div class="left-top-bar">
-                    Free shipping for standard order over $100
-                </div>
-
-                <div class="right-top-bar flex-w h-full">
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        Help & FAQs
-                    </a>
-
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        My Account
-                    </a>
-
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        EN
-                    </a>
-
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        USD
-                    </a>
-                </div>
-            </div>
-        </div>
-
         <div class="wrap-menu-desktop how-shadow1">
             <nav class="limiter-menu-desktop container">
 
@@ -189,7 +163,7 @@
                                 <div class="dropdown" style="margin-left: 20px;">
                                     <ul class="dropdown-menu" id="dropdownMenu">
                                         <li><a class="dropdown-item" href="#">Cài đặt</a></li>
-                                        <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalProfile">Hồ sơ</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="#" id="logoutLink">Đăng xuất</a></li>
                                     </ul>
@@ -322,6 +296,7 @@
 
     </div>
 </header>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
@@ -401,6 +376,7 @@
     });
 
 </script>
+<jsp:include page="profile-customer.jsp"/>
 
 </body>
 </html>
