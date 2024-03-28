@@ -53,6 +53,8 @@ public class KhachHangServiceImpl implements KhachHangService {
         kh.setSdt(khachHang.getSdt());
         kh.setEmail(khachHang.getEmail());
         kh.setMatKhau(khachHang.getMatKhau());
+        kh.setHinhAnh(khachHang.getHinhAnh());
+        kh.setDiaChi(khachHang.getDiaChi());
         kh.setTrangThai(1);
 
         return khachHangRepository.save(kh);
@@ -73,8 +75,10 @@ public class KhachHangServiceImpl implements KhachHangService {
         kh.setTenKhachHang(khachHang.getTenKhachHang());
         kh.setSdt(khachHang.getSdt());
         kh.setMatKhau(khachHang.getMatKhau());
+        kh.setHinhAnh(khachHang.getHinhAnh());
+        kh.setDiaChi(khachHang.getDiaChi());
 
-        return kh;
+        return khachHangRepository.save(kh);
     }
 
     @Override

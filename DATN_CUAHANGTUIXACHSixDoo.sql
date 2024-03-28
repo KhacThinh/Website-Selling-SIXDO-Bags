@@ -135,6 +135,12 @@ trang_thai int,
 mat_khau varchar(100),
 CONSTRAINT FK_TaiKhoan FOREIGN KEY(id_tai_khoan) REFERENCES tai_khoan(id)
 )
+
+ALTER TABLE khach_hang
+ADD  dia_chi nvarchar(max)
+ALTER TABLE khach_hang
+ADD  hinh_anh nvarchar(max)
+
 select * from khach_hang
 ALTER TABLE khach_hang
 ADD UNIQUE (sdt);
@@ -148,6 +154,14 @@ mo_ta nvarchar(max)
 CONSTRAINT FK_KhachHang_DCKH FOREIGN KEY(id_khach_hang) REFERENCES khach_hang(id)
 )
 
+
+CREATE TABLE danh_sach_kh_mgg (
+    id_khach_hang INT,
+    id_ma_giam_gia INT,
+    PRIMARY KEY (id_khach_hang, id_ma_giam_gia),
+    FOREIGN KEY (id_khach_hang) REFERENCES khach_hang(id),
+    FOREIGN KEY (id_ma_giam_gia) REFERENCES ma_giam_gia(id)
+)
 
 create table san_pham_yeu_thich(
 id_san_pham  int,
@@ -354,7 +368,8 @@ select * from san_pham where trang_thai = 1 and ten like N'%phẩm 2%'
 
 select * from mau_sac
 
-select * from khuyen_mai
+select * from ma_giam_gia
+select * from nhan_vien
 
 select * from san_pham
 

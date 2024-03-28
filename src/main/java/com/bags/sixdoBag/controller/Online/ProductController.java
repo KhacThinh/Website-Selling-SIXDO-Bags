@@ -132,7 +132,6 @@ public class ProductController {
 
     @GetMapping("/logout")
     public String buyerLogout(Model model) {
-        UserLoginKhachHang.idKhachHangFavorite = null;
         session.removeAttribute("buyer");
 
         return "redirect:/sixdo-shop";

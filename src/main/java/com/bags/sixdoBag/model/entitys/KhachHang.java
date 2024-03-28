@@ -29,6 +29,13 @@ KhachHang {
     @Column(name = "gioi_tinh")
     private Integer gioiTinh;
 
+    /*
+    *  giới tính sẽ mặc định theo
+    *   0 Nữ
+    *   1 Nam
+    *   2 Thứ 3
+    * */
+
     @Column(name = "ngay_sinh")
     private String ngaySinh;
 
@@ -46,6 +53,9 @@ KhachHang {
 
     @Column(name = "dia_chi")
     private String diaChi;
+
+    @Column(name = "hinh_anh")
+    private String hinhAnh;
 
     @ManyToOne
     @JoinColumn(name = "id_tai_khoan")

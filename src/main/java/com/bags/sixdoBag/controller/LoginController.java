@@ -62,7 +62,6 @@ public class LoginController {
 
         KhachHang khachHang = khachHangService.getKhachHangByUserNameAndPassword(userName, passWord);
         if (khachHang != null) {
-            UserLoginKhachHang.idKhachHangFavorite = khachHang.getId();
             gioHangRequest.setIdKhachHang(khachHang.getId());
             gioHangService.addGioHang(gioHangRequest);
             session.setAttribute("buyer", khachHang);
