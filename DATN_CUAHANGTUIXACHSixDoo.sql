@@ -511,9 +511,14 @@ where san_pham.ten like N'Iphone x promax'
 
 select * from chi_tiet_san_pham
 
-select * from khach_hang as kh join hoa_don
-as hd on hd.id_khach_hang = kh.id
-where hd.trang_thai = 1 and kh.id = 1 
+select * from khach_hang as kh 
+join hoa_don as hd on hd.id_khach_hang = kh.id 
+join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id
+join chi_tiet_san_pham as ctsp on ctsp.id = cthd.id_ctsp
+join san_pham as sp on sp.id = ctsp.id_san_pham
+join mau_sac as ms on ms.id = ctsp.id
+where hd.trang_thai = 2 and kh.id = 1 
+group by hd.
 
 select * from hoa_don
 

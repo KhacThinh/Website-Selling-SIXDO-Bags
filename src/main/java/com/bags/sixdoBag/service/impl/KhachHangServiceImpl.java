@@ -1,8 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
-import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
-import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.entitys.TaiKhoan;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.model.repository.TaiKhoanRepository;
@@ -61,8 +59,6 @@ public class KhachHangServiceImpl implements KhachHangService {
     }
 
 
-
-
     @Override
     public KhachHang editKhachHang(Integer idKhachHang, KhachHang khachHang) {
         KhachHang kh = getKhachHang(idKhachHang);
@@ -91,13 +87,13 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Override
     public KhachHang searchKh(String email) {
-        KhachHang  khachHang = khachHangRepository.searchKh(email);
+        KhachHang khachHang = khachHangRepository.searchKh(email);
         return khachHang;
     }
 
     @Override
     public KhachHang getidKhachHang(Integer idKhachHang) {
-        KhachHang khachHang= khachHangRepository.findById(idKhachHang).orElse(null);
+        KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
         return khachHang;
     }
 
@@ -107,14 +103,15 @@ public class KhachHangServiceImpl implements KhachHangService {
     public Page<KhachHang> searchKhachHangTenOrMa(String tenMa, Pageable pageable) {
         return khachHangRepository.searchKhachHangTenOrMa(tenMa, pageable);
     }
+
     @Override
     public Page<KhachHang> searchcbb(Integer name, Pageable pageable) {
-        return khachHangRepository.searchCbb(name,pageable);
+        return khachHangRepository.searchCbb(name, pageable);
     }
 
     @Override
     public KhachHang getKhachHangByUserNameAndPassword(String email, String matKhau) {
-        return khachHangRepository.findByTenEndMatKhau(email,matKhau);
+        return khachHangRepository.findByTenEndMatKhau(email, matKhau);
     }
 
 }

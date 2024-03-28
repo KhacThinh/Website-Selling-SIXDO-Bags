@@ -34,6 +34,8 @@ public interface HoaDonService {
 
     List<DonHangOnlineResponse> getSortHoaDonByKhachHangTrangThai(int idKh, int trangThai);
 
+    DonHangOnlineResponse getHoaDonByIdHoaDonKhachHangTrangThai(int id);
+
     Map<Integer, Integer> getSortHoaDonByKhachHang(int idKh);
 
 }

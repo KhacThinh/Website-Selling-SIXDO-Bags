@@ -14,5 +14,7 @@ import java.util.List;
 public class DonHangOnlineResponse {
     private HoaDon hoaDon;
 
+    private String urlHinhAnhMau;
+
     private List<ChiTietHoaDon> chiTietHoaDons;
 }

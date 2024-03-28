@@ -52,9 +52,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     public void updateHoaDon(int idHoaDon, HoaDon hoaDon) {
         HoaDon hoaDonTemp = getHoaDonById(idHoaDon);
         hoaDonTemp.setTenNguoiNhan(hoaDon.getTenNguoiNhan());
+        hoaDonTemp.setDiaChiNguoiNhan(hoaDon.getDiaChiNguoiNhan());
         hoaDonTemp.setTrangThai(hoaDon.getTrangThai());
         hoaDonTemp.setSdtNguoiNhan(hoaDon.getSdtNguoiNhan());
         hoaDonTemp.setTongTien(hoaDon.getTongTien());
+        hoaDonTemp.setLyDoKhachHuy(hoaDon.getLyDoKhachHuy());
         hoaDonTemp.setThoiGianXacNhan(hoaDon.getThoiGianXacNhan());
         hoaDonTemp.setThoiGianThanhToan(hoaDon.getThoiGianThanhToan());
         hoaDonRepository.save(hoaDonTemp);
@@ -160,11 +162,26 @@ public class HoaDonServiceImpl implements HoaDonService {
         for (HoaDon hoaDon : hoaDons) {
             List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
             DonHangOnlineResponse donHangOnlineResponse = new DonHangOnlineResponse();
+            if (Objects.nonNull(chiTietHoaDons.get(0))) {
+                donHangOnlineResponse.setUrlHinhAnhMau(chiTietHoaDons.get(0).getChiTietSanPham().getHinhAnh());
+            }
             donHangOnlineResponse.setHoaDon(hoaDon);
             donHangOnlineResponse.setChiTietHoaDons(chiTietHoaDons);
             hoaDonHangOnlineResponse.add(donHangOnlineResponse);
         }
 
+        return hoaDonHangOnlineResponse;
+    }
+
+    @Override
+    public DonHangOnlineResponse getHoaDonByIdHoaDonKhachHangTrangThai(int id) {
+        DonHangOnlineResponse hoaDonHangOnlineResponse = new DonHangOnlineResponse();
+        HoaDon hoaDon = hoaDonRepository
+                .getHoaDonByIdHoaDonTrangThaiAndKhachHang(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không có id hoá đơn với id là" + id));
+        List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+        hoaDonHangOnlineResponse.setHoaDon(hoaDon);
+        hoaDonHangOnlineResponse.setChiTietHoaDons(chiTietHoaDons);
         return hoaDonHangOnlineResponse;
     }
 

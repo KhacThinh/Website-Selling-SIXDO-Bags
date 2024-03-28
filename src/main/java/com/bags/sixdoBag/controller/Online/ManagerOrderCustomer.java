@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -87,47 +84,40 @@ public class ManagerOrderCustomer {
     }
 
 
-    @GetMapping("/list-don-chua-xac-nhan")
+    @GetMapping("/list-trang-thai-don-hang")
     public @ResponseBody
-    List<DonHangOnlineResponse> listChoXacNhanDonHang() {
-        System.out.println("Hellosss");
+    List<DonHangOnlineResponse> listTrangThaiDonHang(@RequestParam("trangThai") int trangThai) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        List<DonHangOnlineResponse> hoaDonListMap = hoaDonService.getSortHoaDonByKhachHangTrangThai(khachHang.getId(), 2);
+        List<DonHangOnlineResponse> hoaDonListMap = hoaDonService.getSortHoaDonByKhachHangTrangThai(khachHang.getId(), trangThai);
         return hoaDonListMap;
     }
 
-    @GetMapping("/list-don-hang-dang-xu-ly")
+    @GetMapping("/find-id-hoa-don")
     public @ResponseBody
-    List<DonHangOnlineResponse> listDonHangDangXuLy() {
-        System.out.println("Hellosss");
-        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        List<DonHangOnlineResponse> hoaDonListMap = hoaDonService.getSortHoaDonByKhachHangTrangThai(khachHang.getId(), 3);
+    DonHangOnlineResponse findByIdHoaDon(@RequestParam("idHoaDon") int id) {
+        DonHangOnlineResponse hoaDonListMap = hoaDonService.getHoaDonByIdHoaDonKhachHangTrangThai(id);
         return hoaDonListMap;
     }
 
-//    @GetMapping("/list-don-chua-xac-nhan")
-//    public @ResponseBody
-//    Map<HoaDon, List<ChiTietHoaDon>> listChoXacNhanDonHang() {
-//        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-//        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = hoaDonService.getSortHoaDonByKhachHangTrangThai(khachHang.getId(), 2);
-//        return hoaDonListMap;
-//    }
-//
-//    @GetMapping("/list-don-chua-xac-nhan")
-//    public @ResponseBody
-//    Map<HoaDon, List<ChiTietHoaDon>> listChoXacNhanDonHang() {
-//        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-//        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = hoaDonService.getSortHoaDonByKhachHangTrangThai(khachHang.getId(), 2);
-//        return hoaDonListMap;
-//    }
-//
-//    @GetMapping("/list-don-chua-xac-nhan")
-//    public @ResponseBody
-//    Map<HoaDon, List<ChiTietHoaDon>> listChoXacNhanDonHang() {
-//        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-//        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = hoaDonService.getSortHoaDonByKhachHangTrangThai(khachHang.getId(), 2);
-//        return hoaDonListMap;
-//    }
+    @PostMapping("/huy-don-hang-by-id-hoa-don")
+    public @ResponseBody
+    boolean huyHoaDonByIdHoaDon(@RequestParam("idHoaDon") int id, @RequestParam("lyDoKhachHuy") String lyDoKhachHuy) {
+        try {
+            HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+            if (lyDoKhachHuy.equals("") || lyDoKhachHuy == null) {
+                return false;
+            } else {
+                hoaDon.setTrangThai(4);
+                System.out.println(hoaDon.getLyDoKhachHuy());
+                hoaDon.setLyDoKhachHuy(lyDoKhachHuy);
+                hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 }

@@ -5,6 +5,12 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+<!-- SweetAlert JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
 <style>
     /* =========== Google Fonts ============ */
     /*@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");*/
@@ -659,14 +665,13 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Mã Hoá đơn</th>
-                <th>Tên Người Nhận</th>
-                <th>Địa chỉ người nhận</th>
-                <th>Số điện thoại</th>
-                <th>Thời gian tạo</th>
-                <th>Tổng tiền</th>
-                <th>Trạng Thái</th>
-                <th colspan="2">Hoạt động</th>
+                <th style='vertical-align: middle; text-align: center;'>Mã hoá đơn</th>
+                <th style='vertical-align: middle; text-align: center;'>Hình ảnh</th>
+                <th style='vertical-align: middle; text-align: center;'>Số điện thoại</th>
+                <th style='vertical-align: middle; text-align: center;'>Thời gian tạo</th>
+                <th style='vertical-align: middle; text-align: center;'>Tổng tiền</th>
+                <th style='vertical-align: middle; text-align: center;'>Trạng thái đơn</th>
+                <th colspan="3" style="vertical-align: middle; text-align: center;">Hoạt động</th>
             </tr>
             </thead>
             <tbody>
@@ -826,6 +831,195 @@
         </div>
     </div>
 </div>
+
+<!-- Modal hiển thị -->
+<div class="modal fade modal-profile-customer" id="exampleModal" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="bg-light p-3 rounded mb-3">
+                    <p class="font-weight-bold mb-0">Thông tin đơn hàng</p>
+
+                    <div class="row" style="margin: 10px 0px 0px 25px">
+                        <div class="col-md-6" style="margin: 0px">
+                            <div class="form-group">
+                                <label>Mã Đơn Hàng : </label>
+                                <span id="js-ma-don-hang"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Tài Khoản : <a id="js-ten-tai-khoan"></a> </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin: 0px">
+                            <div class="form-group">
+                                <label>Trạng Thái Đơn Hàng : </label>
+                                <span id="js-trang-thai-don-hang"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Thời Gian Đặt Hàng : </label>
+                                <span id="js-thoi-gian-dat-hang"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-light p-3 rounded mb-3">
+                    <p class="font-weight-bold mb-0">Thông Tin Người Nhận</p>
+                    <div class="row" style="margin: 10px 0px 0px 25px">
+                        <div class="col-md-6" style="margin: 0px">
+                            <div class="form-group">
+                                <label>Tên Người Nhận : </label>
+                                <span id="js-ten-nguoi-nhan"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Số Điện Thoại : </label>
+                                <span id="js-sdt-nguoi-nhan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 0px">
+                            <div class="form-group">
+                                <label>Địa Chỉ : </label>
+                                <span id="js-dia-chi-nguoi-nhan"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Email : </label>
+                                <span id="js-email-nguoi-nhan"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="margin-bottom: 13px; padding-top:0px ">
+                    <div style="max-height: 220px; overflow-y: auto;">
+                        <table class="table table-hover table-striped mb-5" id="chi-tiet-don-hang-order"
+                               style="margin-top: 0px;">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Hình ảnh</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Tên sản phẩm</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Màu sắc</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Danh mục</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Thương hiệu</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Số lượng</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Đơn giá</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">
+                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>
+                        <span id="js-tong-thanh-toan" style="margin-left: 5px;">0</span>
+                        <span style="margin-left: 3px;">đồng</span>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal sửa -->
+<div class="modal fade modal-profile-customer" id="exampleModallll" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="bg-light p-3 rounded mb-3">
+                    <p class="font-weight-bold mb-0">Thông tin đơn hàng</p>
+
+                    <div class="row" style="margin: 10px 0px 0px 25px">
+                        <div class="col-md-6" style="margin: 0px">
+                            <div class="form-group">
+                                <label>Mã Đơn Hàng : </label>
+                                <span id="ip-ma-don-hang"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Tài Khoản : <a id="ip-ten-tai-khoan"></a> </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin: 0px">
+                            <div class="form-group">
+                                <label>Trạng Thái Đơn Hàng : </label>
+                                <span id="ip-trang-thai-don-hang"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Thời Gian Đặt Hàng : </label>
+                                <span id="ip-thoi-gian-dat-hang"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-light p-3 rounded mb-3">
+                    <p class="font-weight-bold mb-0">Thông Tin Người Nhận</p>
+                    <div class="row" style="margin: 10px 0px 0px 25px">
+                        <div class="col-md-6" style="margin: 0px">
+                            <div class="form-group">
+                                <label>Tên Người Nhận <span style="color: red">*</span></label>
+                                <input type="text" id="ip-ten-nguoi-nhan" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Số Điện Thoại <span style="color: red">*</span></label>
+                                <input type="text" id="ip-sdt-nguoi-nhan" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 0px">
+                            <div class="form-group">
+                                <label>Địa Chỉ <span style="color: red">*</span></label>
+                                <input type="text" id="ip-dia-chi-nguoi-nhan" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Email : </label>
+                                <input type="email" id="ip-email-nguoi-nhan" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="margin-bottom: 13px; padding-top:0px ">
+                    <div style="max-height: 220px; overflow-y: auto;">
+                        <table class="table table-hover table-striped mb-5" id="ip-chi-tiet-don-hang-order"
+                               style="margin-top: 0px;">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Hình ảnh</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Tên sản phẩm</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Màu sắc</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Danh mục</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Thương hiệu</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Số lượng</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Đơn giá</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Thành tiền</th>
+                                <th scope="col" style='vertical-align: middle; text-align: center;'>Trạng thái</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">
+                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>
+                        <span id="ip-tong-thanh-toan" style="margin-left: 5px;">0</span>
+                        <span style="margin-left: 3px;">đồng</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- ======= Charts JS ====== -->
 <!-- <script src="chartsJS.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -862,105 +1056,331 @@
         donHangDaHuy();
         donHangDangGiao();
 
-        clickDonHangChuaXacNhan();
-        clickDonHangDãnguLy();
+        clickDonHang();
+        clickNhanDonHangThanhCong();
+        clickHuyDonHang();
+
+        hienThiDuLieuHoaDonChiTiet();
+        editDuLieuHoaDonChiTiet();
+
     });
+
+    function clickDonHang() {
+        $("#click-don-hang-cho-xac-nhan").click(function () {
+            hienThiDonHangDangChoXacNhan(2);
+        });
+
+        $("#click-don-hang-dang-xu-ly").click(function () {
+            hienThiDonHangHoanThanhVaHuyVaDangXuLy(3);
+        });
+
+        $("#click-don-hang-dang-giao").click(function () {
+            hienThiDonHangDangGiao(5);
+        });
+
+        $("#click-don-hang-hoan-thanh").click(function () {
+            hienThiDonHangHoanThanhVaHuyVaDangXuLy(0);
+        });
+
+        $("#click-don-hang-da-huy").click(function () {
+            hienThiDonHangHoanThanhVaHuyVaDangXuLy(4);
+        });
+    }
+
+    function hienThiDonHangDangChoXacNhan(trangThai) {
+        $.get('/sixdo-shop/manager-order-customer-online/list-trang-thai-don-hang', {trangThai: trangThai}, function (data) {
+            $('#productTable tbody').empty();
+            $.each(data, function (index, item) {
+                var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
+                var tt = '';
+                if (trangThai == 2) {
+                    tt = 'Chờ xác nhận';
+                }
+
+                var datetimeString = item.hoaDon.thoiGianTao;
+                var datetime = new Date(datetimeString);
+                var day = datetime.getDate();
+                var month = datetime.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+                var year = datetime.getFullYear();
+                var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+
+                var row = "<tr>" +
+                    "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
+                    "<td><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + '0' + item.hoaDon.sdtNguoiNhan + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + tt + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-danger btn-huy-don-hang-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Huỷ Đơn</button></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-warning btn-modal-edit-chi-tiet-order'   data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModallll'><i class='bi bi-pencil-square'></i> Sửa</button></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order'  data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
+                    "</tr>";
+                $("#productTable tbody").append(row);
+            });
+        });
+    }
+
+    function clickHuyDonHang() {
+        let inputReasonEntered = false; // Biến để kiểm tra xem người dùng đã nhập lý do hay không
+
+        $(document).on('click', '.btn-huy-don-hang-order', function () {
+            var maHoaDon = $(this).data('id'); // Lấy mã đơn hàng từ thuộc tính data-id của nút
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn huỷ đơn hàng này không?',
+                showCancelButton: true,
+                confirmButtonText: 'Có, huỷ đơn hàng',
+                cancelButtonText: 'Không, giữ nguyên',
+                reverseButtons: true,
+                preConfirm: async () => {
+                    const {value: inputReason, dismiss} = await Swal.fire({
+                        title: 'Vui lòng cung cấp lý do huỷ đơn',
+                        input: 'text',
+                        inputPlaceholder: 'Nhập lý do ở đây...',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        cancelButtonText: 'Hủy',
+                        confirmButtonText: 'Xác nhận',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (inputReason) => {
+                            if (!inputReason || inputReason.trim().length === 0) {
+                                Swal.showValidationMessage('Vui lòng nhập lý do');
+                                return false;
+                            }
+                            // Gửi request POST
+                            return $.post('/sixdo-shop/manager-order-customer-online/huy-don-hang-by-id-hoa-don', {
+                                idHoaDon: maHoaDon,
+                                lyDoKhachHuy: inputReason
+                            });
+                        },
+                    });
+
+                    if (dismiss === 'cancel' && !inputReasonEntered) {
+                        // Nếu người dùng ấn nút "Huỷ" mà không nhập lý do, hủy hành động
+                        return false;
+                    }
+
+                    return inputReason;
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (result !== true) {
+                        Swal.fire({
+                            title: 'Đã huỷ đơn hàng',
+                            text: `Đơn hàng của bạn đã được huỷ. Lý do: ${inputReason}`,
+                            icon: 'success'
+                        });
+                        hienThiDonHangDangChoXacNhan(2);
+                        donHangChuaXacNhan();
+                        donHangDaHuy();
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Có lỗi xảy ra khi huỷ đơn hàng',
+                            icon: 'error'
+                        });
+                    }
+                }
+            });
+        });
+
+    }
+
+
+    function hienThiDonHangDangGiao(trangThai) {
+        $.get('/sixdo-shop/manager-order-customer-online/list-trang-thai-don-hang', {trangThai: trangThai}, function (data) {
+            $('#productTable tbody').empty();
+            $.each(data, function (index, item) {
+                var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
+                var tt = '';
+                if (trangThai == 5) {
+                    tt = 'Đang Giao Hàng';
+                }
+
+                var datetimeString = item.hoaDon.thoiGianTao;
+                var datetime = new Date(datetimeString);
+                var day = datetime.getDate();
+                var month = datetime.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+                var year = datetime.getFullYear();
+                var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+
+                var row = "<tr>" +
+                    "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
+                    "<td><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + '0' + item.hoaDon.sdtNguoiNhan + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + tt + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-success btn-nhan-hang-thanh-cong-order' data-id='" + item.hoaDon.maHoaDon + "'><i class='bi bi-check-circle-fill'></i> Đã nhận được hàng</button></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
+                    "</tr>";
+                $("#productTable tbody").append(row);
+            });
+        });
+    }
+
+
+    function clickNhanDonHangThanhCong() {
+        // Xử lý sự kiện click cho nút "Đã nhận được hàng"
+        $(document).on('click', '.btn-nhan-hang-thanh-cong-order', function () {
+            var maHoaDon = $(this).data('id'); // Lấy mã đơn hàng từ thuộc tính data-id của nút
+            Swal.fire({
+                title: "Nhận hàng thành công!",
+                text: "Bạn đã nhận được đơn hàng " + maHoaDon + " thành công.",
+                icon: "success"
+            });
+        });
+    }
+
+
+    function hienThiDonHangHoanThanhVaHuyVaDangXuLy(trangThai) {
+        $.get('/sixdo-shop/manager-order-customer-online/list-trang-thai-don-hang', {trangThai: trangThai}, function (data) {
+            $('#productTable tbody').empty();
+            $.each(data, function (index, item) {
+                var rowIndex = index + 1;
+                var tt = '';
+                if (trangThai == 0) {
+                    tt = 'Hoàn Thành';
+                } else if (trangThai == 3) {
+                    tt = 'Đang xử lý'
+                } else {
+                    tt = 'Huỷ';
+                }
+
+                var datetimeString = item.hoaDon.thoiGianTao;
+                var datetime = new Date(datetimeString);
+                var day = datetime.getDate();
+                var month = datetime.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+                var year = datetime.getFullYear();
+                var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
+
+
+                var row = "<tr>" +
+                    "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
+                    "<td><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + '0' + item.hoaDon.sdtNguoiNhan + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + tt + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
+                    "</tr>";
+                $("#productTable tbody").append(row);
+            });
+        });
+    }
+
+    function hienThiDuLieuHoaDonChiTiet() {
+        $(document).on('click', '.btn-modal-chi-tiet-order', function () {
+            var idDonHang = $(this).data('id');
+            $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
+                var tt = '';
+                var trangThai = item.hoaDon.trangThai;
+                if (trangThai == 0) {
+                    tt = 'Hoàn Thành';
+                } else if (trangThai == 2) {
+                    tt = 'Chờ xác nhận';
+                } else if (trangThai == 3) {
+                    tt = 'Đang xử lý';
+                } else if (trangThai == 4) {
+                    tt = 'Huỷ';
+                } else if (trangThai == 5) {
+                    tt = 'Đang Giao Hàng';
+                }
+
+                $('#js-ma-don-hang').text(item.hoaDon.maHoaDon);
+                $('#js-ten-tai-khoan').text(item.hoaDon.khachHang.tenKhachHang);
+                $('#js-trang-thai-don-hang').text(tt);
+                $('#js-thoi-gian-dat-hang').text(item.hoaDon.thoiGianTao);
+                $('#js-ten-nguoi-nhan').text(item.hoaDon.tenNguoiNhan);
+                $('#js-dia-chi-nguoi-nhan').text(item.hoaDon.diaChiNguoiNhan);
+                $('#js-sdt-nguoi-nhan').text('0' + item.hoaDon.sdtNguoiNhan);
+                $('#js-email-nguoi-nhan').text(item.hoaDon.emailNguoiNhan);
+                $('#js-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
+
+                $("#chi-tiet-don-hang-order tbody").empty();
+                $.each(item.chiTietHoaDons, function (index, cthd) {
+                    var indx = index + 1; // Sử dụng biến rowIndex thay vì index
+                    var row = "<tr>" +
+                        "<th scope='col' style='vertical-align: middle; text-align: center;'>" + indx + "</th>" +
+                        "<td><img src='" + cthd.chiTietSanPham.hinhAnh + "' width='60px' alt='image'/></td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.tenSanPham + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.mauSac.tenMauSac + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.thuongHieu.ten + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.soLuong.toLocaleString() + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.giaBan.toLocaleString() + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + (cthd.soLuong * cthd.chiTietSanPham.giaBan).toLocaleString() + "</td>" +
+                        "</tr>";
+                    $("#chi-tiet-don-hang-order tbody").append(row);
+                });
+            });
+
+        });
+    }
+
+    function editDuLieuHoaDonChiTiet() {
+        $(document).on('click', '.btn-modal-edit-chi-tiet-order', function () {
+            var idDonHang = $(this).data('id');
+            $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
+                var tt = '';
+                var trangThai = item.hoaDon.trangThai;
+                if (trangThai == 0) {
+                    tt = 'Hoàn Thành';
+                } else if (trangThai == 2) {
+                    tt = 'Chờ xác nhận';
+                } else if (trangThai == 3) {
+                    tt = 'Đang xử lý';
+                } else if (trangThai == 4) {
+                    tt = 'Huỷ';
+                } else if (trangThai == 5) {
+                    tt = 'Đang Giao Hàng';
+                }
+
+                $('#ip-ma-don-hang').text(item.hoaDon.maHoaDon);
+                $('#ip-ten-tai-khoan').text(item.hoaDon.khachHang.tenKhachHang);
+                $('#ip-trang-thai-don-hang').text(tt);
+                $('#ip-thoi-gian-dat-hang').text(item.hoaDon.thoiGianTao);
+                $('#ip-ten-nguoi-nhan').val(item.hoaDon.tenNguoiNhan);
+                $('#ip-dia-chi-nguoi-nhan').val(item.hoaDon.diaChiNguoiNhan);
+                $('#ip-sdt-nguoi-nhan').val('0' + item.hoaDon.sdtNguoiNhan);
+                $('#ip-email-nguoi-nhan').val(item.hoaDon.emailNguoiNhan);
+                $('#ip-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
+
+                $("#ip-chi-tiet-don-hang-order tbody").empty();
+                $.each(item.chiTietHoaDons, function (index, cthd) {
+                    var indx = index + 1; // Sử dụng biến rowIndex thay vì index
+                    var row = "<tr>" +
+                        "<th scope='col' style='vertical-align: middle; text-align: center;'>" + indx + "</th>" +
+                        "<td><img src='" + cthd.chiTietSanPham.hinhAnh + "' width='60px' alt='image'/></td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.tenSanPham + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.mauSac.tenMauSac + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.thuongHieu.ten + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.soLuong.toLocaleString() + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.giaBan.toLocaleString() + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'>" + (cthd.soLuong * cthd.chiTietSanPham.giaBan).toLocaleString() + "</td>" +
+                        "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-danger btn-xoa-hoa-don-chi-tiet-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Xoá</button></td>" +
+                        "</tr>";
+                    $("#ip-chi-tiet-don-hang-order tbody").append(row);
+                });
+            });
+
+        });
+    }
 
     function donHangChuaXacNhan() {
         $.get('/sixdo-shop/manager-order-customer-online/don-chua-xac-nhan', function (data) {
             if (data > 0) {
                 $('#don-hang-cho-xac-nhan').text(data);
             }
-        });
-    }
-
-    function clickDonHangChuaXacNhan() {
-        $("#click-don-hang-cho-xac-nhan").click(function () {
-            $.get('/sixdo-shop/manager-order-customer-online/list-don-chua-xac-nhan', function (data) {
-                $('#productTable tbody').empty();
-                $.each(data, function (index, item) {
-                    var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
-
-                    var row = "<tr>" +
-                        "<th>" + rowIndex + "</th>" +
-                        "<td>" + item.hoaDon.maHoaDon + "</td>" +
-                        "<td>" + item.hoaDon.tenNguoiNhan + "</td>" +
-                        "<td>" + item.hoaDon.diaChiNguoiNhan + "</td>" +
-                        "<td>" + item.hoaDon.sdtNguoiNhan + "</td>" +
-                        "<td>" + item.hoaDon.thoiGianTao + "</td>" +
-                        "<td>" + item.hoaDon.tongTien + "</td>" +
-                        "<td>" + 'Chờ xác nhận' + "</td>" +
-                        "<td> <button class='btn btn-primary'>Sửa</button></td>" +
-                        "<td><button class='btn btn-danger'>Chi Tiết</button></td>" +
-                        "</tr>";
-                        $("#productTable tbody").append(row);
-                });
-
-
-                // $.each(item.chiTietHoaDons, function (idx, chiTietHoaDon) {
-                //     $("#productTable").css("display", "block");
-                //     var row = "<tr>" +
-                //         "<td>" + rowIndex + "</td>" +
-                //         "<td><img src='" + chiTietHoaDon.chiTietSanPham.hinhAnh + "' alt='Ảnh sản phẩm' style='width: 100px'></td>" +
-                //         "<td>" + chiTietHoaDon.chiTietSanPham.sanPham.tenSanPham + "</td>" +
-                //         "<td>" + chiTietHoaDon.chiTietSanPham.mauSac.tenMauSac + "</td>" +
-                //         "<td>" + chiTietHoaDon.length + "</td>" +
-                //         "<td>" + item.hoaDon.tongTien + "</td>" +
-                //         "<td>" +
-                //         "<button class='btn btn-primary'>Sửa</button>" +
-                //         "<button class='btn btn-danger'>Huỷ</button>" +
-                //         "</td>" +
-                //         "</tr>";
-                //
-                //     // Thêm dòng vào tbody của bảng
-                //     $("#productTable tbody").append(row);
-                // });
-            });
-        });
-    }
-
-    function clickDonHangDãnguLy() {
-        $("#click-don-hang-dang-xu-ly").click(function () {
-            $.get('/sixdo-shop/manager-order-customer-online/list-don-hang-dang-xu-ly', function (data) {
-                $('#productTable tbody').empty();
-                $.each(data, function (index, item) {
-                    var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
-
-                    var row = "<tr>" +
-                        "<th>" + rowIndex + "</th>" +
-                        "<td>" + item.hoaDon.maHoaDon + "</td>" +
-                        "<td>" + item.hoaDon.tenNguoiNhan + "</td>" +
-                        "<td>" + item.hoaDon.diaChiNguoiNhan + "</td>" +
-                        "<td>" + item.hoaDon.sdtNguoiNhan + "</td>" +
-                        "<td>" + item.hoaDon.thoiGianTao + "</td>" +
-                        "<td>" + item.hoaDon.tongTien + "</td>" +
-                        "<td>" + 'Chờ xác nhận' + "</td>" +
-                        "<td> <button class='btn btn-primary'>Sửa</button></td>" +
-                        "<td><button class='btn btn-danger'>Huỷ</button></td>" +
-                        "</tr>";
-                    $("#productTable tbody").append(row);
-                });
-
-
-                // $.each(item.chiTietHoaDons, function (idx, chiTietHoaDon) {
-                //     $("#productTable").css("display", "block");
-                //     var row = "<tr>" +
-                //         "<td>" + rowIndex + "</td>" +
-                //         "<td><img src='" + chiTietHoaDon.chiTietSanPham.hinhAnh + "' alt='Ảnh sản phẩm' style='width: 100px'></td>" +
-                //         "<td>" + chiTietHoaDon.chiTietSanPham.sanPham.tenSanPham + "</td>" +
-                //         "<td>" + chiTietHoaDon.chiTietSanPham.mauSac.tenMauSac + "</td>" +
-                //         "<td>" + chiTietHoaDon.length + "</td>" +
-                //         "<td>" + item.hoaDon.tongTien + "</td>" +
-                //         "<td>" +
-                //         "<button class='btn btn-primary'>Sửa</button>" +
-                //         "<button class='btn btn-danger'>Huỷ</button>" +
-                //         "</td>" +
-                //         "</tr>";
-                //
-                //     // Thêm dòng vào tbody của bảng
-                //     $("#productTable tbody").append(row);
-                // });
-            });
         });
     }
 
