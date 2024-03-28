@@ -16,4 +16,10 @@ public interface ChiTietGioHangRepository extends JpaRepository<ChiTietGioHang, 
     @Query("select ctgh from ChiTietGioHang ctgh where ctgh.idGioHang =:idGioHang and ctgh.idChiTietSanPham =:idChiTietSanPham")
     ChiTietGioHang getChiTietGioHang(Integer idGioHang, Integer idChiTietSanPham);
 
+    @Query(value = "delete from chi_tiet_gio_hang where id_gio_hang =:idGh and  id_ctsp =:idCtsp",nativeQuery = true)
+    void deleteChiTietGioHang(int idGh, int idCtsp);
+
+    @Query("select ctgh from ChiTietGioHang ctgh where ctgh.idGioHang =:idGh and ctgh.idChiTietSanPham =:idCtsp")
+    ChiTietGioHang getChiTietGioHangByCtspAndGh(int idGh, int idCtsp);
+
 }

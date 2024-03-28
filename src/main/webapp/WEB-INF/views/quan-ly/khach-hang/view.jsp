@@ -412,89 +412,79 @@
 
     }
 
-        function updateKhachHang(id) {
-            var tenKhachHang = document.getElementById("tenUpdate" + id).value;
-            var gioiTinh = document.getElementById("gioiTinhUpdate" + id).value;
-            var ngaySinh = document.getElementById("ngaySinhUpdate" + id).value;
-            var sdt = document.getElementById("sdtUpdate" + id).value;
-            var email = document.getElementById("emailUpdate" + id).value;
-            var matKhau = document.getElementById("matKhauUpdate" + id).value;
-            var trangThai = document.getElementById("trangThaiUpdate" + id).value;
-            // console.log(maGiamGia);
+    function updateKhachHang(id) {
+        var tenKhachHang = document.getElementById("tenUpdate" + id).value;
+        var gioiTinh = document.getElementById("gioiTinhUpdate" + id).value;
+        var ngaySinh = document.getElementById("ngaySinhUpdate" + id).value;
+        var sdt = document.getElementById("sdtUpdate" + id).value;
+        var email = document.getElementById("emailUpdate" + id).value;
+        var matKhau = document.getElementById("matKhauUpdate" + id).value;
+        var trangThai = document.getElementById("trangThaiUpdate" + id).value;
 
-            if ( tenKhachHang.trim() === ""
-                || sdt.trim() === ""
-
-
-
-            ) {
-                toastr.error("Vui lòng điền đầy đủ thông tin ");
-                return false;
-            }
-            var phoneNumberRegex = /^(0\d{9,9})$/;
-            if (!phoneNumberRegex.test(sdt)) {
-                toastr.error("Số điện thoại không đúng định dạng");
-                return false;
-            }
-
-            // Kiểm tra định dạng email
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                toastr.error("Email không đúng định dạng.");
-                return false;
-            }
-
-            // Kiểm tra độ dài mật khẩu
-            if (matKhau.trim().length < 6) {
-                toastr.error("Mật khẩu phải có ít nhất 6 kí tự.");
-                return false;
-            }
-
-            var dob = new Date(ngaySinh);
-            var currentDate = new Date();
-            if (dob >= currentDate) {
-                toastr.error("Ngày sinh không đúng định dạng");
-                return false;
-            }
-
-            $.ajax({
-                url: '/khach_hang/update',
-                type: 'POST',
-                data: {
-                    id: id,
-                    tenKhachHang: tenKhachHang,
-                    gioiTinh: gioiTinh,
-                    ngaySinh: ngaySinh,
-                    sdt: sdt,
-                    email: email,
-                    matKhau: matKhau,
-                    trangThai: trangThai,
-
-                },
-                success: function (response) {
-                    if (response === "ok") {
-                        Swal.fire({
-                            title: "Good job!",
-                            text: "Sửa Thành Công!",
-                            icon: "success"
-                        }).then((result) => {
-                            if (result.isConfirmed || result.isDismissed) {
-                                window.location.reload(); // Load lại trang nếu thành công
-                            }
-                        });
-                    // else if (response === "errorEmail") {
-                    //     alert("Email Đã tồn tại");
-                    // } else if (response === "errorTen") {
-                    //     alert("Sdt Đã Tồn Tại");
-                    // }
-                },
-                error: function (error) {
-                    console.error("Có lỗi xảy ra:", error);
-                    toastr.error("Có lỗi xảy ra");
-                }
-            });
-
+        if (tenKhachHang.trim() === "" || sdt.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
         }
+
+        var phoneNumberRegex = /^(0\d{9,9})$/;
+        if (!phoneNumberRegex.test(sdt)) {
+            toastr.error("Số điện thoại không đúng định dạng");
+            return false;
+        }
+
+        // Kiểm tra định dạng email
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            toastr.error("Email không đúng định dạng.");
+            return false;
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (matKhau.trim().length < 6) {
+            toastr.error("Mật khẩu phải có ít nhất 6 kí tự.");
+            return false;
+        }
+
+        var dob = new Date(ngaySinh);
+        var currentDate = new Date();
+        if (dob >= currentDate) {
+            toastr.error("Ngày sinh không đúng định dạng");
+            return false;
+        }
+
+        $.ajax({
+            url: '/khach_hang/update',
+            type: 'POST',
+            data: {
+                id: id,
+                tenKhachHang: tenKhachHang,
+                gioiTinh: gioiTinh,
+                ngaySinh: ngaySinh,
+                sdt: sdt,
+                email: email,
+                matKhau: matKhau,
+                trangThai: trangThai
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Sửa Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
+            }
+        });
+    }
+
     document.getElementById('trangThaiSelect').addEventListener('change', function() {
         var selectedValue = this.value;
         if (selectedValue !== '') {

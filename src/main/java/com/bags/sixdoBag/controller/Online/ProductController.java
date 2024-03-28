@@ -188,6 +188,12 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/get-soLuong")
+    public ResponseEntity<?>getSoLuongTrongKho(@RequestParam("idChiTietSanPham") Integer idCtsp){
+        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(idCtsp);
+        return ResponseEntity.ok(chiTietSanPham.getSoLuong());
+    }
+
     @PostMapping("/edit-soLuong-checkout")
     public ResponseEntity<?>checkSoLuongInput(@RequestBody Map<String, Object> requestBody){
         String idKhachHang = String.valueOf(requestBody.get("idKhachHang"));
@@ -208,7 +214,7 @@ public class ProductController {
             if(chiTietSanPham.getSoLuong()>=Integer.parseInt(soLuong)){
                 chiTietGioHangService.editChiTietGioHang(idGioHang,Integer.parseInt(idChiTietSanPham),chiTietGioHangRequestDto);
                 return ResponseEntity.ok("ok");
-            }else {
+            }else  {
                 return ResponseEntity.ok(chiTietSanPham.getSoLuong());
             }
         }
@@ -250,6 +256,18 @@ public class ProductController {
             ct2.setIdGioHang(idGioHang);
             ct2.setIdChiTietSanPham(Integer.parseInt(idChiTietSanPham));
             chiTietGioHangService.addChiTietGioHang(ct2);
+            return ResponseEntity.ok("ok");
+        }
+    }
+
+    @PostMapping("/delete_ctsp-gio-hang-online")
+    public ResponseEntity<?> deleteCtspByGioHang(@RequestParam("idKhachHang") int idKh ,@RequestParam("idChiTietSanPham") int idCtsp){
+        int idGioHang = gioHangService.getIdGioHang(idKh);
+        ChiTietGioHang chiTietGioHang = chiTietGioHangRepository.getChiTietGioHangByCtspAndGh(idGioHang,idCtsp);
+        if(chiTietGioHang== null){
+            return ResponseEntity.ok("no");
+        }else {
+            chiTietGioHangRepository.delete(chiTietGioHang);
             return ResponseEntity.ok("ok");
         }
     }

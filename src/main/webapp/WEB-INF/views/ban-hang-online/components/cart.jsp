@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Title</title>
-    <meta charshet="utf-8" />
+    <meta charshet="utf-8"/>
 
 </head>
 <body>
@@ -20,10 +20,14 @@
         </div>
 
         <div class="header-cart-content flex-w js-pscroll">
-            <ul class="header-cart-wrapitem w-full"  id="cartProductList">
+            <ul class="header-cart-wrapitem w-full" id="cartProductList">
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img" id="header-cart-item-img-cart">
                         <img src="" alt="IMG">
+                        <!-- Thêm nút xóa vào đây -->
+                        <button class="btn-remove-item" onclick="deleteCartItem(this)">
+                            <i class="zmdi zmdi-close"></i>
+                        </button>
                     </div>
 
                     <div class="header-cart-item-txt p-t-8">
@@ -31,20 +35,22 @@
 
                         </a>
                         <span class="header-cart-item-info">
-							</span>
+            </span>
                     </div>
-                </li>
 
+                </li>
             </ul>
 
             <div class="w-full">
-                <div class="header-cart-total w-full p-tb-28 font-weight-bold" id="totalCartValues" style=" border-top: 3px solid black;">
-<%--                    Total: $75.00--%>
+                <div class="header-cart-total w-full p-tb-28 font-weight-bold" id="totalCartValues"
+                     style=" border-top: 3px solid black;">
+                    <%--                    Total: $75.00--%>
                 </div>
 
                 <div class="header-cart-buttons flex-w w-full" style="text-align: center; justify-content: center">
                     <a href="/sixdo-shop/shoping-cart"
-                       class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10" style="width: 280px">
+                       class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10"
+                       style="width: 280px">
                         Check Out
                     </a>
                 </div>
@@ -61,7 +67,7 @@
     var cartItemDiv = document.getElementById('header-cart-item-img-cart');
 
     // Thêm sự kiện click vào phần tử div
-    cartItemDiv.addEventListener('click', function() {
+    cartItemDiv.addEventListener('click', function () {
         // Hiển thị thông báo khi click vào phần tử div
         showAlert();
     });
@@ -74,6 +80,52 @@
             icon: 'info',
             confirmButtonText: 'OK'
         });
+    }
+</script>
+
+
+<%-- delete product--%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function deleteProductToCart(productId, element) {
+        var idKhachHang = document.getElementById("id-khach-hang").value;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/sixdo-shop/delete_ctsp-gio-hang-online',
+                    data: {
+                        idKhachHang: idKhachHang,
+                        idChiTietSanPham: productId,
+                    },
+                    success: function (response) {
+                        if (response === "ok") {
+// Xóa sản phẩm từ giao diện người dùng
+                            var productElement = element.closest('.cart-item');
+                            productElement.remove();
+                            Swal.fire({
+                                title: 'Đã xóa!',
+                                text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
+                                icon: 'success',
+                                timer: 1500, // Thời gian tự đóng (ms)
+                                showConfirmButton: false // Ẩn nút xác nhận
+                            });
+                        } else {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Sản phẩm không tồn tại trong giỏ hàng.',
+                                'error'
+                            );
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Lỗi khi xóa sản phẩm:', error);
+                        Swal.fire(
+                            'Lỗi!',
+                            'Đã xảy ra lỗi khi xóa sản phẩm.',
+                            'error'
+                        );
+                    }
+                });
     }
 </script>
 

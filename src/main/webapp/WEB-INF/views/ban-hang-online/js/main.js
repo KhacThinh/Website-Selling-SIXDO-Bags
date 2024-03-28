@@ -453,25 +453,28 @@
                                 var imageProductForCart = '${pageContext.request.contextPath}/' + product.chiTietSanPham.hinhAnh;
                                 var listItem = document.createElement('li');
                                 listItem.className = 'cart-item';
-                                var itemHTML = ' <li class="header-cart-item flex-w flex-t m-b-12">\n' +
-                                    '                    <div class="header-cart-item-img">\n' +
-                                    '                        <img style="width: 74px; height: 80px; margin-bottom: 16px ;" src="' + imageProductForCart + '" alt="IMG">\n' +
-                                    '                    </div>\n' +
-                                    '\n' +
-                                    '                    <div class="header-cart-item-txt p-t-8">\n' +
-                                    '                        <a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.chiTietSanPham.sanPham.tenSanPham + ' \n' +
-                                    '                        </a> ' +
-                                    '                        <a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '"class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>\n' +
-                                    '\n' +
-                                    '                        <span class="header-cart-item-info" > ' + product.soLuong + '  x  '  +formatter.format(product.chiTietSanPham.giaBan)+ '</span> \n' +
-                                    '                    </div> \n' +
-                                    '                </li> '
-                                ;
+                                var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12">' +
+                                    '<div class="header-cart-item-img">' +
+                                    '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
+                                    '</div>' +
+
+                                    '<div class="header-cart-item-txt p-t-8">' +
+                                    '<a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.chiTietSanPham.sanPham.tenSanPham + '</a>' +
+                                    '<a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>' +
+                                    '<span class="header-cart-item-info">' + product.soLuong + ' x ' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
+                                    '</div>' +
+
+                                    // Thêm nút "X" vào đây và bắt sự kiện onclick
+                                    '<div class="header-cart-item-remove">' +
+                                    '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
+                                    '</div>' +
+                                    '</li>';
+
                                 listItem.innerHTML = itemHTML;
                                 cartListElement.appendChild(listItem);
-                                totalAmount += product.chiTietSanPham.giaBan* product.soLuong;
-
+                                totalAmount += product.chiTietSanPham.giaBan * product.soLuong;
                             });
+
 
                             var formattedTotalAmount = formatter.format(totalAmount);
                             var totalAmountElement = document.getElementById('totalCartValues');
@@ -491,6 +494,8 @@
             totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
 
         });
+
+
 
         window.onload = function () {
             // Thực hiện các công việc bạn muốn khi trang được tải
@@ -555,6 +560,8 @@
         }
 
         ///////////////đặt hàng
+
+
 
 
 
