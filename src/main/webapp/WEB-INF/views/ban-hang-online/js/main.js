@@ -410,20 +410,18 @@
                                     soLuong: quantityProduct
                                 }),
                                 success: function (response) {
-                                    if(response==="ok"){
-                                        Swal.fire({
-                                            title: 'Thanh cong!',
-                                            text: 'Da them gio hang thanh cong.',
-                                            icon: 'success',
-                                            timer: 2000, // Thời gian tự động đóng (ms)
-                                            showConfirmButton: false // Ẩn nút OK
-                                        });
-                                        capNhapSoLuongSanPhamTrongGioHangHearder();
-
                                     if (response === "ok") {
+                                        // Swal.fire({
+                                        //     title: 'Thanh cong!',
+                                        //     text: 'Da them gio hang thanh cong.',
+                                        //     icon: 'success',
+                                        //     timer: 2000, // Thời gian tự động đóng (ms)
+                                        //     showConfirmButton: false // Ẩn nút OK
+                                        // });
                                         const count = document.querySelector('.icon-count-cart');
                                         count.setAttribute('data-notify', response);
                                         showAlertAddCart('Success!', 'Product added to cart!', 'success');
+                                        capNhapSoLuongSanPhamTrongGioHangHearder();
                                     } else if (response === "loiTrangThai") {
                                         Swal.fire(
                                             'Error!',
@@ -518,13 +516,13 @@
                                     '<div class="header-cart-item-txt p-t-8">' +
                                     '<span class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold"> ' + product.chiTietSanPham.sanPham.tenSanPham + '</span>' +
                                     '<span class="header-cart-item-info">' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
-                                    '<span class="header-cart-item-info" style="color: red" >' + trangThaiText + '</span>'+
+                                    '<span class="header-cart-item-info" style="color: red" >' + trangThaiText + '</span>' +
 
-                                '</div>' +
-                                '<div class="header-cart-item-remove">' +
-                                '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
-                                '</div>' +
-                                '</li>';
+                                    '</div>' +
+                                    '<div class="header-cart-item-remove">' +
+                                    '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
+                                    '</div>' +
+                                    '</li>';
                                 listItem.innerHTML = itemHTML;
                                 cartListElement.appendChild(listItem);
 

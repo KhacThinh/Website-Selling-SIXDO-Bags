@@ -87,46 +87,46 @@
 <%-- delete product--%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
     function deleteProductToCart(productId, element) {
         var idKhachHang = document.getElementById("id-khach-hang").value;
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/sixdo-shop/delete_ctsp-gio-hang-online',
-                    data: {
-                        idKhachHang: idKhachHang,
-                        idChiTietSanPham: productId,
-                    },
-                    success: function (response) {
-                        if (response === "ok") {
-                            var productElement = element.closest('.cart-item');
-                           deleteProductShopingCart(productId,element);
-                            productElement.remove();
-
-                            Swal.fire({
-                                title: 'Đã xóa!',
-                                text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
-                                icon: 'success',
-                                timer: 1500, // Thời gian tự đóng (ms)
-                                showConfirmButton: false // Ẩn nút xác nhận
-                            });
-                        } else {
-                            Swal.fire(
-                                'Lỗi!',
-                                'Sản phẩm không tồn tại trong giỏ hàng.',
-                                'error'
-                            );
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Lỗi khi xóa sản phẩm:', error);
-                        Swal.fire(
-                            'Lỗi!',
-                            'Đã xảy ra lỗi khi xóa sản phẩm.',
-                            'error'
-                        );
-                    }
-                });
+        $.ajax({
+            type: 'POST',
+            url: '/sixdo-shop/delete_ctsp-gio-hang-online',
+            data: {
+                idKhachHang: idKhachHang,
+                idChiTietSanPham: productId,
+            },
+            success: function (response) {
+                if (response === "ok") {
+// Xóa sản phẩm từ giao diện người dùng
+                    var productElement = element.closest('.cart-item');
+                    productElement.remove();
+                    Swal.fire({
+                        title: 'Đã xóa!',
+                        text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
+                        icon: 'success',
+                        timer: 1500, // Thời gian tự đóng (ms)
+                        showConfirmButton: false // Ẩn nút xác nhận
+                    });
+                } else {
+                    Swal.fire(
+                        'Lỗi!',
+                        'Sản phẩm không tồn tại trong giỏ hàng.',
+                        'error'
+                    );
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi xóa sản phẩm:', error);
+                Swal.fire(
+                    'Lỗi!',
+                    'Đã xảy ra lỗi khi xóa sản phẩm.',
+                    'error'
+                );
+            }
+        });
     }
 </script>
 
