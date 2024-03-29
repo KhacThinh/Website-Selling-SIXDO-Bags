@@ -121,10 +121,9 @@
                         <li>
                             <a href="about.html">About</a>
                         </li>
-
-                        <div id="don-mua-menu-item">
-<%--                            menu đơn mua--%>
-                        </div>
+                        <li id="don-mua-menu-item">
+                            <a href="/sixdo-shop/manager-oder-customer">Quản lý đơn hàng</a>
+                        </li>
 
                     </ul>
                 </div>
@@ -136,12 +135,12 @@
                     </div>
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart icon-count-cart"
-                         data-notify="${soLuongSanPhamGioHang}">
+                         data-notify="0">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
-                    <div  id="product-favorite-header">
-                        <%--                        sản phẩm yêu thích--%>
+                    <div id="product-favorite-header">
+                        <%-- sản phẩm yêu thích--%>
                     </div>
 
 
@@ -161,7 +160,8 @@
                                 <button class="dropbtn icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 i">
                                     <i class='bx bx-sun' id="darkLight"></i>
                                     <i class='bx bx-bell'></i>
-                                    <img src="../static/images/profile.jpg" id="js-rounded-circle-avt-hearder" alt="" class="profile"/>
+                                    <img src="../static/images/profile.jpg" id="js-rounded-circle-avt-hearder" alt=""
+                                         class="profile"/>
                                     <i class="bi bi-caret-down-fill" style="color: #1d1d1d; font-size: 15px;"></i>
                                 </button>
                                 <div class="dropdown" style="margin-left: 20px;">
@@ -252,8 +252,8 @@
                 <a href="about.html">About</a>
             </li>
 
-            <li>
-                <a href="contact.html">Đơn mua</a>
+            <li id="don-mua-menu-item-mobi">
+                <a href="/sixdo-shop/manager-oder-customer">Quản lý đơn hàng</a>
             </li>
         </ul>
     </div>
@@ -282,6 +282,7 @@
 
     $(document).ready(function () {
         capNhapSoLuongSanPhamYeuThichHearder();
+        capNhapSoLuongSanPhamTrongGioHangHearder();
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -311,17 +312,29 @@
     function capNhapSoLuongSanPhamYeuThichHearder() {
         $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
             displaySoLuongSanPhamFavorite(data);
-            displayMenuDonMua();
+            displayMenuDonMua(data);
         });
     }
 
-    function displayMenuDonMua() {
+    function capNhapSoLuongSanPhamTrongGioHangHearder() {
+        $.get('/sixdo-shop/hien-thi-so-luong-cart-product', function (data) {
+            var cartIcon = document.querySelector('.js-show-cart');
+            var soLuongSanPham = data;
+            cartIcon.setAttribute('data-notify', soLuongSanPham);
+        });
+    }
+
+    function displayMenuDonMua(data) {
         const containerDonMua = $('#don-mua-menu-item');
-        containerDonMua.empty();
-        var donMuaHTML = '<li>'
-        donMuaHTML += '<a href="contact.html">Đơn mua</a>'
-        donMuaHTML += '</li>'
-        containerDonMua.append(donMuaHTML);
+        const containerDonMuaMobi = $('#don-mua-menu-item-mobi');
+        const containerSanPhamYeuThich = $('#product-favorite-header');
+        if (data == 0) {
+            containerDonMua.hide();
+            containerDonMuaMobi.hide();
+            containerSanPhamYeuThich.hide();
+        }
+
+
     }
 
     function displaySoLuongSanPhamFavorite(soLuong) {
@@ -330,6 +343,9 @@
         var productHTML = '<a href="/sixdo-shop/product-favorite" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="' + soLuong + '">';
         productHTML += '<i class="zmdi zmdi-favorite-outline"></i></a>';
         container.append(productHTML);
+
+        // Hiển thị phần tử
+        container.show();
     }
 
 

@@ -1,42 +1,18 @@
 package com.bags.sixdoBag.controller.Online;
 
 
-import com.bags.sixdoBag.config.UserLoginKhachHang;
 import com.bags.sixdoBag.model.dto.request.ChiTietGioHangRequestDto;
-import com.bags.sixdoBag.model.dto.request.GioHangRequest;
 import com.bags.sixdoBag.model.dto.request.OderDataDto;
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
-import com.bags.sixdoBag.model.entitys.ChiTietGioHang;
-import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
-import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
-import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
-import com.bags.sixdoBag.model.entitys.HoaDon;
-import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.ChiTietGioHangRepository;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
-
 import com.bags.sixdoBag.model.user.EmailService;
-
-import com.bags.sixdoBag.service.ChiTietGioHangService;
-
-import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
-import com.bags.sixdoBag.service.GioHangService;
-import com.bags.sixdoBag.service.HoaDonChiTietService;
-import com.bags.sixdoBag.service.HoaDonService;
-import com.bags.sixdoBag.service.KhuyenMaiService;
-import com.bags.sixdoBag.service.MauSacService;
-import com.bags.sixdoBag.service.SanPhamService;
-import com.bags.sixdoBag.service.ThuongHieuService;
-
 import com.bags.sixdoBag.service.*;
-
 import com.bags.sixdoBag.service.impl.Utils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -47,13 +23,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -93,7 +66,6 @@ public class ProductController {
     @Autowired
     private HttpSession session;
     private int idKhachHangFinal = 0;
-    private int soLuongSanPhamGioHang = 0;
 
     @GetMapping("")
     public String homePage(Model model) {
@@ -102,8 +74,6 @@ public class ProductController {
         idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
         model.addAttribute("khachHang", khachHang);
 
-        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0);
-        soLuongSanPhamGioHang = khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0;
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
 
@@ -141,7 +111,6 @@ public class ProductController {
     @GetMapping("/product")
     public String hienThiSanPham(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
 
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
@@ -301,7 +270,6 @@ public class ProductController {
     public String productDetailById(Model model, @PathVariable int id) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         model.addAttribute("khachHang", khachHang);
-        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
 
         List<ChiTietSanPham> list = chiTietSanPhamRepository.getChiTietSanPhamByIdSpOnline(id);
         List<ChiTietSanPham> sortedList = list.stream()
@@ -392,7 +360,6 @@ public class ProductController {
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OderDataDto orderData) {
         KhachHang khachHang = orderData.getKhachHang();
-        System.out.println("nham neees");
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
         hoaDon.setKhachHang(khachHang);
@@ -481,13 +448,37 @@ public class ProductController {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
         model.addAttribute("khachHang", khachHang);
-
-        model.addAttribute("soLuongSanPhamGioHang", khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0);
-        soLuongSanPhamGioHang = khachHang != null ? soLuongSanPhamGioHang(khachHang.getId()) : 0;
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
 
         model.addAttribute("listSp", productHomeRequestList);
         return "ban-hang-online/home/product-favorite";
+    }
+
+
+    @GetMapping("/manager-oder-customer")
+    public String managerOderCustomer(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.nonNull(khachHang)) {
+            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            model.addAttribute("khachHang", khachHang);
+            model.addAttribute("listSp", productHomeRequestList);
+
+            return "ban-hang-online/home/manager-order-customer";
+        } else {
+            return "ban-hang-online/home/home-page";
+        }
+    }
+
+
+    @GetMapping("hien-thi-so-luong-cart-product")
+    public @ResponseBody
+    int getProuductSoLuongCartHead() {
+            KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.nonNull(khachHang)) {
+            int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId());
+            return soLuong;
+        }
+        return 0;
     }
 }

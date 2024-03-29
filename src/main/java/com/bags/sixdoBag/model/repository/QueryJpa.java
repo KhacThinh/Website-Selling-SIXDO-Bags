@@ -61,9 +61,9 @@ public class QueryJpa {
             }
 
             // In ra danh sách sản phẩm
-            for (ProductHomeRequest product : productList) {
-                System.out.println(product);
-            }
+//            for (ProductHomeRequest product : productList) {
+//                System.out.println(product);
+//            }
 
             // Đóng kết nối, statement và resultSet
             resultSet.close();
@@ -110,9 +110,9 @@ public class QueryJpa {
             }
 
             // In ra danh sách sản phẩm
-            for (ProductHomeRequest product : productList) {
-                System.out.println(product);
-            }
+//            for (ProductHomeRequest product : productList) {
+//                System.out.println(product);
+//            }
 
             // Đóng kết nối, statement và resultSet
             resultSet.close();

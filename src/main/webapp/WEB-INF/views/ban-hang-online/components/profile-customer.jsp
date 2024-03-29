@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-12">
-                                        <label class="labels">Họ và Tên</label>
+                                        <label class="labels">Họ và Tên <span style="color: red">*</span></label>
                                         <input type="text" class="form-control" placeholder="họ và tên"
                                                id="js-profile-ten"/>
                                     </div>
@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-6">
-                                        <label class="labels">Số điện thoại</label>
+                                        <label class="labels">Số điện thoại <span style="color: red">*</span></label>
                                         <input type="text" class="form-control" placeholder="số điện thoại"
                                                id="js-profile-sdt"/>
                                     </div>
@@ -242,47 +242,69 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    if (ten === '' || sdt === '') {
-                        alert('Vui lòng điền đầy đủ thông tin tên và số điện thoại.');
-                    } else {
-                        var data = new FormData();
-                        data.append('ten', ten);
-                        data.append('gioiTinh', gioiTinh);
-                        data.append('sdt', sdt);
-                        data.append('ngaySinh', ngaySinh);
-                        data.append('diaChi', diaChi);
-                        if (file) {
-                            data.append('hinhAnh', file);
-                        }
-
-                        $.ajax({
-                            url: '/product-favorite/input-infomation-profile-header',
-                            data: data,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            method: 'POST',
-                            success: function(data){
-                                if (data == 1) {
-                                    loadInfomationProfileCustumer();
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Lưu Thành Công',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: 'Lưu Thất Bại',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                    console.error("Lỗi không sửa được thông tin khách hàng");
-                                }
-                            }
+                    if (!sdt.match(/^[0-9]{10}$/)) {
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Số điện thoại không hợp lệ.',
+                            icon: 'error'
                         });
+                        return false;
                     }
+                    if (file && file.size > 1048576) {
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Vui lòng chọn ảnh có kích thước dưới 1MB',
+                            icon: 'error'
+                        });
+                        return false;
+                    }
+                    if (ten === '' || sdt === '') {
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Vui lòng điền đầy đủ thông tin tên và số điện thoại.',
+                            icon: 'error'
+                        });
+                        return false;
+                    }
+
+                    // Nếu không có lỗi, gửi yêu cầu AJAX
+                    var data = new FormData();
+                    data.append('ten', ten);
+                    data.append('gioiTinh', gioiTinh);
+                    data.append('sdt', sdt);
+                    data.append('ngaySinh', ngaySinh);
+                    data.append('diaChi', diaChi);
+                    if (file) {
+                        data.append('hinhAnh', file);
+                    }
+
+                    $.ajax({
+                        url: '/product-favorite/input-infomation-profile-header',
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        method: 'POST',
+                        success: function (data) {
+                            if (data == 1) {
+                                loadInfomationProfileCustumer();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Lưu Thành Công',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Lưu Thất Bại',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                console.error("Lỗi không sửa được thông tin khách hàng");
+                            }
+                        }
+                    });
                 }
             });
         });

@@ -76,6 +76,8 @@ public class HoaDon {
     @Column(name = "so_tien_no")
     private Double soTienNo;
 
+    @Column(name = "ly_do_khach_huy")
+    private String lyDoKhachHuy;
 
     @JsonIgnore
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)

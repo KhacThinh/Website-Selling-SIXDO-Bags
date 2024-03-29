@@ -258,6 +258,9 @@ CONSTRAINT FK_KhachHang_HD FOREIGN KEY(id_khach_hang) REFERENCES khach_hang(id),
 CONSTRAINT FK_NhanVien_HD FOREIGN KEY(id_nhan_vien) REFERENCES nhan_vien(id)
 )
 
+ALTER TABLE hoa_don
+ADD  ly_do_khach_huy nvarchar(max)
+
 create table chi_tiet_hoa_don(
 id_hoa_don  int,
 id_ctsp  int ,
@@ -506,6 +509,39 @@ ORDER BY
 
 select * from san_pham join chi_tiet_san_pham on san_pham.id = chi_tiet_san_pham.id_san_pham
 where san_pham.ten like N'Iphone x promax'
+
+
+
+select * from chi_tiet_san_pham
+
+select * from khach_hang as kh 
+join hoa_don as hd on hd.id_khach_hang = kh.id 
+join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id
+join chi_tiet_san_pham as ctsp on ctsp.id = cthd.id_ctsp
+join san_pham as sp on sp.id = ctsp.id_san_pham
+join mau_sac as ms on ms.id = ctsp.id
+where hd.trang_thai = 2 and kh.id = 1 
+group by hd.
+
+select * from hoa_don
+where id = 90
+update hoa_don set trang_thai = 2 where id = 94
+update hoa_don set trang_thai = 2 where id = 98
+update hoa_don set trang_thai = 2 where id = 90
+
+update hoa_don set trang_thai = 3 where id = 94
+update hoa_don set trang_thai = 3 where id = 98
+update hoa_don set trang_thai = 3 where id = 90
+
+select sum(ctgh.so_luong) from gio_hang as gh 
+join chi_tiet_gio_hang as ctgh on gh.id = ctgh.id_gio_hang
+where gh.id_khach_hang = 1
+group by gh.id
+
+select * from chi_tiet_san_pham
+
+
+
 
 
 

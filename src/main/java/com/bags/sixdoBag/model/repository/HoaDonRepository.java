@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
@@ -29,4 +30,13 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
 
     @Query(value = "select * from hoa_don where thoi_gian_tao between :ngayBatDau and :ngayKetThuc", nativeQuery = true)
     List<HoaDon> filterNgayBatDauKetThuc(String ngayBatDau, String ngayKetThuc);
+
+    @Query(value = "select hd from HoaDon hd join KhachHang as kh on hd.khachHang = kh where hd.trangThai = :trangThai and kh.id = :idKh")
+    List<HoaDon> getHoaDonByTrangThaiAndKhachHang(int idKh, int trangThai);
+
+    @Query(value = "select hd from HoaDon hd join KhachHang as kh on hd.khachHang = kh where hd.id = :id")
+    Optional<HoaDon> getHoaDonByIdHoaDonTrangThaiAndKhachHang(int id);
+
+    @Query(value = "select hd from HoaDon hd join KhachHang as kh on hd.khachHang = kh where kh.id = :idKh")
+    List<HoaDon> getHoaDonByKhachHang(int idKh);
 }

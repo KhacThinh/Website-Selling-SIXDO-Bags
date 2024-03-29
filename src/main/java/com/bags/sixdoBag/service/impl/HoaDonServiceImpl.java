@@ -1,16 +1,15 @@
 package com.bags.sixdoBag.service.impl;
 
+import com.bags.sixdoBag.model.dto.response.DonHangOnlineResponse;
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.repository.HoaDonRepository;
-import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
 import com.bags.sixdoBag.service.HoaDonChiTietService;
 import com.bags.sixdoBag.service.HoaDonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,9 +52,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     public void updateHoaDon(int idHoaDon, HoaDon hoaDon) {
         HoaDon hoaDonTemp = getHoaDonById(idHoaDon);
         hoaDonTemp.setTenNguoiNhan(hoaDon.getTenNguoiNhan());
+        hoaDonTemp.setDiaChiNguoiNhan(hoaDon.getDiaChiNguoiNhan());
         hoaDonTemp.setTrangThai(hoaDon.getTrangThai());
         hoaDonTemp.setSdtNguoiNhan(hoaDon.getSdtNguoiNhan());
         hoaDonTemp.setTongTien(hoaDon.getTongTien());
+        hoaDonTemp.setLyDoKhachHuy(hoaDon.getLyDoKhachHuy());
         hoaDonTemp.setThoiGianXacNhan(hoaDon.getThoiGianXacNhan());
         hoaDonTemp.setThoiGianThanhToan(hoaDon.getThoiGianThanhToan());
         hoaDonRepository.save(hoaDonTemp);
@@ -152,4 +153,55 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         return hoaDonRepository.save(ms);
     }
+
+    @Override
+    public List<DonHangOnlineResponse> getSortHoaDonByKhachHangTrangThai(int idKh, int trangThai) {
+        List<DonHangOnlineResponse> hoaDonHangOnlineResponse = new ArrayList<>();
+        List<HoaDon> hoaDons = hoaDonRepository.getHoaDonByTrangThaiAndKhachHang(idKh, trangThai);
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            DonHangOnlineResponse donHangOnlineResponse = new DonHangOnlineResponse();
+            if (Objects.nonNull(chiTietHoaDons.get(0))) {
+                donHangOnlineResponse.setUrlHinhAnhMau(chiTietHoaDons.get(0).getChiTietSanPham().getHinhAnh());
+            }
+            donHangOnlineResponse.setHoaDon(hoaDon);
+            donHangOnlineResponse.setChiTietHoaDons(chiTietHoaDons);
+            hoaDonHangOnlineResponse.add(donHangOnlineResponse);
+        }
+
+        return hoaDonHangOnlineResponse;
+    }
+
+    @Override
+    public DonHangOnlineResponse getHoaDonByIdHoaDonKhachHangTrangThai(int id) {
+        DonHangOnlineResponse hoaDonHangOnlineResponse = new DonHangOnlineResponse();
+        HoaDon hoaDon = hoaDonRepository
+                .getHoaDonByIdHoaDonTrangThaiAndKhachHang(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không có id hoá đơn với id là" + id));
+        List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+        hoaDonHangOnlineResponse.setHoaDon(hoaDon);
+        hoaDonHangOnlineResponse.setChiTietHoaDons(chiTietHoaDons);
+        return hoaDonHangOnlineResponse;
+    }
+
+    @Override
+    public Map<Integer, Integer> getSortHoaDonByKhachHang(int idKh) {
+        Map<Integer, Integer> hoaDonSoLuong = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.getHoaDonByKhachHang(idKh);
+        int[] trangThai = {0, 1, 2, 3, 4, 5};
+
+        // Khởi tạo số lượng trạng thái ban đầu là 0
+        for (int i = 0; i < trangThai.length; i++) {
+            hoaDonSoLuong.put(trangThai[i], 0);
+        }
+
+        for (HoaDon hoaDon : hoaDons) {
+            int trangThaiHoaDon = hoaDon.getTrangThai();
+            hoaDonSoLuong.put(trangThaiHoaDon, hoaDonSoLuong.get(trangThaiHoaDon) + 1);
+        }
+
+        return hoaDonSoLuong;
+    }
+
 }

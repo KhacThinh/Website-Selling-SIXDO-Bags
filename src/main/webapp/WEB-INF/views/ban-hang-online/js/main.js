@@ -410,6 +410,16 @@
                                     soLuong: quantityProduct
                                 }),
                                 success: function (response) {
+                                    if(response==="ok"){
+                                        Swal.fire({
+                                            title: 'Thanh cong!',
+                                            text: 'Da them gio hang thanh cong.',
+                                            icon: 'success',
+                                            timer: 2000, // Thời gian tự động đóng (ms)
+                                            showConfirmButton: false // Ẩn nút OK
+                                        });
+                                        capNhapSoLuongSanPhamTrongGioHangHearder();
+
                                     if (response === "ok") {
                                         const count = document.querySelector('.icon-count-cart');
                                         count.setAttribute('data-notify', response);
