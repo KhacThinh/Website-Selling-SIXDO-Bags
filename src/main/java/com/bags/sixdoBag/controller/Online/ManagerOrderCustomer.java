@@ -1,19 +1,15 @@
 package com.bags.sixdoBag.controller.Online;
 
 import com.bags.sixdoBag.model.dto.response.DonHangOnlineResponse;
-import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.service.HoaDonService;
 import com.bags.sixdoBag.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -113,6 +109,34 @@ public class ManagerOrderCustomer {
                 hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
                 return true;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @PostMapping("/edit-don-hang-by-id-hoa-don")
+    public @ResponseBody
+    boolean editHoaDonByIdHoaDon(@RequestParam("idHoaDon") int id,
+                                 @RequestParam("tenNguoiNhan") String tenNguoiNhan,
+                                 @RequestParam("sdtNguoiNhan") String sdtNguoiNhan,
+                                 @RequestParam("diaChiNguoiNhan") String diaChiNguoiNhan,
+                                 @RequestParam("emailNguoiNhan") String emailNguoiNhan) {
+        try {
+            if (tenNguoiNhan.isEmpty() || sdtNguoiNhan.isEmpty() || diaChiNguoiNhan.isEmpty() || emailNguoiNhan.isEmpty()) {
+                return false;
+            }
+
+            HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+
+            hoaDon.setTrangThai(4);
+            hoaDon.setTenNguoiNhan(tenNguoiNhan);
+            hoaDon.setSdtNguoiNhan(sdtNguoiNhan);
+            hoaDon.setDiaChiNguoiNhan(diaChiNguoiNhan);
+            hoaDon.setEmailNguoiNhan(emailNguoiNhan);
+            hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
+            return true;
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

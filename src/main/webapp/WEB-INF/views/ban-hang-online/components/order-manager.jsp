@@ -964,6 +964,7 @@
                             <div class="form-group">
                                 <label>Tên Người Nhận <span style="color: red">*</span></label>
                                 <input type="text" id="ip-ten-nguoi-nhan" class="form-control">
+                                <input type="hidden" id="ip-id-hoa-don" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Số Điện Thoại <span style="color: red">*</span></label>
@@ -1014,6 +1015,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-primary btn-edit-thong-tin-hoa-don">Sửa</button>
             </div>
         </div>
     </div>
@@ -1061,7 +1063,8 @@
         clickHuyDonHang();
 
         hienThiDuLieuHoaDonChiTiet();
-        editDuLieuHoaDonChiTiet();
+        hienThiDuLieuDeEditHoaDonChiTiet();
+        inputDuLieuDeEditHoaDonChiTiet();
 
     });
 
@@ -1326,7 +1329,7 @@
         });
     }
 
-    function editDuLieuHoaDonChiTiet() {
+    function hienThiDuLieuDeEditHoaDonChiTiet() {
         $(document).on('click', '.btn-modal-edit-chi-tiet-order', function () {
             var idDonHang = $(this).data('id');
             $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
@@ -1344,6 +1347,7 @@
                     tt = 'Đang Giao Hàng';
                 }
 
+                $('#ip-id-hoa-don').val(item.hoaDon.id);
                 $('#ip-ma-don-hang').text(item.hoaDon.maHoaDon);
                 $('#ip-ten-tai-khoan').text(item.hoaDon.khachHang.tenKhachHang);
                 $('#ip-trang-thai-don-hang').text(tt);
@@ -1371,6 +1375,81 @@
                         "</tr>";
                     $("#ip-chi-tiet-don-hang-order tbody").append(row);
                 });
+            });
+
+        });
+    }
+
+    function showErrorPopup(message) {
+        Swal.fire({
+            title: 'Lỗi!',
+            text: message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+
+    // function check email
+    function isValidEmail(email) {
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function inputDuLieuDeEditHoaDonChiTiet() {
+        $(document).on('click', '.btn-edit-thong-tin-hoa-don', function () {
+            var idDonHang = $('#ip-id-hoa-don').val();
+            var tenNguoiNhan = $('#ip-ten-nguoi-nhan').val().trim();
+            var diaChiNguoiNhan = $('#ip-dia-chi-nguoi-nhan').val().trim();
+            var sdtNguoiNhan = $('#ip-sdt-nguoi-nhan').val().trim();
+            var emailNguoiNhan = $('#ip-email-nguoi-nhan').val().trim();
+
+
+            if (tenNguoiNhan === '') {
+                showErrorPopup('Tên người nhận không được để trống');
+                return;
+            }
+
+            if (diaChiNguoiNhan === '') {
+                showErrorPopup('Địa chỉ người nhận không được để trống');
+                return;
+            }
+
+            if (!sdtNguoiNhan.match(/^[0-9]{10}$/)) {
+                showErrorPopup('Số điện thoại người nhận không hợp lệ');
+                return;
+            }
+
+            if (!isValidEmail(emailNguoiNhan)) {
+                showErrorPopup('Email người nhận không hợp lệ');
+                return;
+            }
+
+
+            $.post('/sixdo-shop/manager-order-customer-online/edit-don-hang-by-id-hoa-don', {
+                idHoaDon: idDonHang,
+                tenNguoiNhan: tenNguoiNhan,
+                sdtNguoiNhan: sdtNguoiNhan,
+                diaChiNguoiNhan: diaChiNguoiNhan,
+                emailNguoiNhan: emailNguoiNhan
+            }, function (response) {
+                if (response) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Sửa hoá đơn thành công.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    hienThiDonHangDangChoXacNhan(2);
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        text: 'Sửa hoá đơn thất bại',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
             });
 
         });

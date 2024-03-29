@@ -258,6 +258,9 @@ CONSTRAINT FK_KhachHang_HD FOREIGN KEY(id_khach_hang) REFERENCES khach_hang(id),
 CONSTRAINT FK_NhanVien_HD FOREIGN KEY(id_nhan_vien) REFERENCES nhan_vien(id)
 )
 
+ALTER TABLE hoa_don
+ADD  ly_do_khach_huy nvarchar(max)
+
 create table chi_tiet_hoa_don(
 id_hoa_don  int,
 id_ctsp  int ,
@@ -521,6 +524,16 @@ where hd.trang_thai = 2 and kh.id = 1
 group by hd.
 
 select * from hoa_don
+
+update hoa_don set trang_thai = 2 where id = 94
+update hoa_don set trang_thai = 2 where id = 98
+update hoa_don set trang_thai = 2 where id = 90
+
+update hoa_don set trang_thai = 3 where id = 94
+update hoa_don set trang_thai = 3 where id = 98
+update hoa_don set trang_thai = 3 where id = 90
+
+
 
 
 

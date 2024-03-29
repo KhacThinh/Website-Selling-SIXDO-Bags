@@ -48,12 +48,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -436,14 +431,16 @@ public class ProductController {
     @GetMapping("/manager-oder-customer")
     public String managerOderCustomer(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
+        if(Objects.nonNull(khachHang)){
+            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            model.addAttribute("soLuongSanPhamGioHang", soLuongSanPhamGioHang);
+            model.addAttribute("khachHang", khachHang);
+            model.addAttribute("listSp", productHomeRequestList);
 
-        model.addAttribute("khachHang", khachHang);
-
-        model.addAttribute("listSp", productHomeRequestList);
-
-        return "ban-hang-online/home/manager-order-customer";
+            return "ban-hang-online/home/manager-order-customer";
+        }else{
+            return "ban-hang-online/home/home-page";
+        }
     }
 }

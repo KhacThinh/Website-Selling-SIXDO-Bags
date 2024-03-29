@@ -69,6 +69,7 @@ public class KhachHangServiceImpl implements KhachHangService {
         kh.setTaiKhoan(taiKhoan);
         kh.setNgaySinh(khachHang.getNgaySinh());
         kh.setTenKhachHang(khachHang.getTenKhachHang());
+        kh.setGioiTinh(khachHang.getGioiTinh());
         kh.setSdt(khachHang.getSdt());
         kh.setMatKhau(khachHang.getMatKhau());
         kh.setHinhAnh(khachHang.getHinhAnh());
