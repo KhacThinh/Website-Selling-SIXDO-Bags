@@ -61,8 +61,8 @@ public class ProductFavoriteController {
     @GetMapping("hien-thi-so-luong-product-favorite")
     public @ResponseBody
     int getProuductSoLuongHead() {
-        if (Objects.nonNull((KhachHang) session.getAttribute("buyer"))) {
-            KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.nonNull(khachHang)) {
             int soLuong = sanPhamYeuThichService.getListSanPhamYeuThich(khachHang.getId()).size();
             return soLuong;
         }

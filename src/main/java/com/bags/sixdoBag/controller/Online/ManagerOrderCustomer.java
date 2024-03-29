@@ -126,10 +126,7 @@ public class ManagerOrderCustomer {
             if (tenNguoiNhan.isEmpty() || sdtNguoiNhan.isEmpty() || diaChiNguoiNhan.isEmpty() || emailNguoiNhan.isEmpty()) {
                 return false;
             }
-
             HoaDon hoaDon = hoaDonService.getHoaDonById(id);
-
-            hoaDon.setTrangThai(4);
             hoaDon.setTenNguoiNhan(tenNguoiNhan);
             hoaDon.setSdtNguoiNhan(sdtNguoiNhan);
             hoaDon.setDiaChiNguoiNhan(diaChiNguoiNhan);

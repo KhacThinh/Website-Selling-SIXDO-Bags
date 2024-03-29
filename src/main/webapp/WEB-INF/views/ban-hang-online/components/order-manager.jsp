@@ -409,6 +409,15 @@
         font-weight: 500;
     }
 
+    .status.dangxuly {
+        padding: 2px 4px;
+        background: #0b3cc1;
+        color: var(--white);
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
     .status.return {
         padding: 2px 4px;
         background: #f00;
@@ -590,7 +599,6 @@
     .chart-title select:hover {
         background-color: #f0f0f0; /* Màu nền hover */
     }
-
 
 </style>
 <!-- Bootstrap Icons CSS -->
@@ -1065,7 +1073,6 @@
         hienThiDuLieuHoaDonChiTiet();
         hienThiDuLieuDeEditHoaDonChiTiet();
         inputDuLieuDeEditHoaDonChiTiet();
-
     });
 
     function clickDonHang() {
@@ -1096,7 +1103,9 @@
             $.each(data, function (index, item) {
                 var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
                 var tt = '';
+                var csss = '';
                 if (trangThai == 2) {
+                    csss = 'status dangxuly'
                     tt = 'Chờ xác nhận';
                 }
 
@@ -1111,14 +1120,14 @@
                 var row = "<tr>" +
                     "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
-                    "<td><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + '0' + item.hoaDon.sdtNguoiNhan + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.sdtNguoiNhan + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + tt + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-danger btn-huy-don-hang-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Huỷ Đơn</button></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
+                    "<td style='vertical-align: middle; text-align: right;'> <button class='btn btn-outline-danger btn-huy-don-hang-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Huỷ Đơn</button></td>" +
                     "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-warning btn-modal-edit-chi-tiet-order'   data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModallll'><i class='bi bi-pencil-square'></i> Sửa</button></td>" +
-                    "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order'  data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
+                    "<td style='vertical-align: middle; text-align: left;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order'  data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
                     "</tr>";
                 $("#productTable tbody").append(row);
             });
@@ -1201,7 +1210,9 @@
             $.each(data, function (index, item) {
                 var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
                 var tt = '';
+                var csss = '';
                 if (trangThai == 5) {
+                    csss = 'status inProgress'
                     tt = 'Đang Giao Hàng';
                 }
 
@@ -1216,12 +1227,12 @@
                 var row = "<tr>" +
                     "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
-                    "<td><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + '0' + item.hoaDon.sdtNguoiNhan + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.sdtNguoiNhan + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + tt + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-success btn-nhan-hang-thanh-cong-order' data-id='" + item.hoaDon.maHoaDon + "'><i class='bi bi-check-circle-fill'></i> Đã nhận được hàng</button></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
+                    "<td style='vertical-align: middle; text-align: right;'><button class='btn btn-outline-success btn-nhan-hang-thanh-cong-order' data-id='" + item.hoaDon.maHoaDon + "'><i class='bi bi-check-circle-fill'></i> Đã nhận được hàng</button></td>" +
                     "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
                     "</tr>";
                 $("#productTable tbody").append(row);
@@ -1249,11 +1260,15 @@
             $.each(data, function (index, item) {
                 var rowIndex = index + 1;
                 var tt = '';
+                var csss = '';
                 if (trangThai == 0) {
+                    csss = 'status delivered'
                     tt = 'Hoàn Thành';
                 } else if (trangThai == 3) {
+                    csss += 'status pending'
                     tt = 'Đang xử lý'
                 } else {
+                    csss += 'status return';
                     tt = 'Huỷ';
                 }
 
@@ -1268,11 +1283,11 @@
                 var row = "<tr>" +
                     "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
-                    "<td><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + '0' + item.hoaDon.sdtNguoiNhan + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.sdtNguoiNhan + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + tt + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
                     "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
                     "</tr>";
                 $("#productTable tbody").append(row);
@@ -1304,7 +1319,7 @@
                 $('#js-thoi-gian-dat-hang').text(item.hoaDon.thoiGianTao);
                 $('#js-ten-nguoi-nhan').text(item.hoaDon.tenNguoiNhan);
                 $('#js-dia-chi-nguoi-nhan').text(item.hoaDon.diaChiNguoiNhan);
-                $('#js-sdt-nguoi-nhan').text('0' + item.hoaDon.sdtNguoiNhan);
+                $('#js-sdt-nguoi-nhan').text(item.hoaDon.sdtNguoiNhan);
                 $('#js-email-nguoi-nhan').text(item.hoaDon.emailNguoiNhan);
                 $('#js-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
 
@@ -1313,7 +1328,7 @@
                     var indx = index + 1; // Sử dụng biến rowIndex thay vì index
                     var row = "<tr>" +
                         "<th scope='col' style='vertical-align: middle; text-align: center;'>" + indx + "</th>" +
-                        "<td><img src='" + cthd.chiTietSanPham.hinhAnh + "' width='60px' alt='image'/></td>" +
+                        "<td style='vertical-align: middle; text-align: center;'><img src='" + cthd.chiTietSanPham.hinhAnh + "' width='60px' alt='image'/></td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.tenSanPham + "</td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.mauSac.tenMauSac + "</td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc + "</td>" +
@@ -1354,7 +1369,7 @@
                 $('#ip-thoi-gian-dat-hang').text(item.hoaDon.thoiGianTao);
                 $('#ip-ten-nguoi-nhan').val(item.hoaDon.tenNguoiNhan);
                 $('#ip-dia-chi-nguoi-nhan').val(item.hoaDon.diaChiNguoiNhan);
-                $('#ip-sdt-nguoi-nhan').val('0' + item.hoaDon.sdtNguoiNhan);
+                $('#ip-sdt-nguoi-nhan').val(item.hoaDon.sdtNguoiNhan);
                 $('#ip-email-nguoi-nhan').val(item.hoaDon.emailNguoiNhan);
                 $('#ip-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
 
@@ -1363,7 +1378,7 @@
                     var indx = index + 1; // Sử dụng biến rowIndex thay vì index
                     var row = "<tr>" +
                         "<th scope='col' style='vertical-align: middle; text-align: center;'>" + indx + "</th>" +
-                        "<td><img src='" + cthd.chiTietSanPham.hinhAnh + "' width='60px' alt='image'/></td>" +
+                        "<td style='vertical-align: middle; text-align: center;'><img src='" + cthd.chiTietSanPham.hinhAnh + "' width='60px' alt='image'/></td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.tenSanPham + "</td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.mauSac.tenMauSac + "</td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.sanPham.danhMuc.tenDanhMuc + "</td>" +
@@ -1440,8 +1455,8 @@
                         timer: 1500,
                         showConfirmButton: false
                     });
-                } else {
                     hienThiDonHangDangChoXacNhan(2);
+                } else {
                     Swal.fire({
                         title: 'Lỗi!',
                         text: 'Sửa hoá đơn thất bại',
@@ -1457,7 +1472,7 @@
 
     function donHangChuaXacNhan() {
         $.get('/sixdo-shop/manager-order-customer-online/don-chua-xac-nhan', function (data) {
-            if (data > 0) {
+            if (data >= 0) {
                 $('#don-hang-cho-xac-nhan').text(data);
             }
         });
@@ -1466,7 +1481,7 @@
 
     function donHangDangXuLy() {
         $.get('/sixdo-shop/manager-order-customer-online/don-hang-dang-xu-ly', function (data) {
-            if (data > 0) {
+            if (data >= 0) {
                 $('#don-hang-dang-xu-ly').text(data);
             }
         });
@@ -1474,7 +1489,7 @@
 
     function donHangDangGiao() {
         $.get('/sixdo-shop/manager-order-customer-online/don-hang-dang-duoc-giao', function (data) {
-            if (data > 0) {
+            if (data >= 0) {
                 $('#don-hang-dang-giao').text(data);
             }
         });
@@ -1482,7 +1497,7 @@
 
     function donHangHoanThanh() {
         $.get('/sixdo-shop/manager-order-customer-online/don-hang-hoan-thanh', function (data) {
-            if (data > 0) {
+            if (data >= 0) {
                 $('#don-hang-hoan-thanh').text(data);
             }
         });
@@ -1490,7 +1505,7 @@
 
     function donHangDaHuy() {
         $.get('/sixdo-shop/manager-order-customer-online/don-hang-da-huy', function (data) {
-            if (data > 0) {
+            if (data >= 0) {
                 $('#don-hang-da-huy').text(data);
             }
         });

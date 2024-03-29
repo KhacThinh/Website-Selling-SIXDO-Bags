@@ -74,4 +74,11 @@ public class ChiTietGioHangServiceImpl implements ChiTietGioHangService {
         chiTietGioHangRepository.delete(chiTietGioHang);
         return chiTietGioHang;
     }
+
+    @Override
+    public int soLuongGioHangByKhachHang(int idKH) {
+        Integer soLuongGioHang = chiTietGioHangRepository.soLuongGioHangByIdKhachHang(idKH);
+        int soLuong = soLuongGioHang != null ? soLuongGioHang : 0;
+        return soLuong;
+    }
 }

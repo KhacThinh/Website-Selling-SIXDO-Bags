@@ -402,9 +402,15 @@
                                 }),
                                 success: function (response) {
                                     if(response==="ok"){
-                                        const count = document.querySelector('.icon-count-cart');
-                                        count.setAttribute('data-notify', response);
-                                        showAlertAddCart('Success!', 'Product added to cart!', 'success');
+                                        Swal.fire({
+                                            title: 'Thanh cong!',
+                                            text: 'Da them gio hang thanh cong.',
+                                            icon: 'success',
+                                            timer: 2000, // Thời gian tự động đóng (ms)
+                                            showConfirmButton: false // Ẩn nút OK
+                                        });
+                                        capNhapSoLuongSanPhamTrongGioHangHearder();
+
                                     }
                                 },
                                 error: function (error) {

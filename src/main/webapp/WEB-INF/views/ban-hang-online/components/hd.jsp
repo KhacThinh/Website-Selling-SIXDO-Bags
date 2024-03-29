@@ -135,7 +135,7 @@
                     </div>
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart icon-count-cart"
-                         data-notify="${soLuongSanPhamGioHang}">
+                         data-notify="0">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
@@ -282,6 +282,7 @@
 
     $(document).ready(function () {
         capNhapSoLuongSanPhamYeuThichHearder();
+        capNhapSoLuongSanPhamTrongGioHangHearder();
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -312,6 +313,14 @@
         $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
             displaySoLuongSanPhamFavorite(data);
             displayMenuDonMua(data);
+        });
+    }
+
+    function capNhapSoLuongSanPhamTrongGioHangHearder() {
+        $.get('/sixdo-shop/hien-thi-so-luong-cart-product', function (data) {
+            var cartIcon = document.querySelector('.js-show-cart');
+            var soLuongSanPham = data;
+            cartIcon.setAttribute('data-notify', soLuongSanPham);
         });
     }
 

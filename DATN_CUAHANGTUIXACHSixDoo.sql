@@ -524,7 +524,7 @@ where hd.trang_thai = 2 and kh.id = 1
 group by hd.
 
 select * from hoa_don
-
+where id = 90
 update hoa_don set trang_thai = 2 where id = 94
 update hoa_don set trang_thai = 2 where id = 98
 update hoa_don set trang_thai = 2 where id = 90
@@ -532,6 +532,14 @@ update hoa_don set trang_thai = 2 where id = 90
 update hoa_don set trang_thai = 3 where id = 94
 update hoa_don set trang_thai = 3 where id = 98
 update hoa_don set trang_thai = 3 where id = 90
+
+select sum(ctgh.so_luong) from gio_hang as gh 
+join chi_tiet_gio_hang as ctgh on gh.id = ctgh.id_gio_hang
+where gh.id_khach_hang = 1
+group by gh.id
+
+select * from chi_tiet_san_pham
+
 
 
 

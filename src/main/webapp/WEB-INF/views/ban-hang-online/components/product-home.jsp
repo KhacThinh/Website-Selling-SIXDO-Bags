@@ -125,12 +125,12 @@
                                 }
                             } else {
                                 Swal.fire({
-                                    title: 'Thông báo',
-                                    text: 'Bạn cần đăng nhập để tiếp tục.',
+                                    title: 'Vui lòng đăng nhập để thêm sản phẩm này vào danh sách yêu thích',
+                                    text: 'Bằng cách đăng nhập, bạn có thể quản lý danh sách sản phẩm yêu thích cá nhân.',
                                     icon: 'warning',
                                     showCancelButton: true,
                                     confirmButtonText: 'Đăng nhập',
-                                    cancelButtonText: 'Đóng',
+                                    cancelButtonText: 'Để sau',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.href = "/sixdo-shop/login";
