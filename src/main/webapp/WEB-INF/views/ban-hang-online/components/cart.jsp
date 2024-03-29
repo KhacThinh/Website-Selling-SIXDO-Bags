@@ -25,7 +25,7 @@
                     <div class="header-cart-item-img" id="header-cart-item-img-cart">
                         <img src="" alt="IMG">
                         <!-- Thêm nút xóa vào đây -->
-                        <button class="btn-remove-item" onclick="deleteCartItem(this)">
+                        <button class="btn-remove-item">
                             <i class="zmdi zmdi-close"></i>
                         </button>
                     </div>
@@ -99,9 +99,10 @@
                     },
                     success: function (response) {
                         if (response === "ok") {
-// Xóa sản phẩm từ giao diện người dùng
                             var productElement = element.closest('.cart-item');
+                           deleteProductShopingCart(productId,element);
                             productElement.remove();
+
                             Swal.fire({
                                 title: 'Đã xóa!',
                                 text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',

@@ -13,6 +13,9 @@ public interface ChiTietGioHangRepository extends JpaRepository<ChiTietGioHang, 
     @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang")
     List<ChiTietGioHang> getListChiTietGioHangByKhachHang(int iKhachHang);
 
+    @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang and dtsg.chiTietSanPham.trangThai=1")
+    List<ChiTietGioHang> getListChiTietGioHangByKhachHangAndTrangThaiCtsp(int iKhachHang);
+
     @Query("select ctgh from ChiTietGioHang ctgh where ctgh.idGioHang =:idGioHang and ctgh.idChiTietSanPham =:idChiTietSanPham")
     ChiTietGioHang getChiTietGioHang(Integer idGioHang, Integer idChiTietSanPham);
 

@@ -58,7 +58,7 @@
 
 
 <!-- Cart -->
-<jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>
+<%--<jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>--%>
 
 
 <!-- breadcrumb -->
@@ -80,17 +80,19 @@
 <form class="bg0 p-t-75 p-b-85">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 col-xl-7 m-lr-auto m-b-30">
+            <div class="col-lg-12 col-xl-7 m-lr-auto m-b-30" >
                 <div class="m-l-12 m-r--38 m-lr-0-xl">
-                    <div class="wrap-table-shopping-cart">
+                    <div class="wrap-table-shopping-cart" >
                         <table class="table-shopping-cart" id="iiiid">
                             <thead>
                             <tr class="table_head">
-                                <th class="column-1">Product</th>
+                                <th class="column-1">Sản Phẩm</th>
                                 <th class="column-2"></th>
-                                <th class="column-3">Price</th>
-                                <th class="column-4">Quantity</th>
-                                <th class="column-5">Total</th>
+                                <th class="column-3">Giá</th>
+                                <th class="column-4">Số Lượng</th>
+                                <th class="column-5">Tổng Tiền</th>
+                                <th class="column-6"></th>
+
                             </tr>
                             </thead>
 
@@ -99,13 +101,22 @@
                             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
 
                                 <tr class="table_row" id="itemCtsp${i.index}">
+
+                                    <input value="${o.idChiTietSanPham}" id="idChiTietSanPhamFormShoppingCart"
+                                           type="hidden">
+
                                     <td class="column-1">
                                         <div class="how-itemcart1">
                                             <img id="imageProduct-in-cart" src="${o.chiTietSanPham.hinhAnh}" alt="IMG">
                                         </div>
                                     </td>
-                                    <td class="column-2"
-                                        id="nameProduct-in-cart">${o.chiTietSanPham.sanPham.tenSanPham}</td>
+                                    <td class="column-2">
+                                        <p id="nameProduct-in-cart">${o.chiTietSanPham.sanPham.tenSanPham}</p>
+                                        <p id="MauSacProduct-in-cart"
+                                           style="font-size: 14px">${o.chiTietSanPham.mauSac.tenMauSac}</p>
+
+
+                                    </td>
                                     <td class="column-3" id="priceProduct-in-cart"><fmt:formatNumber pattern="#,###"
                                                                                                      var="donGia"
                                                                                                      value="${o.chiTietSanPham.giaBan}"></fmt:formatNumber>
@@ -128,201 +139,12 @@
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
 
+
                                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                                             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                                             <!-- Nhúng thư viện SweetAlert -->
                                         </div>
                                     </td>
-                                    <script>
-                                        // Lấy phần tử div có id là 'btn-minus'
-                                        var btnMinus = document.getElementById('btn-minus-${i.index}');
-                                        var btnPlus = document.getElementById('btn-plus-${i.index}');
-                                        var quantityInput = document.getElementById('quantityProduct-${i.index}');
-                                        var idKhachHang = document.getElementById("id-khach-hang").value;
-                                        var max = 100000000000;
-
-                                        // Giam so Luong
-                                        btnMinus.addEventListener('click', function () {
-                                            var currentQuantity = parseInt(this.parentNode.querySelector('.num-product').value);
-                                            if (currentQuantity > 1) { // Đảm bảo số lượng không nhỏ hơn 1
-                                                var newQuantity = currentQuantity - 1;
-                                                updateQuantity(${o.chiTietSanPham.id}, newQuantity, quantityInput);
-                                                this.parentNode.querySelector('.num-product').value = newQuantity;
-                                                updateTotalPrice(newQuantity, ${o.chiTietSanPham.giaBan}, ${i.index});
-                                                updateTotalPriceForAllProducts();
-                                            }
-                                        });
-                                        // Tang so luong
-
-                                        btnPlus.addEventListener('click', function () {
-                                            var input = document.getElementById('quantityProduct-${i.index}');
-
-
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '/sixdo-shop/get-soLuong',
-                                                data: {
-                                                    idChiTietSanPham:${o.idChiTietSanPham}
-                                                },
-                                                success: function (response) {
-                                                    max = response;
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
-                                                }
-                                            });
-                                            var currentQuantity = parseInt(this.parentNode.querySelector('.num-product').value);
-                                            if (currentQuantity <max) {
-                                                var newQuantity = currentQuantity + 1;
-                                                updateQuantity(${o.chiTietSanPham.id}, newQuantity, quantityInput);
-                                                this.parentNode.querySelector('.num-product').value = newQuantity;
-                                                updateTotalPrice(newQuantity, ${o.chiTietSanPham.giaBan}, ${i.index});
-                                                updateTotalPriceForAllProducts();
-                                            } else {
-                                                alert("bạn đã thêm quá số lượng tối đa: " + max + " Sản Phẩm");
-                                            }
-                                        });
-
-
-                                        // update quantity "+" "-"
-                                        function updateQuantity(productId, newQuantity) {
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '/sixdo-shop/edit-soLuong-checkout',
-                                                contentType: 'application/json',
-                                                data: JSON.stringify({
-                                                    idKhachHang: idKhachHang,
-                                                    idChiTietSanPham: productId,
-                                                    soLuong: newQuantity
-                                                }),
-                                                success: function (response) {
-                                                    if (response === "ok") {
-
-                                                    } else if (response === "am") {
-                                                        alert("Số lượng phải là 1 số dương");
-                                                    } else if (response === 0) {
-                                                        alert("Số lượng phải lớn hơn 0");
-                                                    } else {
-                                                        alert("Bạn đã vượt quá số lượng tối đa: " + response + " sản phẩm");
-                                                    }
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
-                                                }
-                                            });
-                                        }
-                                    </script>
-
-                                        <%--                                    update TongTien--%>
-                                    <script>
-                                        function updateTotalPriceForAllProducts() {
-                                            var total = 0;
-                                            var tableRows = document.querySelectorAll('#cartTableBody .table_row');
-
-                                            // Lặp qua từng hàng trong bảng giỏ hàng
-                                            tableRows.forEach(function (row) {
-                                                var quantity = parseInt(row.querySelector('.num-product').value);
-                                                var pricePerProductString = row.querySelector('#priceProduct-in-cart').innerText; // Lấy giá mỗi sản phẩm từ cột giá trong hàng
-                                                var pricePerProduct = parseFloat(pricePerProductString.replace(/[^\d.-]/g, '')); // Xóa tất cả các ký tự không phải số, dấu chấm và dấu gạch ngang
-                                                total += quantity * pricePerProduct;
-                                            });
-
-                                            // Cập nhật giá tiền tổng cho toàn bộ giỏ hàng
-                                            var formattedTotal = new Intl.NumberFormat('vi-VN', {
-                                                style: 'currency',
-                                                currency: 'VND'
-                                            }).format(total);
-                                            document.getElementById('sumCart').innerText = formattedTotal;
-                                        }
-
-                                    </script>
-
-                                        <%--                                    tính tiền mỗi sp--%>
-                                    <script>
-                                        function updateTotalPrice(newQuantity, pricePerProduct, index) {
-                                            var totalPrice = newQuantity * pricePerProduct;
-                                            var formattedTotalPrice = new Intl.NumberFormat('vi-VN', {
-                                                style: 'currency',
-                                                currency: 'VND'
-                                            }).format(totalPrice);
-                                            var totalPriceElement = document.getElementById('sumPrice-in-cart' + index);
-                                            totalPriceElement.innerHTML = formattedTotalPrice;
-                                        }
-                                    </script>
-
-                                        <%--                                    checkDuLieuNhap--%>
-                                    <script>
-                                        document.getElementById('quantityProduct-${i.index}').addEventListener('blur', function () {
-                                            var newQuantity = parseInt(this.value);
-                                            var productId = ${o.chiTietSanPham.id};
-                                            var idKhachHang = document.getElementById("id-khach-hang").value;
-                                            var input = document.getElementById('quantityProduct-${i.index}');
-                                            var max = 0;
-
-
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '/sixdo-shop/get-soLuong',
-                                                data: {
-                                                    idChiTietSanPham:${o.idChiTietSanPham}
-                                                },
-                                                success: function (response) {
-                                                    max = response;
-                                                    if (newQuantity > max) {
-                                                        input.value = 1;
-                                                        updateQuantityInPut(idKhachHang, productId, 1);
-                                                        updateTotalPrice(1, ${o.chiTietSanPham.giaBan}, ${i.index});
-                                                        updateQuantity(productId, 1);
-                                                        alert("Bạn đã vượt quá số lượng tối đa: " + max + " sản phẩm");
-                                                    } else {
-                                                        updateQuantityInPut(idKhachHang, productId, newQuantity);
-                                                        updateTotalPrice(newQuantity, ${o.chiTietSanPham.giaBan}, ${i.index});
-                                                    }
-
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
-                                                }
-                                            });
-
-
-                                        });
-
-
-                                        // checkInput
-                                        function updateQuantityInPut(idKhachHang, productId, newQuantity) {
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '/sixdo-shop/edit-soLuong-checkout',
-                                                contentType: 'application/json',
-                                                data: JSON.stringify({
-                                                    idKhachHang: idKhachHang,
-                                                    idChiTietSanPham: productId,
-                                                    soLuong: newQuantity
-                                                }),
-                                                success: function (response) {
-                                                    if (response === "ok") {
-
-                                                        updateTotalPriceForAllProducts();
-                                                    } else if (response === "am") {
-                                                        alert("Số lượng phải là 1 số dương");
-
-                                                    } else if (response === 0) {
-                                                        alert("Số lượng phải lớn hơn 0");
-                                                    } else {
-                                                        alert("Bạn đã vượt quá số lượng tối đa: " + response + " sản phẩm");
-                                                    }
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
-                                                    // Xử lý khi có lỗi
-                                                }
-                                            });
-                                        }
-                                    </script>
-                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
                                     <td class="column-5" id="sumPrice-in-cart${i.index}"><fmt:formatNumber
                                             pattern="#,###"
                                             var="tongTam"
@@ -336,71 +158,258 @@
 
                                     <td>
                                         <button class="delete-product" data-product-id="${o.chiTietSanPham.id}"
-                                                onclick="deleteProduct(${o.chiTietSanPham.id}, this); return false;">
+                                                onclick="deleteProductShopingCart(${o.chiTietSanPham.id}, this); return false;">
                                             X
                                         </button>
 
                                     </td>
+                                </tr>
 
-                                        <%--                                    Xóa Sp trong giỏ hàng--%>
-                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                                    <script>
-                                        function deleteProduct(productId, element) {
-                                            var idKhachHang = document.getElementById("id-khach-hang").value;
-                                            Swal.fire({
-                                                title: 'Xác nhận xóa sản phẩm',
-                                                text: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
-                                                icon: 'warning',
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#d33',
-                                                cancelButtonColor: '#3085d6',
-                                                confirmButtonText: 'Xóa',
-                                                cancelButtonText: 'Hủy'
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: '/sixdo-shop/delete_ctsp-gio-hang-online',
-                                                        data: {
-                                                            idKhachHang: idKhachHang,
-                                                            idChiTietSanPham: productId,
-                                                        },
-                                                        success: function (response) {
-                                                            if (response === "ok") {
-                                                                // Xóa sản phẩm từ giao diện người dùng
-                                                                var productElement = element.closest('.table_row');
-                                                                productElement.remove();
-                                                                updateTotalPriceForAllProducts();
-                                                                Swal.fire({
-                                                                    title: 'Đã xóa!',
-                                                                    text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
-                                                                    icon: 'success',
-                                                                    timer: 1500, // Thời gian tự đóng (ms)
-                                                                    showConfirmButton: false // Ẩn nút xác nhận
-                                                                });
-                                                            } else {
-                                                                Swal.fire(
-                                                                    'Lỗi!',
-                                                                    'Sản phẩm không tồn tại trong giỏ hàng.',
-                                                                    'error'
-                                                                );
-                                                            }
-                                                        },
-                                                        error: function (xhr, status, error) {
-                                                            console.error('Lỗi khi xóa sản phẩm:', error);
+
+                                <script>
+                                    // Lấy phần tử div có id là 'btn-minus'
+                                    var btnMinus = document.getElementById('btn-minus-${i.index}');
+                                    var btnPlus = document.getElementById('btn-plus-${i.index}');
+                                    var quantityInput = document.getElementById('quantityProduct-${i.index}');
+                                    var idKhachHang = document.getElementById("id-khach-hang").value;
+
+
+                                    // Giam so Luong
+                                    btnMinus.addEventListener('click', function () {
+                                        var currentQuantity = parseInt(this.parentNode.querySelector('.num-product').value);
+                                        if (currentQuantity > 1) { // Đảm bảo số lượng không nhỏ hơn 1
+                                            var newQuantity = currentQuantity - 1;
+                                            updateQuantity(${o.chiTietSanPham.id}, newQuantity, quantityInput);
+                                            this.parentNode.querySelector('.num-product').value = newQuantity;
+                                            updateTotalPrice(newQuantity, ${o.chiTietSanPham.giaBan}, ${i.index});
+                                            updateTotalPriceForAllProducts();
+                                        }
+                                    });
+                                    // Tang so luong
+
+                                    btnPlus.addEventListener('click', function () {
+                                        var input = document.getElementById('quantityProduct-${i.index}');
+
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/sixdo-shop/get-soLuong',
+                                            data: {
+                                                idChiTietSanPham: ${o.idChiTietSanPham}
+                                            },
+                                            success: function (response) {
+                                                var max = response;
+                                                var currentQuantity = parseInt(input.value);
+                                                var newQuantity = currentQuantity + 1;
+
+                                                if (newQuantity > max) {
+                                                    Swal.fire(
+                                                        'Lỗi!',
+                                                        'Số Lượng vượt quá ' + max + 'Sản Phẩm',
+                                                        'error'
+                                                    );
+                                                    updateQuantity(${o.chiTietSanPham.id}, max, quantityInput);
+                                                    input.value = max;
+                                                    updateTotalPrice(max, ${o.chiTietSanPham.giaBan}, ${i.index});
+                                                    updateTotalPriceForAllProducts()
+                                                } else {
+                                                    updateQuantity(${o.chiTietSanPham.id}, newQuantity, quantityInput);
+                                                    input.value = newQuantity;
+                                                    updateTotalPrice(newQuantity, ${o.chiTietSanPham.giaBan}, ${i.index});
+                                                    updateTotalPriceForAllProducts();
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
+                                            }
+                                        });
+                                    });
+
+
+                                    // update quantity "+" "-"
+                                    function updateQuantity(productId, newQuantity) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/sixdo-shop/edit-soLuong-checkout',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify({
+                                                idKhachHang: idKhachHang,
+                                                idChiTietSanPham: productId,
+                                                soLuong: newQuantity
+                                            }),
+                                            success: function (response) {
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
+                                            }
+                                        });
+                                    }
+                                </script>
+
+                                <%--                                    update TongTien--%>
+                                <script>
+                                    function updateTotalPriceForAllProducts() {
+                                        var total = 0;
+                                        var tableRows = document.querySelectorAll('#cartTableBody .table_row');
+                                        tableRows.forEach(function (row) {
+                                            var quantity = parseInt(row.querySelector('.num-product').value);
+                                            var pricePerProductString = row.querySelector('#priceProduct-in-cart').innerText; // Lấy giá mỗi sản phẩm từ cột giá trong hàng
+                                            var pricePerProduct = parseFloat(pricePerProductString.replace(/[^\d.-]/g, '')); // Xóa tất cả các ký tự không phải số, dấu chấm và dấu gạch ngang
+                                            total += quantity * pricePerProduct;
+                                        });
+
+                                        // Cập nhật giá tiền tổng cho toàn bộ giỏ hàng
+                                        var formattedTotal = new Intl.NumberFormat('vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        }).format(total);
+                                        document.getElementById('sumCart').innerText = formattedTotal;
+                                    }
+
+                                </script>
+
+                                <%--                                    tính tiền mỗi sp--%>
+                                <script>
+                                    function updateTotalPrice(newQuantity, pricePerProduct, index) {
+                                        var totalPrice = newQuantity * pricePerProduct;
+                                        var formattedTotalPrice = new Intl.NumberFormat('vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        }).format(totalPrice);
+                                        var totalPriceElement = document.getElementById('sumPrice-in-cart' + index);
+                                        totalPriceElement.innerHTML = formattedTotalPrice;
+                                    }
+                                </script>
+
+                                <%--                                    checkDuLieuNhap--%>
+                                <script>
+                                    document.getElementById('quantityProduct-${i.index}').addEventListener('blur', function () {
+                                        var newQuantity = parseInt(this.value);
+                                        var productId = ${o.chiTietSanPham.id};
+                                        var idKhachHang = document.getElementById("id-khach-hang").value;
+                                        var input = document.getElementById('quantityProduct-${i.index}');
+                                        var max = 0;
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/sixdo-shop/get-soLuong',
+                                            data: {
+                                                idChiTietSanPham:${o.idChiTietSanPham}
+                                            },
+                                            success: function (response) {
+                                                max = response;
+                                                if (newQuantity <= max && newQuantity > 0) {
+                                                    updateQuantityInPut(idKhachHang, productId, newQuantity);
+                                                    updateTotalPrice(newQuantity, ${o.chiTietSanPham.giaBan}, ${i.index});
+                                                } else if (newQuantity <= 0) {
+                                                    input.value = 1;
+                                                    updateQuantityInPut(idKhachHang, productId, 1);
+                                                    updateTotalPrice(1, ${o.chiTietSanPham.giaBan}, ${i.index});
+                                                    Swal.fire(
+                                                        'Lỗi!',
+                                                        'Số lượng không hợp lệ.',
+                                                        'error'
+                                                    );
+                                                } else {
+                                                    input.value = max;
+                                                    updateQuantityInPut(idKhachHang, productId, max);
+                                                    updateTotalPrice(max, ${o.chiTietSanPham.giaBan}, ${i.index});
+                                                    Swal.fire(
+                                                        'Lỗi!',
+                                                        'Số Lượng vượt quá ' + max + 'Sản Phẩm',
+                                                        'error'
+                                                    );
+                                                }
+
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
+                                            }
+                                        });
+
+
+                                    });
+
+
+                                    // checkInput
+                                    function updateQuantityInPut(idKhachHang, productId, newQuantity) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/sixdo-shop/edit-soLuong-checkout',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify({
+                                                idKhachHang: idKhachHang,
+                                                idChiTietSanPham: productId,
+                                                soLuong: newQuantity
+                                            }),
+                                            success: function (response) {
+
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
+                                                // Xử lý khi có lỗi
+                                            }
+                                        });
+                                    }
+                                </script>
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                                <%--                                    Xóa Sp trong giỏ hàng--%>
+                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                <script>
+                                    function deleteProductShopingCart(productId, element) {
+                                        var idKhachHang = document.getElementById("id-khach-hang").value;
+                                        Swal.fire({
+                                            title: 'Xác nhận xóa sản phẩm',
+                                            text: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#d33',
+                                            cancelButtonColor: '#3085d6',
+                                            confirmButtonText: 'Xóa',
+                                            cancelButtonText: 'Hủy'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: '/sixdo-shop/delete_ctsp-gio-hang-online',
+                                                    data: {
+                                                        idKhachHang: idKhachHang,
+                                                        idChiTietSanPham: productId,
+                                                    },
+                                                    success: function (response) {
+                                                        if (response === "ok") {
+                                                            // Xóa sản phẩm từ giao diện người dùng
+                                                            var productElement = element.closest('.table_row');
+                                                            productElement.remove();
+                                                            updateTotalPriceForAllProducts();
+                                                            Swal.fire({
+                                                                title: 'Đã xóa!',
+                                                                text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
+                                                                icon: 'success',
+                                                                timer: 1500, // Thời gian tự đóng (ms)
+                                                                showConfirmButton: false // Ẩn nút xác nhận
+                                                            });
+                                                        } else {
                                                             Swal.fire(
                                                                 'Lỗi!',
-                                                                'Đã xảy ra lỗi khi xóa sản phẩm.',
+                                                                'Sản phẩm không tồn tại trong giỏ hàng.',
                                                                 'error'
                                                             );
                                                         }
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    </script>
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        console.error('Lỗi khi xóa sản phẩm:', error);
+                                                        Swal.fire(
+                                                            'Lỗi!',
+                                                            'Đã xảy ra lỗi khi xóa sản phẩm.',
+                                                            'error'
+                                                        );
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                </script>
 
-                                </tr>
 
                             </c:forEach>
 
@@ -669,7 +678,6 @@
                 }
             };
 
-
             return orderData;
         }
 
@@ -677,23 +685,75 @@
             style: 'currency',
             currency: 'VND'
         });
+
+
         $('.submit-oder-by-cart').on('click', function () {
             var orderData = createOrderData();
+            var tableRows = document.querySelectorAll('#cartTableBody .table_row');
+            console.log(tableRows);
 
-            // Gửi dữ liệu giỏ hàng lên máy chủ
             $.ajax({
-                url: '/sixdo-shop/placeOrder',
+                url: '/sixdo-shop/check-trangThai-ctsp-checkout',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(orderData),
                 success: function (response) {
-                    // Xử lý phản hồi từ máy chủ nếu cần
-                    console.log(response);
-                    document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    showAlertAddCart('Order Success!', 'The order has been placed', 'success');
-                    document.getElementById('sumCart').innerText = '0 đ';
-                    document.getElementById('last-price').innerText = '0 đ';
+                    if (response === "ok") {
+                        // ktra so luong trong kho
+                        $.ajax({
+                            url: '/sixdo-shop/check-soLuong-checkout',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(orderData),
+                            success: function (response) {
+                                if (response.length === 0) {
+                                    // thực hiện việc check out
+                                    $.ajax({
+                                        url: '/sixdo-shop/placeOrder',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(orderData),
+                                        success: function (response) {
+                                            // Xử lý phản hồi từ máy chủ nếu cần
+                                            console.log(response);
+                                            document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                            showAlertAddCart('Order Success!', 'The order has been placed', 'success');
+                                            document.getElementById('sumCart').innerText = '0 đ';
+                                            document.getElementById('last-price').innerText = '0 đ';
 
+                                        },
+                                        error: function (error) {
+                                            // Xử lý lỗi nếu có
+                                            console.error(error);
+                                            showAlertAddCart('Order error.', '', 'error');
+                                        }
+                                    });
+                                } else {
+                                    alert("san pham qua so luong");
+                                }
+                            },
+                            error: function (error) {
+                                // Xử lý lỗi nếu có
+                                console.error(error);
+                                showAlertAddCart('Order error.', '', 'error');
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Thông báo!',
+                            text: 'Giỏ hàng của bạn đã được cập nhật. Vui lòng kiểm tra lại.',
+                            showCancelButton: false, // Ẩn nút Hủy bỏ
+                            showConfirmButton: true, // Hiển thị nút Xác nhận
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+
+
+                    }
                 },
                 error: function (error) {
                     // Xử lý lỗi nếu có
