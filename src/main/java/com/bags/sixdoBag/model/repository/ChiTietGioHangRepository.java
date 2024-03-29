@@ -14,6 +14,9 @@ public interface ChiTietGioHangRepository extends JpaRepository<ChiTietGioHang, 
     @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang")
     List<ChiTietGioHang> getListChiTietGioHangByKhachHang(int iKhachHang);
 
+    @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang and dtsg.chiTietSanPham.trangThai=1")
+    List<ChiTietGioHang> getListChiTietGioHangByKhachHangAndTrangThaiCtsp(int iKhachHang);
+
     @Query("select ctgh from ChiTietGioHang ctgh where ctgh.idGioHang =:idGioHang and ctgh.idChiTietSanPham =:idChiTietSanPham")
     ChiTietGioHang getChiTietGioHang(Integer idGioHang, Integer idChiTietSanPham);
 
@@ -22,5 +25,11 @@ public interface ChiTietGioHangRepository extends JpaRepository<ChiTietGioHang, 
             "where gh.id_khach_hang = :idKh " +
             "group by gh.id", nativeQuery = true)
     public Integer soLuongGioHangByIdKhachHang(@Param("idKh") int idKh);
+
+    @Query(value = "delete from chi_tiet_gio_hang where id_gio_hang =:idGh and  id_ctsp =:idCtsp",nativeQuery = true)
+    void deleteChiTietGioHang(int idGh, int idCtsp);
+
+    @Query("select ctgh from ChiTietGioHang ctgh where ctgh.idGioHang =:idGh and ctgh.idChiTietSanPham =:idCtsp")
+    ChiTietGioHang getChiTietGioHangByCtspAndGh(int idGh, int idCtsp);
 
 }
