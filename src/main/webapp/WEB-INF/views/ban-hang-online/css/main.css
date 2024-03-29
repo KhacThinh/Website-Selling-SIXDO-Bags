@@ -735,6 +735,24 @@ body{
   }
 }
 
+/*css button delete to cart*/
+.header-cart-item {
+  display: flex; /* Sử dụng flexbox để các phần tử nằm trên cùng một hàng */
+  align-items: center; /* Căn chỉnh các phần tử theo chiều dọc */
+}
+
+.header-cart-item-remove {
+  margin-left: auto; /* Đẩy nút "X" về phía bên phải */
+}
+
+.btn-remove-item {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+
 
 /*//////////////////////////////////////////////////////////////////
 [ Sidebar ]*/
@@ -944,10 +962,10 @@ body{
   opacity: 0;
 }
 
-.header-cart-item-img:hover:after {
-  width: 74px;
-  opacity: 1;
-}
+/*.header-cart-item-img:hover:after {*/
+/*  width: 74px;*/
+/*  opacity: 1;*/
+/*}*/
 
 /*---------------------------------------------*/
 .header-cart-item-txt {
@@ -2925,7 +2943,15 @@ input.num-product::-webkit-inner-spin-button {
   opacity: 0;
 }
 
+.how-itemcart1 {
+  position: relative;
+}
+
 .how-itemcart1:hover:after {
+  content: 'X';
+  position: absolute;
+  top: 0;
+  right: 0;
   opacity: 1;
 }
 
