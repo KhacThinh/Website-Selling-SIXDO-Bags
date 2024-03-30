@@ -28,7 +28,10 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia, Integer> {
     Page<MaGiamGia> searchCbb(boolean name, Pageable pageable);
     //////
 
-
+    @Modifying
+    @Transactional
+    @Query(value = "delete from danh_sach_kh_mgg where id_ma_giam_gia=:idMaGiamGia ", nativeQuery = true)
+    void deleteDanhSachKhMggByIdMgg(@Param("idMaGiamGia") int idMaGiamGia);
 
     @Modifying
     @Transactional
@@ -48,8 +51,16 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia, Integer> {
     MaGiamGia searchMaGiamGiaByMa(String ma);
 
 
-    @Query(value = "select danh_sach_kh_mgg.id_khach_hang from danh_sach_kh_mgg where id_khach_hang=:idKhachHang and id_ma_giam_gia=:idMaGiamGia", nativeQuery = true)
+    @Query(value = "SELECT dskm.id_khach_hang\n" +
+            "FROM danh_sach_kh_mgg dskm\n" +
+            "JOIN ma_giam_gia mgg ON dskm.id_ma_giam_gia = mgg.id\n" +
+            "WHERE dskm.id_khach_hang = :idKhachHang \n" +
+            "  AND dskm.id_ma_giam_gia = :idMaGiamGia\n" +
+            "  AND mgg.trang_thai = 1;", nativeQuery = true)
     int apDungMaGiamGia(@Param("idKhachHang") int idKhachHang, @Param("idMaGiamGia") int idMaGiamGia);
+
+    @Query(value = "select danh_sach_kh_mgg.id_khach_hang from danh_sach_kh_mgg where id_ma_giam_gia=:idMaGiamGia", nativeQuery = true)
+    int[] getidKhByMgg( @Param("idMaGiamGia") int idMaGiamGia);
 
     @Query(value = "select ms from MaGiamGia ms where ms.tenMaGiamGia =:ten")
     MaGiamGia searchMaGiamGiaByTen(String ten);

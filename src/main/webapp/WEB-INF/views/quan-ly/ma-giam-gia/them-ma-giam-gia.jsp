@@ -118,7 +118,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="ngayBatDau">Ngày Bắt Đầu</label>
-                            <input type="date" id="ngayBatDau" class="form-control"/>
+                            <input type="datetime-local" id="ngayBatDau" class="form-control"/>
                         </div>
 
                         <div class="form-group">
@@ -132,20 +132,20 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="ngayKetThuc">Ngày Kết Thúc</label>
-                            <input type="date" id="ngayKetThuc" class="form-control"/>
+                            <input type="datetime-local" id="ngayKetThuc" class="form-control"/>
                         </div>
 
                         <div class="form-group">
                             <label for="moTa">Mô Tả</label>
-                            <input id="moTa" class="form-control"/>
+                            <input id="moTa" value="OK" class="form-control"/>
                         </div>
-<%--                        <div class="form-group">--%>
-<%--                            <label for="trangThai" class="col-sm-3 col-form-label">Trạng Thái:</label>--%>
-<%--                            <select id="trangThai" name="trangThai" class="form-select" disabled>--%>
-<%--                                <option value="1" >Hoạt Động</option>--%>
-<%--                                <!-- <option value="0">Không Hoạt Động</option> -->--%>
-<%--                            </select>--%>
-<%--                        </div>--%>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <label for="trangThai" class="col-sm-3 col-form-label">Trạng Thái:</label>--%>
+                        <%--                            <select id="trangThai" name="trangThai" class="form-select" disabled>--%>
+                        <%--                                <option value="1" >Hoạt Động</option>--%>
+                        <%--                                <!-- <option value="0">Không Hoạt Động</option> -->--%>
+                        <%--                            </select>--%>
+                        <%--                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,7 @@
                             <td>${customer.sdt}</td>
 
                             <td>
-                                <input type="checkbox" class="form-check-input" id="customer-${customer.id}">
+                                <input type="checkbox" class="form-check-input add-checkbox-for" id="customer-${customer.id}">
                             </td>
                         </tr>
                     </c:forEach>
@@ -180,13 +180,13 @@
                 </table>
             </div>
 
-                <div class="modal-footer justify-content-between">
+            <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                 <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addMaGiamGia()">Lưu</button>
             </div>
         </div>
     </div>
-    </div>
+</div>
 
 <script>
     // function addMaGiamGia() {

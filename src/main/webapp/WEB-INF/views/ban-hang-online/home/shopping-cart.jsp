@@ -258,6 +258,7 @@
                                             var pricePerProduct = parseFloat(pricePerProductString.replace(/[^\d.-]/g, '')); // Xóa tất cả các ký tự không phải số, dấu chấm và dấu gạch ngang
                                             total += quantity * pricePerProduct;
                                         });
+                                        document.getElementById('giaTriTienTam').value = total;
 
                                         // Cập nhật giá tiền tổng cho toàn bộ giỏ hàng
                                         var formattedTotal = new Intl.NumberFormat('vi-VN', {
@@ -439,7 +440,7 @@
                     <h4 class="mtext-109 cl2 p-b-30">
                         Cart Totals
                     </h4>
-
+                    <input id="giaTriTienTam" type="number" style="display: none">
                     <div class="flex-w flex-t bor12 p-b-13">
                         <div class="size-208">
 								<span class="stext-110 cl2">
@@ -617,6 +618,9 @@
 
 
         $('.apply-coupon').on('click', function () {
+            var sumCart = document.getElementById('giaTriTienTam').value;
+
+
             var maGiamGiaValue = document.getElementById('maGiamGiaInput').value;
             console.log("mggg" + maGiamGiaValue)
             console.log("khachHang" +${khachHang.id})
@@ -627,15 +631,22 @@
                     idKhachHang:${khachHang.id},
                     maGiamGia: maGiamGiaValue
                 },
-                success: function (response) {
-                    console.log("number " + response)
-                    document.getElementById('maGiamGiaOnline').innerText = formatter.format(response);
-                    showAlertAddCart('Order Success!', 'Apply Success', 'success');
+                success: function (maGiamGia1) {
+                    console.log("sumcart " + sumCart)
+                    if (parseFloat(maGiamGia1.dieuKienGiam) <= parseFloat(sumCart)) {
+                        document.getElementById('maGiamGiaOnline').innerText = formatter.format(maGiamGia1.giaTriGiam);
+                        showAlertAddCart('Mã Giảm Giá Được Sử Dụng!', 'Apply Success', 'success');
+                    } else {
+                        document.getElementById('maGiamGiaOnline').innerText = "0 đ"
+                        showAlertAddCart('Chỉ Áp Dụng Cho Đơn Hàng Tối Thiểu ' + formatter.format(maGiamGia1.dieuKienGiam), '', 'error');
+                    }
+
                 },
                 error: function (error) {
                     // Xử lý lỗi nếu có
+                    document.getElementById('maGiamGiaOnline').innerText = "0 đ"
                     console.error(error);
-                    showAlertAddCart('Order error.', '', 'error');
+                    showAlertAddCart('Mã Giảm Giá Không Hợp Lệ.', '', 'error');
                 }
             });
 
