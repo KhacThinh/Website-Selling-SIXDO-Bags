@@ -98,7 +98,7 @@
                 <div class="menu-desktop">
                     <ul class="main-menu">
                         <li>
-                            <a href="/sixdo-shop">Home</a>
+                            <a href="/sixdo-shop">Trang chủ</a>
                             <ul class="sub-menu">
                                 <li><a href="index.html">Homepage 1</a></li>
                                 <li><a href="home-02.html">Homepage 2</a></li>
@@ -107,7 +107,7 @@
                         </li>
 
                         <li class="active-menu">
-                            <a href="/sixdo-shop/product">Shop</a>
+                            <a href="/sixdo-shop/product">Sản phẩm</a>
                         </li>
 
                         <li class="label1" data-label1="hot">
@@ -225,7 +225,7 @@
     <div class="menu-mobile">
         <ul class="main-menu-m">
             <li>
-                <a href="/user/ban-hang">Home</a>
+                <a href="/user/ban-hang">Trang chủ</a>
                 <ul class="sub-menu-m">
                     <li><a href="index.html">Homepage 1</a></li>
                     <li><a href="home-02.html">Homepage 2</a></li>
@@ -237,7 +237,7 @@
             </li>
 
             <li>
-                <a href="/sixdo-shop/product">Shop</a>
+                <a href="/sixdo-shop/product">Sản phẩm</a>
             </li>
 
             <li>
@@ -281,6 +281,7 @@
 <script>
 
     $(document).ready(function () {
+        hienThiMenuQuanLyDonHangOnle();
         capNhapSoLuongSanPhamYeuThichHearder();
         capNhapSoLuongSanPhamTrongGioHangHearder();
     });
@@ -288,31 +289,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Lắng nghe sự kiện click trên nút "Login"
         document.getElementById('btn-login').addEventListener('click', function () {
-            // Hiển thị thông báo yêu cầu đăng nhập
-            Swal.fire({
-                title: 'Thông báo',
-                text: 'Bạn cần đăng nhập để tiếp tục.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Đăng nhập',
-                cancelButtonText: 'Đóng',
-            }).then((result) => {
-                // Xử lý hành động sau khi người dùng nhấn nút
-                if (result.isConfirmed) {
-                    // Chuyển hướng tới trang đăng nhập khi người dùng nhấn nút "Đăng nhập"
-                    window.location.href = '/sixdo-shop/login';
-                } else {
-                    // Log ra console nếu người dùng nhấn nút "Đóng" hoặc click ra ngoài
-                    console.log('Đã đóng thông báo');
-                }
-            });
+            window.location.href = '/sixdo-shop/login';
         });
     });
 
     function capNhapSoLuongSanPhamYeuThichHearder() {
         $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
             displaySoLuongSanPhamFavorite(data);
-            displayMenuDonMua(data);
         });
     }
 
@@ -324,17 +307,20 @@
         });
     }
 
-    function displayMenuDonMua(data) {
-        const containerDonMua = $('#don-mua-menu-item');
-        const containerDonMuaMobi = $('#don-mua-menu-item-mobi');
-        const containerSanPhamYeuThich = $('#product-favorite-header');
-        if (data == 0) {
-            containerDonMua.hide();
-            containerDonMuaMobi.hide();
-            containerSanPhamYeuThich.hide();
-        }
+    function hienThiMenuQuanLyDonHangOnle() {
+        $.get('/product-favorite/check-thong-tin-khach-hang', function (data) {
+            const containerDonMua = $('#don-mua-menu-item');
+            const containerDonMuaMobi = $('#don-mua-menu-item-mobi');
+            const containerSanPhamYeuThich = $('#product-favorite-header');
+            if (data == 0) {
+                containerDonMuaMobi.hide();
+                containerDonMua.hide();
+                containerSanPhamYeuThich.hide();
+            }else{
+                containerSanPhamYeuThich.show();
+            }
 
-
+        });
     }
 
     function displaySoLuongSanPhamFavorite(soLuong) {
@@ -343,9 +329,6 @@
         var productHTML = '<a href="/sixdo-shop/product-favorite" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="' + soLuong + '">';
         productHTML += '<i class="zmdi zmdi-favorite-outline"></i></a>';
         container.append(productHTML);
-
-        // Hiển thị phần tử
-        container.show();
     }
 
 
