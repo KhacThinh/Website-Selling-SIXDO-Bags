@@ -679,6 +679,7 @@
                 <th style='vertical-align: middle; text-align: center;'>Thời gian tạo</th>
                 <th style='vertical-align: middle; text-align: center;'>Tổng tiền</th>
                 <th style='vertical-align: middle; text-align: center;'>Trạng thái đơn</th>
+                <th id="th-ly-do-huy" style='vertical-align: middle; text-align: center; display: none;'>Lý do huỷ</th>
                 <th colspan="3" style="vertical-align: middle; text-align: center;">Hoạt động</th>
             </tr>
             </thead>
@@ -1066,7 +1067,9 @@
         donHangDaHuy();
         donHangDangGiao();
 
+        // hiên thị lên table
         clickDonHang();
+
         clickNhanDonHangThanhCong();
         clickHuyDonHang();
 
@@ -1261,14 +1264,20 @@
                 var rowIndex = index + 1;
                 var tt = '';
                 var csss = '';
+                var showLyDoHuy = '';
+                var reasonCancel = document.getElementById('th-ly-do-huy');
                 if (trangThai == 0) {
+                    reasonCancel.style.display = 'none';
                     csss = 'status delivered'
                     tt = 'Hoàn Thành';
                 } else if (trangThai == 3) {
+                    reasonCancel.style.display = 'none';
                     csss += 'status pending'
                     tt = 'Đang xử lý'
                 } else {
+                    reasonCancel.style.display = 'table-cell';
                     csss += 'status return';
+                    showLyDoHuy = "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.lyDoKhachHuy + "</td>"
                     tt = 'Huỷ';
                 }
 
@@ -1288,6 +1297,7 @@
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
+                    showLyDoHuy +
                     "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
                     "</tr>";
                 $("#productTable tbody").append(row);

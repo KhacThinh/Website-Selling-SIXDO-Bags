@@ -531,7 +531,8 @@ update hoa_don set trang_thai = 2 where id = 90
 
 update hoa_don set trang_thai = 3 where id = 94
 update hoa_don set trang_thai = 3 where id = 98
-update hoa_don set trang_thai = 3 where id = 90
+
+update hoa_don set trang_thai = 5 where id = 94
 
 select sum(ctgh.so_luong) from gio_hang as gh 
 join chi_tiet_gio_hang as ctgh on gh.id = ctgh.id_gio_hang

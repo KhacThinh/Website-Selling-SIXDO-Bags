@@ -439,6 +439,7 @@
                                 'Lỗi!',
                                 'Ban Chi duoc them toi da: ' + response + 'San Pham',
                                 'error'
+
                             );
                         }
                     },
