@@ -143,7 +143,10 @@ ADD  hinh_anh nvarchar(max)
 
 select * from khach_hang
 ALTER TABLE khach_hang
-ADD UNIQUE (sdt);
+ADD sdt varchar(100);
+
+--ALTER TABLE khach_hang
+--DROP COLUMN sdt;
 
 create table dia_chi_khach_hang(
 id int IDENTITY(1, 1) PRIMARY KEY,
@@ -525,9 +528,14 @@ group by hd.
 
 select * from hoa_don
 where id = 90
+-- dang xu ly
 update hoa_don set trang_thai = 2 where id = 94
 update hoa_don set trang_thai = 2 where id = 98
 update hoa_don set trang_thai = 2 where id = 90
+
+-- giao hàng
+update hoa_don set trang_thai = 5 where id = 89
+update hoa_don set trang_thai = 5 where id = 97
 
 update hoa_don set trang_thai = 3 where id = 94
 update hoa_don set trang_thai = 3 where id = 98

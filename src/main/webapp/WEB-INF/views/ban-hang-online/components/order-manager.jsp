@@ -268,7 +268,7 @@
     }
 
     .cardBox .card:hover {
-        background: var(--blue);
+        background: #1d3164;
     }
 
     .cardBox .card:hover .numbers,
@@ -599,6 +599,17 @@
     .chart-title select:hover {
         background-color: #f0f0f0; /* Màu nền hover */
     }
+
+    .cardBox .card.selected {
+        background: var(--blue);
+    }
+
+    .cardBox .card.selected .numbers,
+    .cardBox .card.selected .cardName,
+    .cardBox .card.selected .iconBx {
+        color: var(--white);
+    }
+
 
 </style>
 <!-- Bootstrap Icons CSS -->
@@ -1061,6 +1072,7 @@
 
     $(document).ready(function () {
         // Gọi hàm loadData khi tài liệu đã sẵn sàng
+        clickCartHienMau();
         donHangChuaXacNhan();
         donHangDangXuLy();
         donHangHoanThanh();
@@ -1076,7 +1088,25 @@
         hienThiDuLieuHoaDonChiTiet();
         hienThiDuLieuDeEditHoaDonChiTiet();
         inputDuLieuDeEditHoaDonChiTiet();
+        hienThiDonHangDangChoXacNhan(2);
     });
+
+    function clickCartHienMau() {
+        // Lắng nghe sự kiện click vào card
+        $('.card').on('click', function () {
+            // Kiểm tra xem card đã có lớp 'selected' chưa
+            var isSelected = $(this).hasClass('selected');
+
+            // Nếu card đã được chọn, xoá lớp 'selected'
+            if (isSelected) {
+                $(this).removeClass('selected');
+            } else {
+                // Nếu chưa được chọn, loại bỏ lớp 'selected' khỏi tất cả các card và thêm lớp 'selected' vào card được click
+                $('.card').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    }
 
     function clickDonHang() {
         $("#click-don-hang-cho-xac-nhan").click(function () {
@@ -1235,7 +1265,7 @@
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
-                    "<td style='vertical-align: middle; text-align: right;'><button class='btn btn-outline-success btn-nhan-hang-thanh-cong-order' data-id='" + item.hoaDon.maHoaDon + "'><i class='bi bi-check-circle-fill'></i> Đã nhận được hàng</button></td>" +
+                    "<td style='vertical-align: middle; text-align: right;'><button class='btn btn-outline-success btn-nhan-hang-thanh-cong-order' data-id='" + item.hoaDon.id + "' data-ma='" + item.hoaDon.maHoaDon + "'><i class='bi bi-check-circle-fill'></i> Đã nhận được hàng</button></td>" +
                     "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
                     "</tr>";
                 $("#productTable tbody").append(row);
@@ -1245,15 +1275,41 @@
 
 
     function clickNhanDonHangThanhCong() {
-        // Xử lý sự kiện click cho nút "Đã nhận được hàng"
         $(document).on('click', '.btn-nhan-hang-thanh-cong-order', function () {
-            var maHoaDon = $(this).data('id'); // Lấy mã đơn hàng từ thuộc tính data-id của nút
+            var id = $(this).data('id');
+            var maHoaDon = $(this).data('ma');
+
+            // Hiển thị hộp thoại xác nhận
             Swal.fire({
-                title: "Nhận hàng thành công!",
-                text: "Bạn đã nhận được đơn hàng " + maHoaDon + " thành công.",
-                icon: "success"
+                title: "Xác nhận nhận hàng",
+                text: "Bạn có chắc chắn đã nhận được đơn hàng mã " + maHoaDon + " chưa?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Có",
+                cancelButtonText: "Không"
+            }).then((result) => {
+                // Nếu người dùng xác nhận nhận hàng
+                if (result.isConfirmed) {
+                    // Gửi yêu cầu POST
+                    $.post('/sixdo-shop/manager-order-customer-online/xac-nhan-nhan-hang-thanh-cong-by-id-hoa-don', {idHoaDon: id}, function (data) {
+                        if (data) {
+                            Swal.fire({
+                                title: "Nhận hàng thành công!",
+                                text: "Bạn đã nhận được đơn hàng " + maHoaDon + " thành công.",
+                                icon: "success"
+                            });
+                            donHangDangGiao();
+                            donHangHoanThanh();
+                            // hienThiDonHangDangGiao(5);
+                            hienThiDonHangHoanThanhVaHuyVaDangXuLy(0);
+                        } else {
+                            console.log("Bạn không nhận hàng thành công!");
+                        }
+                    });
+                }
             });
         });
+
     }
 
 

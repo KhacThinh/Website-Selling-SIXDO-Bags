@@ -1,24 +1,23 @@
-
 *,
 :after,
 :before {
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 .clearfix:after,
 .clearfix:before {
     content: '';
-    display: table
+    display: table;
 }
 
 .clearfix:after {
     clear: both;
-    display: block
+    display: block;
 }
 
 a {
     color: inherit;
-    text-decoration: none
+    text-decoration: none;
 }
 
 .login-wrap {
@@ -29,6 +28,7 @@ a {
     position: relative;
     background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+    border-radius: 20px; /* Thêm border-radius */
 }
 
 .login-html {
@@ -37,6 +37,7 @@ a {
     position: absolute;
     padding: 90px 70px 50px 70px;
     background: rgba(40, 57, 101, .9);
+    border-radius: 20px; /* Thêm border-radius */
 }
 
 .login-html .sign-in-htm,
@@ -49,33 +50,13 @@ a {
     transform: rotateY(180deg);
     backface-visibility: hidden;
     transition: all .4s linear;
-}
-
-.login-html .sign-in,
-.login-html .sign-up,
-.login-form .group .check {
-    display: none;
+    border-radius: 20px; /* Thêm border-radius */
 }
 
 .login-html .tab,
 .login-form .group .label,
 .login-form .group .button {
     text-transform: uppercase;
-}
-
-.login-html .tab {
-    font-size: 22px;
-    margin-right: 15px;
-    padding-bottom: 5px;
-    margin: 0 15px 10px 0;
-    display: inline-block;
-    border-bottom: 2px solid transparent;
-}
-
-.login-html .sign-in:checked+.tab,
-.login-html .sign-up:checked+.tab {
-    color: #fff;
-    border-color: #1161ee;
 }
 
 .login-form {
@@ -117,6 +98,7 @@ a {
 
 .login-form .group .button {
     background: #1161ee;
+    cursor: pointer; /* Thêm kiểu con trỏ */
 }
 
 .login-form .group label .icon {
@@ -183,4 +165,5 @@ a {
 
 .foot-lnk {
     text-align: center;
+    color: #fff; /* Thêm màu chữ */
 }

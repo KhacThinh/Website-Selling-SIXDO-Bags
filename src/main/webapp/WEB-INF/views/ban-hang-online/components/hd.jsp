@@ -91,7 +91,7 @@
 
                 <a href="/sixdo-shop" class="logo">
                     <img src="../static/images/logo1.jpg"
-                         alt="IMG-PRODUCT">
+                         alt="IMG-PRODUCT" id="logo-header">
                 </a>
 
 
@@ -121,7 +121,7 @@
                         <li>
                             <a href="about.html">About</a>
                         </li>
-                        <li id="don-mua-menu-item">
+                        <li id="don-mua-menu-item" style="display: none">
                             <a href="/sixdo-shop/manager-oder-customer">Quản lý đơn hàng</a>
                         </li>
 
@@ -252,7 +252,7 @@
                 <a href="about.html">About</a>
             </li>
 
-            <li id="don-mua-menu-item-mobi">
+            <li id="don-mua-menu-item-mobi" style="display: none">
                 <a href="/sixdo-shop/manager-oder-customer">Quản lý đơn hàng</a>
             </li>
         </ul>
@@ -289,7 +289,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Lắng nghe sự kiện click trên nút "Login"
         document.getElementById('btn-login').addEventListener('click', function () {
-            window.location.href = '/sixdo-shop/login';
+            window.location.href = '/sixdo-shop/login-customer';
         });
     });
 
@@ -317,6 +317,8 @@
                 containerDonMua.hide();
                 containerSanPhamYeuThich.hide();
             }else{
+                containerDonMuaMobi.show();
+                containerDonMua.show();
                 containerSanPhamYeuThich.show();
             }
 

@@ -1,15 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Product Detail</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!====================================-->
+    <title>Đăng nhập | SIXDO</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -39,7 +38,6 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Perfect Scrollbar CSS -->
     <link rel="stylesheet"
@@ -49,6 +47,7 @@
 
     <!-- Animsition -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap Popper.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.1/umd/popper.min.js"></script>
@@ -58,16 +57,20 @@
 
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
-    <style>
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 
-        <%@include file="../../../views/ban-hang-online/css/main.css" %>
-        <%@include file="../../../views/ban-hang-online/css/util.css" %>
+    <link rel="stylesheet" type="text/css" href="/static/css/login-regester-onl/style.css">
+</head>
 
-    </style>
 
+<style>
+
+    <%@include file="../../../views/ban-hang-online/css/main.css" %>
+    <%@include file="../../../views/ban-hang-online/css/util.css" %>
+</style>
 </head>
 
 
@@ -75,65 +78,20 @@
 <%--header--%>
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/hd.jsp"/>
 <%--header--%>
-<div class="login-wrap">
-    <div class="login-html">
-        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Đăng nhập</label>
-        <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Đăng ký</label>
-        <div class="login-form">
-            <div class="sign-in-htm">
-                <form method="post" action="/buyer-login/check">
-                    <div class="group">
-                        <label for="username-login" class="label">Email</label>
-                        <input id="username-login" name="username-login" type="text" class="input">
-                    </div>
-                    <div class="group">
-                        <label for="password-login" class="label">Mật khẩu</label>
-                        <input id="password-login" name="password-login" type="password" class="input" data-type="password">
-                    </div>
-                    <div class="group">
-                        <input id="check" type="checkbox" class="check" checked>
-                        <label for="check"><span class="icon"></span> Giữ tôi đăng nhập</label>
-                    </div>
-                    <div class="group">
-                        <input type="submit" class="button" value="Đăng nhập">
-                    </div>
-                    <div class="hr"></div>
-                    <div class="foot-lnk">
-                        <a href="#">Quên mật khẩu?</a>
-                    </div>
-                </form>
-            </div>
-            <div class="sign-up-htm">
-                <div class="group">
-                    <label for="username-signup" class="label">Họ tên</label>
-                    <input id="username-signup" type="text" class="input">
-                </div>
-                <div class="group">
-                    <label for="email-signup" class="label">Email</label>
-                    <input id="email-signup" type="text" class="input">
-                </div>
-                <div class="group">
-                    <label for="password-signup" class="label">Mật khẩu</label>
-                    <input id="password-signup" type="password" class="input" data-type="password">
-                </div>
-                <div class="group">
-                    <label for="password-repeat-signup" class="label">Nhập lại mật khẩu</label>
-                    <input id="password-repeat-signup" type="password" class="input" data-type="password">
-                </div>
-                <div class="group">
-                    <input type="submit" class="button" value="Đăng ký">
-                </div>
-                <div class="foot-lnk">
-                    <a href="#">Đã có tài khoản?</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<!-- Cart -->
+<jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>
+<!-- Cart -->
+
+
+
+<!-- Product -->
+<div class="bg0 m-t-23 p-b-140">
+    <jsp:include page="../components/login.jsp"/>
 </div>
 
 
-<!-- Footer -->
-<jsp:include page="/WEB-INF/views/ban-hang-online/components/footer.jsp"/>
+<%--<jsp:include page="/WEB-INF/views/ban-hang-online/components/footer.jsp"/>--%>
 
 
 <!-- Back to top -->
@@ -142,9 +100,12 @@
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
 </div>
+<jsp:include page="/WEB-INF/views/ban-hang-online/components/quick_view.jsp"/>
 
 
 <!--===============================================================================================-->
+<!-- jQuery -->
+
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
@@ -155,7 +116,7 @@
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    $(".js-select2").each(function () {
+    $(".js-select2").each(function(){
         $(this).select2({
             minimumResultsForSearch: 20,
             dropdownParent: $(this).next('.dropDownSelect2')
@@ -168,39 +129,91 @@
 
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<script type="text/javascript">
-    <%@include file="../../../views/ban-hang-online/js/slick-custom.js" %>
-</script>
+
+<%--<script type="text/javascript">--%>
+<%--    <%@include file="../../../views/ban-hang-online/js/slick-custom.js" %>--%>
+
+<%--</script>--%>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/parallax100@1.1.3/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
 <!--===============================================================================================-->
-<!-- Sử dụng đường dẫn CDN cho jQuery Magnific Popup -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
-    $('.gallery-lb').each(function () { // the containers for all your galleries
+    $('.gallery-lb').each(function() { // the containers for all your galleries
         $(this).magnificPopup({
             delegate: 'a', // the selector for gallery item
             type: 'image',
             gallery: {
-                enabled: true
+                enabled:true
             },
             mainClass: 'mfp-fade'
         });
     });
 </script>
-<!--===============================================================================================-->
+
 <script src="https://cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>
 
 <!--===============================================================================================-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert.min.js"></script>
 
 <!--===============================================================================================-->
+
+<script>
+    $('.js-addwish-b2').on('click', function(e){
+        e.preventDefault();
+    });
+
+    $('.js-addwish-b2').each(function(){
+        var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+        $(this).on('click', function(){
+            swal(nameProduct, "is added to wishlist !", "success");
+
+            $(this).addClass('js-addedwish-b2');
+            $(this).off('click');
+        });
+    });
+
+    $('.js-addwish-detail').each(function(){
+        var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+        $(this).on('click', function(){
+            swal(nameProduct, "is added to wishlist !", "success");
+
+            $(this).addClass('js-addedwish-detail');
+            $(this).off('click');
+        });
+    });
+
+    /*---------------------------------------------*/
+
+
+
+</script>
+<!--===============================================================================================-->
+<script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
+<script>
+    $('.js-pscroll').each(function(){
+        $(this).css('position','relative');
+        $(this).css('overflow','hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+
+        $(window).on('resize', function(){
+            ps.update();
+        })
+    });
+</script>s
+<%--ffffff--%>
+
 <script type="text/javascript">
     <%@include file="../../../views/ban-hang-online/js/main.js" %>
+
 </script>
 
 </body>
