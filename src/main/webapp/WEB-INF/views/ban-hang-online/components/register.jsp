@@ -27,10 +27,10 @@
                             <label for="js-email-dk"><i class="zmdi zmdi-email"></i></label>
                             <input type="text" name="email" id="js-email-dk" placeholder="abc@gmail.com"/>
                         </div>
-<%--                        <div class="form-group">--%>
-<%--                            <label for="js-sdt-dk"><i class="fa fa-phone"></i></label>--%>
-<%--                            <input type="text" name="email" id="js-sdt-dk" placeholder="Nhập số điện thoại"/>--%>
-<%--                        </div>--%>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <label for="js-sdt-dk"><i class="fa fa-phone"></i></label>--%>
+                        <%--                            <input type="text" name="email" id="js-sdt-dk" placeholder="Nhập số điện thoại"/>--%>
+                        <%--                        </div>--%>
                         <div class="error-message" id="error-pass" style="color: red;"></div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
@@ -46,7 +46,8 @@
                             <input type="checkbox" name="agree-term" id="agree-term" class="agree-term"/>
                             <label for="agree-term" class="label-agree-term"><span><span></span></span>Tôi đồng ý tất cả
                                 các tuyên bố trong
-                                <a href="https://policies.google.com/terms?hl=vi" class="term-service">Điều khoản dịch vụ</a></label>
+                                <a href="https://policies.google.com/terms?hl=vi" class="term-service">Điều khoản dịch
+                                    vụ</a></label>
                             <span class="error-message" id="error-agree-term" style="color: red;"></span>
                         </div>
                         <div class="form-group form-button">
@@ -58,7 +59,8 @@
                     <figure>
                         <img src="/static/css/login-regester-onl/images/signup-image.jpg" alt="sing up image"/>
                     </figure>
-                    <a href="/sixdo-shop/login-customer" class="signup-image-link" id="back-to-login" style="font-size: 17px">Quay trở lại trang Login</a>
+                    <a href="/sixdo-shop/login-customer" class="signup-image-link" id="back-to-login"
+                       style="font-size: 17px">Quay trở lại trang Login</a>
                 </div>
             </div>
         </div>
@@ -69,12 +71,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Thêm thư viện SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
     $(document).ready(function () {
         $("#logo-header").hide();
         $(".js-show-modal-search").hide();
         createRegister();
+        // showConfirmationDialog();
     });
 
     function createRegister() {
@@ -95,6 +99,39 @@
             var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             var check = false;
+
+            function checkErrorsAndSubmit() {
+                if (!check) {
+                    // showConfirmationDialog();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/buyer-register/check',
+                        data: {tenKhachHang: name, email: email, password: password},
+                        success: function (data) {
+                            if (data) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Đăng ký tài khoản thành công!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(function () {
+                                    window.location.href = 'http://localhost:8080/sixdo-shop/login-customer';
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Đăng ký tài khoản thất bại!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function () {
+                            console.log('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                        }
+                    });
+                }
+            }
 
             if (!name.trim()) {
                 nameError.text('Tên không được để trống hoặc chứa ký tự trắng.');
@@ -123,43 +160,142 @@
                 passwordError.text('');
             }
 
-            if (!agreeTerm.prop('checked')) {
-                agreeTermError.text('Bạn cần đồng ý với các điều khoản và điều kiện.');
-                check = true;
-            } else {
-                agreeTermError.text('');
-            }
 
             if (!check) {
+                if (!agreeTerm.prop('checked')) {
+                    agreeTermError.text('Bạn cần đồng ý với các điều khoản và điều kiện.');
+                    check = true;
+                } else {
+                    agreeTermError.text('');
+                }
                 $.ajax({
                     type: 'POST',
-                    url: '/buyer-register/check',
-                    data: { tenKhachHang: name, email: email, password: password },
+                    url: '/buyer-register/checkMail',
+                    data: {email: email},
                     success: function (data) {
+                        console.log(data);
                         if (data) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Đăng ký tài khoản thành công!',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                            window.location.href = 'http://localhost:8080/sixdo-shop/login-customer';
+                            emailError.text('Email này đã tồn tại.');
+                            check = true;
                         } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Đăng ký tài khoản thất bại!',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                            emailError.text('');
                         }
+                        checkErrorsAndSubmit();
                     },
                     error: function () {
                         console.log('Có lỗi xảy ra. Vui lòng thử lại sau.');
                     }
                 });
+            } else {
+                checkErrorsAndSubmit();
             }
         });
+
+        function showConfirmationDialog() {
+            Swal.fire({
+                title: "Mã Xác Nhận Đã Gửi Vô Email",
+                html: '<div>Mã xác nhận đã được gửi vô email <strong>' + $('#js-email-dk').val().trim() + '</strong> và mã sẽ có hiệu lực trong vòng <span id="countdown">60</span> giây.</div>',
+                input: 'number',
+                inputPlaceholder: 'Nhập mã xác nhận...',
+                showCancelButton: true,
+                confirmButtonText: "Xác nhận",
+                cancelButtonText: "Huỷ",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    var seconds = 60;
+                    var countdownEl = document.getElementById("countdown");
+
+                    var timerInterval = setInterval(() => {
+                        countdownEl.textContent = seconds;
+                        if (seconds === 0) {
+                            clearInterval(timerInterval);
+                            document.getElementById("resendMessage").style.display = "block";
+                        }
+                        seconds--;
+                    }, 1000);
+                },
+                preConfirm: (inputCode) => {
+                    return new Promise((resolve) => {
+                        // Kiểm tra mã xác nhận
+                        if (!inputCode || inputCode.trim().length !== 5 || isNaN(inputCode.trim())) {
+                            Swal.showValidationMessage('Mã xác nhận phải là 5 chữ số và không được để trống.');
+                            resolve(); // Giải quyết Promise để hộp thoại không đóng lại
+                        } else {
+                            // $.ajax({
+                            //     type: 'POST',
+                            //     url: '/buyer-register/checkMail',
+                            //     data: {email: email},
+                            //     success: function (data) {
+                            if (12345 === inputCode) {
+                                Swal.fire({
+                                    title: 'Xác nhận thành công!',
+                                    text: 'Mã xác nhận chính xác.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    // Sau khi xác nhận mã thành công, gọi submit form
+                                    $('#register-form').submit();
+                                });
+                            } else {
+                                // Nếu mã không đúng, hiển thị thông báo lỗi và cung cấp tùy chọn nhập lại
+                                Swal.fire({
+                                    title: 'Xác nhận không thành công!',
+                                    text: 'Mã xác nhận không đúng. Bạn có muốn nhập lại không?',
+                                    icon: 'error',
+                                    confirmButtonText: 'Gửi Lại',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Không'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        showConfirmationDialog();
+                                    } else {
+                                        // Nếu không muốn nhập lại, giải quyết Promise để đóng hộp thoại
+                                        resolve();
+                                    }
+                                });
+                            }
+                            //     },
+                            //     error: function () {
+                            //         console.log('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                            //     }
+                            // });
+
+                        }
+                    });
+                }
+
+            }).then((result) => {
+                // Xử lý kết quả sau khi hộp thoại đóng
+                if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Nếu huỷ, xử lý tại đây
+                    console.log("Hủy");
+                } else {
+                    // Nếu xác nhận, xử lý tại đây
+                    console.log("Xác nhận");
+                }
+            });
+        }
     }
+
+    // function sendMailXacNhanMaaa(email) {
+    //     return new Promise((resolve, reject) => {
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: '/buyer-register/checkMail',
+    //             data: {email: email},
+    //             success: function (data) {
+    //                 if (data > 10000) {
+    //                     resolve(data);
+    //                 } else {
+    //                     reject('Email không tồn tại!');
+    //                 }
+    //             },
+    //             error: function () {
+    //                 reject('Có lỗi xảy ra. Vui lòng thử lại sau.');
+    //             }
+    //         });
+    //     });
+    // }
 
 
     function checkPassword() {

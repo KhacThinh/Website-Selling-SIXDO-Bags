@@ -186,7 +186,7 @@
         });
     }
 
-    document.getElementById('editSanPham').addEventListener('click', function(event) {
+    document.getElementById('editSanPham').addEventListener('click', function (event) {
         event.preventDefault();
         var idSanPham = $("#idSanPhamSua").val();
         var tenSanPham = $("#tenSanPhamSua").val();
@@ -270,7 +270,7 @@
 
         // Kiểm tra sự tồn tại của tên sản phẩm (thực hiện AJAX sau khi kiểm tra lỗi)
         if (!hasError) {
-            $.get('/san-pham/search-name', { tenSanPham: tenSanPham }, function(data) {
+            $.get('/san-pham/search-name', {tenSanPham: tenSanPham}, function (data) {
                 if (data) {
                     document.getElementById('tenSanPhamErrorr').innerText = 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác!';
                     hasError = true;
@@ -306,12 +306,13 @@
             processData: false,
             dataType: 'json',
             success: function (response) {
-                setTimeout('Redirect()', 1000);
                 Swal.fire({
                     icon: "success",
                     title: "Sản phẩm của bạn đã được sửa",
                     showConfirmButton: false,
                     timer: 1500
+                }).then(function () {
+                    window.location.href = 'http://localhost:8080/san-pham';
                 });
             },
             error: function (xhr, status, error) {
@@ -319,15 +320,6 @@
                 console.log('Có lỗi xảy ra: ' + error);
             }
         });
-    }
-
-    // Hàm kiểm tra lỗi và gửi biểu mẫu nếu không có lỗi
-    function checkErrors() {
-
-    }
-
-    function Redirect() {
-        window.location = '/san-pham';
     }
 
 </script>

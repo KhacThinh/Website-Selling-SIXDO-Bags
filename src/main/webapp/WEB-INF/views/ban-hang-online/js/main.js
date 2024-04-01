@@ -367,7 +367,7 @@
                     cancelButtonText: "Close",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "/sixdo-shop/login";
+                        window.location.href = "/sixdo-shop/login-customer";
                     }
                 });
 
