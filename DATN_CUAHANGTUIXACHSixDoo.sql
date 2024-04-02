@@ -549,6 +549,12 @@ group by gh.id
 
 select * from chi_tiet_san_pham
 
+select * from khach_hang
+select * from gio_hang
+delete khach_hang where id =23
+delete  gio_hang where id =11
+delete tai_khoan where id =25
+
 
 
 

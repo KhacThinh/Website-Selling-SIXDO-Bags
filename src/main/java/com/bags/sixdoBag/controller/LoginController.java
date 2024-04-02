@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.config.PasswordResetUtil;
 import com.bags.sixdoBag.model.dto.request.GioHangRequest;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.NhanVien;
@@ -128,7 +129,6 @@ public class LoginController {
         } else if (passWord.trim().length() < 6) {
             throw new IllegalArgumentException("Mật khẩu lớn hơn 6 ký tự");
         }
-        System.out.println("Đa vô đây");
         if (Objects.nonNull(khachHangService.searchKh(email))) {
             throw new IllegalArgumentException("Email đã tồn tại");
         }
@@ -143,13 +143,12 @@ public class LoginController {
         }
     }
 
-    private int confirmationCode;
 
     @PostMapping("/buyer-register/sendMail")
     @ResponseBody
     public int sendMailXN(@RequestParam("email") String emailSend) {
         Random random = new Random();
-        confirmationCode = random.nextInt(10000, 99999);
+        int confirmationCode = random.nextInt(10000, 99999);
         String email = emailSend.trim();
 
         String subject = "Xác nhận đăng ký tài khoản từ Shop SixDo";
@@ -171,15 +170,6 @@ public class LoginController {
             messageHelper.setText(htmlContent, true);
         };
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                // Reset confirmation code after 60 seconds
-                confirmationCode = 0;
-            }
-        }, 60000);
-
         emailService.sendEmail(messagePreparator);
 
         return confirmationCode;
@@ -189,6 +179,83 @@ public class LoginController {
     @ResponseBody
     public boolean checkMail(@RequestParam("email") String email) {
         return Objects.nonNull(khachHangService.searchKh(email));
+    }
+
+    @PostMapping("/buyer-forget/sendMailForgetPassword")
+    @ResponseBody
+    public void sendMailQuenMatKhau(@RequestParam("email") String emailSend) {
+        String email = emailSend.trim();
+
+        if (email.isBlank()) {
+            throw new IllegalArgumentException("Email không được để trống hoặc khoảng trắng");
+        }
+
+        KhachHang khachHang = khachHangService.searchKh(email);
+        if (khachHang == null) {
+            throw new IllegalArgumentException("Email không tồn tại trong hệ thống");
+        }
+
+        // Tạo mã token duy nhất
+        String resetToken = PasswordResetUtil.generateUniqueToken();
+
+        String resetLink = "http://localhost:8080/sixdo-shop/buyer-forget/sendMailForgetPassword?token=" + resetToken;
+
+        String subject = "Lấy lại mật khẩu từ Shop SixDo";
+        String htmlContent = "<html>" +
+                "<head><title>Lấy lại mật khẩu</title></head>" +
+                "<body>" +
+                "<h2>Lấy lại mật khẩu</h2>" +
+                "<p>Bạn đã yêu cầu lấy lại mật khẩu từ Shop SixDo. Nhấn vào liên kết dưới đây để đặt lại mật khẩu:</p>" +
+                "<p><a href='" + resetLink + "'>" + resetLink + "</a></p>" +
+                "<p>Nếu bạn không yêu cầu thay đổi mật khẩu, vui lòng bỏ qua email này.</p>" +
+                "<p>Xin cảm ơn!</p>" +
+                "</body>" +
+                "</html>";
+
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            messageHelper.setTo(email);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(htmlContent, true);
+        };
+
+        session.setAttribute("resetToken", resetToken);
+        session.setAttribute("buyerEmail", email);
+
+        emailService.sendEmail(messagePreparator);
+    }
+
+
+    @GetMapping("/sixdo-shop/buyer-forget/sendMailForgetPassword")
+    public String showResetPasswordForm(@RequestParam("token") String token, Model model) {
+        String savedToken = (String) session.getAttribute("resetToken");
+        String email = (String) session.getAttribute("buyerEmail");
+        if (savedToken != null && savedToken.equals(token)) {
+            System.out.println(email);
+            return "/ban-hang-online/home/reset-password";
+        } else {
+            return "redirect:/error-page";
+        }
+    }
+
+    @PostMapping("/sixdo-shop/buyer-forget/reset-password")
+    @ResponseBody
+    public boolean resetPassword(@RequestParam("token") String token, @RequestParam("password") String password) {
+        if (password.trim().equals("")) {
+            throw new IllegalArgumentException("Mật Khẩu không được để trống");
+        }
+        String savedToken = (String) session.getAttribute("resetToken");
+        String email = (String) session.getAttribute("buyerEmail");
+        if (savedToken != null && savedToken.equals(token)) {
+            KhachHang khachHang = khachHangService.searchKh(email);
+            khachHang.setMatKhau(password);
+            System.out.println("Đã vô đây");
+            khachHangService.editKhachHang(khachHang.getId(), khachHang);
+            session.removeAttribute("resetToken");
+            session.removeAttribute("buyerEmail");
+            return true;
+        }
+        return false;
     }
 
 

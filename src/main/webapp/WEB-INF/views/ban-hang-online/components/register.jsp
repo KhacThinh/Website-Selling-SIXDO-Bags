@@ -102,32 +102,16 @@
 
             function checkErrorsAndSubmit() {
                 if (!check) {
-                    // showConfirmationDialog();
                     $.ajax({
-                        type: 'POST',
-                        url: '/buyer-register/check',
-                        data: {tenKhachHang: name, email: email, password: password},
-                        success: function (data) {
-                            if (data) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Đăng ký tài khoản thành công!',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                }).then(function () {
-                                    window.location.href = 'http://localhost:8080/sixdo-shop/login-customer';
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Đăng ký tài khoản thất bại!',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                            }
+                        type: "POST",
+                        url: "/buyer-register/sendMail",
+                        data: {email: email},
+                        success: function (response) {
+                            showConfirmationDialog(response, name, email, password);
                         },
-                        error: function () {
-                            console.log('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                        error: function (xhr, status, error) {
+                            // Xử lý khi có lỗi xảy ra
+                            console.log("Lỗi: " + error);
                         }
                     });
                 }
@@ -173,7 +157,6 @@
                     url: '/buyer-register/checkMail',
                     data: {email: email},
                     success: function (data) {
-                        console.log(data);
                         if (data) {
                             emailError.text('Email này đã tồn tại.');
                             check = true;
@@ -191,7 +174,7 @@
             }
         });
 
-        function showConfirmationDialog() {
+        function showConfirmationDialog(maXacNhan, name, email, password) {
             Swal.fire({
                 title: "Mã Xác Nhận Đã Gửi Vô Email",
                 html: '<div>Mã xác nhận đã được gửi vô email <strong>' + $('#js-email-dk').val().trim() + '</strong> và mã sẽ có hiệu lực trong vòng <span id="countdown">60</span> giây.</div>',
@@ -221,23 +204,9 @@
                             Swal.showValidationMessage('Mã xác nhận phải là 5 chữ số và không được để trống.');
                             resolve(); // Giải quyết Promise để hộp thoại không đóng lại
                         } else {
-                            // $.ajax({
-                            //     type: 'POST',
-                            //     url: '/buyer-register/checkMail',
-                            //     data: {email: email},
-                            //     success: function (data) {
-                            if (12345 === inputCode) {
-                                Swal.fire({
-                                    title: 'Xác nhận thành công!',
-                                    text: 'Mã xác nhận chính xác.',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                }).then(() => {
-                                    // Sau khi xác nhận mã thành công, gọi submit form
-                                    $('#register-form').submit();
-                                });
+                            if (maXacNhan == inputCode) {
+                                ChuyenDuLieuDangKyThanhCong(name, email, password);
                             } else {
-                                // Nếu mã không đúng, hiển thị thông báo lỗi và cung cấp tùy chọn nhập lại
                                 Swal.fire({
                                     title: 'Xác nhận không thành công!',
                                     text: 'Mã xác nhận không đúng. Bạn có muốn nhập lại không?',
@@ -249,17 +218,10 @@
                                     if (result.isConfirmed) {
                                         showConfirmationDialog();
                                     } else {
-                                        // Nếu không muốn nhập lại, giải quyết Promise để đóng hộp thoại
                                         resolve();
                                     }
                                 });
                             }
-                            //     },
-                            //     error: function () {
-                            //         console.log('Có lỗi xảy ra. Vui lòng thử lại sau.');
-                            //     }
-                            // });
-
                         }
                     });
                 }
@@ -277,25 +239,35 @@
         }
     }
 
-    // function sendMailXacNhanMaaa(email) {
-    //     return new Promise((resolve, reject) => {
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '/buyer-register/checkMail',
-    //             data: {email: email},
-    //             success: function (data) {
-    //                 if (data > 10000) {
-    //                     resolve(data);
-    //                 } else {
-    //                     reject('Email không tồn tại!');
-    //                 }
-    //             },
-    //             error: function () {
-    //                 reject('Có lỗi xảy ra. Vui lòng thử lại sau.');
-    //             }
-    //         });
-    //     });
-    // }
+    function ChuyenDuLieuDangKyThanhCong(name, email, password) {
+        $.ajax({
+            type: 'POST',
+            url: '/buyer-register/check',
+            data: {tenKhachHang: name, email: email, password: password},
+            success: function (data) {
+                if (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký tài khoản thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function () {
+                        window.location.href = 'http://localhost:8080/sixdo-shop/login-customer';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đăng ký tài khoản thất bại!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            },
+            error: function () {
+                console.log('Có lỗi xảy ra. Vui lòng thử lại sau.');
+            }
+        });
+    }
 
 
     function checkPassword() {

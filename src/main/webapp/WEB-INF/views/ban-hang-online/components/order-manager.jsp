@@ -1018,7 +1018,7 @@
                                 <th scope="col" style='vertical-align: middle; text-align: center;'>Số lượng</th>
                                 <th scope="col" style='vertical-align: middle; text-align: center;'>Đơn giá</th>
                                 <th scope="col" style='vertical-align: middle; text-align: center;'>Thành tiền</th>
-                                <th scope="col" style='vertical-align: middle; text-align: center;'>Trạng thái</th>
+<%--                                <th scope="col" style='vertical-align: middle; text-align: center;'>Trạng thái</th>--%>
                             </tr>
                             </thead>
                             <tbody>
@@ -1452,7 +1452,7 @@
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.soLuong.toLocaleString() + "</td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + cthd.chiTietSanPham.giaBan.toLocaleString() + "</td>" +
                         "<td style='vertical-align: middle; text-align: center;'>" + (cthd.soLuong * cthd.chiTietSanPham.giaBan).toLocaleString() + "</td>" +
-                        "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-danger btn-xoa-hoa-don-chi-tiet-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Xoá</button></td>" +
+                        // "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-danger btn-xoa-hoa-don-chi-tiet-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Xoá</button></td>" +
                         "</tr>";
                     $("#ip-chi-tiet-don-hang-order tbody").append(row);
                 });
