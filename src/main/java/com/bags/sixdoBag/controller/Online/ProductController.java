@@ -196,7 +196,7 @@ public class ProductController {
         Integer soLuongCu = 0;
         Integer soLuongMoi = 0;
         List<ChiTietGioHang> listCTGH = chiTietGioHangRepository.getListChiTietGioHangByKhachHang(Integer.parseInt(idKhachHang));
-        if(chiTietSanPham.getTrangThai()==1){
+        if (chiTietSanPham.getTrangThai() == 1) {
             if (listCTGH.isEmpty()) {
                 System.out.println("th1");
                 ChiTietGioHangRequestDto ct = new ChiTietGioHangRequestDto();
@@ -224,7 +224,7 @@ public class ProductController {
                 chiTietGioHangService.addChiTietGioHang(ct2);
                 return ResponseEntity.ok("ok");
             }
-        }else {
+        } else {
             return ResponseEntity.ok("loiTrangThai");
         }
 
@@ -321,31 +321,34 @@ public class ProductController {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangRepository.getListChiTietGioHangByKhachHangAndTrangThaiCtsp(khachHang != null ? khachHang.getId() : -1);
         List<ChiTietHoaDon> listCTHD = orderData.getCart();
-        List<ChiTietSanPham>listCTSP1 = new ArrayList<>();
-        List<ChiTietSanPham>listCTSP2 = new ArrayList<>();
-        for (ChiTietGioHang ctgh: chiTietGioHangList
-             ) {
+        List<ChiTietSanPham> listCTSP1 = new ArrayList<>();
+        List<ChiTietSanPham> listCTSP2 = new ArrayList<>();
+        for (ChiTietGioHang ctgh : chiTietGioHangList
+        ) {
             listCTSP1.add(ctgh.getChiTietSanPham());
         }
         for (ChiTietHoaDon cthd : listCTHD
         ) {
-           listCTSP2.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
+            listCTSP2.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
         }
-        if(listCTSP1.size() != listCTSP2.size()){
+        if (listCTSP1.size() != listCTSP2.size()) {
             return ResponseEntity.ok("no");
-        }else {
+        } else {
             return ResponseEntity.ok("ok");
         }
 
     }
-    @PostMapping("/check-soLuong-checkout")
-    public ResponseEntity<?>checkSLcheckout(@RequestBody OderDataDto orderData){
-        List<ChiTietHoaDon>chiTietHoaDonList= orderData.getCart();
-        List<ChiTietSanPham>chiTietSanPhamList= new ArrayList<>();
-        for (ChiTietHoaDon cthd: chiTietHoaDonList
-             ) {
 
-            if(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()).getSoLuong()< cthd.getSoLuong()){
+
+    @PostMapping("/check-soLuong-checkout")
+    public ResponseEntity<?> checkSLcheckout(@RequestBody OderDataDto orderData) {
+        List<ChiTietHoaDon> chiTietHoaDonList = orderData.getCart();
+
+        List<ChiTietSanPham> chiTietSanPhamList = new ArrayList<>();
+        for (ChiTietHoaDon cthd : chiTietHoaDonList
+        ) {
+            System.out.println("soLuong gio hang"+cthd.getSoLuong() +" / ");
+            if (chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()).getSoLuong() < cthd.getSoLuong()) {
                 System.out.println("full so luong");
                 chiTietSanPhamList.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
             }
@@ -356,7 +359,9 @@ public class ProductController {
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OderDataDto orderData) {
+        List<ChiTietSanPham> listCTSP = new ArrayList<>();
         KhachHang khachHang = orderData.getKhachHang();
+        int idGioHang = gioHangService.getIdGioHang(khachHang.getId());
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
         hoaDon.setKhachHang(khachHang);
@@ -371,6 +376,19 @@ public class ProductController {
         for (ChiTietHoaDon o : orderData.getCart()) {
             o.setIdHoaDon(hoaDon.getId());
             hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
+        }
+        //xóa giỏ hàng chi tiết khi thanh toán
+        for (ChiTietHoaDon cthd : orderData.getCart()
+        ) {
+            listCTSP.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
+        }
+        for (ChiTietSanPham ctsp : listCTSP
+        ) {
+            try {
+                chiTietGioHangRepository.deleteChiTietGioHang(idGioHang, ctsp.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return "ban-hang-online/home/index";
 
@@ -471,7 +489,7 @@ public class ProductController {
     @GetMapping("hien-thi-so-luong-cart-product")
     public @ResponseBody
     int getProuductSoLuongCartHead() {
-            KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
             int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId());
             return soLuong;

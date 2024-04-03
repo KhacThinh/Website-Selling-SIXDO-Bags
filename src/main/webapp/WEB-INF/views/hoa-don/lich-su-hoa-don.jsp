@@ -20,7 +20,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
     <style type="text/css">
         #test {
@@ -70,11 +70,13 @@
         }
 
     </style>
+
 </head>
-
 <body>
-<jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-7 mb-3">
@@ -142,7 +144,8 @@
                     <td>${hd.key.sdtNguoiNhan}</td>
                     <td>${hd.key.thoiGianTao}</td>
                     <td>${hd.value.size()}</td>
-                    <fmt:formatNumber pattern="#,###" var="tongTien" value="${hd.key.tongTien+hd.key.phiVanChuyen}"></fmt:formatNumber>
+                    <fmt:formatNumber pattern="#,###" var="tongTien"
+                                      value="${hd.key.tongTien+hd.key.phiVanChuyen}"></fmt:formatNumber>
                     <td>${tongTien}</td>
 
                     <td id="trang-thai-hoa-don" data-status="${hd.key.trangThai}">
@@ -207,40 +210,45 @@
                                                 <span> ${hd.key.maHoaDon}</span>
                                             </div>
                                             <div class="form-group">
-                                                <label>Tài Khoản :<a>${hd.key.khachHang.tenKhachHang} - ${hd.key.khachHang.maKhachHang} </a> </label>
+                                                <label>Tài Khoản :<a>${hd.key.khachHang.tenKhachHang}
+                                                    - ${hd.key.khachHang.maKhachHang} </a> </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6" style="margin: 0px">
                                             <div class="form-group">
                                                 <label>Trạng Thái Đơn Hàng : </label>
-                                                <span>  <script>
-                            var trangThai = ${hd.key.trangThai};
-                            var trangThaiString = '';
-                            switch (trangThai) {
-                                case 0:
-                                    trangThaiString = 'Đã Thanh Toán';
-                                    break;
-                                case 1:
-                                    trangThaiString = 'Hóa Đơn Tạm';
-                                    break;
-                                case 2:
-                                    trangThaiString = 'Chưa Xác Nhận';
-                                    break;
-                                case 3:
-                                    trangThaiString = 'Đã Xác Nhận';
-                                    break;
-                                case 4:
-                                    trangThaiString = 'Đã Hủy';
-                                    break;
-                                case 5:
-                                    trangThaiString = 'Đang Giao Hàng';
-                                    break;
-                                default:
-                                    trangThaiString = 'Unknown';
-                            }
-                            document.write(trangThaiString);
-                        </script></span>
+                                                <span>
+        <script>
+            var trangThai = ${hd.key.trangThai};
+            var trangThaiString = '';
+            switch (trangThai) {
+                case 0:
+                    trangThaiString = 'Đã Thanh Toán';
+                    break;
+                case 1:
+                    trangThaiString = 'Hóa Đơn Tạm';
+                    break;
+                case 2:
+                    trangThaiString = 'Chưa Xác Nhận';
+                    break;
+                case 3:
+                    trangThaiString = 'Đã Xác Nhận';
+                    break;
+                case 4:
+                    trangThaiString = 'Đã Hủy';
+                    break;
+                case 5:
+                    trangThaiString = 'Đang Giao Hàng';
+                    break;
+                default:
+                    trangThaiString = 'Unknown';
+            }
+            document.write(trangThaiString);
+        </script>
+    </span>
+                                                <span style="color: red;">${hd.key.lyDoKhachHuy}</span>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Thời Gian Đặt Hàng : </label>
                                                 <span> ${hd.key.thoiGianTao}</span>
@@ -320,22 +328,49 @@
                                     <div class="modal-footer">
                                         <c:choose>
                                             <c:when test="${hd.key.trangThai == 2}">
-                                                <button class="btn btn-success" onclick="xacNhanDonHang('${hd.key.maHoaDon}')">Xác Nhận</button>
-                                                <a href="/ban-tai-quay/${hd.key.id}" target="_blank"> <button type="button" class="btn btn-success"><i class="bi bi-truck"></i> Xử Lý Đơn Hàng</button></a>
+                                                <%--                                                <button class="btn btn-success"--%>
+                                                <%--                                                        onclick="xacNhanFromLichSuHoaDon('${hd.key.id}')">Xác Nhận--%>
+                                                <%--                                                </button>--%>
+                                                <a href="/ban-tai-quay/${hd.key.id}" target="_blank">
+                                                    <button type="button" class="btn btn-success"><i
+                                                            class="bi bi-truck"></i> Xử Lý Đơn Hàng
+                                                    </button>
+                                                </a>
                                                 <%--                                                <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã Thanh Toán</button>--%>
-                                                <button type="button" class="btn btn-danger">Hủy Đơn</button>
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn btn-danger"
+                                                        onclick="xoaHoaDonChuaXacNhan(${hd.key.id})">Hủy Đơn
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                                    Đóng
+                                                </button>
 
                                             </c:when>
                                             <c:when test="${hd.key.trangThai == 3}">
-                                                <a href="/ban-tai-quay/${hd.key.id}" target="_blank"> <button type="button" class="btn btn-success"><i class="bi bi-truck"></i> Xử Lý Đơn Hàng</button></a>
+                                                <a href="/ban-tai-quay/${hd.key.id}" target="_blank">
+                                                    <button type="button" class="btn btn-success"><i
+                                                            class="bi bi-truck"></i> Xử Lý Đơn Hàng
+                                                    </button>
+                                                </a>
                                                 <%--                                                <button type="button" class="btn btn-success"><i class="bi bi-cash-coin"></i> Đã Thanh Toán</button>--%>
-                                                <button type="button" class="btn btn-danger">Hủy Đơn</button>
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                <%--                                                <button type="button" class="btn btn-danger">Hủy Đơn</button>--%>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                                    Đóng
+                                                </button>
+
+                                            </c:when>
+                                            <c:when test="${hd.key.trangThai == 5}">
+                                                <button type="button" class="btn btn-success">Xác Nhận Giao Hàng Thành
+                                                    Công
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                                    Đóng
+                                                </button>
 
                                             </c:when>
                                             <c:otherwise>
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                                    Đóng
+                                                </button>
                                             </c:otherwise>
                                         </c:choose>
                                     </div>
@@ -356,7 +391,138 @@
 
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<%--xóa hóa đơn chưa xác nhận--%>
+
 <script>
+    function xoaHoaDonChuaXacNhan(id) {
+    Swal.fire({
+        title: 'Bạn có chắc chắn muốn huỷ đơn hàng này không?',
+        showCancelButton: true,
+        confirmButtonText: 'Có, huỷ đơn hàng',
+        cancelButtonText: 'Không, giữ nguyên',
+        reverseButtons: true,
+        preConfirm: async () => {
+            const {value: inputReason, dismiss} = await Swal.fire({
+                title: 'Vui lòng cung cấp lý do huỷ đơn',
+                input: 'text',
+                inputPlaceholder: 'Nhập lý do ở đây...',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Xác nhận',
+                showLoaderOnConfirm: true,
+                preConfirm: (inputReason) => {
+                    if (!inputReason || inputReason.trim().length === 0) {
+                        Swal.showValidationMessage('Vui lòng nhập lý do');
+                        return false;
+                    }
+                    // Gửi request POST
+
+                },
+            });
+
+            if (dismiss === 'cancel' && !inputReasonEntered) {
+                // Nếu người dùng ấn nút "Huỷ" mà không nhập lý do, hủy hành động
+                return false;
+            }
+
+            return inputReason;
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result !== true) {
+                Swal.fire({
+                    title: 'Đã huỷ đơn hàng',
+                    text: `Đơn hàng của bạn đã được huỷ. Lý do: ${inputReason}`,
+                    icon: 'success'
+                });
+            } else {
+                // Hiển thị thông báo lỗi
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Có lỗi xảy ra khi huỷ đơn hàng',
+                    icon: 'error'
+                });
+            }
+        }
+    });
+    }
+
+
+
+    // function xoaHoaDonChuaXacNhan(id) {
+    //
+    //     // Nếu người dùng chọn "Hủy Đơn"
+    //     Swal.fire({
+    //         title: 'Nhập lí do hủy đơn',
+    //         input: 'text',
+    //         inputAttributes: {
+    //             autocapitalize: 'off'
+    //         },
+    //         showCancelButton: true,
+    //         confirmButtonText: 'Hủy Đơn',
+    //         cancelButtonText: 'Quay lại',
+    //         showLoaderOnConfirm: true,
+    //         preConfirm: (cancelReason) => {
+    //             if (!cancelReason) {
+    //                 Swal.showValidationMessage('Vui lòng nhập lí do hủy đơn');
+    //             }
+    //             return cancelReason;
+    //         },
+    //         allowOutsideClick: () => !Swal.isLoading()
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             // Nếu người dùng chọn "Hủy Đơn"
+    //             const cancelReason = result.value;
+    //             $.ajax({
+    //                 type: "POST",
+    //                 url: "/ban-tai-quay/huy-hoaDon",
+    //                 data: {
+    //                     id: id,
+    //                     reason: cancelReason
+    //                 },
+    //                 success: function (response) {
+    //                     if (response === "ok") {
+    //                         Swal.fire({
+    //                             title: "Good job!",
+    //                             text: "Đơn hàng đã được Hủy!",
+    //                             icon: "success",
+    //                             confirmButtonText: "OK"
+    //                         }).then(() => {
+    //                             window.location.href = "http://localhost:8080/hoa-don/lich-su";
+    //                         });
+    //                     } else if (response === "error") {
+    //                         Swal.fire({
+    //                             title: "No",
+    //                             text: "Đơn hàng đã được hủy từ trước đó",
+    //                             icon: "warning",
+    //                             confirmButtonText: "OK"
+    //                         }).then(() => {
+    //                             window.location.href = "http://localhost:8080/hoa-don/lich-su";
+    //                         });
+    //                     } else if (response === "errorGiaoHang") {
+    //                         Swal.fire({
+    //                             title: "No",
+    //                             text: "Đơn hàng đã được giao. Không thể hủy",
+    //                             icon: "warning",
+    //                             confirmButtonText: "OK"
+    //                         }).then(() => {
+    //                             window.location.href = "http://localhost:8080/hoa-don/lich-su";
+    //                         });
+    //                     }
+    //                 },
+    //                 error: function (xhr, status, error) {
+    //                     console.error(xhr.responseText);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
+
 
     function inHoaDon(maHD) {
         var form = document.createElement('form');
@@ -373,7 +539,7 @@
         // Redirect();
     }
 
-    function xacNhanDonHang(ma){
+    function xacNhanDonHang(ma) {
         $.ajax({
             url: '/hoa-don/xac-nhan-don-hang',
             type: 'POST',
@@ -391,6 +557,162 @@
         });
     }
 </script>
+
+<script>
+
+
+    function xacNhanFromLichSuHoaDon(id) {
+        $.ajax({
+            url: '/hoa-don/check-trangThai-ctsp',
+            type: 'POST',
+            data: {
+                id: id,
+            },
+            success: function (response) {
+                if (response.length === 0) {
+
+                    $.ajax({
+                        url: '/hoa-don/check-soLuong-xacNhan',
+                        type: 'POST',
+                        data: {
+                            id: id,
+                        },
+                        success: function (response) {
+                            if (response.length === 0) {
+                                $.ajax({
+                                    url: '/hoa-don/xacNhan-lichSuHoaDon',
+                                    type: 'POST',
+                                    data: {
+                                        id: id,
+                                    },
+                                    success: function (response) {
+
+                                        if (response === "ok") {
+                                            Swal.fire({
+                                                title: "Good job!",
+                                                text: "Đơn hàng đã được xác nhận",
+                                                icon: "success"
+                                            });
+
+                                            setTimeout(function () {
+                                                window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                            }, 2000); // Đợi 2 giây trước khi chuyển trang
+                                        } else if (response === "errerXacNhan") {
+
+                                            Swal.fire({
+                                                title: "No",
+                                                text: "Đơn hàng đã được xác nhận từ trước đó",
+                                                icon: "warning",
+                                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
+                                                confirmButtonText: "OK"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                                }
+                                            });
+
+                                        } else if (response === "null") {
+                                            Swal.fire({
+                                                title: "Bạn muốn hủy đơn hàng này?",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonText: "Hủy",
+                                                cancelButtonText: "Cancel",
+                                                customClass: {
+                                                    confirmButton: 'swal-confirm-button',
+                                                    cancelButton: 'swal-cancel-button'
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // Xử lý khi người dùng chọn "Giữ"
+                                                    // Ví dụ: window.location.href = "http://example.com";
+                                                } else {
+                                                    // Xử lý khi người dùng chọn "Hủy"
+                                                    // Ví dụ: alert("Hủy đơn hàng");
+                                                }
+                                            });
+                                        }
+
+
+                                    },
+                                    error: function (error) {
+                                        console.error("Có lỗi xảy ra:", error);
+
+                                    }
+                                });
+
+                            } else {
+                                // Tạo chuỗi thông báo để hiển thị tên sản phẩm và màu sắc trên cùng một dòng
+                                var message = "";
+                                var soLuong = "";
+                                response.forEach(function (item) {
+                                    if (item.soLuong === 0) {
+                                        soLuong = " - Hết Hàng"
+                                    } else {
+                                        soLuong = " .Chỉ được thêm tối đa: " + item.soLuong + " Sản Phẩm"
+                                    }
+                                    message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + soLuong + "<br>";
+                                });
+
+                                Swal.fire({
+                                    title: "Thông tin sản phẩm",
+                                    html: message,
+                                    icon: "warning",
+                                    customClass: {
+                                        htmlContainer: 'swal2-html-container',
+                                        popup: 'swal2-popup',
+                                        title: 'swal2-title',
+                                        content: 'swal2-content',
+                                        confirmButton: 'swal2-confirm',
+                                        cancelButton: 'swal2-cancel',
+                                    }
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            console.error("Có lỗi xảy ra:", error);
+
+                        }
+                    });
+
+
+                } else {
+                    var message = "";
+                    var trangThai = "";
+                    response.forEach(function (item) {
+                        if (item.trangThai === 0) {
+                            trangThai = " - Ngừng Bán"
+                        }
+                        message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + trangThai + "<br>";
+                    });
+
+                    Swal.fire({
+                        title: "Thông tin sản phẩm",
+                        html: message,
+                        icon: "warning",
+                        customClass: {
+                            htmlContainer: 'swal2-html-container',
+                            popup: 'swal2-popup',
+                            title: 'swal2-title',
+                            content: 'swal2-content',
+                            confirmButton: 'swal2-confirm',
+                            cancelButton: 'swal2-cancel',
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+
+            }
+        });
+
+
+    }
+
+</script>
+
+
 </body>
 
 </html>

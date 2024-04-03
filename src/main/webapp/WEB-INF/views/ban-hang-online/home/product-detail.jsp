@@ -209,7 +209,10 @@ s
         <c:forEach var="o" items="${product}" varStatus="loop">
         if (selectedId == ${o.id}) {
             console.log("day roi "+${o.giaBan})
-            document.getElementById('product-price').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
+            document.getElementById('product-price').innerText = '<fmt:formatNumber
+                                           pattern="#,###"
+                                           var="tongTam"
+                                           value="${o.giaBan}"></fmt:formatNumber> ${tongTam}đ';
             var newImagePath = "${pageContext.request.contextPath}/" + "${o.hinhAnh}";
             document.getElementById('product-image').src = newImagePath;
 

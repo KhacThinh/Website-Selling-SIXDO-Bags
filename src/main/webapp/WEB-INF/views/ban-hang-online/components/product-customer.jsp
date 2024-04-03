@@ -55,9 +55,13 @@
                         ${product[0].sanPham.tenSanPham}
                     </h4>
 
-                    <p class="mtext-106 cl2" id="product-price"><fmt:formatNumber value="${product[0].giaBan}"
-                                                                                  type="currency"/></p>
+                    <p class="mtext-106 cl2" id="product-price">
 
+                        <fmt:formatNumber
+                                pattern="#,###"
+                                var="tongTam"
+                                value="${product[0].giaBan}"></fmt:formatNumber>
+                        ${tongTam}đ</p>
                     <p class="stext-102 cl3 p-t-23">
                         Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare
                         feugiat.

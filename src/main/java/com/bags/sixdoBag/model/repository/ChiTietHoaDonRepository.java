@@ -19,12 +19,15 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, In
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
     List<ChiTietHoaDon> getGioHangChiTiet(@Param("idHoaDon") int idHoaDon);
 
+    @Query("select hd from ChiTietHoaDon hd where hd.hoaDon.khachHang.id =:idKh")
+    List<ChiTietHoaDon>getListCTHDByKh(int idKh);
+
 
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon and c.idCtSanPham =:idCtSanPham")
     ChiTietHoaDon getGioHangChiTiet(@Param("idHoaDon") int idHoaDon, @Param("idCtSanPham") int idCtSanPham);
 
 
-    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon = :idHoaDon")
+    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.idHoaDon =:idHoaDon")
     List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(@Param("idHoaDon") int idHoaDon);
 
     @Query("SELECT c FROM ChiTietHoaDon c WHERE c.hoaDon.id IN :hoaDonIds")

@@ -151,7 +151,7 @@
                 <div class="navbar_content">
                     <c:choose>
                         <c:when test="${khachHang == null}">
-                            <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
+                            <button type="button"  class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
                                     style="margin-left: 20px;">Đăng nhập
                             </button>
                         </c:when>
@@ -289,23 +289,13 @@
         // Lắng nghe sự kiện click trên nút "Login"
         document.getElementById('btn-login').addEventListener('click', function () {
             // Hiển thị thông báo yêu cầu đăng nhập
-            Swal.fire({
-                title: 'Thông báo',
-                text: 'Bạn cần đăng nhập để tiếp tục.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Đăng nhập',
-                cancelButtonText: 'Đóng',
-            }).then((result) => {
+
                 // Xử lý hành động sau khi người dùng nhấn nút
-                if (result.isConfirmed) {
+
                     // Chuyển hướng tới trang đăng nhập khi người dùng nhấn nút "Đăng nhập"
                     window.location.href = '/sixdo-shop/login';
-                } else {
-                    // Log ra console nếu người dùng nhấn nút "Đóng" hoặc click ra ngoài
-                    console.log('Đã đóng thông báo');
-                }
-            });
+
+
         });
     });
 
