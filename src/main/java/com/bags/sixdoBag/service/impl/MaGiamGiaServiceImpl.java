@@ -54,6 +54,11 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
     }
 
     @Override
+    public void deleteDanhSachKhMggByIdMgg(int idMaGiamGia) {
+        maGiamGiaRepository.deleteDanhSachKhMggByIdMgg(idMaGiamGia);
+    }
+
+    @Override
     public MaGiamGia searchMaGiamGiaByMa(String maGiamGia) {
         return maGiamGiaRepository.searchMaGiamGiaByMa(maGiamGia);
     }
@@ -83,6 +88,12 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
 
         return list;
     }
+
+    @Override
+    public int [] getidKhByMgg(int idMaGiamGia) {
+        return maGiamGiaRepository.getidKhByMgg(idMaGiamGia);
+    }
+
     @Override
     public MaGiamGia getidMaGiamGia(Integer idMaGiamGia) {
         MaGiamGia maGiamGia = maGiamGiaRepository.findById(idMaGiamGia).orElse(null);

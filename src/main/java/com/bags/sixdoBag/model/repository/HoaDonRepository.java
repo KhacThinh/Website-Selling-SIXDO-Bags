@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.model.repository;
 
 
+import com.bags.sixdoBag.model.dto.response.HoaDonResponse;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,8 @@ import java.util.Optional;
 @Transactional
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
+    @Query("select hd from HoaDon hd where hd.id =:id ")
+    HoaDonResponse getHoaDonResponseById(int id);
 
     @Query(value = "select hd from HoaDon hd where hd.maHoaDon =:maHd")
     HoaDon getHoaDonByMaHoaDon(String maHd);

@@ -342,10 +342,11 @@ public class ProductController {
     @PostMapping("/check-soLuong-checkout")
     public ResponseEntity<?> checkSLcheckout(@RequestBody OderDataDto orderData) {
         List<ChiTietHoaDon> chiTietHoaDonList = orderData.getCart();
+
         List<ChiTietSanPham> chiTietSanPhamList = new ArrayList<>();
         for (ChiTietHoaDon cthd : chiTietHoaDonList
         ) {
-
+            System.out.println("soLuong gio hang"+cthd.getSoLuong() +" / ");
             if (chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()).getSoLuong() < cthd.getSoLuong()) {
                 System.out.println("full so luong");
                 chiTietSanPhamList.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
@@ -357,7 +358,9 @@ public class ProductController {
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OderDataDto orderData) {
+        List<ChiTietSanPham> listCTSP = new ArrayList<>();
         KhachHang khachHang = orderData.getKhachHang();
+        int idGioHang = gioHangService.getIdGioHang(khachHang.getId());
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
         hoaDon.setKhachHang(khachHang);
@@ -372,6 +375,19 @@ public class ProductController {
         for (ChiTietHoaDon o : orderData.getCart()) {
             o.setIdHoaDon(hoaDon.getId());
             hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
+        }
+        //xóa giỏ hàng chi tiết khi thanh toán
+        for (ChiTietHoaDon cthd : orderData.getCart()
+        ) {
+            listCTSP.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
+        }
+        for (ChiTietSanPham ctsp : listCTSP
+        ) {
+            try {
+                chiTietGioHangRepository.deleteChiTietGioHang(idGioHang, ctsp.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return "ban-hang-online/home/index";
 

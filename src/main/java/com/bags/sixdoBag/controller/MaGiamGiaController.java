@@ -2,6 +2,7 @@ package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.MaGiamGiaDTO;
 import com.bags.sixdoBag.model.entitys.DanhSachKhachHangApMgg;
+import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
@@ -16,6 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,7 +29,7 @@ import java.util.List;
 public class MaGiamGiaController {
     public final MaGiamGiaService maGIamGiaService;
     public final MaGiamGiaRepository maGiamGiaRepository;
-    private  final KhachHangService khachHangService;
+    private final KhachHangService khachHangService;
 
 
     //    @GetMapping("")
@@ -38,6 +43,7 @@ public class MaGiamGiaController {
                          @RequestParam(name = "trangThai", required = false) Boolean trangThai) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<MaGiamGia> khuyenMais;
+//        MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia);
 
         if (name != null && !name.isEmpty()) {
             model.addAttribute("nameSearch", name);
@@ -56,8 +62,8 @@ public class MaGiamGiaController {
 
     @PostMapping("/add")
     public ResponseEntity<?> add(Model model, @RequestBody MaGiamGiaDTO maGiamGiaDTO
-                                 ) {
-        System.out.println("maGiamGia"+maGiamGiaDTO.getMaGiamGia());
+    ) {
+        System.out.println("maGiamGia" + maGiamGiaDTO.getMaGiamGia());
         MaGiamGia gg1 = maGiamGiaRepository.searchMaGiamGiaByMa(maGiamGiaDTO.getMaGiamGia());
         MaGiamGia gg2 = maGiamGiaRepository.searchMaGiamGiaByTen(maGiamGiaDTO.getTenMaGiamGia());
 
@@ -74,10 +80,24 @@ public class MaGiamGiaController {
             maGiamGia1.setTrangThai(true);
 
             maGIamGiaService.addMaGiamGia(maGiamGia1);
-            for (Integer o : maGiamGiaDTO.getListId()){
-                System.out.println("iddd" + o);
-                maGIamGiaService.insertKhachHangMgg(o,maGIamGiaService.top1IdMaGiamGia());
+
+            int[] listIdKhachHang = null;
+            listIdKhachHang=  maGiamGiaDTO.getListId();
+            if (listIdKhachHang.length == 0) {
+                for (KhachHang o: khachHangService.getListKhachHang()) {
+                    maGIamGiaService.insertKhachHangMgg(o.getId(), maGIamGiaService.top1IdMaGiamGia());
+                }
+
+            } else {
+                for (int i = 0; i < listIdKhachHang.length; i++) {
+                    int o = listIdKhachHang[i];
+                    System.out.println("do dai " + listIdKhachHang.length);
+
+                    System.out.println("idnay" + o);
+                    maGIamGiaService.insertKhachHangMgg(o, maGIamGiaService.top1IdMaGiamGia());
+                }
             }
+
             return ResponseEntity.ok("ok");
         } else if (gg1 != null && gg2 == null) {
             return ResponseEntity.ok("errorMa");
@@ -85,33 +105,45 @@ public class MaGiamGiaController {
             return ResponseEntity.ok("errorTen");
         }
     }
+    public LocalDate formatterDate(String temp){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(temp);
+        return date;
+    }
 
     @PostMapping("/update")
-    public ResponseEntity<?> suaMGG(@RequestParam("id") Integer id,
-                                    @RequestParam("maGiamGia") String maGiamGia,
-                                    @RequestParam("tenMaGiamGia") String tenMaGiamGia,
-                                    @RequestParam("giaTriGiam") double giaTriGiam,
-                                    @RequestParam("ngayBatDau") String ngayBatDau,
-                                    @RequestParam("soLuong") Integer soLuong,
-                                    @RequestParam("dieuKienGiam") Integer dieuKienGiam,
-                                    @RequestParam("ngayKetThuc") String ngayKetThuc,
-                                    @RequestParam("moTa") String moTa,
-                                    @RequestParam("trangThai") boolean trangThai) {
+    public ResponseEntity<?> suaMGG(@RequestBody MaGiamGiaDTO maGiamGiaDTO) {
 
+        MaGiamGia maGiamGia1 = maGiamGiaRepository.searchMaGiamGiaByMa(maGiamGiaDTO.getMaGiamGia());
+        maGiamGia1.setMaGiamGia(maGiamGiaDTO.getMaGiamGia());
+        maGiamGia1.setTenMaGiamGia(maGiamGiaDTO.getTenMaGiamGia());
+        maGiamGia1.setGiaTriGiam(maGiamGiaDTO.getGiaTriGiam());
+        maGiamGia1.setNgayBatDau(maGiamGiaDTO.getNgayBatDau());
+        maGiamGia1.setNgayKetThuc(maGiamGiaDTO.getNgayKetThuc());
+        maGiamGia1.setSoLuong(maGiamGiaDTO.getSoLuong());
+        maGiamGia1.setDieuKienGiam(maGiamGiaDTO.getDieuKienGiam());
+        maGiamGia1.setMoTa(maGiamGiaDTO.getMoTa());
+        maGiamGia1.setTrangThai(maGiamGiaDTO.isTrangThai());
+        maGIamGiaService.editMaGiamGia(maGiamGia1.getId(), maGiamGia1);
+        maGIamGiaService.deleteDanhSachKhMggByIdMgg(maGiamGia1.getId());
 
-        MaGiamGia maGiamGia1 = maGIamGiaService.getidMaGiamGia(id);
-//        System.out.println(maChucVu);
-        maGiamGia1.setMaGiamGia(maGiamGia);
-        maGiamGia1.setTenMaGiamGia(tenMaGiamGia);
-        maGiamGia1.setGiaTriGiam(giaTriGiam);
-        maGiamGia1.setNgayBatDau(ngayBatDau);
-        maGiamGia1.setNgayKetThuc(ngayKetThuc);
-        maGiamGia1.setSoLuong(soLuong);
-        maGiamGia1.setDieuKienGiam(dieuKienGiam);
-        maGiamGia1.setMoTa(moTa);
-        maGiamGia1.setTrangThai(trangThai);
+        int[] listIdKhachHang = null;
+        listIdKhachHang=  maGiamGiaDTO.getListId();
+        if (listIdKhachHang.length == 0) {
+            for (KhachHang o: khachHangService.getListKhachHang()) {
+                maGIamGiaService.insertKhachHangMgg(o.getId(),maGiamGia1.getId());
+            }
 
-        maGIamGiaService.editMaGiamGia(id, maGiamGia1);
+        } else {
+            for (int i = 0; i < listIdKhachHang.length; i++) {
+                int o = listIdKhachHang[i];
+                System.out.println("do dai " + listIdKhachHang.length);
+
+                System.out.println("idnay" + o);
+                maGIamGiaService.insertKhachHangMgg(o,maGiamGia1.getId());
+            }
+        }
+
         return ResponseEntity.ok("ok");
     }
 
@@ -133,19 +165,25 @@ public class MaGiamGiaController {
     }
 
     @PostMapping("/ap-dung-ma-giam-gia")
-    public ResponseEntity<?> apDungMaGiamGia( @RequestParam("idKhachHang") int idKhachHang ,
-                                              @RequestParam("maGiamGia") String maGiamGia) {
-        System.out.println("idkh"+idKhachHang);
-        System.out.println("mgg"+maGiamGia);
+    public ResponseEntity<?> apDungMaGiamGia(@RequestParam("idKhachHang") int idKhachHang,
+                                             @RequestParam("maGiamGia") String maGiamGia) {
+        System.out.println("idkh" + idKhachHang);
+        System.out.println("mgg" + maGiamGia);
 
         MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia);
         System.out.println("gai tri giam" + maGiamGia1.getGiaTriGiam());
-        int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang,maGiamGia1.getId());
-        if (danhSachKhachHangApMgg >0) {
-            double giaTriGiam = maGiamGia1.getGiaTriGiam();
-            return ResponseEntity.ok(giaTriGiam);
+        int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang, maGiamGia1.getId());
+        if (danhSachKhachHangApMgg > 0) {
+            return ResponseEntity.ok(maGiamGia1);
         } else {
             return ResponseEntity.ok("error");
         }
+    }
+
+    @PostMapping("/get-lishkh-by-mgg")
+    public ResponseEntity<?> getListKhByMgg(@RequestParam("id") int id) {
+        int[] maGiamGia = maGIamGiaService.getidKhByMgg(id);
+        return ResponseEntity.ok(maGiamGia);
+
     }
 }

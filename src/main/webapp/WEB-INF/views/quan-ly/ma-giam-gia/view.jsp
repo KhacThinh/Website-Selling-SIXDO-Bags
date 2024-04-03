@@ -200,7 +200,9 @@
                             <li>
                             <li>
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#modalUpdateMGG${sp.id}"><i class="bi bi-pencil"></i> Sửa
+                                        onclick="getDataKhachHangByMgg(${sp.id})"
+                                        data-bs-target="#modalUpdateMGG${sp.id}">
+                                    <i class="bi bi-pencil"></i> Sửa
                                 </button>
                             </li>
 
@@ -225,75 +227,72 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
-                                            <div class="mb-3 row">
-                                                <label for="maUpdate${sp.id}" class="col-sm-3 col-form-label">Mã Giảm
-                                                    Giá <span>*</span></label>
-                                                <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="maUpdate${sp.id}">Mã Giảm
+                                                        Giá <span>*</span></label>
                                                     <input disabled value="${sp.maGiamGia}" name="maGiamGia"
                                                            id="maUpdate${sp.id}" class="form-control">
                                                 </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="tenUpdate${sp.id}" class="col-sm-3 col-form-label">Tên Mã
-                                                    Giảm Giá <span>*</span></label>
-                                                <div class="col-sm-9">
-                                                    <input value="${sp.tenMaGiamGia}" name="tenMaGiamGia"
-                                                           id="tenUpdate${sp.id}" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="giaTriGiamUpdate${sp.id}" class="col-sm-3 col-form-label">Giá
-                                                    Trị Giảm <span>*</span></label>
-                                                <div class="col-sm-9">
+
+                                                <div class="form-group">
+                                                    <label for="giaTriGiamUpdate${sp.id}">Giá
+                                                        Trị Giảm <span>*</span></label>
                                                     <input value="${sp.giaTriGiam}" name="giaTriGiam"
                                                            id="giaTriGiamUpdate${sp.id}" class="form-control">
+
                                                 </div>
                                             </div>
-                                            <div class="mb-3 row">
-                                                <label for="ngayBatDauUpdate${sp.id}" class="col-sm-3 col-form-label">Ngày
-                                                    Bắt Đầu <span>*</span></label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" value="${sp.ngayBatDau}" name="ngayBatDau"
-                                                           id="ngayBatDauUpdate${sp.id}" class="form-control">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="tenUpdate${sp.id}">Tên Mã
+                                                        Giảm Giá <span>*</span></label>
+
+                                                    <input value="${sp.tenMaGiamGia}" name="tenMaGiamGia"
+                                                           id="tenUpdate${sp.id}" class="form-control">
+
                                                 </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="ngayKetThucUpdate${sp.id}" class="col-sm-3 col-form-label">Ngày
-                                                    Kết Thúc <span>*</span></label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" value="${sp.ngayKetThuc}" name="ngayKetThuc"
-                                                           id="ngayKetThucUpdate${sp.id}" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="soLuongUpdate${sp.id}" class="col-sm-3 col-form-label">Số
-                                                    Lượng <span>*</span></label>
-                                                <div class="col-sm-9">
+
+                                                <div class="form-group">
+                                                    <label for="soLuongUpdate${sp.id}">Số
+                                                        Lượng <span>*</span></label>
+
                                                     <input value="${sp.soLuong}" name="soLuong"
                                                            id="soLuongUpdate${sp.id}" class="form-control">
+
                                                 </div>
                                             </div>
-                                            <div class="mb-3 row">
-                                                <label for="dieuKienGiamUpdate${sp.id}" class="col-sm-3 col-form-label">Điều
-                                                    Kiện Giảm <span>*</span></label>
-                                                <div class="col-sm-9">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="ngayBatDauUpdate${sp.id}">Ngày
+                                                        Bắt Đầu <span>*</span></label>
+                                                    <input type="datetime-local" value="${sp.ngayBatDau}" name="ngayBatDau"
+                                                           id="ngayBatDauUpdate${sp.id}" class="form-control">
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="dieuKienGiamUpdate${sp.id}">Điều
+                                                        Kiện Giảm <span>*</span></label>
                                                     <input value="${sp.dieuKienGiam}" name="dieuKienGiam"
                                                            id="dieuKienGiamUpdate${sp.id}" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="mb-3 row">
-                                                <label for="moTaUpdate${sp.id}" class="col-sm-3 col-form-label">Mô Tả
-                                                    <span>*</span></label>
-                                                <div class="col-sm-9">
-                                                    <input value="${sp.moTa}" name="moTa" id="moTaUpdate${sp.id}"
-                                                           class="form-control">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="ngayKetThucUpdate${sp.id}">Ngày
+                                                        Kết Thúc <span>*</span></label>
+                                                    <input type="datetime-local" value="${sp.ngayKetThuc}" name="ngayKetThuc"
+                                                           id="ngayKetThucUpdate${sp.id}" class="form-control">
                                                 </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="trangThaiUpdate${sp.id}" class="col-sm-3 col-form-label">Trạng
-                                                    Thái <span>*</span></label>
-                                                <div class="col-sm-9">
+
+                                                <div class="form-group">
+                                                    <label for="trangThaiUpdate${sp.id}">Trạng
+                                                        Thái <span>*</span></label>
                                                     <select name="trangThai" id="trangThaiUpdate${sp.id}"
                                                             class="form-select">
                                                         <option value="true"${sp.trangThai == true ? 'selected' : ''}>
@@ -303,16 +302,56 @@
                                                             Không hoạt động
                                                         </option>
                                                     </select>
+
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát
-                                        </button>
-                                        <button type="submit" id="uploadButton" class="btn btn-primary"
-                                                onclick="updateMaGiamGia(${sp.id})">Lưu
-                                        </button>
+
+                                        </div>
+
+                                        <h6 class=" mb-4" style="padding-top: 0px;margin-left: 20px; font-weight: bold">
+                                            <i class="fas fa-tags"></i>Khách Hàng Áp Dụng (Bỏ trống để áp dụng cho tất
+                                            cả) </h6>
+
+                                        <div class="modal-body table-wrapper" style="margin-top: 0px;padding-top: 0px">
+                                            <table class="table"
+                                                   style="margin-top: 0px;padding-top: 0px; font-size: 18px">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Mã Khách Hàng</th>
+                                                    <th scope="col">Tên Khách Hàng</th>
+                                                    <th scope="col">Email</th>
+                                                    <th scope="col">SĐT</th>
+
+                                                    <th scope="col">Chọn</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach var="customer" items="${listsKhachHang}">
+                                                    <tr>
+                                                        <th scope="row">${customer.maKhachHang}</th>
+                                                        <td>${customer.tenKhachHang}</td>
+                                                        <td>${customer.email}</td>
+                                                        <td>${customer.sdt}</td>
+
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input checkbox-for-${sp.id}" id="lll-${customer.id}-${sp.id}">
+
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Thoát
+                                            </button>
+                                            <button type="submit" id="uploadButton" class="btn btn-primary"
+                                                    onclick="updateMaGiamGia(${sp.id})">Lưu
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -347,6 +386,44 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 <script>
+    var listlh = []; // Khởi tạo mảng JavaScript
+    <c:forEach var="customer" items="${listsKhachHang}">
+    listlh.push(${customer.id});
+    </c:forEach>
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     var checkbox = document.getElementById("lll");
+    //     if (checkbox) {
+    //         checkbox.checked = true;
+    //     }
+    // });
+
+
+
+    function getDataKhachHangByMgg(idMgg) {
+        $.ajax({
+            url: '/ma-giam-gia/get-lishkh-by-mgg',
+            type: 'POST',
+            data: {
+                id: idMgg,
+            },
+            success: function (response) {
+                var customerIds = listlh;
+                response.forEach(function (id) {
+                    console.log("listnho " + id);
+                    var checkbox = document.getElementById("lll-" + id+"-"+idMgg);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
+            }
+        });
+
+    }
+
     function xoaMaGiamGia(id) {
         $.ajax({
             url: '/ma-giam-gia/delete/' + id,
@@ -385,7 +462,7 @@
     function createData() {
         var selectedCustomers = [];
         // Duyệt qua các input checkbox trong bảng
-        $("input[type='checkbox']").each(function () {
+        $("input[type='checkbox'].add-checkbox-for").each(function () {
 
             // Kiểm tra xem checkbox có được chọn không
             if ($(this).is(":checked")) {
@@ -398,22 +475,22 @@
         });
         var maGiamGiaDTO = {
             listId: selectedCustomers,
-                maGiamGia: document.getElementById("maGiamGia").value,
-                tenMaGiamGia: document.getElementById("tenMaGiamGia").value,
-                giaTriGiam: document.getElementById("giaTriGiam").value,
-                 ngayBatDau : document.getElementById("ngayBatDau").value,
-                 ngayKetThuc  :document.getElementById("ngayKetThuc").value,
-                 soLuong : document.getElementById("soLuong").value,
-                 dieuKienGiam : document.getElementById("dieuKienGiam").value,
-                 moTa : document.getElementById("moTa").value,
-                 trangThai : 1
+            maGiamGia: document.getElementById("maGiamGia").value,
+            tenMaGiamGia: document.getElementById("tenMaGiamGia").value,
+            giaTriGiam: document.getElementById("giaTriGiam").value,
+            ngayBatDau: document.getElementById("ngayBatDau").value,
+            ngayKetThuc: document.getElementById("ngayKetThuc").value,
+            soLuong: document.getElementById("soLuong").value,
+            dieuKienGiam: document.getElementById("dieuKienGiam").value,
+            moTa: "OK",
+            trangThai: 1
 
 
         };
-        console.log("id kh "+ selectedCustomers)
-
         return maGiamGiaDTO;
     }
+
+
     function addMaGiamGia() {
         var maGiamGia = document.getElementById("maGiamGia").value;
         var tenMaGiamGia = document.getElementById("tenMaGiamGia").value;
@@ -494,6 +571,38 @@
     }
 
 
+    function updateData(id) {
+        var trangThai = document.getElementById("trangThaiUpdate" + id).value;
+
+        var selectedCustomers = [];
+        // Duyệt qua các input checkbox trong bảng
+        $("input[type='checkbox'].checkbox-for-" + id).each(function () {
+
+            // Kiểm tra xem checkbox có được chọn không
+            if ($(this).is(":checked")) {
+                // Lấy ID của khách hàng từ thuộc tính id của input
+                var listId = $(this).attr("id").split("-")[1];
+                selectedCustomers.push(listId);
+
+            }
+        });
+        var maGiamGiaDTO = {
+            listId: selectedCustomers,
+            maGiamGia: document.getElementById("maUpdate" + id).value,
+            tenMaGiamGia: document.getElementById("tenUpdate" + id).value,
+            giaTriGiam: document.getElementById("giaTriGiamUpdate" + id).value,
+            ngayBatDau: document.getElementById("ngayBatDauUpdate" + id).value,
+            ngayKetThuc: document.getElementById("ngayKetThucUpdate" + id).value,
+            soLuong: document.getElementById("soLuongUpdate" + id).value,
+            dieuKienGiam: document.getElementById("dieuKienGiamUpdate" + id).value,
+            moTa: "OK",
+            trangThai: trangThai
+
+
+        };
+        return maGiamGiaDTO;
+    }
+
     function updateMaGiamGia(id) {
         var maGiamGia = document.getElementById("maUpdate" + id).value;
         var tenMaGiamGia = document.getElementById("tenUpdate" + id).value;
@@ -502,9 +611,8 @@
         var ngayKetThuc = document.getElementById("ngayKetThucUpdate" + id).value;
         var soLuong = document.getElementById("soLuongUpdate" + id).value;
         var dieuKienGiam = document.getElementById("dieuKienGiamUpdate" + id).value;
-        var moTa = document.getElementById("moTaUpdate" + id).value;
-        // var trangThai = document.getElementById("trangThaiUpdate" + id).value;
-        var trangThai = 1;
+        var moTa = "OK";
+
 
 
         if (maGiamGia.trim() === ""
@@ -540,22 +648,13 @@
             toastr.error("Điều kiện giảm phải lớn hơn 0 và là một số.");
             return false;
         }
+        var maGiamGiaDTO = updateData(id);
+
         $.ajax({
             url: '/ma-giam-gia/update',
             type: 'POST',
-            data: {
-                id: id,
-                maGiamGia: maGiamGia,
-                tenMaGiamGia: tenMaGiamGia,
-                giaTriGiam: giaTriGiam,
-                ngayBatDau: ngayBatDau,
-                ngayKetThuc: ngayKetThuc,
-                soLuong: soLuong,
-                dieuKienGiam: dieuKienGiam,
-                moTa: moTa,
-                trangThai: trangThai,
-
-            },
+            contentType: 'application/json',
+            data: JSON.stringify(maGiamGiaDTO),
             success: function (response) {
                 if (response === "ok") {
                     Swal.fire({
@@ -580,6 +679,13 @@
         });
 
     }
+
+
+
+
+
+
+
 
     document.getElementById('trangThaiSelect').addEventListener('change', function () {
         var selectedValue = this.value;

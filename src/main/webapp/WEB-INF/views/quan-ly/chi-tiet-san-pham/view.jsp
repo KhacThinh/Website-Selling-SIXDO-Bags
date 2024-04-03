@@ -53,6 +53,7 @@
 
 <body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container">
     <div class="title text-center pt-5">
@@ -428,6 +429,8 @@
                 setTimeout(function () {
                     location.reload(); // Load lại trang sau 2 giây
                 }, 2000); // 2000 milliseconds = 2 giây
+
+
             },
 
             error: function (xhr, status, error) {

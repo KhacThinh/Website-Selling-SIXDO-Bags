@@ -49,13 +49,13 @@ public class MaGiamGia {
     //    @Column(name = "ngay_bat_dau")
 //    private LocalDateTime ngayBatDau;
     @Column(name = "ngay_bat_dau")
-    private String ngayBatDau;
+    private LocalDateTime ngayBatDau;
 
 //    @Column(name = "ngay_ket_thuc")
 //    private LocalDateTime ngayKetThuc;
 
     @Column(name = "ngay_ket_thuc")
-    private String ngayKetThuc;
+    private LocalDateTime ngayKetThuc;
 
 //    @NotBlank(message = "Mô Tả Không Được Để Khoảng Trắng")
 //    @NotEmpty(message = "Mô Tả Không Được Để Trống")

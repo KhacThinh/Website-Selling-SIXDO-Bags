@@ -151,7 +151,7 @@
                 <div class="navbar_content">
                     <c:choose>
                         <c:when test="${khachHang == null}">
-                            <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
+                            <button type="button"  class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
                                     style="margin-left: 20px;">Đăng nhập
                             </button>
                         </c:when>

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,8 +16,8 @@ public class MaGiamGiaDTO {
     private String maGiamGia;
     private String tenMaGiamGia;
     private double giaTriGiam;
-    private String ngayBatDau;
-    private String ngayKetThuc;
+    private LocalDateTime ngayBatDau;
+    private LocalDateTime ngayKetThuc;
     private int soLuong;
     private int dieuKienGiam;
     private String moTa;

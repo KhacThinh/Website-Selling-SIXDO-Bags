@@ -20,6 +20,7 @@ public interface MaGiamGiaService {
     public List<MaGiamGia> getListMaGiamGia();
 
     public MaGiamGia addMaGiamGia(MaGiamGia maGiamGia);
+    void deleteDanhSachKhMggByIdMgg(int idMaGiamGia);
 
     public MaGiamGia searchMaGiamGiaByMa(String maGiamGia);
 
@@ -28,10 +29,10 @@ public interface MaGiamGiaService {
     public MaGiamGia deleteMaGiamGia(Integer idMaGiamGia);
 
     public List<MaGiamGia> pageMaGiamGia(int limit, int size);
-
+    int [] getidKhByMgg(int idMaGiamGia);
     public MaGiamGia getidMaGiamGia(Integer idChucVu);
-   void insertKhachHangMgg(int idKhachHang, int idMaGiamGia );
-int top1IdMaGiamGia();
+    void insertKhachHangMgg(int idKhachHang, int idMaGiamGia );
+    int top1IdMaGiamGia();
     ////////////////////////////////////////////////////////////////////
     public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable);
     public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable);
