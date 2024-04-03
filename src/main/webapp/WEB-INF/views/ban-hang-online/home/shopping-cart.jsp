@@ -51,6 +51,64 @@
 
         <%@include file="../../../views/ban-hang-online/css/main.css" %>
         <%@include file="../../../views/ban-hang-online/css/util.css" %>
+
+        .btn-selected {
+            background-color: #5c6bc0;
+            color: #f0f0f0;
+        }
+
+        .btn-unselected {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        #diaChiDiv {
+            font-family: Arial, sans-serif;
+            color: #333; /* Màu chữ */
+        }
+
+        #diaChiDiv .stext-112 {
+            font-size: 16px; /* Kích thước phông chữ */
+            font-weight: bold; /* Độ đậm của phông chữ */
+        }
+
+        #diaChiDiv .rs1-select2 {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px; /* Khoảng cách giữa các thành phần */
+        }
+
+        #diaChiDiv .rs1-select2 select {
+            width: 100%; /* Chiều rộng của dropdown */
+            padding: 10px; /* Khoảng cách nội dung với viền */
+            border: 1px solid #ccc; /* Viền của dropdown */
+            border-radius: 5px; /* Độ cong của góc */
+            outline: none; /* Loại bỏ đường viền khi focus */
+            background-color: #fff; /* Màu nền của dropdown */
+            font-size: 14px; /* Kích thước phông chữ */
+            color: #333; /* Màu chữ */
+        }
+
+        #diaChiDiv .rs1-select2 .dropDownSelect2 {
+            display: none; /* Ẩn dropdown mặc định */
+        }
+
+        #diaChiDiv .bor8 {
+            border: 1px solid #ccc; /* Viền của ô nhập liệu */
+            border-radius: 5px; /* Độ cong của góc */
+        }
+
+        #diaChiDiv input[type="text"] {
+            width: 100%; /* Chiều rộng của ô nhập liệu */
+            padding: 10px; /* Khoảng cách nội dung với viền */
+            border: 1px solid #ccc; /* Viền của ô nhập liệu */
+            border-radius: 5px; /* Độ cong của góc */
+            outline: none; /* Loại bỏ đường viền khi focus */
+            font-size: 14px; /* Kích thước phông chữ */
+            color: #333; /* Màu chữ */
+        }
+
+
     </style>
 </head>
 <body class="animsition">
@@ -82,18 +140,18 @@
 <form class="bg0 p-t-75 p-b-85">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 col-xl-7 m-lr-auto m-b-30" >
+            <div class="col-lg-8 col-xl-8 m-lr-auto m-b-30">
                 <div class="m-l-12 m-r--38 m-lr-0-xl">
-                    <div class="wrap-table-shopping-cart" >
+                    <div class="wrap-table-shopping-cart">
                         <table class="table-shopping-cart" id="iiiid">
                             <thead>
                             <tr class="table_head">
-                                <th class="column-1">Sản Phẩm</th>
-                                <th class="column-2"></th>
+                                <th class="column-1" colspan="2">Sản Phẩm</th>
+                                <%--                                <th class="column-2"></th>--%>
                                 <th class="column-3">Giá</th>
-                                <th class="column-4">Số Lượng</th>
+                                <th class="column-4" style="vertical-align: middle; text-align: center;">Số Lượng</th>
                                 <th class="column-5">Tổng Tiền</th>
-                                <th class="column-6"></th>
+                                <th class="column-6">Xoá</th>
 
                             </tr>
                             </thead>
@@ -161,13 +219,15 @@
                                     <td>
                                         <button class="delete-product" data-product-id="${o.chiTietSanPham.id}"
                                                 onclick="deleteProductShopingCart(${o.chiTietSanPham.id}, this); return false;">
-                                            X
+                                            <i class="bi bi-trash3"></i>
                                         </button>
 
                                     </td>
                                 </tr>
 
 
+                                <link rel="stylesheet"
+                                      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
                                 <script>
                                     // Lấy phần tử div có id là 'btn-minus'
                                     var btnMinus = document.getElementById('btn-minus-${i.index}');
@@ -434,10 +494,11 @@
                 </div>
             </div>
 
-            <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
-                <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm" style="width: 430px;">
+            <div class="col-sm-10 col-lg-4 col-xl-4 m-lr-auto m-b-50">
+                <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm"
+                     style="width: 430px; margin: 0 20px;">
                     <h4 class="mtext-109 cl2 p-b-30">
-                        Cart Totals
+                        TỔNG GIỎ HÀNG
                     </h4>
 
                     <div class="flex-w flex-t bor12 p-b-13">
@@ -448,15 +509,14 @@
                         </div>
 
                         <div class="size-209">
-<span class="mtext-110 cl2" id="sumCart">
-    <fmt:formatNumber pattern="#,###" var="tempTongTam"
-                      value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ
-</span>
-
+                            <span class="mtext-110 cl2" id="sumCart">
+                                <fmt:formatNumber pattern="#,###" var="tempTongTam"
+                                                  value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ
+                            </span>
                         </div>
                     </div>
 
-                    <div class="flex-w flex-t bor12 p-b-13">
+                    <div class="flex-w flex-t bor12 p-b-13 mt-2">
                         <div class="size-208">
 								<span class="stext-110 cl2">
                                     Giảm Giá :
@@ -470,66 +530,70 @@
                     </div>
 
                     <div class="flex-w flex-t bor12 p-t-15 p-b-30">
-                        <%--                        <div class="size-208 w-full-ssm">--%>
-
-                        <%--                        </div>--%>
-
-                        <div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
-                            <p class="stext-112 cl8 p-b-15">Thông Tin Người Nhận</p>
-
-                            <div style="display: flex; width: 370px;">
-                                <div class="bor8 bg0 m-b-12 m-r-15 w-150">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="name-for-cart"
-                                           placeholder="Tên người nhận">
-                                </div>
-
-                                <div class="bor8 bg0 m-b-12">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone-for-cart"
-                                           placeholder="Số điện thoại">
-                                </div>
-                            </div>
-
-                            <div class="bor8 bg0 m-b-12" style="width: 370px;">
-                                <input class="stext-111 cl8 plh3 size-111 p-lr-15 w-400" type="email"
-                                       name="email-for-cart"
-                                       placeholder="Email  ( Không Bắt Buộc, Gửi Email Để Xác Nhận )">
-                            </div>
-
-                            <div class="p-t-15">
-                                <span class="stext-112 cl8">
-										Địa Chỉ
-									</span>
+                        <p class="stext-112 cl8 p-b-15">Thông Tin Người Nhận</p>
+                        <div style="display: flex; justify-content: space-between;">
+                            <button type="button"
+                                    class="btn-select-address btn-selected stext-111 cl8 plh3 size-111 p-lr-15 px-4 bor8 bg0"
+                                    id="defaultAddressBtn" style="width: 150px">Địa chỉ mặc định
+                            </button>
+                            <button type="button"
+                                    class="btn-select-address stext-111 cl8 plh3 size-111 p-lr-15 bor8 bg0"
+                                    id="customAddressBtn" style="width: 200px">Nhập địa chỉ nhận hàng
+                            </button>
+                        </div>
+                        <div id="infoRecipient" style="display:none;">
+                            <p class="stext-112 cl8 p-b-15"></p>
+                            <div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
 
                                 <div style="display: flex; width: 370px;">
-
-
-                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9"
-                                         style="width: 180px; margin-right: 16px">
-                                        <select class="js-select2" name="time" id="city">
-                                            <option>Chọn Tỉnh Thành</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
+                                    <div class="bor8 bg0 m-b-12 m-r-15 w-150">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
+                                               name="name-for-cart" placeholder="Tên người nhận">
                                     </div>
 
-                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 180px;">
-                                        <select class="js-select2" name="time" id="district">
-                                            <option>Chọn Quận Huyện</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
+                                               name="phone-for-cart" placeholder="Số điện thoại">
                                     </div>
                                 </div>
 
-                                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 370px;">
-                                    <select class="js-select2" name="time" id="ward">
-                                        <option>Chọn Phường Xã</option>
-                                    </select>
-                                    <div class="dropDownSelect2"></div>
-                                </div>
                                 <div class="bor8 bg0 m-b-12" style="width: 370px;">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15 w-400" type="text" id="village"
-                                           placeholder="Địa Chỉ Cụ Thể  (Số Nhà, Thôn, Ấp...)">
+                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15 w-400" type="email"
+                                           name="email-for-cart"
+                                           placeholder="Email (Không Bắt Buộc, Gửi Email Để Xác Nhận)">
                                 </div>
 
+                                <div class="p-t-15" id="diaChiDiv">
+                                    <span class="stext-112 cl8">Địa Chỉ</span>
+                                    <div style="display: flex; width: 370px;">
+                                        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9"
+                                             style="width: 180px; margin-right: 16px">
+                                            <select class="js-select2" name="time" id="city">
+                                                <option>Chọn Tỉnh Thành</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+
+                                        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9"
+                                             style="width: 180px;">
+                                            <select class="js-select2" name="time" id="district">
+                                                <option>Chọn Quận Huyện</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9" style="width: 370px;">
+                                        <select class="js-select2" name="time" id="ward">
+                                            <option>Chọn Phường Xã</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                    <div class="bor8 bg0 m-b-12" style="width: 370px;">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15 w-400" type="text"
+                                               id="village" placeholder="Địa Chỉ Cụ Thể (Số Nhà, Thôn, Ấp...)">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -544,13 +608,14 @@
                         <div class="size-209 p-t-1">
 								<span class="mtext-110 cl2" id="last-price">
 <fmt:formatNumber pattern="#,###" var="tempTongTam"
-                  value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ								</span>
+                  value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ</span>
                         </div>
                     </div>
 
-                    <p class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 submit-oder-by-cart">
+                    <button type="button"
+                            class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 submit-oder-by-cart">
                         Đặt Hàng
-                    </p>
+                    </button>
 
 
                 </div>
@@ -608,14 +673,36 @@
     <%@include file="../../../views/ban-hang-online/js/main.js" %>
 
 </script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
 
+    var currentClick = "default";
+
+    $("#defaultAddressBtn").click(function () {
+        if (currentClick !== "default") {
+            // Xử lý khi chuyển từ click khác sang "defaultAddressBtn"
+            $("#infoRecipient").hide();
+            // Loại bỏ lớp CSS và thêm lớp CSS mới cho các nút
+            $("#defaultAddressBtn").removeClass("btn-unselected").addClass("btn-selected");
+            $("#customAddressBtn").removeClass("btn-selected").addClass("btn-unselected");
+        }
+        currentClick = "default";
+    });
+
+    $("#customAddressBtn").click(function () {
+        if (currentClick !== "custom") {
+            // Xử lý khi chuyển từ click khác sang "customAddressBtn"
+            $("#infoRecipient").show();
+            // Loại bỏ lớp CSS và thêm lớp CSS mới cho các nút
+            $("#customAddressBtn").removeClass("btn-unselected").addClass("btn-selected");
+            $("#defaultAddressBtn").removeClass("btn-selected").addClass("btn-unselected");
+        }
+        currentClick = "custom";
+    });
+
 
     $(document).ready(function () {
-
-
         $('.apply-coupon').on('click', function () {
             var maGiamGiaValue = document.getElementById('maGiamGiaInput').value;
             console.log("mggg" + maGiamGiaValue)
@@ -652,35 +739,121 @@
         productList.push(product);
         </c:forEach>
 
-        function createOrderData() {
-            var name = document.querySelector('input[name="name-for-cart"]').value;
-            var phone = document.querySelector('input[name="phone-for-cart"]').value;
-            var email = document.querySelector('input[name="email-for-cart"]').value;
+        function showErrorAlert(message) {
+            Swal.fire({
+                title: 'Lỗi',
+                text: message,
+                icon: 'error'
+            });
+        }
+
+        function isValidPhoneNumber(phone) {
+            var phonePattern = /^0\d{9,10}$/;
+            return phonePattern.test(phone);
+        }
+
+        function createOrderCustomerinput() {
+            var name = document.querySelector('input[name="name-for-cart"]').value.trim();
+            var phone = document.querySelector('input[name="phone-for-cart"]').value.trim();
+            var email = document.querySelector('input[name="email-for-cart"]').value.trim();
             var city = document.getElementById('city').value;
             var district = document.getElementById('district').value;
             var ward = document.getElementById('ward').value;
-            var village = document.getElementById('village').value;
+            var village = document.getElementById('village').value.trim();
+            var lastPrice = document.getElementById('last-price').textContent;
+            var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
+
+            var errors = [];
+
+            if (name === '') {
+                errors.push("Vui lòng nhập Tên người nhận!");
+            }
+
+            if (phone === '') {
+                errors.push("Vui lòng nhập Số điện thoại!");
+            } else if (!isValidPhoneNumber(phone)) {
+                errors.push("Số điện thoại không hợp lệ!");
+            }
+
+            if (city === 'Chọn Tỉnh Thành') {
+                errors.push("Vui lòng chọn Tỉnh Thành!");
+            }
+
+            if (district === 'Chọn Quận Huyện') {
+                errors.push("Vui lòng chọn Quận Huyện!");
+            }
+
+            if (ward === 'Chọn Phường Xã') {
+                errors.push("Vui lòng chọn Phường Xã!");
+            }
+
+            if (village === '') {
+                errors.push("Vui lòng nhập Địa Chỉ Cụ Thể!");
+            }
+
+            if (errors.length > 0) {
+                showErrorAlert(errors.join('\n'));
+                return null; // Trả về null nếu có lỗi
+            }
+
+            // Nếu không có lỗi, tiếp tục xử lý dữ liệu
+            var address = village + ', ' + ward + ', ' + district + ', ' + city;
+
+            var orderData = {
+                cart: productList,
+                hoadon: {
+                    tenNguoiNhan: name,
+                    sdtNguoiNhan: phone,
+                    emailNguoiNhan: email,
+                    diaChiNguoiNhan: address,
+                    tongTien: parseFloat(${totalPrice})
+                },
+                khachHang: {
+                    id: ${khachHang.id}
+                }
+            };
+
+            return orderData;
+        }
+
+
+        function defaultAddressCustomer() {
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
 
             console.log("kkkkkkkss " + parseFloat(lastPriceCleaned))
 
-            var orderData = {
-                cart: productList,
-                hoadon: {
-                    tenNguoiNhan: "${khachHang.tenKhachHang}",
-                    sdtNguoiNhan: ${khachHang.sdt},
-                    emailNguoiNhan: "${khachHang.email}",
-                    diaChiNguoiNhan: "${khachHang.diaChi}",
-                    tongTien: parseFloat(${totalPrice})
+            $.ajax({
+                type: 'GET',
+                url: '/check-customer/mail',
+                data: {id: "${khachHang.id}"},
+                success: function (data) {
+                    if (data != null) {
+                        if (data.tenKhachHang.trim() === '' || data.sdt.trim() === '' || data.diaChi.trim() === '') {
+                            showErrorAlert("Địa chỉ mặc định vẫn còn thiếu vui lòng vô kiểm tra lại!");
+                            return;
+                        }
+                        var orderData = {
+                            cart: productList,
+                            hoadon: {
+                                tenNguoiNhan: data.tenKhachHang,
+                                sdtNguoiNhan: data.sdt,
+                                emailNguoiNhan: data.email,
+                                diaChiNguoiNhan: data.diaChi,
+                                tongTien: parseFloat(${totalPrice})
 
+                            },
+                            khachHang: {
+                                id:${khachHang.id}
+                            }
+                        };
+                        return orderData;
+                    }
                 },
-                khachHang: {
-                    id:${khachHang.id}
+                error: function () {
+                    Swal.fire('Lỗi', 'Có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
                 }
-            };
-
-            return orderData;
+            });
         }
 
         var formatter = new Intl.NumberFormat('vi-VN', {
@@ -690,82 +863,106 @@
 
 
         $('.submit-oder-by-cart').on('click', function () {
-            var orderData = createOrderData();
+            var orderData = null;
+            if (currentClick === 'default') {
+                orderData = defaultAddressCustomer();
+            } else if (currentClick === 'custom') {
+                var customOrderData = createOrderCustomerinput();
+                if (customOrderData !== null && customOrderData !== undefined) {
+                    orderData = customOrderData;
+                } else {
+                    return;
+                }
+            }
+
+            console.log(orderData);
             var tableRows = document.querySelectorAll('#cartTableBody .table_row');
             console.log(tableRows);
 
-            $.ajax({
-                url: '/sixdo-shop/check-trangThai-ctsp-checkout',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(orderData),
-                success: function (response) {
-                    if (response === "ok") {
-                        // ktra so luong trong kho
-                        $.ajax({
-                            url: '/sixdo-shop/check-soLuong-checkout',
-                            type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify(orderData),
-                            success: function (response) {
-                                if (response.length === 0) {
-                                    // thực hiện việc check out
-                                    $.ajax({
-                                        url: '/sixdo-shop/placeOrder',
-                                        type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify(orderData),
-                                        success: function (response) {
-                                            // Xử lý phản hồi từ máy chủ nếu cần
-                                            console.log(response);
-                                            document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                                            showAlertAddCart('Order Success!', 'The order has been placed', 'success');
-                                            document.getElementById('sumCart').innerText = '0 đ';
-                                            document.getElementById('last-price').innerText = '0 đ';
+            Swal.fire({
+                title: 'Xác nhận đặt đơn',
+                text: 'Bạn có chắc chắn muốn đặt đơn hàng?',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Huỷ',
+                reverseButtons: true,
+                icon: 'info',
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/sixdo-shop/check-trangThai-ctsp-checkout',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(orderData),
+                        success: function (response) {
+                            if (response === "ok") {
+                                // ktra so luong trong kho
+                                $.ajax({
+                                    url: '/sixdo-shop/check-soLuong-checkout',
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(orderData),
+                                    success: function (response) {
+                                        if (response.length === 0) {
+                                            // thực hiện việc check out
+                                            $.ajax({
+                                                url: '/sixdo-shop/placeOrder',
+                                                type: 'POST',
+                                                contentType: 'application/json',
+                                                data: JSON.stringify(orderData),
+                                                success: function (response) {
+                                                    // Xử lý phản hồi từ máy chủ nếu cần
+                                                    console.log(response);
+                                                    document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                                    showAlertAddCart('Order Success!', 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!', 'success');
+                                                    document.getElementById('sumCart').innerText = '0 đ';
+                                                    document.getElementById('last-price').innerText = '0 đ';
 
-                                        },
-                                        error: function (error) {
-                                            // Xử lý lỗi nếu có
-                                            console.error(error);
-                                            showAlertAddCart('Order error.', '', 'error');
+                                                },
+                                                error: function (error) {
+                                                    // Xử lý lỗi nếu có
+                                                    console.error(error);
+                                                    showAlertAddCart('Order error.', '', 'error');
+                                                }
+                                            });
+                                        } else {
+                                            showErrorAlert("Sản phẩm vượt quá số lượng");
                                         }
-                                    });
-                                } else {
-                                    alert("san pham qua so luong");
-                                }
-                            },
-                            error: function (error) {
-                                // Xử lý lỗi nếu có
-                                console.error(error);
-                                showAlertAddCart('Order error.', '', 'error');
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Thông báo!',
-                            text: 'Giỏ hàng của bạn đã được cập nhật. Vui lòng kiểm tra lại.',
-                            showCancelButton: false, // Ẩn nút Hủy bỏ
-                            showConfirmButton: true, // Hiển thị nút Xác nhận
-                            confirmButtonText: 'OK',
-                            allowOutsideClick: false,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
+                                    },
+                                    error: function (error) {
+                                        // Xử lý lỗi nếu có
+                                        console.error(error);
+                                        showAlertAddCart('Order error.', '', 'error');
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Thông báo!',
+                                    text: 'Giỏ hàng của bạn đã được cập nhật. Vui lòng kiểm tra lại.',
+                                    showCancelButton: false, // Ẩn nút Hủy bỏ
+                                    showConfirmButton: true, // Hiển thị nút Xác nhận
+                                    confirmButtonText: 'OK',
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
 
 
-                    }
-                },
-                error: function (error) {
-                    // Xử lý lỗi nếu có
-                    console.error(error);
-                    showAlertAddCart('Order error.', '', 'error');
+                            }
+                        },
+                        error: function (error) {
+                            // Xử lý lỗi nếu có
+                            console.error(error);
+                            showAlertAddCart('Order error.', '', 'error');
+                        }
+                    });
                 }
             });
-
-
         });
+
 
         $(".js-select2").each(function () {
             $(this).select2({
@@ -781,7 +978,7 @@
                 title: title,
                 text: mess,
                 showConfirmButton: false,
-                timer: 1000,
+                timer: 2000,
                 customClass: {
                     container: 'swal-custom'
                 }

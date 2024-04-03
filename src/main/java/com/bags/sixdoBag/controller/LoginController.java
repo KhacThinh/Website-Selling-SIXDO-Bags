@@ -259,4 +259,15 @@ public class LoginController {
     }
 
 
+    @GetMapping("/check-customer/mail")
+    @ResponseBody
+    public KhachHang checkCustomer(@RequestParam("id") Integer id) {
+        KhachHang khachHang = khachHangService.getKhachHang(id);
+        if (Objects.nonNull(khachHang)){
+            return khachHang;
+        }
+        return null;
+    }
+
+
 }

@@ -113,7 +113,8 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-6">
-                                        <label class="labels">Số điện thoại <span style="color: red">*</span></label>
+<%--                                        <span style="color: red">*</span>--%>
+                                        <label class="labels">Số điện thoại </label>
                                         <input type="text" class="form-control" placeholder="số điện thoại"
                                                id="js-profile-sdt"/>
                                     </div>
@@ -125,7 +126,7 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-12">
-                                        <label class="labels">Email</label>
+                                        <label class="labels">Email <span style="color: red">*</span></label>
                                         <span class="form-control" id="js-profile-email"/>
                                     </div>
                                     <div class="col-md-12">
@@ -242,7 +243,8 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    if (!sdt.match(/^[0-9]{10}$/)) {
+
+                    if (sdt !== '' && sdt.match(/^[0-9]{10}$/)) {
                         Swal.fire({
                             title: 'Lỗi',
                             text: 'Số điện thoại không hợp lệ.',
@@ -250,18 +252,18 @@
                         });
                         return false;
                     }
-                    if (file && file.size > 1048576) {
+                    if (file && file.size > 1048576*4) {
                         Swal.fire({
                             title: 'Lỗi',
-                            text: 'Vui lòng chọn ảnh có kích thước dưới 1MB',
+                            text: 'Vui lòng chọn ảnh có kích thước dưới 4MB',
                             icon: 'error'
                         });
                         return false;
                     }
-                    if (ten === '' || sdt === '') {
+                    if (ten === '') {
                         Swal.fire({
                             title: 'Lỗi',
-                            text: 'Vui lòng điền đầy đủ thông tin tên và số điện thoại.',
+                            text: 'Vui lòng điền đầy đủ thông tin tên.',
                             icon: 'error'
                         });
                         return false;

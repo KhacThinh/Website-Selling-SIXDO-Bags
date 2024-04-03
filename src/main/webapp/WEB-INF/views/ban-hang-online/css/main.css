@@ -1018,7 +1018,7 @@ body{
   width: auto !important;
 }
 
-.rs1-select2 .select2-container .select2-selection--single {
+.rs1-select2 .select2-selection--single {
   height: 45px;
   display: -webkit-box;
   display: -webkit-flex;
