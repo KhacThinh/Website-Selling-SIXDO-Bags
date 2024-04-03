@@ -339,7 +339,6 @@ public class ProductController {
 
     }
 
-
     @PostMapping("/check-soLuong-checkout")
     public ResponseEntity<?> checkSLcheckout(@RequestBody OderDataDto orderData) {
         List<ChiTietHoaDon> chiTietHoaDonList = orderData.getCart();
@@ -496,4 +495,16 @@ public class ProductController {
         }
         return 0;
     }
+
+    @GetMapping("login-customer")
+    public String getLoginCustomer() {
+        return "/ban-hang-online/home/login-customer";
+    }
+
+    @GetMapping("register-customer")
+    public String getRegisterCustomer() {
+        return "/ban-hang-online/home/register-customer";
+    }
+
+
 }

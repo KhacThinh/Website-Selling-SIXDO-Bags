@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,6 +110,21 @@ public class ManagerOrderCustomer {
                 hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
                 return true;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @PostMapping("/xac-nhan-nhan-hang-thanh-cong-by-id-hoa-don")
+    public @ResponseBody
+    boolean nhanHangThanhCongByIdHoaDon(@RequestParam("idHoaDon") int id) {
+        try {
+            HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+            hoaDon.setTrangThai(0);
+            hoaDon.setThoiGianThanhToan(LocalDateTime.now());
+            hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

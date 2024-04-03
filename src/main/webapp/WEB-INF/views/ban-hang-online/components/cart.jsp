@@ -103,6 +103,7 @@
 // Xóa sản phẩm từ giao diện người dùng
                     var productElement = element.closest('.cart-item');
                     productElement.remove();
+                    capNhapSoLuongSanPhamTrongGioHangHearder();
                     Swal.fire({
                         title: 'Đã xóa!',
                         text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',

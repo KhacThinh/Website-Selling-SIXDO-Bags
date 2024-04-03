@@ -10,11 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class KhachHangServiceImpl implements KhachHangService {
     public final KhachHangRepository khachHangRepository;
 
@@ -34,21 +37,20 @@ public class KhachHangServiceImpl implements KhachHangService {
     }
 
     @Override
+    @Transactional
     public KhachHang addKhachHang(KhachHang khachHang) {
-        KhachHang kh = new KhachHang();
-        List<KhachHang> listKH = khachHangRepository.findAll();
+        KhachHang kh = khachHangRepository.save(new KhachHang());
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setTenDangNhap(khachHang.getEmail());
         taiKhoan.setMatKhau(khachHang.getMatKhau());
         taiKhoanRepository.save(taiKhoan);
+        kh.setSdt(khachHang.getSdt());
         kh.setTaiKhoan(taiKhoan);
-        int size = listKH.size() + 1;
-        String maKH = "KH" + size;
+        String maKH = "KH0" + kh.getId();
         kh.setMaKhachHang(maKH);
         kh.setNgaySinh(khachHang.getNgaySinh());
         kh.setGioiTinh(khachHang.getGioiTinh());
         kh.setTenKhachHang(khachHang.getTenKhachHang());
-        kh.setSdt(khachHang.getSdt());
         kh.setEmail(khachHang.getEmail());
         kh.setMatKhau(khachHang.getMatKhau());
         kh.setHinhAnh(khachHang.getHinhAnh());
@@ -60,6 +62,7 @@ public class KhachHangServiceImpl implements KhachHangService {
 
 
     @Override
+    @Transactional
     public KhachHang editKhachHang(Integer idKhachHang, KhachHang khachHang) {
         KhachHang kh = getKhachHang(idKhachHang);
 
