@@ -159,18 +159,24 @@ public class HoaDonServiceImpl implements HoaDonService {
         List<DonHangOnlineResponse> hoaDonHangOnlineResponse = new ArrayList<>();
         List<HoaDon> hoaDons = hoaDonRepository.getHoaDonByTrangThaiAndKhachHang(idKh, trangThai);
 
-        for (HoaDon hoaDon : hoaDons) {
+        hoaDons.forEach(hoaDon -> {
             List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
             DonHangOnlineResponse donHangOnlineResponse = new DonHangOnlineResponse();
-            if (Objects.nonNull(chiTietHoaDons.get(0))) {
-                donHangOnlineResponse.setUrlHinhAnhMau(chiTietHoaDons.get(0).getChiTietSanPham().getHinhAnh());
-            }
+
+            chiTietHoaDons.stream()
+                    .findFirst()
+                    .map(chiTiet -> chiTiet.getChiTietSanPham().getHinhAnh())
+                    .ifPresent(urlHinhAnhMau -> donHangOnlineResponse.setUrlHinhAnhMau(urlHinhAnhMau));
+
             donHangOnlineResponse.setHoaDon(hoaDon);
             donHangOnlineResponse.setChiTietHoaDons(chiTietHoaDons);
             hoaDonHangOnlineResponse.add(donHangOnlineResponse);
-        }
+        });
 
-        return hoaDonHangOnlineResponse;
+        return hoaDonHangOnlineResponse.stream()
+                .sorted(Comparator.comparing(hoaDonOnlineResponse -> hoaDonOnlineResponse.getHoaDon().getThoiGianTao(), Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+
     }
 
     @Override

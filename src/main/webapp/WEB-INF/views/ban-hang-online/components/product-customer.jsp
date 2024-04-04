@@ -15,7 +15,6 @@
 
 <body>
 
-
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
     <div class="container">
         <div class="row">
@@ -56,15 +55,29 @@
                     </h4>
 
                     <p class="mtext-106 cl2" id="product-price">
-
                         <fmt:formatNumber
                                 pattern="#,###"
                                 var="tongTam"
                                 value="${product[0].giaBan}"></fmt:formatNumber>
-                        ${tongTam}đ</p>
-                    <p class="stext-102 cl3 p-t-23">
-                        Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare
-                        feugiat.
+                        Giá Bán: ${tongTam}đ</p>
+
+                    <!-- Thêm thông tin về thương hiệu -->
+                    <p class="stext-102 cl3">
+                        Thương hiệu: <strong> ${product[0].sanPham.thuongHieu.ten}</strong>
+                    </p>
+
+                    <!-- Thêm thông tin về kích thước -->
+                    <p class="stext-102 cl3">
+                        Kích thước: <strong> ${product[0].sanPham.kichThuoc} cm</strong>
+                    </p>
+
+                    <!-- Thêm thông tin về số lượng bán -->
+                    <p class="stext-102 cl3 p-tb-1">
+                        Số lượng bán: <strong id="so-luong-ban-ra"></strong>
+                    </p>
+
+                    <p class="stext-102 cl3 ">
+                        Số lượng kho: <strong id="so-luong-kho-detail">${product[0].soLuong}</strong>
                     </p>
 
                     <!--  -->
@@ -73,12 +86,13 @@
 
                         <div class="flex-w flex-r-m p-b-10">
                             <div class="size-203 flex-c-m respon6">
-                                Color
+                                Màu sắc
                             </div>
 
                             <div class="size-204 respon6-next">
                                 <div class="rs1-select2 bor8 bg0">
-                                    <select class="js-select2" id="select-id-color" name="time" onchange="updatePrice(this)">
+                                    <select class="js-select2" id="select-id-color" name="time"
+                                            onchange="updatePrice(this)">
                                         <c:forEach var="o" items="${product}" varStatus="loop">
                                             <option value="${o.id}">${o.mauSac.tenMauSac}</option>
                                         </c:forEach>
@@ -95,7 +109,8 @@
                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                     </div>
 
-                                    <input id="quantity-product-add-to-cart" class="mtext-104 cl3 txt-center num-product" type="number" name="num-product"
+                                    <input id="quantity-product-add-to-cart"
+                                           class="mtext-104 cl3 txt-center num-product" type="number" name="num-product"
                                            value="1" oninput="checkValue(this)">
 
                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m quantity-add-product-up">
@@ -103,8 +118,8 @@
                                     </div>
                                 </div>
 
-                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail-customer" >
-                                    Add to cart
+                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail-customer">
+                                    Thêm vào giỏ hàng
                                 </button>
                             </div>
                         </div>
@@ -145,31 +160,46 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item p-b-10">
-                        <a class="nav-link active inf-title" style="font-size: 19px" data-toggle="tab" href="#description" role="tab">Description</a>
+                        <a class="nav-link active inf-title" style="font-size: 19px" data-toggle="tab"
+                           href="#description" role="tab">Mô Tả</a>
                     </li>
 
                     <li class="nav-item p-b-10">
-                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#information" role="tab">Additional information</a>
+                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#information"
+                           role="tab">Thông tin bổ sung</a>
                     </li>
 
                     <li class="nav-item p-b-10 ">
-                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#reviews" role="tab">Reviews (1)</a>
+                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#reviews"
+                           role="tab">Nhận xét</a>
                     </li>
                 </ul>
 
                 <!-- Tab panes -->
-                <div class="tab-content p-t-43" >
+                <div class="tab-content p-t-43">
                     <!-- - -->
-                    <div class="tab-pane fade show active" id="description" role="tabpanel" >
+                    <div class="tab-pane fade show active" id="description" role="tabpanel">
                         <div class="how-pos2 p-lr-15-md">
                             <p class="stext-102 cl6" style="font-size: 16px">
-                                Aenean sit amet gravida nisi. Nam fermentum est felis, quis feugiat nunc fringilla sit
-                                amet. Ut in blandit ipsum. Quisque luctus dui at ante aliquet, in hendrerit lectus
-                                interdum. Morbi elementum sapien rhoncus pretium maximus. Nulla lectus enim, cursus et
-                                elementum sed, sodales vitae eros. Ut ex quam
+                            <p class="stext-102 cl3">
+                                Mô tả sản phẩm:
+                                <strong>${product[0].sanPham.moTa}</strong>
+                            </p>
+                            <ul class="stext-102 cl3" style="list-style-type: none; padding-left: 0;">
+                                <li><strong>Mã sản phẩm:</strong> SP0022</li>
+                                <li><strong>Kích thước:</strong> 15x20x8 cm</li>
+                                <li><strong>Khối lượng:</strong> 1 gram</li>
+                                <li><strong>Chất liệu:</strong> Nhung</li>
+                                <li><strong>Xuất xứ:</strong> Hàn Quốc</li>
+                                <li><strong>Trọng lượng:</strong> 10000 kg</li>
+                                <li><strong>Thương hiệu:</strong> Louis Vuitton</li>
+                                <li><strong>Danh mục:</strong> Túi Đeo Chéo</li>
+                                <li><strong>Bảo Hành:</strong> Trọn đời</li>
+                            </ul>
                             </p>
                         </div>
                     </div>
+
 
                     <!-- - -->
                     <div class="tab-pane fade" id="information" role="tabpanel">
@@ -334,6 +364,31 @@
 			</span>
     </div>
 </section>
+
+<script>
+    $(document).ready(function () {
+        soLuongMuaDetail("${product[0].id}");
+    })
+    function soLuongMuaDetail(idCTsp) {
+        $.ajax({
+            type: 'GET',
+            url: '/chi-tiet-san-pham/so-luong-mua',
+            data: { id: idCTsp },
+            success: function (soLuongMua) {
+                if (soLuongMua > 0) {
+                    document.getElementById('so-luong-ban-ra').innerText = soLuongMua;
+                } else {
+                    document.getElementById('so-luong-ban-ra').innerText = 0;
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
+
+    }
+</script>
 
 
 </body>

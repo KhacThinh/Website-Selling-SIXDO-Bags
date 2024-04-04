@@ -1,0 +1,55 @@
+.btn-selected {
+    background-color: #5c6bc0;
+    color: #f0f0f0;
+}
+
+.btn-unselected {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+#diaChiDiv {
+    font-family: Arial, sans-serif;
+    color: #333; /* Màu chữ */
+}
+
+#diaChiDiv .stext-112 {
+    font-size: 16px; /* Kích thước phông chữ */
+    font-weight: bold; /* Độ đậm của phông chữ */
+}
+
+#diaChiDiv .rs1-select2 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px; /* Khoảng cách giữa các thành phần */
+}
+
+#diaChiDiv .rs1-select2 select {
+    width: 100%; /* Chiều rộng của dropdown */
+    padding: 10px; /* Khoảng cách nội dung với viền */
+    border: 1px solid #ccc; /* Viền của dropdown */
+    border-radius: 5px; /* Độ cong của góc */
+    outline: none; /* Loại bỏ đường viền khi focus */
+    background-color: #fff; /* Màu nền của dropdown */
+    font-size: 14px; /* Kích thước phông chữ */
+    color: #333; /* Màu chữ */
+}
+
+#diaChiDiv .rs1-select2 .dropDownSelect2 {
+    display: none; /* Ẩn dropdown mặc định */
+}
+
+#diaChiDiv .bor8 {
+    border: 1px solid #ccc; /* Viền của ô nhập liệu */
+    border-radius: 5px; /* Độ cong của góc */
+}
+
+#diaChiDiv input[type="text"] {
+    width: 100%; /* Chiều rộng của ô nhập liệu */
+    padding: 10px; /* Khoảng cách nội dung với viền */
+    border: 1px solid #ccc; /* Viền của ô nhập liệu */
+    border-radius: 5px; /* Độ cong của góc */
+    outline: none; /* Loại bỏ đường viền khi focus */
+    font-size: 14px; /* Kích thước phông chữ */
+    color: #333; /* Màu chữ */
+}

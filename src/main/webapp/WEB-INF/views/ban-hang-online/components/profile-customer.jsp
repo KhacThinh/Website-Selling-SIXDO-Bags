@@ -243,8 +243,7 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-
-                    if (sdt !== '' && sdt.match(/^[0-9]{10}$/)) {
+                    if (sdt !== '' && !sdt.match(/^[0-9]{10}$/)) {
                         Swal.fire({
                             title: 'Lỗi',
                             text: 'Số điện thoại không hợp lệ.',
@@ -295,7 +294,10 @@
                                     title: 'Lưu Thành Công',
                                     showConfirmButton: false,
                                     timer: 1500
+                                }).then(function() {
+                                    location.reload();
                                 });
+
                             } else {
                                 Swal.fire({
                                     icon: 'warning',

@@ -47,78 +47,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <!--===============================================================================================-->
-    <style>
 
-        <%@include file="../../../views/ban-hang-online/css/main.css" %>
-        <%@include file="../../../views/ban-hang-online/css/util.css" %>
-
-        .btn-selected {
-            background-color: #5c6bc0;
-            color: #f0f0f0;
-        }
-
-        .btn-unselected {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        #diaChiDiv {
-            font-family: Arial, sans-serif;
-            color: #333; /* Màu chữ */
-        }
-
-        #diaChiDiv .stext-112 {
-            font-size: 16px; /* Kích thước phông chữ */
-            font-weight: bold; /* Độ đậm của phông chữ */
-        }
-
-        #diaChiDiv .rs1-select2 {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10px; /* Khoảng cách giữa các thành phần */
-        }
-
-        #diaChiDiv .rs1-select2 select {
-            width: 100%; /* Chiều rộng của dropdown */
-            padding: 10px; /* Khoảng cách nội dung với viền */
-            border: 1px solid #ccc; /* Viền của dropdown */
-            border-radius: 5px; /* Độ cong của góc */
-            outline: none; /* Loại bỏ đường viền khi focus */
-            background-color: #fff; /* Màu nền của dropdown */
-            font-size: 14px; /* Kích thước phông chữ */
-            color: #333; /* Màu chữ */
-        }
-
-        #diaChiDiv .rs1-select2 .dropDownSelect2 {
-            display: none; /* Ẩn dropdown mặc định */
-        }
-
-        #diaChiDiv .bor8 {
-            border: 1px solid #ccc; /* Viền của ô nhập liệu */
-            border-radius: 5px; /* Độ cong của góc */
-        }
-
-        #diaChiDiv input[type="text"] {
-            width: 100%; /* Chiều rộng của ô nhập liệu */
-            padding: 10px; /* Khoảng cách nội dung với viền */
-            border: 1px solid #ccc; /* Viền của ô nhập liệu */
-            border-radius: 5px; /* Độ cong của góc */
-            outline: none; /* Loại bỏ đường viền khi focus */
-            font-size: 14px; /* Kích thước phông chữ */
-            color: #333; /* Màu chữ */
-        }
-
-
-    </style>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/util.css">
+    <link rel="stylesheet" href="/static/css/shopping-cart/style.css">
 </head>
 <body class="animsition">
 
 <!-- Header -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/hd.jsp"/>
-
-
-<!-- Cart -->
-<%--<jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>--%>
 
 
 <!-- breadcrumb -->
@@ -811,9 +748,12 @@
         }
 
         function isValidPhoneNumber(phone) {
-            var phonePattern = /^0\d{9,10}$/;
-            return phonePattern.test(phone);
+            var phonePattern = /^[0-9]{10}$/;
+            return phone.match(phonePattern);
         }
+
+
+        let orderData = {};
 
         function createOrderCustomerinput() {
             var name = document.querySelector('input[name="name-for-cart"]').value.trim();
@@ -826,15 +766,22 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
 
+            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
+            var product = {
+                idCtSanPham: ${o.idChiTietSanPham},
+                soLuong: document.getElementById('quantityProduct-${i.index}').value,
+                gia:${o.chiTietSanPham.giaBan *o.soLuong},
+            };
+            productList.push(product);
+            </c:forEach>
+
             var errors = [];
 
             if (name === '') {
                 errors.push("Vui lòng nhập Tên người nhận!");
             }
 
-            if (phone === '') {
-                errors.push("Vui lòng nhập Số điện thoại!");
-            } else if (!isValidPhoneNumber(phone)) {
+            if (phone === '' || !isValidPhoneNumber(phone)) {
                 errors.push("Số điện thoại không hợp lệ!");
             }
 
@@ -856,14 +803,13 @@
 
             if (errors.length > 0) {
                 showErrorAlert(errors.join('\n'));
-                return null; // Trả về null nếu có lỗi
+                return;
             }
 
-            // Nếu không có lỗi, tiếp tục xử lý dữ liệu
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
 
 
-            var orderData = {
+            orderData = {
                 cart: productList,
                 hoadon: {
                     tenNguoiNhan: name,
@@ -877,15 +823,21 @@
                 }
             };
 
-            return orderData;
         }
-
 
         function defaultAddressCustomer() {
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
 
-            console.log("kkkkkkkss " + parseFloat(lastPriceCleaned))
+            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
+            var product = {
+                idCtSanPham: ${o.idChiTietSanPham},
+                soLuong: document.getElementById('quantityProduct-${i.index}').value,
+                gia:${o.chiTietSanPham.giaBan *o.soLuong},
+            };
+            productList.push(product);
+            </c:forEach>
+
 
             $.ajax({
                 type: 'GET',
@@ -897,7 +849,7 @@
                             showErrorAlert("Địa chỉ mặc định vẫn còn thiếu vui lòng vô kiểm tra lại!");
                             return;
                         }
-                        var orderData = {
+                        orderData = {
                             cart: productList,
                             hoadon: {
                                 tenNguoiNhan: data.tenKhachHang,
@@ -911,7 +863,6 @@
                                 id:${khachHang.id}
                             }
                         };
-                        return orderData;
                     }
                 },
                 error: function () {
@@ -927,15 +878,11 @@
 
 
         $('.submit-oder-by-cart').on('click', function () {
-            var orderData = null;
-            if (currentClick === 'default') {
-                orderData = defaultAddressCustomer();
-            } else if (currentClick === 'custom') {
-                var customOrderData = createOrderCustomerinput();
-                if (customOrderData !== null && customOrderData !== undefined) {
-                    orderData = customOrderData;
-                } else {
-                    return;
+            if (Object.keys(orderData).length === 0) {
+                if (currentClick === 'default') {
+                    defaultAddressCustomer();
+                } else if (currentClick === 'custom') {
+                    createOrderCustomerinput();
                 }
             }
 
@@ -984,7 +931,7 @@
                                                     document.getElementById('last-price').innerText = '0 đ';
                                                     // Load lại trang sau 1.5 giây với đường dẫn mới '/new/path'
                                                     setTimeout(function () {
-                                                        window.location.href = 'http://localhost:8080/sixdo-shop'; // Đặt đường dẫn mới ở đây
+                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer'; // Đặt đường dẫn mới ở đây
                                                     }, 1500);
                                                 },
                                                 error: function (error) {

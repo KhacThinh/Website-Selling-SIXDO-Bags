@@ -318,6 +318,7 @@ public class ProductController {
 
     @PostMapping("/check-trangThai-ctsp-checkout")
     public ResponseEntity<?> checkTrangThaiCTSP(@RequestBody OderDataDto orderData) {
+//        System.out.println("Hello mấy cưng");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangRepository.getListChiTietGioHangByKhachHangAndTrangThaiCtsp(khachHang != null ? khachHang.getId() : -1);
         List<ChiTietHoaDon> listCTHD = orderData.getCart();
@@ -336,7 +337,6 @@ public class ProductController {
         } else {
             return ResponseEntity.ok("ok");
         }
-
     }
 
     @PostMapping("/check-soLuong-checkout")
@@ -346,7 +346,7 @@ public class ProductController {
         List<ChiTietSanPham> chiTietSanPhamList = new ArrayList<>();
         for (ChiTietHoaDon cthd : chiTietHoaDonList
         ) {
-            System.out.println("soLuong gio hang"+cthd.getSoLuong() +" / ");
+            System.out.println("soLuong gio hang" + cthd.getSoLuong() + " / ");
             if (chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()).getSoLuong() < cthd.getSoLuong()) {
                 System.out.println("full so luong");
                 chiTietSanPhamList.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));

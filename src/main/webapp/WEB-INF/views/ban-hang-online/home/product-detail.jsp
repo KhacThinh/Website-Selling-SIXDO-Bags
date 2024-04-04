@@ -202,6 +202,7 @@ s
 
     }
 
+
     function updatePrice(selectElement) {
         var selectedId = selectElement.value;
         console.log("idddddđ"+selectedId)
@@ -215,8 +216,8 @@ s
                                            value="${o.giaBan}"></fmt:formatNumber> ${tongTam}đ';
             var newImagePath = "${pageContext.request.contextPath}/" + "${o.hinhAnh}";
             document.getElementById('product-image').src = newImagePath;
-
-
+            document.getElementById('so-luong-kho-detail').innerText = "${o.soLuong}"
+            soLuongMuaDetail(${o.id})
             return;
         }
 

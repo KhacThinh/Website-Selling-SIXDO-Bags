@@ -33,5 +33,7 @@ public interface ChiTietSanPhamServivce {
 
     int getSoLuongSanPhamById(int idCtSanPham);
 
+    public int soLuongMuaByChiTietSanPham(int idCtsp);
+
 
 }

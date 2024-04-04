@@ -80,7 +80,7 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
             ctsp.setKhuyenMai(null);
         }
         ctsp.setKhuyenMai(chiTietSanPham.getKhuyenMai());
-       
+
         chiTietSanPhamRepository.save(ctsp);
         ctsp.setMa(incrementNumberInString("CTSP000", ctsp.getId()));
         return chiTietSanPhamRepository.save(ctsp);
@@ -181,6 +181,13 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
     @Override
     public int getSoLuongSanPhamById(int idCtSanPham) {
         return chiTietSanPhamRepository.getSoLuongSanPhamById(idCtSanPham);
+    }
+
+    @Override
+    public int soLuongMuaByChiTietSanPham(int idCtsp) {
+        Integer soLuongMua = chiTietSanPhamRepository.soLuongMuaByChiTietSanPham(idCtsp);
+        int soLuong = soLuongMua != null ? soLuongMua : 0;
+        return soLuong;
     }
 
 

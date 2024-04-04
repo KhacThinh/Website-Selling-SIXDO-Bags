@@ -76,4 +76,14 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.sanPham.id =:idSp and ctsp.ma like %:name% or ctsp.sanPham.tenSanPham like %:name% ")
     List<ChiTietSanPham> getChiTietSanPhamByTenSpAndMa(Integer idSp,String name);
 
+
+    @Query(value = "select count(ctsp.id) from hoa_don as hd " +
+            "join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id " +
+            "join chi_tiet_san_pham as ctsp on cthd.id_ctsp = ctsp.id " +
+            "join san_pham as sp on sp.id = ctsp.id_san_pham " +
+            "join mau_sac as ms on ms.id = ctsp.id_mau_sac " +
+            "where  hd.trang_thai = 0 and  ctsp.id = :idCtsp " +
+            "group by ctsp.id", nativeQuery = true)
+    Integer soLuongMuaByChiTietSanPham(int idCtsp);
+
 }
