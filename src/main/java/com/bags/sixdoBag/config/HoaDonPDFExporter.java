@@ -53,7 +53,7 @@ public class HoaDonPDFExporter {
         cell.setPhrase(new Phrase("Màu sắc", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Kích Thước", font));
+        cell.setPhrase(new Phrase("Bảo Hành", font));
         table.addCell(cell);
 
         cell.setPhrase(new Phrase("Số lượng", font));
@@ -91,7 +91,7 @@ public class HoaDonPDFExporter {
             }
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getChiTietSanPham().getSanPham().getKichThuoc()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getChiTietSanPham().getSanPham().getThoiGianBaoHanh().getThoiGian()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
             table.addCell(cell);
 
             cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getSoLuong()), font));
