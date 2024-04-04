@@ -352,13 +352,4 @@ public class ChiTietSanPhamController {
         System.out.println("kkkkkkkkkklllllll" + chiTietSanPhams.size());
         return chiTietSanPhams;
     }
-
-
-    @GetMapping("/so-luong-mua")
-    @ResponseBody
-    public int soLuongMuaChiTietSanPham(@RequestParam("id") int idChiTietSanPham) {
-        System.out.println("SỐ Lượng mua");
-        int soLuongMua = chiTietSanPhamServivce.soLuongMuaByChiTietSanPham(idChiTietSanPham);
-        return soLuongMua;
-    }
 }

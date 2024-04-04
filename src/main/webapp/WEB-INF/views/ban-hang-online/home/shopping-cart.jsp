@@ -886,9 +886,7 @@
                 }
             }
 
-            console.log(orderData);
             var tableRows = document.querySelectorAll('#cartTableBody .table_row');
-            console.log(tableRows);
 
             Swal.fire({
                 title: 'Xác nhận đặt đơn',

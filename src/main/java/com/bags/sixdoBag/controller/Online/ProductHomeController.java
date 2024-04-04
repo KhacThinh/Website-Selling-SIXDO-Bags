@@ -11,10 +11,7 @@ import com.bags.sixdoBag.service.impl.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -104,5 +101,14 @@ public class ProductHomeController {
         List<ProductHomeRequest> searchResults = sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu);
         System.out.println(searchResults.size());
         return ResponseEntity.ok(searchResults);
+    }
+
+
+    @GetMapping("/so-luong-mua")
+    @ResponseBody
+    public int soLuongMuaChiTietSanPham(@RequestParam("id") int idChiTietSanPham) {
+        System.out.println("SỐ Lượng mua");
+        int soLuongMua = chiTietSanPhamServivce.soLuongMuaByChiTietSanPham(idChiTietSanPham);
+        return soLuongMua;
     }
 }

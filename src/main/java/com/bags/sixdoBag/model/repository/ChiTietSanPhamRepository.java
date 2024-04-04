@@ -77,13 +77,12 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     List<ChiTietSanPham> getChiTietSanPhamByTenSpAndMa(Integer idSp,String name);
 
 
-    @Query(value = "select count(ctsp.id) from hoa_don as hd " +
-            "join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id " +
-            "join chi_tiet_san_pham as ctsp on cthd.id_ctsp = ctsp.id " +
-            "join san_pham as sp on sp.id = ctsp.id_san_pham " +
-            "join mau_sac as ms on ms.id = ctsp.id_mau_sac " +
-            "where  hd.trang_thai = 0 and  ctsp.id = :idCtsp " +
-            "group by ctsp.id", nativeQuery = true)
-    Integer soLuongMuaByChiTietSanPham(int idCtsp);
+    @Query(value = "SELECT SUM(cthd.so_luong) " +
+            "FROM chi_tiet_hoa_don cthd " +
+            "JOIN hoa_don hd ON cthd.id_hoa_don = hd.id " +
+            "WHERE hd.trang_thai = 0 " +
+            "AND cthd.id_ctsp = :idCtsp", nativeQuery = true)
+    Integer soLuongMuaByChiTietSanPham(@Param("idCtsp") int idCtsp);
+
 
 }

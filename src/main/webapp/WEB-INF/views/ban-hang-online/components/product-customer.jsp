@@ -73,11 +73,11 @@
 
                     <!-- Thêm thông tin về số lượng bán -->
                     <p class="stext-102 cl3 p-tb-1">
-                        Số lượng bán: <strong id="so-luong-ban-ra"></strong>
+                        Đã bán <strong id="so-luong-ban-ra"></strong>
                     </p>
 
                     <p class="stext-102 cl3 ">
-                        Số lượng kho: <strong id="so-luong-kho-detail">${product[0].soLuong}</strong>
+                        Kho: <strong id="so-luong-kho-detail">${product[0].soLuong}</strong>
                     </p>
 
                     <!--  -->
@@ -372,7 +372,7 @@
     function soLuongMuaDetail(idCTsp) {
         $.ajax({
             type: 'GET',
-            url: '/chi-tiet-san-pham/so-luong-mua',
+            url: '/load-du-lieu/so-luong-mua',
             data: { id: idCTsp },
             success: function (soLuongMua) {
                 if (soLuongMua > 0) {
