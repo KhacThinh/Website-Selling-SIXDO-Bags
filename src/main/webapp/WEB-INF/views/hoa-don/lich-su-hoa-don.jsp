@@ -193,9 +193,9 @@
                              aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">HOÁ ĐƠN CHI TIẾT</h1>
+                                <div class="modal-content" style="height: 665px">
+                                    <div class="modal-header" style="height: 50px">
+                                        <h4 class="modal-title fs-5" id="exampleModalLabel">HOÁ ĐƠN CHI TIẾT</h4>
                                         <button class="btn btn-success" onclick="inHoaDon('${hd.key.maHoaDon}')">
                                             <i class="bi bi-printer"></i> In Hoá Đơn
                                         </button>
@@ -283,7 +283,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-body" style="margin-top: 0px; padding-top:0px ">
-                                        <div style="max-height: 220px; overflow-y: auto;">
+                                        <div style="max-height: 164px; overflow-y: auto;">
                                             <table class="table table-hover table-striped mb-5"
                                                    style="margin-top: 0px;">
                                                 <thead>
@@ -308,10 +308,10 @@
                                                         <td>${cthd.chiTietSanPham.sanPham.thuongHieu.ten}</td>
                                                         <td>${cthd.soLuong}</td>
                                                         <fmt:formatNumber pattern="#,###" var="donGia"
-                                                                          value="${cthd.gia}"></fmt:formatNumber>
+                                                                          value="${cthd.chiTietSanPham.giaBan}"></fmt:formatNumber>
                                                         <td>${donGia}</td>
                                                         <fmt:formatNumber pattern="#,###" var="thanhTien"
-                                                                          value="${cthd.soLuong*cthd.gia}"></fmt:formatNumber>
+                                                                          value="${cthd.soLuong*cthd.chiTietSanPham.giaBan}"></fmt:formatNumber>
                                                         <td>${thanhTien}</td>
                                                     </tr>
 
@@ -320,8 +320,24 @@
 
                                             </table>
                                         </div>
+                                        <fmt:formatNumber pattern="#,###" var="tongTam"
+                                                          value="${hd.key.giamGia +hd.key.tongTien }"></fmt:formatNumber>
+
+
+                                        <p style="position: absolute; bottom: 60px;  right: 30px; font-size: 14px">
+                                            Tổng Tạm : ${tongTam} đ</p>
+
+
+
+
+                                        <fmt:formatNumber pattern="#,###" var="giamGia"
+                                                          value="${hd.key.giamGia}"></fmt:formatNumber>
+                                        <p style="position: absolute; bottom: 30px;  right: 30px; font-size: 14px;color: red">
+                                            Giảm Giá : ${giamGia} đ</p>
+
+
                                         <fmt:formatNumber pattern="#,###" var="tongTien"
-                                                          value="${hd.key.tongTien+hd.key.phiVanChuyen}"></fmt:formatNumber>
+                                                          value="${hd.key.tongTien}"></fmt:formatNumber>
                                         <p style="position: absolute; bottom: 0;  right: 30px; font-weight: bold ; font-size: 15px">
                                             Tổng Thanh Toán : ${tongTien} đ</p>
                                     </div>

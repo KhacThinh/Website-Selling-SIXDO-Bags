@@ -765,6 +765,7 @@
             var village = document.getElementById('village').value.trim();
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
+            var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -816,7 +817,8 @@
                     sdtNguoiNhan: phone,
                     emailNguoiNhan: email,
                     diaChiNguoiNhan: address,
-                    tongTien: parseFloat(${totalPrice})
+                    tongTien: parseFloat(lastPriceCleaned),
+                    giamGia: parseFloat(giamGia)
                 },
                 khachHang: {
                     id: ${khachHang.id}
@@ -828,6 +830,8 @@
         function defaultAddressCustomer() {
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
+            var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
+            console.log("ssssssssmgg "+giamGia)
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -856,8 +860,8 @@
                                 sdtNguoiNhan: data.sdt,
                                 emailNguoiNhan: data.email,
                                 diaChiNguoiNhan: data.diaChi,
-                                tongTien: parseFloat(${totalPrice})
-
+                                tongTien: parseFloat(lastPriceCleaned),
+                                giamGia: parseFloat(giamGia)
                             },
                             khachHang: {
                                 id:${khachHang.id}

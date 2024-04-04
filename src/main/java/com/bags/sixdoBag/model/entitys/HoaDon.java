@@ -70,6 +70,9 @@ public class HoaDon {
     @Column(name = "khach_thanh_toan")
     private Double khachThanhToan;
 
+    @Column(name = "giam_gia")
+    private float giamGia;
+
     @Column(name = "phi_van_chuyen")
     private Double phiVanChuyen;
 
