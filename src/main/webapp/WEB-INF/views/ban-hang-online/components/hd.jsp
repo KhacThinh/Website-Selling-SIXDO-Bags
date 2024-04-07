@@ -121,6 +121,9 @@
                         <li>
                             <a href="about.html">About</a>
                         </li>
+                        <li>
+                            <a href="/sixdo-shop/contact">Liên hệ</a>
+                        </li>
                         <li id="don-mua-menu-item" style="display: none">
                             <a href="/sixdo-shop/manager-oder-customer">Quản lý đơn hàng</a>
                         </li>

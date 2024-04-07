@@ -80,7 +80,6 @@
 
 
 <!-- breadcrumb -->
-s
 
 
 <!-- Product Detail -->

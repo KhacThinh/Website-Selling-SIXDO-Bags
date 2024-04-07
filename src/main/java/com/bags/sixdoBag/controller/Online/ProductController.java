@@ -505,5 +505,10 @@ public class ProductController {
         return "/ban-hang-online/home/register-customer";
     }
 
+    @GetMapping("contact")
+    public String getContact() {
+        return "/ban-hang-online/home/contact";
+    }
+
 
 }
