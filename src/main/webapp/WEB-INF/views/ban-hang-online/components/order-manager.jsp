@@ -996,13 +996,11 @@
         $('#sortBy').change(function () {
             var sortBy = $(this).val();
             getListCtspDesc(sortBy);
-            console.log(sortBy);
         });
     });
 
 
     function displayThongKeData(data, sortBy) {
-        console.log(data);
         var tbody = document.getElementById('thongKeTable').getElementsByTagName('tbody')[0];
         tbody.innerHTML = '';
         var stt = 1;

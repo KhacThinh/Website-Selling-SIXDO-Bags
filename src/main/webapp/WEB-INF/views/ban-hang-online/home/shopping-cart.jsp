@@ -776,6 +776,7 @@
             productList.push(product);
             </c:forEach>
 
+
             var errors = [];
 
             if (name === '') {
@@ -804,11 +805,11 @@
 
             if (errors.length > 0) {
                 showErrorAlert(errors.join('\n'));
-                return;
+
+                return false;
             }
 
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
-
 
             orderData = {
                 cart: productList,
@@ -886,7 +887,9 @@
                 if (currentClick === 'default') {
                     defaultAddressCustomer();
                 } else if (currentClick === 'custom') {
-                    createOrderCustomerinput();
+                    if(createOrderCustomerinput() == false){
+                        return;
+                    }
                 }
             }
 
@@ -928,13 +931,21 @@
                                                     // Xử lý phản hồi từ máy chủ nếu cần
                                                     console.log(response);
                                                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                                                    showAlertAddCart('Order Success!', 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!', 'success');
+
+                                                    Swal.fire({
+                                                        title: 'Order Success!',
+                                                        text: 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!',
+                                                        icon: 'success',
+                                                        showConfirmButton: false, // Ẩn nút "OK"
+                                                        timer: 1500 // Tự động đóng thông báo sau 1.5 giây
+                                                    }).then(function() {
+                                                        // Sau khi thông báo đóng, chuyển hướng sang trang mới
+                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer';
+                                                    });
+
                                                     document.getElementById('sumCart').innerText = '0 đ';
                                                     document.getElementById('last-price').innerText = '0 đ';
-                                                    // Load lại trang sau 1.5 giây với đường dẫn mới '/new/path'
-                                                    setTimeout(function () {
-                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer'; // Đặt đường dẫn mới ở đây
-                                                    }, 1500);
+
                                                 },
                                                 error: function (error) {
                                                     // Xử lý lỗi nếu có

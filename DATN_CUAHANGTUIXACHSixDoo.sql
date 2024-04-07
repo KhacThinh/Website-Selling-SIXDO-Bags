@@ -274,6 +274,9 @@ CONSTRAINT FK_HoaDon_CTHD FOREIGN KEY(id_hoa_don) REFERENCES hoa_don(id),
 CONSTRAINT FK_CTSP_CTHD FOREIGN KEY(id_ctsp) REFERENCES chi_tiet_san_pham(id),
 )
 
+ALTER TABLE hoa_don
+    ADD  giam_gia float
+
 create table slide_show(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 ten nvarchar(200),

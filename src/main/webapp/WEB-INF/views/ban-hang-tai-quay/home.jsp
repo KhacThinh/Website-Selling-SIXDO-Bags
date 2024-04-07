@@ -25,6 +25,7 @@
             font-family: 'Poppins', sans-serif;
             max-height: 400px;
         }
+
         .loader {
             width: 48px;
             height: 48px;
@@ -37,6 +38,7 @@
             justify-content: center;
             text-align: center;
         }
+
         .loader::after {
             content: '';
             box-sizing: border-box;
@@ -50,6 +52,7 @@
             border-bottom: 4px solid transparent;
             animation: rotation 0.25s linear infinite reverse;
         }
+
         @keyframes rotation {
             0% {
                 transform: rotate(0deg);
@@ -58,6 +61,7 @@
                 transform: rotate(360deg);
             }
         }
+
         .center-content {
             background-image: url("/src/main/resources/static/images/icon/cost.png");
             background-size: cover; /* Hiển thị hình ảnh với kích thước bằng với kích thước của class "center-content" */
@@ -902,7 +906,8 @@
     </style>
 </head>
 <body>
-<div id="loading-spinner" class="spinner-container loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
+<div id="loading-spinner" class="spinner-container loader"
+     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
     <div class="spinner"></div>
 </div>
 <div class="header">
@@ -1299,7 +1304,8 @@
     <div class="info-panel thanh-toan">
         <p>Tên nhân viên : ${nhanVien.hoTen}</p>
         <p style="font-size: 19px; font-weight: bold; margin: 30px 0px 10px 1px;background-color: #d3ead9 ; padding: 5px;border-radius: 5px ">
-            Thông Tin Đơn Hàng</p>        <div>
+            Thông Tin Đơn Hàng</p>
+        <div>
             <input type="text" id="soDienThoai" placeholder="Số điện thoại">
             <span id="soDienThoaiError" class="error" style="color: red;font-size: small"></span><br>
             <input type="text" id="tenKhachHang" placeholder="Tên khách hàng">
@@ -1424,6 +1430,22 @@
             <p>Tổng Tiền Hàng : <span id="totalOrder" class="total_order"></span></p>
         </div>
 
+        <div>
+            <div class="mb-3">
+                <label for="js-so-tien-khach-tra" class="form-label">Số tiền khách trả</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="js-so-tien-khach-tra" oninput="checkSoTienKhachTra()"
+                           aria-describedby="basic-addon3 basic-addon4">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="js-so-tien-tra-lai" class="form-label">Số tiền trả lại</label>
+                <div class="input-group">
+                    <input type="text" value="0" class="form-control" id="js-so-tien-tra-lai"
+                           aria-describedby="basic-addon3 basic-addon4" readonly>
+                </div>
+            </div>
+        </div>
         <button class="custom-btn btn-2 checkout" onclick="checkout()">THANH TOÁN</button>
     </div>
 </div>
@@ -1437,6 +1459,27 @@
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+    let tongTienKhachCanThanhToan = 0;
+
+    function calculateChange() {
+        var soTienKhachTra = parseFloat(document.getElementById('js-so-tien-khach-tra').value);
+
+        var totalOrder = tongTienKhachCanThanhToan;
+
+        if (!isNaN(soTienKhachTra)) {
+            var soTienTraLai = soTienKhachTra - totalOrder;
+            document.getElementById('js-so-tien-tra-lai').value = soTienTraLai.toLocaleString();
+        } else {
+            document.getElementById('js-so-tien-tra-lai').value = "0";
+        }
+    }
+
+    function checkSoTienKhachTra() {
+        calculateChange();
+    }
+
+
     var tabActive = "";
     var listDataGioHang;
 
@@ -1518,12 +1561,12 @@
                 url: 'ban-tai-quay/kiem-tra-so-luong-trong-kho',
                 type: 'POST',
 
-                data:{
+                data: {
                     productId: productId,
                     quantity: parseInt(quantity)
                 },
                 success: function (response) {
-                    if (response=== "ok") {
+                    if (response === "ok") {
                         $.ajax({
                             url: '/ban-tai-quay/them-gio-hang',
                             type: 'POST',
@@ -1801,7 +1844,6 @@
     }
 
 
-
     // Xóa Sp trong giỏ hàng
     function deleteProduct(productId, event) {
         // Ngăn chặn hành vi mặc định của nút xóa (chẳng hạn chuyển trang)
@@ -1933,6 +1975,7 @@
             totalPrice += price;
         });
 
+        tongTienKhachCanThanhToan = totalPrice;
         var totalPriceInput = document.querySelector('.total_order');
         totalPriceInput.innerHTML = totalPrice.toLocaleString('vi-VN', {style: 'decimal'});
         return totalPrice;
@@ -2092,13 +2135,13 @@
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Hiển thị spinner
 
         document.getElementById("loading-spinner").style.display = "block";
 
         // Ẩn spinner sau 3 giây
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById("loading-spinner").style.display = "none";
         }, 150);
 

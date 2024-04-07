@@ -318,7 +318,6 @@ public class ProductController {
 
     @PostMapping("/check-trangThai-ctsp-checkout")
     public ResponseEntity<?> checkTrangThaiCTSP(@RequestBody OderDataDto orderData) {
-//        System.out.println("Hello mấy cưng");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangRepository.getListChiTietGioHangByKhachHangAndTrangThaiCtsp(khachHang != null ? khachHang.getId() : -1);
         List<ChiTietHoaDon> listCTHD = orderData.getCart();

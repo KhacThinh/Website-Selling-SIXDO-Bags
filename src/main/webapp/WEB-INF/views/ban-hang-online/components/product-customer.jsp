@@ -58,8 +58,7 @@
                         <fmt:formatNumber
                                 pattern="#,###"
                                 var="tongTam"
-                                value="${product[0].giaBan}"></fmt:formatNumber>
-                        Giá Bán: ${tongTam}đ</p>
+                                value="${product[0].giaBan}"></fmt:formatNumber>${tongTam}đ</p>
 
                     <!-- Thêm thông tin về thương hiệu -->
                     <p class="stext-102 cl3">
@@ -94,7 +93,7 @@
                                     <select class="js-select2" id="select-id-color" name="time"
                                             onchange="updatePrice(this)">
                                         <c:forEach var="o" items="${product}" varStatus="loop">
-                                            <option value="${o.id}">${o.mauSac.tenMauSac}</option>
+                                            <option data-product-id="${o.id}" value="${o.id}">${o.mauSac.tenMauSac}</option>
                                         </c:forEach>
                                     </select>
                                     <div class="dropDownSelect2"></div>
@@ -367,7 +366,14 @@
 
 <script>
     $(document).ready(function () {
-        soLuongMuaDetail("${product[0].id}");
+
+        var selectedId = $('#select-id-color').val();
+
+        // Lấy giá trị ID từ thuộc tính data-product-id của option tương ứng
+        var selectedOption = $('#select-id-color option[value="' + selectedId + '"]');
+        var defaultProductId = selectedOption.attr('data-product-id');
+
+        soLuongMuaDetail(defaultProductId);
     })
     function soLuongMuaDetail(idCTsp) {
         $.ajax({
@@ -385,8 +391,6 @@
                 console.error(xhr.responseText);
             }
         });
-
-
     }
 </script>
 
