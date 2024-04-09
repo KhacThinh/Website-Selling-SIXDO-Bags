@@ -74,7 +74,8 @@
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>
 
 <!-- Title page -->
-<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('<c:url value="../static/images/banner/bg-01.jpg"/>');">
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url('<c:url value="../static/images/banner/bg-01.jpg"/>');">
     <h2 class="ltext-105 cl0 txt-center">
         Liên hệ
     </h2>
@@ -91,12 +92,14 @@
                     </h4>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email" placeholder="Địa chỉ email của bạn">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email"
+                               placeholder="Địa chỉ email của bạn">
                         <i class="bi bi-envelope how-pos4 pointer-none"></i>
                     </div>
 
                     <div class="bor8 m-b-30">
-                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="Chúng tôi có thể giúp đỡ bạn bằng cách nào?"></textarea>
+                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg"
+                                  placeholder="Chúng tôi có thể giúp đỡ bạn bằng cách nào?"></textarea>
                     </div>
 
                     <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
@@ -116,7 +119,7 @@
 								Địa chỉ
 							</span>
 
-                        <p class="stext-115 cl6 size-213 p-t-18">
+                        <p class="stext-115 cl6 size-213 p-t-18" id="js-dia-chi-lh">
                             Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018 US
                         </p>
                     </div>
@@ -129,11 +132,10 @@
 
                     <div class="size-212 p-t-2">
 							<span class="mtext-110 cl2">
-								Cùng nói chuyện
+								Số điện thoại
 							</span>
 
-                        <p class="stext-115 cl1 size-213 p-t-18">
-                            +1 800 1236879
+                        <p class="stext-115 cl1 size-213 p-t-18" id="js-sdt-lh">
                         </p>
                     </div>
                 </div>
@@ -148,7 +150,7 @@
 								Hỗ trợ bán hàng
 							</span>
 
-                        <p class="stext-115 cl1 size-213 p-t-18">
+                        <p class="stext-115 cl1 size-213 p-t-18" id="js-email-lh">
                             contact@example.com
                         </p>
                     </div>
@@ -161,7 +163,15 @@
 
 <!-- Map -->
 <div class="map">
-    <div class="size-303" id="google_map" data-map-x="21.0285" data-map-y="105.8542" data-pin="images/icons/pin.png" data-scrollwhell="0" data-draggable="1" data-zoom="18"></div>
+    <div class="size-303" id="google_map"
+         data-map-x="21.0285"
+         data-map-y="105.8542"
+         data-pin="../static/images/logo1.jpg"
+         data-scrollwhell="0"
+         data-draggable="1"
+         data-zoom="18">
+    </div>
+
 </div>
 
 <!-- Footer -->
@@ -180,268 +190,273 @@
 
 <!--=====================================================================-->
 <%--    Google Map--%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
 <script>
-    (function ($) {
-        // USE STRICT
-        "use strict";
+    let viDo = '';
+    let kinhDo = '';
+    let hinhAnhLogo = ''
 
-        $(document).ready(function () {
+    $(document).ready(function () {
+        thongTinCuaHang();
+    })
 
-            var selector_map = $('#google_map');
-            var img_pin = selector_map.attr('data-pin');
-            var data_map_x = selector_map.attr('data-map-x');
-            var data_map_y = selector_map.attr('data-map-y');
-            var scrollwhell = selector_map.attr('data-scrollwhell');
-            var draggable = selector_map.attr('data-draggable');
-            var map_zoom = selector_map.attr('data-zoom');
+    function thongTinCuaHang() {
+        $.get('/lien-he/thong-tin-cua-hang', function (data) {
+            viDo = data.toaDoMapX;
+            kinhDo = data.toaDoMapY;
+            hinhAnhLogo = data.hinhAnhLogo;
+            $('#js-email-lh').text(data.email);
+            $('#js-dia-chi-lh').text(data.diaChi);
+            $('#js-sdt-lh').text(data.sdt);
+            hienThiBanDo();
+        })
+    }
 
-            if (img_pin == null) {
-                img_pin = '../static/images/logo1.jpg';
+    function hienThiBanDo() {
+        var selector_map = $('#google_map');
+        var img_pin = selector_map.attr('data-pin');
+        var scrollwhell = selector_map.attr('data-scrollwhell');
+        var draggable = selector_map.attr('data-draggable');
+        var map_zoom = selector_map.attr('data-zoom');
+
+        if (img_pin == null) {
+            img_pin = hinhAnhLogo;
+        }
+        if (scrollwhell == null) {
+            scrollwhell = 0;
+        }
+        if (draggable == null) {
+            draggable = 0;
+        }
+        if (map_zoom == null) {
+            map_zoom = 5;
+        }
+
+        var style = [
+            {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#e9e9e9"
+                    },
+                    {
+                        "lightness": 17
+                    }
+                ]
+            },
+            {
+                "featureType": "landscape",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#f5f5f5"
+                    },
+                    {
+                        "lightness": 20
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "color": "#ffffff"
+                    },
+                    {
+                        "lightness": 17
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "geometry.stroke",
+                "stylers": [
+                    {
+                        "color": "#ffffff"
+                    },
+                    {
+                        "lightness": 29
+                    },
+                    {
+                        "weight": 0.2
+                    }
+                ]
+            },
+            {
+                "featureType": "road.arterial",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#ffffff"
+                    },
+                    {
+                        "lightness": 18
+                    }
+                ]
+            },
+            {
+                "featureType": "road.local",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#ffffff"
+                    },
+                    {
+                        "lightness": 16
+                    }
+                ]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#f5f5f5"
+                    },
+                    {
+                        "lightness": 21
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.park",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#dedede"
+                    },
+                    {
+                        "lightness": 21
+                    }
+                ]
+            },
+            {
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#ffffff"
+                    },
+                    {
+                        "lightness": 16
+                    }
+                ]
+            },
+            {
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "saturation": 36
+                    },
+                    {
+                        "color": "#333333"
+                    },
+                    {
+                        "lightness": 40
+                    }
+                ]
+            },
+            {
+                "elementType": "labels.icon",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#f2f2f2"
+                    },
+                    {
+                        "lightness": 19
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "color": "#fefefe"
+                    },
+                    {
+                        "lightness": 20
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative",
+                "elementType": "geometry.stroke",
+                "stylers": [
+                    {
+                        "color": "#fefefe"
+                    },
+                    {
+                        "lightness": 17
+                    },
+                    {
+                        "weight": 1.2
+                    }
+                ]
             }
-            if (data_map_x == null || data_map_y == null) {
-                data_map_x = 21.0285;
-                data_map_y = 105.8542;
-            }
-            if (scrollwhell == null) {
-                scrollwhell = 0;
-            }
+        ];
 
-            if (draggable == null) {
-                draggable = 0;
-            }
+        var latitude = viDo;
+        var longitude = kinhDo;
 
-            if (map_zoom == null) {
-                map_zoom = 5;
-            }
+        var locations = [
+            ['<div class="infobox"><h4>Xin chào</h4><p>Đây là cửa hàng túi xách cao cấp xịn' +
+            ' <br>xò nhất việt nam bạn đã biết chưa</p></div>'
+                , latitude, longitude, 2]
+        ];
 
-            var style = [
-                {
-                    "featureType": "water",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#e9e9e9"
-                        },
-                        {
-                            "lightness": 17
-                        }
-                    ]
-                },
-                {
-                    "featureType": "landscape",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#f5f5f5"
-                        },
-                        {
-                            "lightness": 20
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road.highway",
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        {
-                            "color": "#ffffff"
-                        },
-                        {
-                            "lightness": 17
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road.highway",
-                    "elementType": "geometry.stroke",
-                    "stylers": [
-                        {
-                            "color": "#ffffff"
-                        },
-                        {
-                            "lightness": 29
-                        },
-                        {
-                            "weight": 0.2
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road.arterial",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#ffffff"
-                        },
-                        {
-                            "lightness": 18
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road.local",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#ffffff"
-                        },
-                        {
-                            "lightness": 16
-                        }
-                    ]
-                },
-                {
-                    "featureType": "poi",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#f5f5f5"
-                        },
-                        {
-                            "lightness": 21
-                        }
-                    ]
-                },
-                {
-                    "featureType": "poi.park",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#dedede"
-                        },
-                        {
-                            "lightness": 21
-                        }
-                    ]
-                },
-                {
-                    "elementType": "labels.text.stroke",
-                    "stylers": [
-                        {
-                            "visibility": "on"
-                        },
-                        {
-                            "color": "#ffffff"
-                        },
-                        {
-                            "lightness": 16
-                        }
-                    ]
-                },
-                {
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "saturation": 36
-                        },
-                        {
-                            "color": "#333333"
-                        },
-                        {
-                            "lightness": 40
-                        }
-                    ]
-                },
-                {
-                    "elementType": "labels.icon",
-                    "stylers": [
-                        {
-                            "visibility": "off"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "transit",
-                    "elementType": "geometry",
-                    "stylers": [
-                        {
-                            "color": "#f2f2f2"
-                        },
-                        {
-                            "lightness": 19
-                        }
-                    ]
-                },
-                {
-                    "featureType": "administrative",
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        {
-                            "color": "#fefefe"
-                        },
-                        {
-                            "lightness": 20
-                        }
-                    ]
-                },
-                {
-                    "featureType": "administrative",
-                    "elementType": "geometry.stroke",
-                    "stylers": [
-                        {
-                            "color": "#fefefe"
-                        },
-                        {
-                            "lightness": 17
-                        },
-                        {
-                            "weight": 1.2
-                        }
-                    ]
-                }
-            ];
-
-            var latitude = data_map_x,
-                longitude = data_map_y;
-
-            var locations = [
-                ['<div class="infobox"><h4>Hello</h4><p>Now that you visited our website, how' +
-                ' <br>about checking out our office too?</p></div>'
-                    , latitude, longitude, 2]
-            ];
-
-
-
-            if (selector_map !== undefined) {
-                var map = new google.maps.Map(document.getElementById('google_map'), {
-                    zoom: Number(map_zoom),
-                    zoomControl: false,
-                    disableDoubleClickZoom: true,
-                    scrollwheel: scrollwhell,
-                    navigationControl: true,
-                    mapTypeControl: false,
-                    scaleControl: false,
-                    draggable: draggable,
-                    styles: style,
-                    center: new google.maps.LatLng(latitude, longitude),
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-            }
+        if (selector_map !== undefined) {
+            var map = new google.maps.Map(document.getElementById('google_map'), {
+                zoom: Number(map_zoom),
+                zoomControl: false,
+                disableDoubleClickZoom: true,
+                scrollwheel: scrollwhell,
+                navigationControl: true,
+                mapTypeControl: false,
+                scaleControl: false,
+                draggable: draggable,
+                styles: style,
+                center: new google.maps.LatLng(latitude, longitude),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
 
             var infowindow = new google.maps.InfoWindow();
 
-            var marker, i;
-
-            for (i = 0; i < locations.length; i++) {
-
-                marker = new google.maps.Marker({
+            for (var i = 0; i < locations.length; i++) {
+                var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                     map: map,
-                    icon: img_pin
+                    icon: {
+                        url: img_pin,
+                        scaledSize: new google.maps.Size(30, 30),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(20, 40)
+                    }
                 });
 
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
                         infowindow.setContent(locations[i][0]);
                         infowindow.open(map, marker);
                     }
                 })(marker, i));
             }
-
-        });
-
-    })(jQuery);
+        }
+    }
 </script>
 <!--=====================================================================-->
 
@@ -502,7 +517,7 @@
 
 <script>
 
-    var products ; // Giả sử product là một List hoặc Array chứa dữ liệu sản phẩm
+    var products; // Giả sử product là một List hoặc Array chứa dữ liệu sản phẩm
 
 
     function updatePriceQuickView(selectElement) {
@@ -510,7 +525,7 @@
         var colorSelectQuickView = selectElement;
 
         for (var i = 0; i < colorSelectQuickView.options.length; i++) {
-            if (selectedId===colorSelectQuickView.options[i].value){
+            if (selectedId === colorSelectQuickView.options[i].value) {
                 $.ajax({
                     url: '/sixdo-shop/quick-view?',
                     type: 'POST',
@@ -520,7 +535,7 @@
                     }),
                     success: function (response) {
                         var formattedGiaBan = gia.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
-                        if (selectedId===colorSelectQuickView.options[i].value){
+                        if (selectedId === colorSelectQuickView.options[i].value) {
                             document.getElementById('price-product-quick-view').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
                             return;
                         }
@@ -533,7 +548,6 @@
                 });
 
 
-
             }
 
         }
@@ -544,11 +558,11 @@
 
     function updatePrice(selectElement) {
         var selectedId = selectElement.value;
-        console.log("idddddđ"+selectedId)
+        console.log("idddddđ" + selectedId)
 
         <c:forEach var="o" items="${product}" varStatus="loop">
         if (selectedId == ${o.id}) {
-            console.log("day roi "+${o.giaBan})
+            console.log("day roi " +${o.giaBan})
             document.getElementById('product-price').innerText = '<fmt:formatNumber
                                            pattern="#,###"
                                            var="tongTam"
@@ -581,7 +595,6 @@
     }
 
 
-
     $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
         e.preventDefault();
     });
@@ -610,7 +623,6 @@
     /*---------------------------------------------*/
 
 
-
 </script>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
@@ -628,7 +640,6 @@
             ps.update();
         })
     });
-
 
 
 </script>

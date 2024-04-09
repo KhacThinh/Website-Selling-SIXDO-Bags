@@ -70,10 +70,7 @@ public class ProductController {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
         model.addAttribute("khachHang", khachHang);
-
         List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
-
-
         model.addAttribute("listSp", productHomeRequestList);
         return "ban-hang-online/home/home-page";
 

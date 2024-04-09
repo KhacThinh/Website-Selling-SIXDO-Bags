@@ -99,31 +99,20 @@
                     <ul class="main-menu">
                         <li>
                             <a href="/sixdo-shop">Trang chủ</a>
-                            <ul class="sub-menu">
-                                <li><a href="index.html">Homepage 1</a></li>
-                                <li><a href="home-02.html">Homepage 2</a></li>
-                                <li><a href="home-03.html">Homepage 3</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="active-menu">
-                            <a href="/sixdo-shop/product">Sản phẩm</a>
                         </li>
 
                         <li class="label1" data-label1="hot">
-                            <a href="shoping-cart.html">Features</a>
+                            <a href="/sixdo-shop/product">Sản phẩm</a>
                         </li>
 
-                        <li>
-                            <a href="blog.html">Blog</a>
+                        <li class="active-menu">
+                            <a href="shoping-cart.html">Bộ sưu tập</a>
                         </li>
 
-                        <li>
-                            <a href="about.html">About</a>
-                        </li>
                         <li>
                             <a href="/sixdo-shop/contact">Liên hệ</a>
                         </li>
+
                         <li id="don-mua-menu-item" style="display: none">
                             <a href="/sixdo-shop/manager-oder-customer">Quản lý đơn hàng</a>
                         </li>
@@ -133,10 +122,6 @@
 
 
                 <div class="wrap-icon-header flex-w flex-r-m">
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                        <i class="zmdi zmdi-search"></i>
-                    </div>
-
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart icon-count-cart"
                          data-notify="0">
                         <i class="zmdi zmdi-shopping-cart"></i>
@@ -195,9 +180,6 @@
             </a></div>
 
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
-                <i class="zmdi zmdi-search"></i>
-            </div>
 
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
                  data-notify="2">
@@ -229,11 +211,6 @@
         <ul class="main-menu-m">
             <li>
                 <a href="/user/ban-hang">Trang chủ</a>
-                <ul class="sub-menu-m">
-                    <li><a href="index.html">Homepage 1</a></li>
-                    <li><a href="home-02.html">Homepage 2</a></li>
-                    <li><a href="home-03.html">Homepage 3</a></li>
-                </ul>
                 <span class="arrow-main-menu-m">
 						<i class="fa fa-angle-right" aria-hidden="true"></i>
 					</span>
@@ -244,15 +221,11 @@
             </li>
 
             <li>
-                <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+                <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Bộ sưu tập</a>
             </li>
 
             <li>
-                <a href="blog.html">Blog</a>
-            </li>
-
-            <li>
-                <a href="about.html">About</a>
+                <a href="/sixdo-shop/contact">Liên hệ</a>
             </li>
 
             <li id="don-mua-menu-item-mobi" style="display: none">
