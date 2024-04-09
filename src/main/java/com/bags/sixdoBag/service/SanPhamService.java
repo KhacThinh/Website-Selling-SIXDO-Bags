@@ -34,6 +34,8 @@ public interface SanPhamService {
 
     List<ProductHomeRequest> listHienThiSanPham();
 
+    List<ProductHomeRequest> listHienThiSanPhamLimit(int limit);
+
     List<ProductHomeRequest> displayedByBrand(int idThuongHieu);
 
     List<ProductHomeRequest> searchSanPhamOnlines(String name);

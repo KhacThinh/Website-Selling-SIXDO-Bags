@@ -60,7 +60,7 @@
             <script>
                 $(document).ready(function () {
                     // Gọi hàm loadData khi tài liệu đã sẵn sàng
-                    loadData();
+                    loadData(0);
                     loadFilterThuongHieu();
                     loadFilterHienThi();
                     loadFilterMauSac();
@@ -68,6 +68,8 @@
                     capNhapSoLuongSanPhamYeuThichHearder();
 
                     themSanPhamYeuThich();
+
+                    pageXemThemSanPham();
                     // Sự kiện khi form tìm kiếm được submit
                     $('#search-form').submit(function (event) {
                         event.preventDefault(); // Ngăn chặn form gửi đi
@@ -75,6 +77,18 @@
                         searchProducts(searchTerm); // Gọi hàm tìm kiếm
                     });
                 });
+
+                let limit = 8
+
+                function pageXemThemSanPham() {
+                    $('.btn-xem-them-sp').on('click',function (event) {
+                        event.preventDefault();
+                        limit += 8;
+                       $.get('/load-du-lieu/product-home',{limit: limit}, function (data){
+                           displayProducts(data);
+                       });
+                    })
+                }
 
 
                 // sản phẩm yêu thích product favorites
@@ -89,7 +103,7 @@
                                 console.log('Khách hàng đã đăng nhập với ID:', response);
                                 if (heartFill.css('display') === 'none') {
                                     $.post('/product-favorite/them-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
-                                        if(sanPhamCheck != 0){
+                                        if (sanPhamCheck != 0) {
                                             heartFill.css('display', 'inline');
                                             heartOutline.css('display', 'none');
                                             Swal.fire({
@@ -99,13 +113,13 @@
                                                 timer: 1500
                                             });
                                             capNhapSoLuongSanPhamYeuThichHearder();
-                                        }else{
+                                        } else {
                                             console.log("không thêm được vô sản phẩm yêu thích");
                                         }
                                     })
                                 } else {
                                     $.get('/product-favorite/xoa-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
-                                        if(sanPhamCheck != 0){
+                                        if (sanPhamCheck != 0) {
                                             // Ngược lại, chuyển về icon đậm và ẩn icon fill
                                             heartFill.css('display', 'none');
                                             heartOutline.css('display', 'inline');
@@ -117,7 +131,7 @@
                                                 timer: 1500
                                             });
                                             capNhapSoLuongSanPhamYeuThichHearder();
-                                        }else{
+                                        } else {
                                             console.log("không xoá được sản phẩm yêu thích");
                                             alert("Lỗi");
                                         }
@@ -146,8 +160,8 @@
 
 
                 // tải tự động dữ liệu lên từ product controller
-                function loadData() {
-                    $.get('/load-du-lieu/product-home', function (data) {
+                function loadData(limit) {
+                    $.get('/load-du-lieu/product-home', {limit: limit}, function (data) {
                         displayProducts(data);
                     });
                 }
@@ -350,7 +364,7 @@
                 function checkSanPhamYeuThichTrangChu() {
                     $.get('/product-favorite/check-san-pham-yeu-thich-home', function (data) {
                         var productIDs = data;
-                        $(".js-addwish-b2").each(function() {
+                        $(".js-addwish-b2").each(function () {
                             var productID = $(this).data("product-id");
                             if (productIDs.includes(productID)) {
                                 $(this).find('.bi-heart').hide();
@@ -453,50 +467,15 @@
             </div>
         </div>
 
-        <%--        Hiển thị sản phẩm trang home--%>
-        <%--        <div id="search-results" class="row isotope-grid">--%>
-        <%--            <c:forEach var="o" items="${listSp}" varStatus="loop">--%>
-
-        <%--                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">--%>
-        <%--                    <a class="block2" href="/sixdo-shop/product/${o.id}">--%>
-        <%--                        <div class="block2-pic hov-img0">--%>
-        <%--                            <img src="${o.hinhAnh}" alt="Product">--%>
-        <%--                            <a href="#"--%>
-        <%--                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"--%>
-        <%--                               data-id="${o.id}">--%>
-        <%--                                Xem Nhanh--%>
-        <%--                            </a>--%>
-        <%--                        </div>--%>
-
-        <%--                        <div class="block2-txt flex-w flex-t p-t-14">--%>
-        <%--                            <div class="block2-txt-child1 flex-col-l ">--%>
-        <%--                                <a href="product-detail.jsp"--%>
-        <%--                                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">--%>
-        <%--                                        ${o.tenSanPham}--%>
-        <%--                                </a>--%>
-
-        <%--                                <span class="stext-105 cl3">--%>
-        <%--                                    <fmt:formatNumber pattern="#,###" var="donGia"--%>
-        <%--                                                      value="${o.giaBan}"></fmt:formatNumber>--%>
-        <%--                                    ${donGia}đ--%>
-        <%--								  </span>--%>
-        <%--                            </div>--%>
-
-
-        <%--                        </div>--%>
-        <%--                    </a>--%>
-        <%--                </div>--%>
-
-        <%--            </c:forEach>--%>
-
         <div id="search-results" class="row">
+            <%--            Hiển thị project--%>
         </div>
 
         <!-- Load more -->
         <div class="flex-c-m flex-w w-full p-t-45">
-            <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                Load More
-            </a>
+            <button type="button" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04 btn-xem-them-sp">
+                Xem Thêm
+            </button>
         </div>
     </div>
 </section>

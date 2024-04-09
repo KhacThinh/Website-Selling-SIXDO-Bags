@@ -7,7 +7,6 @@ import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
-import com.bags.sixdoBag.service.impl.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,8 +38,11 @@ public class ProductHomeController {
 
 
     @GetMapping("/product-home")
-    public ResponseEntity<List<ProductHomeRequest>> HienThiProductHomePage() {
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+    public ResponseEntity<List<ProductHomeRequest>> hienThiProductHomePage(@RequestParam("limit") int limit) {
+        if(limit <= 0){
+            limit = 8;
+        }
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPhamLimit(limit);
         return ResponseEntity.ok(productHomeRequestList);
     }
 

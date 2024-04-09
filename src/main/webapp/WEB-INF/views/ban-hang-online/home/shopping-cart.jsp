@@ -832,7 +832,7 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
-            console.log("ssssssssmgg "+giamGia)
+            console.log("ssssssssmgg " + giamGia)
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -852,7 +852,7 @@
                     if (data != null) {
                         if (data.tenKhachHang.trim() === '' || data.sdt.trim() === '' || data.diaChi.trim() === '') {
                             showErrorAlert("Địa chỉ mặc định vẫn còn thiếu vui lòng vô kiểm tra lại!");
-                            return;
+                            return false;
                         }
                         orderData = {
                             cart: productList,
@@ -885,9 +885,11 @@
         $('.submit-oder-by-cart').on('click', function () {
             if (Object.keys(orderData).length === 0) {
                 if (currentClick === 'default') {
-                    defaultAddressCustomer();
+                    if (defaultAddressCustomer() == false) {
+                        return;
+                    }
                 } else if (currentClick === 'custom') {
-                    if(createOrderCustomerinput() == false){
+                    if (createOrderCustomerinput() == false) {
                         return;
                     }
                 }
@@ -938,7 +940,7 @@
                                                         icon: 'success',
                                                         showConfirmButton: false, // Ẩn nút "OK"
                                                         timer: 1500 // Tự động đóng thông báo sau 1.5 giây
-                                                    }).then(function() {
+                                                    }).then(function () {
                                                         // Sau khi thông báo đóng, chuyển hướng sang trang mới
                                                         window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer';
                                                     });
