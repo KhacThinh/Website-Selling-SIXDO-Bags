@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <title>SIXDO</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -62,11 +62,8 @@
 
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <style>
-
-        <%@include file="../../../views/ban-hang-online/css/main.css" %>
-        <%@include file="../../../views/ban-hang-online/css/util.css" %>
-    </style>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/util.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!--===============================================================================================-->

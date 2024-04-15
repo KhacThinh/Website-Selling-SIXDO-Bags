@@ -2,6 +2,29 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&display=swap" rel="stylesheet">
+    <style>
+        .pl-0 {
+            padding-left: 0;
+        }
+
+        .pl-0 li a {
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .f-s {
+            font-size: 13px;
+        }
+
+        .col-sm-6 h3 {
+            font-family: 'Anton', 'Bungee', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+    </style>
 </head>
 <body>
 <!-- Footer -->
@@ -9,11 +32,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h4 class="stext-301 cl0 p-b-30">
-                    Categories
-                </h4>
+                <h3 class="stext-301 cl0 p-b-30">
+                    Thể Loại
+                </h3>
 
-                <ul>
+                <ul class="pl-0">
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
                             Women
@@ -41,45 +64,45 @@
             </div>
 
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h4 class="stext-301 cl0 p-b-30">
-                    Help
-                </h4>
+                <h3 class="stext-301 cl0 p-b-30">
+                    Trợ giúp
+                </h3>
 
-                <ul>
+                <ul class="pl-0">
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            Track Order
+                            Theo dõi đơn hàng
                         </a>
                     </li>
 
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            Returns
+                            Trả hàng
                         </a>
                     </li>
 
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            Shipping
+                            Giao Hàng
                         </a>
                     </li>
 
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            FAQs
+                            Câu hỏi thường gặp
                         </a>
                     </li>
                 </ul>
             </div>
 
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h4 class="stext-301 cl0 p-b-30">
-                    GET IN TOUCH
-                </h4>
+                <h3 class="stext-301 cl0 p-b-30">
+                    Liên lạc
+                </h3>
 
-                <p class="stext-107 cl7 size-201">
-                    Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call
-                    us on (+1) 96 716 6879
+                <p class="stext-107 cl7 size-201 f-s">
+                    Bất kỳ câu hỏi? Hãy cho chúng tôi biết tại cửa hàng tại <span id="js-dia-chi-lh-ft"></span> hoặc gọi
+                    cho chúng tôi theo số <span id="js-sdt-lh-ft"></span>
                 </p>
 
                 <div class="p-t-27">
@@ -99,19 +122,19 @@
 
             <div class="col-sm-6 col-lg-3 p-b-50">
                 <h4 class="stext-301 cl0 p-b-30">
-                    Newsletter
+                    Bản tin
                 </h4>
 
                 <form>
                     <div class="wrap-input1 w-full p-b-4">
                         <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email"
-                               placeholder="email@example.com">
+                               placeholder="sixdo@gmail.com">
                         <div class="focus-input1 trans-04"></div>
                     </div>
 
                     <div class="p-t-18">
                         <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                            Subscribe
+                            Đăng ký
                         </button>
                     </div>
                 </form>
@@ -121,23 +144,23 @@
         <div class="p-t-40">
             <div class="flex-c-m flex-w p-b-18">
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+                    <img src="../static/images/footer/icon-pay-01.png" alt="ICON-PAY">
                 </a>
 
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+                    <img src="../static/images/footer/icon-pay-02.png" alt="ICON-PAY">
                 </a>
 
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+                    <img src="../static/images/footer/icon-pay-03.png" alt="ICON-PAY">
                 </a>
 
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+                    <img src="../static/images/footer/icon-pay-04.png" alt="ICON-PAY">
                 </a>
 
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+                    <img src="../static/images/footer/icon-pay-05.png" alt="ICON-PAY">
                 </a>
             </div>
 
@@ -153,5 +176,19 @@
         </div>
     </div>
 </footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
+<script>
+    $(document).ready(function () {
+        thongTinCuaHangFt();
+    })
+
+    function thongTinCuaHangFt() {
+        $.get('/lien-he/thong-tin-cua-hang', function (data) {
+            $('#js-dia-chi-lh-ft').text(data.diaChi);
+            $('#js-sdt-lh-ft').text(data.sdt);
+        })
+    }
+</script>
 </body>
 </html>

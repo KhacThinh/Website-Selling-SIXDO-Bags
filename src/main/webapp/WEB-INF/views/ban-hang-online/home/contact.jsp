@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <title>Liên Hệ</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!====================================-->
@@ -207,6 +207,7 @@
             kinhDo = data.toaDoMapY;
             hinhAnhLogo = data.hinhAnhLogo;
             $('#js-email-lh').text(data.email);
+            $('#js-logo-header').attr('src', data.hinhAnhLogo);
             $('#js-dia-chi-lh').text(data.diaChi);
             $('#js-sdt-lh').text(data.sdt);
             hienThiBanDo();

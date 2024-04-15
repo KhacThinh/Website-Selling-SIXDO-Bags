@@ -39,10 +39,13 @@ public class ProductHomeController {
 
     @GetMapping("/product-home")
     public ResponseEntity<List<ProductHomeRequest>> hienThiProductHomePage(@RequestParam("limit") int limit) {
-        if(limit <= 0){
-            limit = 8;
+        int page = 8;
+        if (limit <= 1) {
+            page *= 1;
+        } else {
+            page *= limit;
         }
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPhamLimit(limit);
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPhamLimit(page);
         return ResponseEntity.ok(productHomeRequestList);
     }
 

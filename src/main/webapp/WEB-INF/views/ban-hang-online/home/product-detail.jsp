@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <title>Product Detail</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!====================================-->
@@ -62,11 +62,8 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
 
-    <style>
-
-        <%@include file="../../../views/ban-hang-online/css/main.css" %>
-        <%@include file="../../../views/ban-hang-online/css/util.css" %>
-    </style>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/util.css">
 </head>
 
 
@@ -241,11 +238,6 @@
     }
 
 
-
-
-
-
-    //////////
     $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
         e.preventDefault();
     });

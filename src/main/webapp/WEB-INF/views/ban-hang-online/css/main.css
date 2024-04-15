@@ -284,6 +284,7 @@ body{
 
 .main-menu > li > a {
   font-family: Poppins-Medium;
+  text-decoration: none;
   font-size: 14px;
   color: #333;
   padding: 5px 0px;

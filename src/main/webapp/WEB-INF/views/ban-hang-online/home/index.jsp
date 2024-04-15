@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>SIXDO</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <title>Sản Phẩm | SIXDO</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -80,7 +80,6 @@
 <!-- Cart -->
 
 
-
 <!-- Product -->
 <div class="bg0 m-t-23 p-b-140">
     <div class="container">
@@ -145,7 +144,7 @@
                             Sort By
                         </div>
 
-                        <ul>
+                        <ul class="p-0">
                             <li class="p-b-6">
                                 <a href="#" class="filter-link stext-106 trans-04">
                                     Default
@@ -189,7 +188,7 @@
                             Thương Hiệu
                         </div>
 
-                        <ul>
+                        <ul class="p-0">
                             <li class="p-b-6">
                                 <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
                                     All
@@ -233,7 +232,7 @@
                             Màu Sắc
                         </div>
 
-                        <ul>
+                        <ul class="p-0">
                             <li class="p-b-6">
 									<span class="fs-15 lh-12 m-r-6" style="color: #222;">
 										<i class="zmdi zmdi-circle"></i>
@@ -290,7 +289,8 @@
                         <div class="block2-pic hov-img0">
                             <img src="${o.hinhAnh}" alt="Product">
                             <a href="#"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="${o.id}">
+                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                               data-id="${o.id}">
                                 Xem Nhanh
                             </a>
                         </div>
@@ -303,8 +303,9 @@
                                 </a>
 
                                 <span class="stext-105 cl3">
-								<fmt:formatNumber value="${o.giaBan}" type="currency"/>
-								  </span>
+								    <fmt:formatNumber value="${o.giaBan}" var="giaBan" pattern="#,###"/>
+                                    ${giaBan} đồng
+                                </span>
                             </div>
 
 
@@ -349,7 +350,7 @@
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    $(".js-select2").each(function(){
+    $(".js-select2").each(function () {
         $(this).select2({
             minimumResultsForSearch: 20,
             dropdownParent: $(this).next('.dropDownSelect2')
@@ -375,12 +376,12 @@
 <!--===============================================================================================-->
 <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
-    $('.gallery-lb').each(function() { // the containers for all your galleries
+    $('.gallery-lb').each(function () { // the containers for all your galleries
         $(this).magnificPopup({
             delegate: 'a', // the selector for gallery item
             type: 'image',
             gallery: {
-                enabled:true
+                enabled: true
             },
             mainClass: 'mfp-fade'
         });
@@ -395,13 +396,13 @@
 <!--===============================================================================================-->
 
 <script>
-    $('.js-addwish-b2').on('click', function(e){
+    $('.js-addwish-b2').on('click', function (e) {
         e.preventDefault();
     });
 
-    $('.js-addwish-b2').each(function(){
+    $('.js-addwish-b2').each(function () {
         var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-        $(this).on('click', function(){
+        $(this).on('click', function () {
             swal(nameProduct, "is added to wishlist !", "success");
 
             $(this).addClass('js-addedwish-b2');
@@ -409,10 +410,10 @@
         });
     });
 
-    $('.js-addwish-detail').each(function(){
+    $('.js-addwish-detail').each(function () {
         var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
 
-        $(this).on('click', function(){
+        $(this).on('click', function () {
             swal(nameProduct, "is added to wishlist !", "success");
 
             $(this).addClass('js-addedwish-detail');
@@ -423,25 +424,25 @@
     /*---------------------------------------------*/
 
 
-
 </script>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
 <script>
-    $('.js-pscroll').each(function(){
-        $(this).css('position','relative');
-        $(this).css('overflow','hidden');
+    $('.js-pscroll').each(function () {
+        $(this).css('position', 'relative');
+        $(this).css('overflow', 'hidden');
         var ps = new PerfectScrollbar(this, {
             wheelSpeed: 1,
             scrollingThreshold: 1000,
             wheelPropagation: false,
         });
 
-        $(window).on('resize', function(){
+        $(window).on('resize', function () {
             ps.update();
         })
     });
-</script>s
+</script>
+s
 <%--ffffff--%>
 
 <script type="text/javascript">

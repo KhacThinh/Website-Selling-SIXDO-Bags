@@ -4,7 +4,7 @@
 <head>
     <title>Title</title>
     <meta charset="UTF-8">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <style>
 
         .dropdown-menu {
@@ -68,12 +68,22 @@
         }
 
         .limiter-menu-desktop img {
+            width: 78px;
+            height: 54px;
+            object-fit: cover;
+        }
+
+        .limiter-menu-desktop #js-rounded-circle-avt-hearder {
             width: 35px;
             height: 35px;
             object-fit: cover;
             border-radius: 50%;
         }
 
+        .main-menu > li > a {
+            font-family: 'Poppins-Medium', sans-serif;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -86,12 +96,12 @@
     <div class="container-menu-desktop">
 
         <div class="wrap-menu-desktop how-shadow1">
-            <nav class="limiter-menu-desktop container">
+            <nav class="limiter-menu-desktop" style="margin: 0 30px">
 
 
                 <a href="/sixdo-shop" class="logo">
                     <img src="../static/images/logo1.jpg"
-                         alt="IMG-PRODUCT" id="logo-header">
+                         alt="IMG-PRODUCT" id="logo-header js-logo-header">
                 </a>
 
 
@@ -139,7 +149,7 @@
                 <div class="navbar_content">
                     <c:choose>
                         <c:when test="${khachHang == null}">
-                            <button type="button"  class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
+                            <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
                                     style="margin-left: 20px;">Đăng nhập
                             </button>
                         </c:when>
@@ -292,7 +302,7 @@
                 containerDonMuaMobi.hide();
                 containerDonMua.hide();
                 containerSanPhamYeuThich.hide();
-            }else{
+            } else {
                 containerDonMuaMobi.show();
                 containerDonMua.show();
                 containerSanPhamYeuThich.show();

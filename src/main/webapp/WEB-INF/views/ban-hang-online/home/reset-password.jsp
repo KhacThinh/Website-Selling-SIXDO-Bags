@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <title>Đặt lại mật khẩu | SIXDO</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!====================================-->

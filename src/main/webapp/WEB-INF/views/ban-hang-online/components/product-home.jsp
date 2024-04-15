@@ -7,9 +7,8 @@
     <title>Title</title>
 </head>
 <body>
-<a href="#ChiTietSanPhamHomeOnline"></a>
 <!-- Footer -->
-<section id="ChiTietSanPhamHomeOnline" class="bg0 p-t-23 p-b-140">
+<section class="bg0 p-t-23 p-b-140">
     <div class="container">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
@@ -60,7 +59,8 @@
             <script>
                 $(document).ready(function () {
                     // Gọi hàm loadData khi tài liệu đã sẵn sàng
-                    loadData(0);
+                    let valueLimit = localStorage.getItem("limitItem");
+                    loadData(valueLimit);
                     loadFilterThuongHieu();
                     loadFilterHienThi();
                     loadFilterMauSac();
@@ -76,17 +76,23 @@
                         var searchTerm = $('#search-input-product-home').val(); // Lấy giá trị từ ô tìm kiếm
                         searchProducts(searchTerm); // Gọi hàm tìm kiếm
                     });
+
                 });
 
-                let limit = 8
+                let limit = 1;
+                window.localStorage.setItem("limitItem", limit);
 
                 function pageXemThemSanPham() {
-                    $('.btn-xem-them-sp').on('click',function (event) {
+                    $('.btn-xem-them-sp').on('click', function (event) {
                         event.preventDefault();
-                        limit += 8;
-                       $.get('/load-du-lieu/product-home',{limit: limit}, function (data){
-                           displayProducts(data);
-                       });
+                        limit += 1;
+                        window.localStorage.setItem("limitItem", limit);
+                        let valueLimit = localStorage.getItem("limitItem");
+                        // $.get('/load-du-lieu/product-home', {limit: valueLimit}, function (data) {
+                        //     displayProducts(data);
+                        // });
+
+                        loadData(valueLimit);
                     })
                 }
 
@@ -202,7 +208,7 @@
                     const container = $('#display-filter-thuong-hieu-hien-thi');
                     container.empty();
                     var productHTML = '<div class="mtext-102 cl2 p-b-15">Thương hiệu </div>';
-                    productHTML += '<ul>';
+                    productHTML += '<ul class="p-0">';
                     $.each(thuongHieus, function (index, thuongHieu) {
                         productHTML += '<li class="p-b-6">';
                         productHTML += '<button class="filter-link stext-106 trans-04" data-brand="' + thuongHieu + '">' + thuongHieu + '</button>';
@@ -241,7 +247,7 @@
                     const container = $('#display-filter-mau-sac-hien-thi');
                     container.empty();
                     var productHTML = '<div class="mtext-102 cl2 p-b-15">Màu Sắc </div>';
-                    productHTML += '<ul>';
+                    productHTML += '<ul class="p-0">';
 
                     $.each(mauSacs, function (index, mauSac) {
                         productHTML += '<li class="p-b-6">';
@@ -343,7 +349,7 @@
                         productHTML += '<a class="block2" href="/sixdo-shop/product/' + product.id + '">';
                         productHTML += '<div class="block2-pic hov-img0">';
                         productHTML += '<img src="' + product.hinhAnh + '" alt="Product">';
-                        productHTML += '<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="' + product.id + '">Xem Nhanh</a>';
+                        productHTML += '<a href="/sixdo-shop/product/' + product.id + '" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="' + product.id + '">Xem Nhanh</a>';
                         productHTML += '</div>';
                         productHTML += '<div class="block2-txt flex-w flex-t p-t-14">';
                         productHTML += '<div class="block2-txt-child1 flex-col-l ">';
@@ -384,7 +390,7 @@
                             Sort By
                         </div>
 
-                        <ul>
+                        <ul class="p-0">
                             <li class="p-b-6">
                                 <a href="#" class="filter-link stext-106 trans-04">
                                     Default
@@ -473,7 +479,8 @@
 
         <!-- Load more -->
         <div class="flex-c-m flex-w w-full p-t-45">
-            <button type="button" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04 btn-xem-them-sp">
+            <button type="button"
+                    class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04 btn-xem-them-sp">
                 Xem Thêm
             </button>
         </div>
