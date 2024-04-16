@@ -2912,7 +2912,7 @@ iframe {border: none;}
     -o-transition: all 0.4s;
     -moz-transition: all 0.4s;
     transition: all 0.4s;
-    text-decoration: none;
+    /*text-decoration: none;*/
 }
 .trans-05 {
     -webkit-transition: all 0.5s;
@@ -3288,6 +3288,7 @@ iframe {border: none;}
     -ms-flex-direction: column;
     -o-flex-direction: column;
     flex-direction: column;
+    text-decoration: none;
 }
 
 .flex-col-rev {

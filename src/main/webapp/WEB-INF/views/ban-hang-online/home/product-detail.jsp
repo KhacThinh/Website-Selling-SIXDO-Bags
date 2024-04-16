@@ -75,10 +75,6 @@
 <!-- Cart -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>
 
-
-<!-- breadcrumb -->
-
-
 <!-- Product Detail -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/product-customer.jsp"/>
 
