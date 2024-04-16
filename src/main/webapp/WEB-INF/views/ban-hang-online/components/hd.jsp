@@ -162,7 +162,7 @@
                                          class="profile"/>
                                     <i class="bi bi-caret-down-fill" style="color: #1d1d1d; font-size: 15px;"></i>
                                 </button>
-                                <div class="dropdown" style="margin-left: 20px;">
+                                <div class="dropdown" style="margin-left: -30px;">
                                     <ul class="dropdown-menu" id="dropdownMenu">
                                         <li><a class="dropdown-item" href="#">Cài đặt</a></li>
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"

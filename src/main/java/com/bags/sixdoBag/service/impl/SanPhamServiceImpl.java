@@ -160,7 +160,6 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     public List<ProductHomeRequest> searchSanPhamOnlines(String name) {
-
         return queryJpa.searchProductByName(name);
     }
 

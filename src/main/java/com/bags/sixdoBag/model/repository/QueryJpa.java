@@ -104,11 +104,6 @@ public class QueryJpa {
                 productList.add(product);
             }
 
-            // In ra danh sách sản phẩm
-//            for (ProductHomeRequest product : productList) {
-//                System.out.println(product);
-//            }
-
             // Đóng kết nối, statement và resultSet
             resultSet.close();
             statement.close();
@@ -377,7 +372,6 @@ public class QueryJpa {
             e.printStackTrace();
             // Xử lý ngoại lệ nếu có
         }
-        // Trả về danh sách các ProductHomeRequest
         return productHomeRequests;
     }
 
@@ -449,12 +443,77 @@ public class QueryJpa {
         }
     }
 
+    public List<ProductHomeRequest> searchProductFavoriteByName(Integer idKhachHang, String tenSanPham) {
+        try {
+            Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            // Tạo câu lệnh SQL
+            String sql = "WITH MinPrices AS (" +
+                    "    SELECT " +
+                    "        san_pham.id, " +
+                    "        san_pham.ten, " +
+                    "        chi_tiet_san_pham.gia_ban, " +
+                    "        chi_tiet_san_pham.anh_ctsp, " +
+                    "        ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) AS RowNumber " +
+                    "    FROM " +
+                    "        san_pham " +
+                    "    JOIN chi_tiet_san_pham ON chi_tiet_san_pham.id_san_pham = san_pham.id " +
+                    "    JOIN san_pham_yeu_thich as spyt ON san_pham.id = spyt.id_san_pham" +
+                    "    JOIN khach_hang kh ON spyt.id_khach_hang = kh.id ";
+
+            if (idKhachHang != null) {
+                sql += "WHERE kh.id = ? and san_pham.ten like ? )";
+            }
+
+            sql += " SELECT " +
+                    "    id, " +
+                    "    ten, " +
+                    "    gia_ban, " +
+                    "    anh_ctsp " +
+                    "FROM " +
+                    "    MinPrices " +
+                    "WHERE " +
+                    "    RowNumber = 1";
+
+            // Tạo đối tượng PreparedStatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            // Nếu tên được cung cấp, đặt giá trị tham số cho câu lệnh SQL
+            if (idKhachHang != null) {
+                statement.setInt(1, idKhachHang);
+                statement.setString(2, "%" + tenSanPham + "%");
+            }
+
+            // Thực thi câu lệnh SQL và nhận kết quả
+            ResultSet resultSet = statement.executeQuery();
+
+            // Duyệt qua kết quả và tạo danh sách sản phẩm
+            List<ProductHomeRequest> productList = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String ten = resultSet.getString("ten");
+                float giaBan = resultSet.getFloat("gia_ban");
+                String anhCtsp = resultSet.getString("anh_ctsp");
+                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                productList.add(product);
+            }
+
+            // Đóng kết nối, statement và resultSet
+            resultSet.close();
+            statement.close();
+            connection.close();
+            return productList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public List<ProductHomeRequest> tempLimit(int limit) {
         try {
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
-            System.out.println("Query" + limit);
             // Tạo câu lệnh SQL
             String sql = "DECLARE @limit INT = ? ; " +
                     "WITH MinPrices AS (" +
