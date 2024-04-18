@@ -112,8 +112,21 @@ public class ProductHomeController {
     @GetMapping("/so-luong-mua")
     @ResponseBody
     public int soLuongMuaChiTietSanPham(@RequestParam("id") int idChiTietSanPham) {
-        System.out.println("SỐ Lượng mua");
         int soLuongMua = chiTietSanPhamServivce.soLuongMuaByChiTietSanPham(idChiTietSanPham);
         return soLuongMua;
+    }
+
+
+    @GetMapping("/so-luong-san-pham")
+    @ResponseBody
+    public int soLuongSanPham() {
+        int soLuongSanPham = sanPhamService.listHienThiSanPham().size();
+        int page = 1;
+        if (soLuongSanPham % 8 != 0) {
+            page = (soLuongSanPham / 8) + 1;
+        } else {
+            page = soLuongSanPham / 8;
+        }
+        return page;
     }
 }

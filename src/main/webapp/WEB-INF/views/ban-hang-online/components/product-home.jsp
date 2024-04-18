@@ -57,10 +57,25 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
             <script>
+                let countLimitItem = 0;
+                let valueLimit = sessionStorage.getItem("limitItem");
                 $(document).ready(function () {
                     // Gọi hàm loadData khi tài liệu đã sẵn sàng
-                    let valueLimit = localStorage.getItem("limitItem");
-                    loadData(valueLimit);
+
+                    if (valueLimit === null) {
+                        valueLimit = 1;
+                        sessionStorage.setItem("limitItem", valueLimit);
+                    } else {
+                        valueLimit = parseInt(valueLimit);
+                        $.get('/load-du-lieu/so-luong-san-pham', function (data) {
+                            countLimitItem = data;
+                        })
+                    }
+
+
+                    loadData();
+
+
                     loadFilterThuongHieu();
                     loadFilterHienThi();
                     loadFilterMauSac();
@@ -70,29 +85,21 @@
                     themSanPhamYeuThich();
 
                     pageXemThemSanPham();
+
                     // Sự kiện khi form tìm kiếm được submit
                     $('#search-form').submit(function (event) {
-                        event.preventDefault(); // Ngăn chặn form gửi đi
-                        var searchTerm = $('#search-input-product-home').val(); // Lấy giá trị từ ô tìm kiếm
-                        searchProducts(searchTerm); // Gọi hàm tìm kiếm
+                        event.preventDefault();
+                        var searchTerm = $('#search-input-product-home').val();
+                        searchProducts(searchTerm);
                     });
-
                 });
-
-                let limit = 1;
-                window.localStorage.setItem("limitItem", limit);
 
                 function pageXemThemSanPham() {
                     $('.btn-xem-them-sp').on('click', function (event) {
                         event.preventDefault();
-                        limit += 1;
-                        window.localStorage.setItem("limitItem", limit);
-                        let valueLimit = localStorage.getItem("limitItem");
-                        // $.get('/load-du-lieu/product-home', {limit: valueLimit}, function (data) {
-                        //     displayProducts(data);
-                        // });
-
-                        loadData(valueLimit);
+                        valueLimit += 1;
+                        sessionStorage.setItem("limitItem", valueLimit);
+                        loadData();
                     })
                 }
 
@@ -158,7 +165,6 @@
                                 });
                             }
                         }).fail(function (xhr, status, error) {
-                            // Xử lý lỗi nếu có
                             console.error('Lỗi khi gửi yêu cầu kiểm tra thông tin khách hàng:', error);
                         });
                     });
@@ -166,8 +172,16 @@
 
 
                 // tải tự động dữ liệu lên từ product controller
-                function loadData(limit) {
-                    $.get('/load-du-lieu/product-home', {limit: limit}, function (data) {
+                function loadData() {
+                    $.get('/load-du-lieu/product-home', {limit: valueLimit}, function (data) {
+                        // if (countLimitItem <= valueLimit) {
+                        //     $('.check-btn-xem-them-home').hide();
+                        //     // document.querySelector('.check-btn-
+                        //     xem-them-home').style.display = 'none';
+                        // } else {
+                        //     // document.querySelector('.check-btn-xem-them-home').style.display = 'block';
+                        //     $('.check-btn-xem-them-home').show();
+                        // }
                         displayProducts(data);
                     });
                 }
@@ -312,7 +326,7 @@
                 function displayFilterHienThi(filters) {
                     const container = $('#display-filter-hien-thi');
                     container.empty();
-                    var productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*" onclick="loadData()">Tất cả sản phẩm</button>';
+                    var productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*" onclick="loadData(valueLimit)">Tất cả sản phẩm</button>';
                     container.append(productHTML);
                     $.each(filters, function (index, filter) {
                         productHTML = '<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".' + filter + '" onclick="filterProducts(\'' + filter + '\')">' + filter + '</button>';
@@ -478,7 +492,7 @@
         </div>
 
         <!-- Load more -->
-        <div class="flex-c-m flex-w w-full p-t-45">
+        <div class="flex-c-m flex-w w-full p-t-45 check-btn-xem-them-home">
             <button type="button"
                     class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04 btn-xem-them-sp">
                 Xem Thêm

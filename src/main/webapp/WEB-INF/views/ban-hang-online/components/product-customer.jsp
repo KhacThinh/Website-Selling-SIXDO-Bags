@@ -93,7 +93,8 @@
                                     <select class="js-select2" id="select-id-color" name="time"
                                             onchange="updatePrice(this)">
                                         <c:forEach var="o" items="${product}" varStatus="loop">
-                                            <option data-product-id="${o.id}" value="${o.id}">${o.mauSac.tenMauSac}</option>
+                                            <option data-product-id="${o.id}"
+                                                    value="${o.id}">${o.mauSac.tenMauSac}</option>
                                         </c:forEach>
                                     </select>
                                     <div class="dropDownSelect2"></div>
@@ -163,10 +164,10 @@
                            href="#description" role="tab">Mô Tả</a>
                     </li>
 
-<%--                    <li class="nav-item p-b-10">--%>
-<%--                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#information"--%>
-<%--                           role="tab">Thông tin bổ sung</a>--%>
-<%--                    </li>--%>
+                    <%--                    <li class="nav-item p-b-10">--%>
+                    <%--                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#information"--%>
+                    <%--                           role="tab">Thông tin bổ sung</a>--%>
+                    <%--                    </li>--%>
 
                     <li class="nav-item p-b-10 ">
                         <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#reviews"
@@ -449,11 +450,113 @@
 
         soLuongMuaDetail(defaultProductId);
     })
+
+
+    $('.js-addcart-detail-customer').on('click', function () {
+        var idKhachHang = document.getElementById("id-khach-hang").value;
+        var selectedIdValue = document.getElementById('select-id-color').value;
+        var quantityProduct = 0;
+        quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
+        var isValid;
+
+        if (idKhachHang == "") {
+            Swal.fire({
+                title: "Đăng nhập để thêm sản phẩm vào giỏ hàng",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Đăng nhập",
+                cancelButtonText: "Đóng",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/sixdo-shop/login-customer";
+                }
+            });
+        }
+
+        if (quantityProduct === 0) {
+            Swal.fire(
+                'Error',
+                'So Luong Phai Lon Hon 0.',
+                'error'
+            );
+            return isValid = false;
+        }
+        if (quantityProduct < 0) {
+            Swal.fire(
+                'Eror',
+                'So Luong khong duoc am.',
+                'error'
+            );
+            return isValid = false;
+        }
+        if (isValid != false) {
+            $.ajax({
+                url: '/sixdo-shop/check-soLuong',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    idKhachHang: idKhachHang,
+                    idChiTietSanPham: selectedIdValue,
+                    soLuong: quantityProduct
+                }),
+                success: function (response) {
+                    if (response === "ok") {
+                        $.ajax({
+                            url: '/sixdo-shop/add-to-cart-buyer',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                idKhachHang: idKhachHang,
+                                idChiTietSanPham: selectedIdValue,
+                                soLuong: quantityProduct
+                            }),
+                            success: function (response) {
+                                if (response === "ok") {
+                                    // Swal.fire({
+                                    //     title: 'Thanh cong!',
+                                    //     text: 'Da them gio hang thanh cong.',
+                                    //     icon: 'success',
+                                    //     timer: 2000, // Thời gian tự động đóng (ms)
+                                    //     showConfirmButton: false // Ẩn nút OK
+                                    // });
+                                    const count = document.querySelector('.icon-count-cart');
+                                    count.setAttribute('data-notify', response);
+                                    showAlertAddCart('Success!', 'Product added to cart!', 'success');
+                                    capNhapSoLuongSanPhamTrongGioHangHearder();
+                                } else if (response === "loiTrangThai") {
+                                    Swal.fire(
+                                        'Error!',
+                                        'San pham khong ton tai.',
+                                        'error'
+                                    );
+                                }
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            'Lỗi!',
+                            'Ban Chi duoc them toi da: ' + response + 'San Pham',
+                            'error'
+                        );
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+
+    });
+
     function soLuongMuaDetail(idCTsp) {
         $.ajax({
             type: 'GET',
             url: '/load-du-lieu/so-luong-mua',
-            data: { id: idCTsp },
+            data: {id: idCTsp},
             success: function (soLuongMua) {
                 if (soLuongMua > 0) {
                     document.getElementById('so-luong-ban-ra').innerText = soLuongMua;

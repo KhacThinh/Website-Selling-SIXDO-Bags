@@ -3096,6 +3096,12 @@ iframe {border: none;}
     justify-content: center;
     -ms-align-items: center;
     align-items: center;
+    text-decoration: none;
+}
+
+.flex-c-mm{
+    font-family: Arial, sans-serif;
+    font-weight: bold;
 }
 
 .flex-c-t {

@@ -62,6 +62,7 @@
 
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/util.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 
@@ -92,17 +93,17 @@
                     </h4>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email-contact"
                                placeholder="Địa chỉ email của bạn">
                         <i class="bi bi-envelope how-pos4 pointer-none"></i>
                     </div>
 
                     <div class="bor8 m-b-30">
-                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg"
+                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg-contact"
                                   placeholder="Chúng tôi có thể giúp đỡ bạn bằng cách nào?"></textarea>
                     </div>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer btn-gui-kho-khan-lh">
                         Gửi
                     </button>
                 </form>
@@ -199,6 +200,46 @@
 
     $(document).ready(function () {
         thongTinCuaHang();
+
+        $('.btn-gui-kho-khan-lh').on('click', function (event) {
+            event.preventDefault();
+            const email = $('input[name="email-contact"]').val();
+            const message = $('textarea[name="msg-contact"]').val();
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !message) {
+                Swal.fire({
+                    title: "Lỗi",
+                    text: "Vui lòng điền đầy đủ thông tin.",
+                    icon: "error",
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            if (!emailPattern.test(email)) {
+                Swal.fire({
+                    title: "Lỗi",
+                    text: "Định dạng email không hợp lệ.",
+                    icon: "error",
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: "Cảm ơn các bạn đã nhận xét và góp ý!",
+                text: "Chúng tôi sẽ trả lời lại nhận xét và góp ý của bạn sớm nhất có thể",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2500
+            });
+
+            $('textarea[name="msg-contact"]').val("");
+            $('input[name="email-contact"]').val("");
+
+        });
     })
 
     function thongTinCuaHang() {

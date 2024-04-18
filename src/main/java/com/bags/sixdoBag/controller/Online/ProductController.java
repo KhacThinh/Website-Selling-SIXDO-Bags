@@ -242,10 +242,8 @@ public class ProductController {
 
     @PostMapping("/get-cart-by-buyer")
     public ResponseEntity<?> getCartByBuyer(@RequestBody Map<String, Object> requestBody) {
-        String idKhachHang = String.valueOf(requestBody.get("idKhachHang2"));
-        System.out.println("idkkkkkkkn" + idKhachHang);
-        List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(Integer.parseInt(idKhachHang));
-        System.out.println("ddddddff" + chiTietGioHangList.size());
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(khachHang.getId());
         return ResponseEntity.ok(chiTietGioHangList);
     }
 

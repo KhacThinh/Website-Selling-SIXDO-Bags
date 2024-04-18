@@ -12,7 +12,7 @@
     <div class="header-cart flex-col-l p-l-40 p-r-18">
         <div class="header-cart-title flex-w flex-sb-m p-b-8">
 				<span class="mtext-103 cl2">
-					Your Cart
+					Giỏ hàng của bạn
 				</span>
             <div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
                 <i class="zmdi zmdi-close"></i>
@@ -51,7 +51,7 @@
                     <a href="/sixdo-shop/shoping-cart"
                        class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10"
                        style="width: 280px">
-                        Check Out
+                        Mua Ngay
                     </a>
                 </div>
             </div>
