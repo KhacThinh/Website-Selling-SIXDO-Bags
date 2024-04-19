@@ -38,6 +38,10 @@ public interface SanPhamService {
 
     List<ProductHomeRequest> displayedByBrand(int idThuongHieu);
 
+    List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int min, int max);
+
+    List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSp, int idDanhMuc);
+
     List<ProductHomeRequest> searchSanPhamOnlines(String name);
 
     public boolean findByNameSanPham(String name);

@@ -267,12 +267,66 @@ public class ProductController {
         List<ChiTietSanPham> sortedList = list.stream()
                 .sorted(Comparator.comparingDouble(ChiTietSanPham::getGiaBan))
                 .collect(Collectors.toList());
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.displayedByBrand(list.get(0).getSanPham().getThuongHieu().getId());
+        SanPham sanPham = list.get(0).getSanPham();
+
+        if (sanPham.getThuongHieu() == null && sanPham.getDanhMuc() == null) {
+            throw new IllegalArgumentException("Sản phẩm với danh mục của sản phẩm có id " + id + " có trá trị null");
+        }
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.displayedByBrand(sanPham.getThuongHieu().getId());
+        List<ProductHomeRequest> productHomeDanhMuc = sanPhamService.sanPhamCoDanhMucTuongTu(id, sanPham.getDanhMuc().getId());
+
+        int giaTien = list.get(0).getGiaBan();
+        int min = giaTien - 100000;
+        int max = giaTien + 100000;
+        if (min < 0) {
+            min = giaTien;
+        }
+        List<ProductHomeRequest> productHomeGiaTienTuongUng = sanPhamService.sanPhamCoGiaTienTuongTu(min, max);
+
+        boolean checkDanhMucTuongUng = true;
+        if (productHomeDanhMuc.isEmpty()) {
+            checkDanhMucTuongUng = false;
+        }
+
+        boolean checkSoTienTuongUng = true;
+        if (productHomeGiaTienTuongUng.isEmpty()) {
+            checkSoTienTuongUng = false;
+        }
 
         model.addAttribute("product", sortedList);
         model.addAttribute("listSp", productHomeRequestList);
-
+        model.addAttribute("productHomeDanhMuc", productHomeDanhMuc);
+        model.addAttribute("productHomeGiaTienTuongUng", productHomeGiaTienTuongUng);
+        model.addAttribute("checkDanhMucTuongTu", checkDanhMucTuongUng);
+        model.addAttribute("checkSoTienTuongUng", checkSoTienTuongUng);
         return "ban-hang-online/home/product-detail";
+    }
+
+    @GetMapping("hello")
+    public String hello(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        model.addAttribute("khachHang", khachHang);
+
+        List<ChiTietSanPham> list = chiTietSanPhamRepository.getChiTietSanPhamByIdSpOnline(2);
+        List<ChiTietSanPham> sortedList = list.stream()
+                .sorted(Comparator.comparingDouble(ChiTietSanPham::getGiaBan))
+                .collect(Collectors.toList());
+        SanPham sanPham = list.get(0).getSanPham();
+
+        if (sanPham.getThuongHieu() == null && sanPham.getDanhMuc() == null) {
+            throw new IllegalArgumentException("Sản phẩm với danh mục của sản phẩm có id " + 2 + " có trá trị null");
+        }
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.displayedByBrand(sanPham.getThuongHieu().getId());
+
+        List<ProductHomeRequest> productHomeDanhMuc = sanPhamService.sanPhamCoDanhMucTuongTu(2, sanPham.getDanhMuc().getId());
+
+//        List<ProductHomeRequest> productHomeRequests = sanPhamService.sanPhamCoGiaTienTuongTu(list.get(0).getSanPham().);
+
+        model.addAttribute("product", sortedList);
+        model.addAttribute("listSp", productHomeRequestList);
+        model.addAttribute("listSpttdm", productHomeDanhMuc);
+
+        return "ban-hang-online/home/product-detailll";
     }
 
     @PostMapping("/get-product-by-id")

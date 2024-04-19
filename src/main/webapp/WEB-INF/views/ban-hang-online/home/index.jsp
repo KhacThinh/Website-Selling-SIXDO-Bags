@@ -281,8 +281,8 @@
                     <a class="block2" href="/sixdo-shop/product/${o.id}">
                         <div class="block2-pic hov-img0">
                             <img src="${o.hinhAnh}" alt="Product">
-                            <a href="#"
-                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                            <a href="/sixdo-shop/product/${o.id}"
+                               class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
                                data-id="${o.id}">
                                 Xem Nhanh
                             </a>

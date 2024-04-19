@@ -55,10 +55,8 @@
                     </h4>
 
                     <p class="mtext-106 cl2" id="product-price">
-                        <fmt:formatNumber
-                                pattern="#,###"
-                                var="tongTam"
-                                value="${product[0].giaBan}"></fmt:formatNumber>${tongTam}đ</p>
+                        <fmt:formatNumber pattern="#,###" var="tongTam" value="${product[0].giaBan}"></fmt:formatNumber>
+                        ${tongTam} đồng</p>
 
                     <!-- Thêm thông tin về thương hiệu -->
                     <p class="stext-102 cl3">
@@ -161,7 +159,7 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item p-b-10">
                         <a class="nav-link active inf-title" style="font-size: 19px" data-toggle="tab"
-                           href="#description" role="tab">Mô Tả</a>
+                           href="#information" role="tab">Mô Tả</a>
                     </li>
 
                     <%--                    <li class="nav-item p-b-10">--%>
@@ -178,96 +176,28 @@
                 <!-- Tab panes -->
                 <div class="tab-content p-t-43">
                     <!-- - -->
-                    <div class="tab-pane fade show active" id="description" role="tabpanel">
-                        <div class="how-pos2 p-lr-15-md">
-                            <ul class="p-lr-28 p-lr-15-sm">
-                                <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205 inf">
-												Khối Lượng :
-											</span>
-
-                                    <span class="stext-102 cl6 size-206 inf">
-                                        ${product[0].sanPham.khoiLuong}
-                                    </span>
-                                </li>
-
-                                <li class="flex-w flex-t p-b-7 ">
-											<span class="stext-102 cl3 size-205 inf">
-												Kích Thước :
-											</span>
-
-                                    <span class="stext-102 cl6 size-206 inf">
-                                        ${product[0].sanPham.kichThuoc}
-                                    </span>
-                                </li>
-
-                                <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205 inf">
-												Chất Liệu :
-											</span>
-
-                                    <span class="stext-102 cl6 size-206 inf">
-                                        ${product[0].sanPham.chatLieu}
-                                    </span>
-                                </li>
-
-                                <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205 inf">
-												Màu Sắc :
-											</span>
-
-                                    <span class="stext-102 cl6 size-206 inf">
-                                             <c:forEach var="o" items="${product}" varStatus="loop">
-                                                 ${o.mauSac.tenMauSac},
-                                             </c:forEach>
-											</span>
-                                </li>
-
-                                <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205 inf">
-												Xuất Xứ :
-											</span>
-
-                                    <span class="stext-102 cl6 size-206 inf">
-                                        ${product[0].sanPham.xuatXu}
-                                    </span>
-                                </li>
-                                <li>
-                                    <p class="stext-102 cl6" style="font-size: 16px">
-                                    <p class="stext-102 cl3">
-                                        Mô tả sản phẩm:
-                                        <strong>${product[0].sanPham.moTa}</strong>
-                                    </p>
-                                    <ul class="stext-102 cl3" style="list-style-type: none; padding-left: 0;">
-                                        <li><strong>Mã sản phẩm:</strong> SP0022</li>
-                                        <li><strong>Kích thước:</strong> 15x20x8 cm</li>
-                                        <li><strong>Khối lượng:</strong> 1 gram</li>
-                                        <li><strong>Chất liệu:</strong> Nhung</li>
-                                        <li><strong>Xuất xứ:</strong> Hàn Quốc</li>
-                                        <li><strong>Trọng lượng:</strong> 10000 kg</li>
-                                        <li><strong>Thương hiệu:</strong> Louis Vuitton</li>
-                                        <li><strong>Danh mục:</strong> Túi Đeo Chéo</li>
-                                        <li><strong>Bảo Hành:</strong> Trọn đời</li>
-                                    </ul>
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-
-                    <!-- - -->
-                    <div class="tab-pane fade" id="information" role="tabpanel">
+                    <div class="tab-pane fade show active" id="information" role="tabpanel">
                         <div class="row">
                             <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
                                 <ul class="p-lr-28 p-lr-15-sm">
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Mã Sản Phẩm :
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.maSanPham}
+                                        </span>
+                                    </li>
                                     <li class="flex-w flex-t p-b-7">
 											<span class="stext-102 cl3 size-205 inf">
 												Khối Lượng :
 											</span>
 
                                         <span class="stext-102 cl6 size-206 inf">
-                                            ${product[0].sanPham.khoiLuong}
+                                            <fmt:formatNumber pattern="#,###" var="khoiLuongdt"
+                                                              value="${product[0].sanPham.khoiLuong}"></fmt:formatNumber>
+                                            ${khoiLuongdt} gram
                                         </span>
                                     </li>
 
@@ -277,7 +207,7 @@
 											</span>
 
                                         <span class="stext-102 cl6 size-206 inf">
-                                            ${product[0].sanPham.kichThuoc}
+                                            ${product[0].sanPham.kichThuoc} cm
                                         </span>
                                     </li>
 
@@ -312,24 +242,50 @@
                                             ${product[0].sanPham.xuatXu}
                                         </span>
                                     </li>
-                                    <li>
-                                        <p class="stext-102 cl6" style="font-size: 16px">
-                                        <p class="stext-102 cl3">
-                                            Mô tả sản phẩm:
-                                            <strong>${product[0].sanPham.moTa}</strong>
-                                        </p>
-                                        <ul class="stext-102 cl3" style="list-style-type: none; padding-left: 0;">
-                                            <li><strong>Mã sản phẩm:</strong> SP0022</li>
-                                            <li><strong>Kích thước:</strong> 15x20x8 cm</li>
-                                            <li><strong>Khối lượng:</strong> 1 gram</li>
-                                            <li><strong>Chất liệu:</strong> Nhung</li>
-                                            <li><strong>Xuất xứ:</strong> Hàn Quốc</li>
-                                            <li><strong>Trọng lượng:</strong> 10000 kg</li>
-                                            <li><strong>Thương hiệu:</strong> Louis Vuitton</li>
-                                            <li><strong>Danh mục:</strong> Túi Đeo Chéo</li>
-                                            <li><strong>Bảo Hành:</strong> Trọn đời</li>
-                                        </ul>
-                                        </p>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Thương Hiệu:
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.thuongHieu.ten}
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Danh Mục:
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.danhMuc.tenDanhMuc}
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Đối tượng sử dụng:
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.doiTuongSuDung.tenDoiTuongSuDung}
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Bảo Hành :
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.thoiGianBaoHanh.thoiGian} tháng
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Mô tả sản phẩm :
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                       <strong>${product[0].sanPham.moTa}</strong>
+                                    </span>
                                     </li>
                                 </ul>
                             </div>
@@ -427,16 +383,11 @@
         </div>
     </div>
 
-    <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
-			<span class="stext-107 cl6 p-lr-25">
-				Mã Sản Phẩm :                                              ${product[0].sanPham.maSanPham}
-
-			</span>
-
-        <span class="stext-107 cl6 p-lr-25">
-				Categories: Jacket, Men
-			</span>
-    </div>
+<%--    <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">--%>
+<%--        <span class="stext-107 cl6 p-lr-25">--%>
+<%--				Thể loại:  ${product[0].sanPham.danhMuc.tenDanhMuc}--%>
+<%--			</span>--%>
+<%--    </div>--%>
 </section>
 
 <script>

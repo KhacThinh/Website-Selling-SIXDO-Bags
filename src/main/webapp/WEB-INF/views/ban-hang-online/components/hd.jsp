@@ -116,7 +116,7 @@
                         </li>
 
                         <li class="active-menu">
-                            <a href="shoping-cart.html">Bộ sưu tập</a>
+                            <a href="/sixdo-shop/hello">Bộ sưu tập</a>
                         </li>
 
                         <li>
@@ -231,7 +231,7 @@
             </li>
 
             <li>
-                <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Bộ sưu tập</a>
+                <a href="/sixdo-shop/hello" class="label1 rs1" data-label1="hot">Bộ sưu tập</a>
             </li>
 
             <li>

@@ -159,6 +159,16 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     }
 
+    @Override
+    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int min, int max) {
+        return queryJpa.sanPhamCoGiaTienTuongTu(min, max);
+    }
+
+    @Override
+    public List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSP, int idDanhMuc) {
+        return queryJpa.sanPhamCoDanhMucTuongTu(idSP, idDanhMuc);
+    }
+
     public List<ProductHomeRequest> searchSanPhamOnlines(String name) {
         return queryJpa.searchProductByName(name);
     }
