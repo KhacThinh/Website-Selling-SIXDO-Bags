@@ -63,7 +63,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/util.css">
 </head>
@@ -112,6 +112,14 @@
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+
+    $(document).ready(function () {
+        themSanPhamYeuThich();
+
+        capNhapSoLuongSanPhamYeuThichHearder();
+        checkSanPhamYeuThichTrangChu();
+    });
+
     $(".js-select2").each(function () {
         $(this).select2({
             minimumResultsForSearch: 20,

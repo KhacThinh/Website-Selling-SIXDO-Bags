@@ -164,7 +164,7 @@
                                 </button>
                                 <div class="dropdown" style="margin-left: -30px;">
                                     <ul class="dropdown-menu" id="dropdownMenu">
-                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>
+<%--                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>--%>
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                data-bs-target="#exampleModalProfile">Hồ sơ</a></li>
                                         <li>
@@ -278,6 +278,86 @@
             window.location.href = '/sixdo-shop/login-customer';
         });
     });
+
+    // check xem sản phẩm đã được yêu thích chưa
+    function checkSanPhamYeuThichTrangChu() {
+        $.get('/product-favorite/check-san-pham-yeu-thich-home', function (data) {
+            var productIDs = data;
+            $(".js-addwish-b2").each(function () {
+                var productID = $(this).data("product-id");
+                if (productIDs.includes(productID)) {
+                    $(this).find('.bi-heart').hide();
+                    $(this).find('.bi-heart-fill').show();
+                }
+            });
+        });
+    }
+
+    // sản phẩm yêu thích product favorites
+    function themSanPhamYeuThich() {
+        $(document).on('click', '.js-addwish-b2', function () {
+            var heartFill = $(this).find('.bi-heart-fill');
+            var heartOutline = $(this).find('.bi-heart');
+            var productId = $(this).data('product-id');
+
+            $.get('/product-favorite/check-thong-tin-khach-hang', function (response) {
+                if (response !== 0) {
+                    console.log('Khách hàng đã đăng nhập với ID:', response);
+                    if (heartFill.css('display') === 'none') {
+                        $.post('/product-favorite/them-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                            if (sanPhamCheck != 0) {
+                                heartFill.css('display', 'inline');
+                                heartOutline.css('display', 'none');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Đã thêm vào danh sách yêu thích!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                capNhapSoLuongSanPhamYeuThichHearder();
+                            } else {
+                                console.log("không thêm được vô sản phẩm yêu thích");
+                            }
+                        })
+                    } else {
+                        $.get('/product-favorite/xoa-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                            if (sanPhamCheck != 0) {
+                                // Ngược lại, chuyển về icon đậm và ẩn icon fill
+                                heartFill.css('display', 'none');
+                                heartOutline.css('display', 'inline');
+                                // Hiển thị thông báo hủy thành công
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Đã xóa khỏi danh sách yêu thích!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                capNhapSoLuongSanPhamYeuThichHearder();
+                            } else {
+                                console.log("không xoá được sản phẩm yêu thích");
+                                alert("Lỗi");
+                            }
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        title: 'Vui lòng đăng nhập để thêm sản phẩm này vào danh sách yêu thích',
+                        text: 'Bằng cách đăng nhập, bạn có thể quản lý danh sách sản phẩm yêu thích cá nhân.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Đăng nhập',
+                        cancelButtonText: 'Để sau',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/sixdo-shop/login-customer";
+                        }
+                    });
+                }
+            }).fail(function (xhr, status, error) {
+                console.error('Lỗi khi gửi yêu cầu kiểm tra thông tin khách hàng:', error);
+            });
+        });
+    }
 
     function capNhapSoLuongSanPhamYeuThichHearder() {
         $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {

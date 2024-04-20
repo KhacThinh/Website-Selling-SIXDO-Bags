@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-6">
-<%--                                        <span style="color: red">*</span>--%>
+                                        <%--                                        <span style="color: red">*</span>--%>
                                         <label class="labels">Số điện thoại </label>
                                         <input type="text" class="form-control" placeholder="số điện thoại"
                                                id="js-profile-sdt"/>
@@ -209,7 +209,7 @@
                 $('#js-rounded-circle-avt-hearder').attr('src', urlHinhAnh);
             } else {
                 $('#js-rounded-circle-avt').attr('src', khachHang.hinhAnh);
-                $('#js-rounded-circle-avt-hearder').attr('src', khachHang.hinhAnh);
+                $('#js-rounded-circle-avt-hearder').attr('src', '${pageContext.request.contextPath}/../' + khachHang.hinhAnh);
             }
 
             if (khachHang.gioiTinh == 1) {
@@ -251,7 +251,7 @@
                         });
                         return false;
                     }
-                    if (file && file.size > 1048576*4) {
+                    if (file && file.size > 1048576 * 4) {
                         Swal.fire({
                             title: 'Lỗi',
                             text: 'Vui lòng chọn ảnh có kích thước dưới 4MB',
@@ -294,7 +294,7 @@
                                     title: 'Lưu Thành Công',
                                     showConfirmButton: false,
                                     timer: 1500
-                                }).then(function() {
+                                }).then(function () {
                                     location.reload();
                                 });
 

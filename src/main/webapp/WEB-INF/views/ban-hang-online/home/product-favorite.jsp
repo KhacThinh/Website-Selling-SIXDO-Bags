@@ -118,7 +118,7 @@
         <script>
             $(document).ready(function () {
                 loadData();
-                themSanPhamYeuThich();
+                xoaSanPhamYeuThich();
 
                 $('#search-form').submit(function (event) {
                     event.preventDefault();
@@ -129,7 +129,7 @@
 
 
             // sản phẩm yêu thích product favorites
-            function themSanPhamYeuThich() {
+            function xoaSanPhamYeuThich() {
                 $(document).on('click', '.js-addwish-b2', function () {
                     var heartFill = $(this).find('.bi-heart-fill');
                     var heartOutline = $(this).find('.bi-heart');

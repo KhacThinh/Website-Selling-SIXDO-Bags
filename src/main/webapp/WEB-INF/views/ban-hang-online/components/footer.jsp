@@ -70,25 +70,25 @@
 
                 <ul class="pl-0">
                     <li class="p-b-10">
-                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                        <a href="http://localhost:8080/sixdo-shop/contact" class="stext-107 cl7 hov-cl1 trans-04">
                             Theo dõi đơn hàng
                         </a>
                     </li>
 
                     <li class="p-b-10">
-                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                        <a href="http://localhost:8080/sixdo-shop/contact" class="stext-107 cl7 hov-cl1 trans-04">
                             Trả hàng
                         </a>
                     </li>
 
                     <li class="p-b-10">
-                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                        <a href="http://localhost:8080/sixdo-shop/contact" class="stext-107 cl7 hov-cl1 trans-04">
                             Giao Hàng
                         </a>
                     </li>
 
                     <li class="p-b-10">
-                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                        <a href="http://localhost:8080/sixdo-shop/contact" class="stext-107 cl7 hov-cl1 trans-04">
                             Câu hỏi thường gặp
                         </a>
                     </li>
