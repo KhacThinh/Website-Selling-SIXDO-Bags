@@ -102,16 +102,44 @@
 
             function checkErrorsAndSubmit() {
                 if (!check) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/buyer-register/sendMail",
-                        data: {email: email},
-                        success: function (response) {
-                            showConfirmationDialog(response, name, email, password);
-                        },
-                        error: function (xhr, status, error) {
-                            // Xử lý khi có lỗi xảy ra
-                            console.log("Lỗi: " + error);
+                    Swal.fire({
+                        title: 'Xác nhận thông tin',
+                        text: 'Bạn có chắc chắn muốn tạo tài khoản này không?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Tiếp tục',
+                        cancelButtonText: 'Hủy',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Hiển thị loading indicator
+                            Swal.fire({
+                                // title: 'Đang gửi email...',
+                                text: 'Vui lòng chờ đợi',
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
+                                onBeforeOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/buyer-register/sendMail",
+                                data: {email: email},
+                                success: function (response) {
+                                    // Đóng loading indicator
+                                    Swal.close();
+
+                                    showConfirmationDialog(response, name, email, password);
+                                },
+                                error: function (xhr, status, error) {
+                                    // Đóng loading indicator
+                                    Swal.close();
+
+                                    // Xử lý khi có lỗi xảy ra
+                                    console.log("Lỗi: " + error);
+                                }
+                            });
                         }
                     });
                 }

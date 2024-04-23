@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Shoping Cart</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -776,6 +776,7 @@
             productList.push(product);
             </c:forEach>
 
+
             var errors = [];
 
             if (name === '') {
@@ -804,11 +805,11 @@
 
             if (errors.length > 0) {
                 showErrorAlert(errors.join('\n'));
-                return;
+
+                return false;
             }
 
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
-
 
             orderData = {
                 cart: productList,
@@ -831,7 +832,7 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
-            console.log("ssssssssmgg "+giamGia)
+            console.log("ssssssssmgg " + giamGia)
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -851,7 +852,7 @@
                     if (data != null) {
                         if (data.tenKhachHang.trim() === '' || data.sdt.trim() === '' || data.diaChi.trim() === '') {
                             showErrorAlert("Địa chỉ mặc định vẫn còn thiếu vui lòng vô kiểm tra lại!");
-                            return;
+                            return false;
                         }
                         orderData = {
                             cart: productList,
@@ -884,15 +885,17 @@
         $('.submit-oder-by-cart').on('click', function () {
             if (Object.keys(orderData).length === 0) {
                 if (currentClick === 'default') {
-                    defaultAddressCustomer();
+                    if (defaultAddressCustomer() == false) {
+                        return;
+                    }
                 } else if (currentClick === 'custom') {
-                    createOrderCustomerinput();
+                    if (createOrderCustomerinput() == false) {
+                        return;
+                    }
                 }
             }
 
-            console.log(orderData);
             var tableRows = document.querySelectorAll('#cartTableBody .table_row');
-            console.log(tableRows);
 
             Swal.fire({
                 title: 'Xác nhận đặt đơn',
@@ -930,13 +933,21 @@
                                                     // Xử lý phản hồi từ máy chủ nếu cần
                                                     console.log(response);
                                                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                                                    showAlertAddCart('Order Success!', 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!', 'success');
+
+                                                    Swal.fire({
+                                                        title: 'Order Success!',
+                                                        text: 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!',
+                                                        icon: 'success',
+                                                        showConfirmButton: false, // Ẩn nút "OK"
+                                                        timer: 1500 // Tự động đóng thông báo sau 1.5 giây
+                                                    }).then(function () {
+                                                        // Sau khi thông báo đóng, chuyển hướng sang trang mới
+                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer';
+                                                    });
+
                                                     document.getElementById('sumCart').innerText = '0 đ';
                                                     document.getElementById('last-price').innerText = '0 đ';
-                                                    // Load lại trang sau 1.5 giây với đường dẫn mới '/new/path'
-                                                    setTimeout(function () {
-                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer'; // Đặt đường dẫn mới ở đây
-                                                    }, 1500);
+
                                                 },
                                                 error: function (error) {
                                                     // Xử lý lỗi nếu có

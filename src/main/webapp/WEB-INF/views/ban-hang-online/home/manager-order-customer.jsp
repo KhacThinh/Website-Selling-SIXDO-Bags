@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>SIXDO</title>
+    <title>Quản lý đơn hàng</title>
     <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -58,15 +58,8 @@
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
-
-</head>
-
-
-<style>
-
-    <%@include file="../../../views/ban-hang-online/css/main.css" %>
-    <%@include file="../../../views/ban-hang-online/css/util.css" %>
-</style>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/util.css">
 </head>
 
 
@@ -82,7 +75,7 @@
 
 <!-- Product -->
 <div class="bg0 m-t-23 p-b-140">
-        <jsp:include page="../components/order-manager.jsp"/>
+    <jsp:include page="../components/order-manager.jsp"/>
 </div>
 
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/footer.jsp"/>

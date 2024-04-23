@@ -76,4 +76,14 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
         sanPhamYeuThichRepository.delete(sanPhamYeuThich);
         return sanPhamYeuThich;
     }
+
+    @Override
+    public List<ProductHomeRequest> searchSanPhamFavoriteOnlines(int idKh, String name) {
+        List<ProductHomeRequest> productHomeRequestList = new ArrayList<>();
+        KhachHang khachHang = khachHangService.getKhachHang(idKh);
+        if (Objects.nonNull(khachHang) && Objects.nonNull(name)) {
+            productHomeRequestList = queryJpa.searchProductFavoriteByName(khachHang.getId(), name.trim());
+        }
+        return productHomeRequestList;
+    }
 }

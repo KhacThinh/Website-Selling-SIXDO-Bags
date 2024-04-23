@@ -190,5 +190,12 @@ public class ChiTietSanPhamServivceImpl implements ChiTietSanPhamServivce {
         return soLuong;
     }
 
+    @Override
+    public int soLuongMuaBySanPham(int idSp) {
+        Integer soLuongMua = chiTietSanPhamRepository.soLuongMuaBySanPham(idSp);
+        int soLuong = soLuongMua != null ? soLuongMua : 0;
+        return soLuong;
+    }
+
 
 }

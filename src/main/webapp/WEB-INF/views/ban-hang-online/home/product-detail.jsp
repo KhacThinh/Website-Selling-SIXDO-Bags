@@ -1,16 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Product Detail</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <title>Sản phẩm chi tiết | SIXDO</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!====================================-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -59,14 +61,11 @@
 
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-
-
-    <style>
-
-        <%@include file="../../../views/ban-hang-online/css/main.css" %>
-        <%@include file="../../../views/ban-hang-online/css/util.css" %>
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/util.css">
 </head>
 
 
@@ -77,11 +76,6 @@
 
 <!-- Cart -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/cart.jsp"/>
-
-
-<!-- breadcrumb -->
-s
-
 
 <!-- Product Detail -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/product-customer.jsp"/>
@@ -118,6 +112,14 @@ s
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+
+    $(document).ready(function () {
+        themSanPhamYeuThich();
+
+        capNhapSoLuongSanPhamYeuThichHearder();
+        checkSanPhamYeuThichTrangChu();
+    });
+
     $(".js-select2").each(function () {
         $(this).select2({
             minimumResultsForSearch: 20,
@@ -192,14 +194,8 @@ s
                         console.error("Lỗi khi thanh toán:", error);
                     }
                 });
-
-
-
             }
-
         }
-
-
     }
 
 
@@ -242,11 +238,6 @@ s
     }
 
 
-
-
-
-
-    //////////
     $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
         e.preventDefault();
     });
@@ -271,8 +262,6 @@ s
             $(this).off('click');
         });
     });
-
-    /*---------------------------------------------*/
 
 
 

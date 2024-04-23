@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface SlideShowRepository extends JpaRepository<SlideShow,Integer> {
-    @Query("select cv from SlideShow cv where cv.trangThai =true ")
+    @Query("select cv from SlideShow cv where cv.trangThai = 1 ")
     List<SlideShow> findAllSlide();
 
     @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from slide_show \n" +

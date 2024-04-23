@@ -284,6 +284,7 @@ body{
 
 .main-menu > li > a {
   font-family: Poppins-Medium;
+  text-decoration: none;
   font-size: 14px;
   color: #333;
   padding: 5px 0px;
@@ -427,10 +428,9 @@ body{
   color: #fff;
   line-height: 15px;
   text-align: center;
-
   display: block;
   position: absolute;
-  top: -7px;
+  top: -2px;
   right: 0;
   min-width: 15px;
   height: 15px;
