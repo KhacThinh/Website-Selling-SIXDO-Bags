@@ -52,4 +52,11 @@ public interface ChiTietHoaDonRepository extends JpaRepository<ChiTietHoaDon, In
 
     void deleteChiTietHoaDonByIdHoaDonAndIdCtSanPham(Integer idHoaDon,Integer idCtSanPham);
 
+
+    @Modifying
+    @Transactional
+    @Query(value = "update hoa_don set tong_tien =:tongTien where id=:id", nativeQuery = true)
+    void updateTongTien(@Param("tongTien") double tongTien, @Param("id") int id );
+
+
 }

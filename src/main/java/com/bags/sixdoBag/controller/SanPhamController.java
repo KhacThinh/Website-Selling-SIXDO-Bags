@@ -36,7 +36,7 @@ public class SanPhamController {
 
     private final DoiTuongSuDungService doiTuongSuDungService;
 
-    @GetMapping("")
+    @GetMapping(value = {"","/nv"})
     public String getSanPham(Model model, @RequestParam(name = "name", required = false) String name) {
         extracted(model);
         hienThiChung(model);

@@ -300,7 +300,7 @@
 
                                                 let lastPriceValue = sumCart - giaTriMaGiamGia;
                                                 console.log("" + sumCart + "-" + giaTriMaGiamGia)
-                                                document.getElementById('last-price').innerText = lastPriceValue;
+                                                document.getElementById('last-price').innerText = formatter.format(lastPriceValue);
                                             },
                                             error: function (error) {
                                                 // Xử lý lỗi nếu có
@@ -804,7 +804,7 @@
 
             if (errors.length > 0) {
                 showErrorAlert(errors.join('\n'));
-                return;
+                return false;
             }
 
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
@@ -851,7 +851,7 @@
                     if (data != null) {
                         if (data.tenKhachHang.trim() === '' || data.sdt.trim() === '' || data.diaChi.trim() === '') {
                             showErrorAlert("Địa chỉ mặc định vẫn còn thiếu vui lòng vô kiểm tra lại!");
-                            return;
+                            return false;
                         }
                         orderData = {
                             cart: productList,
@@ -884,9 +884,13 @@
         $('.submit-oder-by-cart').on('click', function () {
             if (Object.keys(orderData).length === 0) {
                 if (currentClick === 'default') {
-                    defaultAddressCustomer();
+                    if (defaultAddressCustomer() == false) {
+                        return;
+                    }
                 } else if (currentClick === 'custom') {
-                    createOrderCustomerinput();
+                    if (createOrderCustomerinput() == false) {
+                        return;
+                    }
                 }
             }
 

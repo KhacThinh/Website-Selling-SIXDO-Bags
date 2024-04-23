@@ -682,12 +682,13 @@
             width: 510px;
         }
 
-        /*.checkout {*/
-        /*    position: absolute;*/
-        /*    bottom: 10px;*/
-        /*    left: 50%;*/
-        /*    transform: translateX(-50%);*/
-        /*}*/
+        .checkout {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+
+        }
 
         .cartCustomer {
             overflow-y: auto;
@@ -1286,25 +1287,33 @@
         <!--Giỏ Hàng-->
         <div class="gioHang">
             <div class="list gioHangTaiQuay" style="margin-top: 30px">
-                <c:forEach var="product" items="${productsEdit}">
+                <c:forEach var="product" items="${productsEdit}" varStatus="i">
 
                     <div class="item productInCart"
                          style="margin-bottom: 6px; border: 1px solid #CCD1D1; border-radius: 10px; height: 37px;">
                         <div class="idCtsp" hidden>${product.chiTietSanPham.id}</div>
-                        <div class="orderNumber" style="margin-right: 10px">1</div>
+                        <div class="orderNumber" style="margin-right: 10px ; width: 10px">${i.index +1}</div>
                         <!-- Hiển thị số thứ tự với khoảng cách 20px -->
-                        <button class="deleteButton" style="margin: 0px 20px;"
+                        <button class="deleteButton" style="margin: 0px;"
                                 onclick="deleteProduct(${product.chiTietSanPham.id}, event)"><i class="bi bi-trash3"
                                                                                                 style="font-size: 22px;"></i>
                         </button> <!-- Thêm margin-left cho nút giỏ hàng -->
-                        <div class="orderNumber" style="margin-right: 50px;">${product.chiTietSanPham.ma}</div>
+                        <div class="orderNumber" style="margin-right: 45px;width: 40px">${product.chiTietSanPham.ma}</div>
                         <div class="info" style="width: 400px; max-width: 400px;">
                             <div class="name"><i class="bi bi-shield-check"
                                                  style="color: #1d9bf0;"></i>${product.chiTietSanPham.sanPham.tenSanPham}
                             </div>
                             <div class="price">${product.chiTietSanPham.mauSac.tenMauSac}</div>
                         </div>
-                        <div class="quantity" style="display: flex; align-items: center;">
+                        <div style="color: black; font-size: 16px; margin-right: 70px;width: 50px">
+                            <fmt:formatNumber
+                                    pattern="#,###"
+                                    var="giaSanPham"
+                                    value="${product.chiTietSanPham.giaBan}"></fmt:formatNumber>
+                                ${giaSanPham}
+
+                        </div>
+                        <div class="quantity" style="display: flex; align-items: center; margin-right: 20px">
                             <!-- Sử dụng flexbox để căn chỉnh hàng số lượng -->
                             <button class="btn btn-sm btn-outline-secondary"
                                     style="background: transparent; border: none; margin-right: 5px; height: 20px;"
@@ -1320,28 +1329,20 @@
                                     onclick="increaseQuantity(${product.chiTietSanPham.id}, ${product.chiTietSanPham.giaBan}, ${product.chiTietSanPham.soLuong})">
                                 <i style="font-size: 18px" class="bi bi-plus-circle"></i></button>
                         </div>
-                        <div style="color: black; font-size: 16px; margin-right: 50px;">
-                            <fmt:formatNumber
-                                    pattern="#,###"
-                                    var="giaSanPham"
-                                    value="${product.chiTietSanPham.giaBan}"></fmt:formatNumber>
-                                ${giaSanPham}đ
 
-                        </div>
 
                         <div class="returnPriceCart returnPriceCart${product.chiTietSanPham.id}"
-                             style="color: black; font-size: 16px;">
+                             style="color: black; font-size: 16px; width: 100px ">
                             <fmt:formatNumber
                                     pattern="#,###"
                                     var="tongGiaSanPham"
                                     value="${product.chiTietSanPham.giaBan*product.soLuong}"></fmt:formatNumber>
-                                ${tongGiaSanPham}đ
+                                ${tongGiaSanPham}
 
                         </div>
                         <div></div>
                     </div>
                 </c:forEach>
-
             </div>
         </div>
     </div>
@@ -1604,14 +1605,29 @@
         </script>
 
         <div style="display: flex;height: 53px;margin-top: 20px">
+            <input style="display: none" value="0" type="number" id="tongTienHangInput">
             <p style="margin-left:8px ; font-weight: bold">Tổng Tiền Hàng :</p>
             <p style="margin-left: 60px; font-size: 18px" id="totalQuantity">10000000</p>
             <p style="margin-left: 140px; font-size: 18px" id="totalOrder" class="total_order"></p>
         </div>
 
+        <fmt:formatNumber pattern="#,###"
+                          var="giamGia"
+                          value="${tabs.giamGia}"></fmt:formatNumber>
+
+        <div style="display: flex;height: 53px;margin-top: 0px">
+            <p style="margin-left:8px ; font-weight: bold">Giảm Giá :</p>
+            <p style="margin-left: 263px; font-size: 18px ; color: red" id="voucher" class="total_order">
+                <c:out value='${empty tabs.giamGia ? 0 :
+                 giamGia}'/>
+
+
+            </p>
+        </div>
+
         <div style="display: flex; align-items: center;height: 53px">
             <p style="margin-left:8px ; font-weight: bold" for="shipping-fee${tabs.id}">Phí Vận Chuyển :</p>
-            <input type="text" value="${tabs.phiVanChuyen}" id="shipping-fee" required onkeyup="calculateTotal(this)"
+            <input type="text" value="<c:out value='${empty tabs.phiVanChuyen ? 0 : tabs.phiVanChuyen}'/>" id="shipping-fee" required onkeyup="calculateTotal(this)"
                    style="height: 20px;width: 150px;background-color:#f9f9f9;font-size: 18px;
             border: none;border-bottom: 2px solid blue; margin-top: 7px; margin-left: 206px">
         </div>
@@ -1619,42 +1635,36 @@
         <div style="display: flex;height: 53px">
             <p style="margin-left:8px ; font-weight: bold">Khách Cần Trả :</p>
             <p style="margin-left: 220px; font-size: 18px" id="customer-need-to-pay"
-               class="total_order">${tabs.phiVanChuyen + tabs.tongTien}</p>
+               class="total_order">
+                <fmt:formatNumber pattern="#,###"
+                                  var="khachCanTra"
+                                  value="${tabs.phiVanChuyen + tabs.tongTien - tabs.giamGia }"></fmt:formatNumber>
+
+                ${khachCanTra} đ</p>
 
         </div>
 
 
-        <div style="display: flex; align-items: center;height: 53px">
+        <div style="display: flex; align-items: center;height: 53px;margin-bottom: 0px">
             <p style="margin-left:8px ; font-weight: bold" for="khach-thanh-toan${tabs.id}">Khách Thanh Toán :
             </p>
-            <input type="text" value="${tabs.khachThanhToan}" required onkeyup="calculateTotal2(this)"
+            <input type="text" value="<c:out value='${empty tabs.khachThanhToan ? 0 : tabs.khachThanhToan}'/>" required onkeyup="calculateTotal2(this)"
                    id="khach-thanh-toan"
                    style="height: 20px;width: 150px;background-color:#f9f9f9;font-size: 18px;
                     border: none;border-bottom: 2px solid blue; margin-top: 7px; margin-left: 180px">
         </div>
 
-        <div style="display: flex;height: 53px">
+        <div style="display: flex;height: 53px; margin-top: 0px">
             <p style="margin-left:8px ; font-weight: bold" for="cash-in-return${tabs.id}">Đơn Hàng Thu Hộ :
             </p>
-            <p style="margin-left: 196px; font-size: 18px" id="cash-in-return">${tabs.soTienNo}</p>
+            <p style="margin-left: 196px; font-size: 18px" id="cash-in-return">
+                <c:out value='${empty tabs.soTienNo ? 0 : tabs.soTienNo}'/>
+            </p>
         </div>
 
 
-        <div style="display: flex; text-align: center;margin-top: 30px">
-            <%--            <button class="xacNhan"style="margin-right: 20px;margin-left: 40px;display: none" >XÁC NHẬN</button>--%>
+                <button class="custom-btn btn-2 checkout" onclick="xacNhan(${tabs.id})">XÁC NHẬN</button>
 
-            <div style="display: flex; text-align: center;margin-top: 30px">
-<%--                <button class="xacNhan" style="margin-right: 20px;margin-left: 40px" onclick="xacNhan(${tabs.id})">XÁC--%>
-<%--                    NHẬN--%>
-<%--                </button>--%>
-
-<%--                <button style="margin-right: 20px;margin-left: 40px" class="btn btn-danger"--%>
-<%--                        onclick="huyDon(${tabs.id})">HỦY ĐƠN--%>
-                </button>
-                <button class="saveInvoice" onclick="xacNhan(${tabs.id})">XÁC NHẬN</button>
-
-            </div>
-        </div>
 
 
     </div>
@@ -1682,7 +1692,7 @@
         var khachThanhToan = document.getElementById("khach-thanh-toan").value;
         var phiVanChuyen = document.getElementById("shipping-fee").value;
         var soTienNo = document.getElementById("cash-in-return").innerText;
-        var trangThai
+        var trangThai;
 
 
         phiVanChuyen = parseFloat(phiVanChuyen.replace(/,/g, ''));
@@ -1878,10 +1888,10 @@
         input.value = value;
         // Lấy giá trị phí vận chuyển từ input
         let totalOrder = parseFloat(document.getElementById('khach-thanh-toan').value.replace(/,/g, ''));
-        console.log("odđ " + totalOrder)
+        console.log("khach thanh toan " + totalOrder)
 
-        let shippingFee = parseFloat(document.getElementById('customer-need-to-pay').innerText.replace(/,/g, ''));
-        console.log("jhjjh " + shippingFee)
+        let shippingFee = parseInt(document.getElementById('customer-need-to-pay').innerText.replace(/[^\d]/g, ''));
+        console.log("khach can tra  " + shippingFee)
 
         // Lấy giá trị tổng tiền hàng từ thẻ p
 
@@ -1893,7 +1903,7 @@
         console.log("jhhj" + d)
 
         // Hiển thị giá trị của Khách Cần Trả
-        document.getElementById('cash-in-return').innerText = d.toLocaleString('en');
+        document.getElementById('cash-in-return').innerText = d.toLocaleString('en') +' vnd' ;
     }
 
 
@@ -1919,10 +1929,14 @@
         shippingFee = parseFloat(shippingFee.replace(/,/g, ''));
 
         // Tính tổng tiền đơn hàng và phí vận chuyển
-        let d = parseFloat(totalOrder) + shippingFee;
+        var tongTienHang = document.getElementById('tongTienHangInput').value;
+
+        let d = parseFloat(tongTienHang)+ parseFloat(shippingFee)  -  ${tabs.giamGia};
+        console.log("sum "+tongTienHang + "shippingFee " + shippingFee + " giam "+ ${tabs.giamGia})
 
         // Hiển thị giá trị của Khách Cần Trả
-        document.getElementById('customer-need-to-pay').innerText = d.toLocaleString('en');
+        document.getElementById('customer-need-to-pay').innerText = d.toLocaleString('en')+" vnd";
+        changeDonHangThuHo();
     }
 
     function addToCart(button, giaBan) {
@@ -2060,20 +2074,20 @@
             var formattedPrice = price.toLocaleString('vi-VN', {style: 'decimal'});
             var productHTML = '<div class="item productInCart" style="margin-bottom: 6px ; border: 1px solid #CCD1D1;border-radius: 10px;height: 37px" >' +
                 '<div class= "idCtsp" hidden>' + product.chiTietSanPham.id + '</div>' +
-                '<div class="orderNumber" style="margin-right: 10px">' + count++ + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
-                '<button class="deleteButton" style="margin: 0px 20px;" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3" style="font-size: 22px;"></i></button>' + // Thêm margin-left cho nút giỏ hàng
-                '<div class="orderNumber" style="margin-right: 50px;">' + product.chiTietSanPham.ma + '</div>' +
+                '<div class="orderNumber" style="margin-right: 10px;width: 10px">' + count++ + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
+                '<button class="deleteButton" style="margin: 0px;" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3" style="font-size: 22px;"></i></button>' + // Thêm margin-left cho nút giỏ hàng
+                '<div class="orderNumber" style="margin-right: 45px;width: 40px">' + product.chiTietSanPham.ma + '</div>' +
                 '<div class="info" style="width: 400px; max-width: 400px">' +
                 '<div class="name" >' + '<i class="bi bi-shield-check" style="color: #1d9bf0"></i>' + product.chiTietSanPham.sanPham.tenSanPham + '</div>' +
                 '<div class="price">' + product.chiTietSanPham.mauSac.tenMauSac + '</div>' +
                 '</div>' +
+                '<div style="color: black; font-size: 16px; margin-right: 70px;width: 50px">' + product.chiTietSanPham.giaBan.toLocaleString('vi-VN', {style: 'decimal'}) + '</div>' +
                 '<div class="quantity" style="display: flex; align-items: center;">' + // Sử dụng flexbox để căn chỉnh hàng số lượng
                 '<button class="btn btn-sm btn-outline-secondary" style="background: transparent; border: none; margin-right: 5px; height: 20px;" onclick="decreaseQuantity(' + product.chiTietSanPham.id + ',' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')"><i style="font-size: 18px" class="bi bi-dash-circle"></i></button>' +
                 '<input type="text" style="border: none; font-size: 15px; background-color: #f9f9f9; text-align: center; height: 25px;width: 20px" class="quantityInput" id="quantities' + product.chiTietSanPham.id + '"  onchange="updateSoLuong(' + product.chiTietSanPham.id + ',this.value,' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')" value="' + product.soLuong + '" min="1">' +
                 '<button class="btn btn-sm btn-outline-secondary" style="background: transparent; border: none; margin-left: 5px; height: 20px;" onclick="increaseQuantity(' + product.chiTietSanPham.id + ',' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')"><i style="font-size: 18px" class="bi bi-plus-circle"></i></button>' +
                 '</div>' +
-                '<div style="color: black; font-size: 16px; margin-right: 50px;">' + product.chiTietSanPham.giaBan.toLocaleString('vi-VN', {style: 'decimal'}) + '</div>' +
-                '<div class="returnPriceCart returnPriceCart' + product.chiTietSanPham.id + '" style="color: black; font-size: 16px;">' + formattedPrice + '</div>' +
+                '<div class="returnPriceCart returnPriceCart' + product.chiTietSanPham.id + '" style="color: black; font-size: 16px; width: 80px">' + formattedPrice + '</div>' +
                 '<div>' +
                 '</div>' +
                 '</div>';
@@ -2270,11 +2284,26 @@
             var price = parseFloat(returnPriceElement.textContent.replace(/\./g, '').replace(/[^\d.-]/g, ''));
             totalPrice += price;
         });
+        var tongTienHangInput = document.getElementById('tongTienHangInput');
+        tongTienHangInput.value=totalPrice;
 
         var totalPriceInput = document.querySelector('.total_order');
+        var khachCanTra = document.getElementById('customer-need-to-pay');
+        khachCanTra.innerHTML = (totalPrice-${tabs.giamGia}).toLocaleString('vi-VN', {style: 'decimal'}) + " vnd";
+
         totalPriceInput.innerHTML = totalPrice.toLocaleString('vi-VN', {style: 'decimal'}) + " vnd";
+        changeDonHangThuHo();
         return totalPrice;
     }
+
+    function changeDonHangThuHo(){
+        let totalOrder = parseFloat(document.getElementById('khach-thanh-toan').value.replace(/,/g, ''));
+
+        let khachCanTra = parseInt(document.getElementById('customer-need-to-pay').innerText.replace(/[^\d]/g, ''));
+        let d = khachCanTra - totalOrder;
+        document.getElementById('cash-in-return').innerText = d.toLocaleString('en');
+    }
+
 
     function formatCurrency(number) {
         return new Intl.NumberFormat('vi-VN', {

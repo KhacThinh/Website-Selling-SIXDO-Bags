@@ -59,4 +59,9 @@ public class ChiTietHoaDonImpl implements HoaDonChiTietService {
     public void saveProductForCart(int idHoaDon, int idChiTietSp, int soLuong, double gia) {
         chiTietHoaDonRepository.insertHoaDonChiTiet(idHoaDon,idChiTietSp,soLuong,gia);
     }
+
+    @Override
+    public void updateTongTien(double tongTien, int id) {
+        chiTietHoaDonRepository.updateTongTien(tongTien,id);
+    }
 }

@@ -612,10 +612,16 @@
     </div>
     <div class="menu-items">
         <ul class="nav-links">
+
+            <% if (session.getAttribute("quanLy") != null) { %>
+            <%-- Hiển thị phần thống kê nếu có session "quanLy" --%>
             <li><a href="/thong-ke">
                 <i class="uil uil-estate"></i>
                 <span class="link-name">THỐNG KÊ</span>
             </a></li>
+            <% } else { %>
+            <% } %>
+
             <li><a href="/ban-tai-quay">
                 <i class="bi bi-cart-plus"></i>
                 <span class="link-name">BÁN TẠI QUẦY</span>
@@ -629,6 +635,10 @@
                 <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
                 <ul class="sub-menu" id="subMenu" style="display: none ;
             transition: opacity 0.8s ease">
+
+
+
+                    <% if (session.getAttribute("quanLy") != null) { %>
                     <li><a href="/san-pham" id="btnSanPham">
                         <i class="uil uil-box"></i>
                         <span class="link-name">Sản phẩm</span>
@@ -637,7 +647,18 @@
                         <i class="uil uil-file-alt"></i>
                         <span class="link-name">Lịch Sử Hoá đơn</span>
                     </a></li>
+                    <% } else { %>
+                    <li><a href="/san-pham/nv" id="btnSanPham">
+                        <i class="uil uil-box"></i>
+                        <span class="link-name">Sản phẩm</span>
+                    </a></li>
+                    <li><a href="/hoa-don/nv-lich-su" id="btnHoaDon">
+                        <i class="uil uil-file-alt"></i>
+                        <span class="link-name">Lịch Sử Hoá đơn</span>
+                    </a></li>
+                    <% } %>
 
+                    <% if (session.getAttribute("quanLy") != null) { %>
                     <li><a href="/khach_hang" id="btnKhachHang">
                         <i class="bi bi-people-fill"></i>
                         <span class="link-name">Khách Hàng</span>
@@ -651,26 +672,28 @@
                        <i class="bi bi-tag"></i>
                         <span class="link-name">Mã Giảm Giá</span>
                     </a></li>
+                    <% } else { %>
+                    <% } %>
                 </ul>
 
             </li>
 
-            <li><a href="#">
-                <i class="uil uil-chart"></i>
-                <span class="link-name">Analytics</span>
-            </a></li>
-            <li><a href="#">
-                <i class="uil uil-thumbs-up"></i>
-                <span class="link-name">Like</span>
-            </a></li>
-            <li><a href="#">
-                <i class="uil uil-comments"></i>
-                <span class="link-name">Comment</span>
-            </a></li>
-            <li><a href="#">
-                <i class="uil uil-share"></i>
-                <span class="link-name">Share</span>
-            </a></li>
+<%--            <li><a href="#">--%>
+<%--                <i class="uil uil-chart"></i>--%>
+<%--                <span class="link-name">Analytics</span>--%>
+<%--            </a></li>--%>
+<%--            <li><a href="#">--%>
+<%--                <i class="uil uil-thumbs-up"></i>--%>
+<%--                <span class="link-name">Like</span>--%>
+<%--            </a></li>--%>
+<%--            <li><a href="#">--%>
+<%--                <i class="uil uil-comments"></i>--%>
+<%--                <span class="link-name">Comment</span>--%>
+<%--            </a></li>--%>
+<%--            <li><a href="#">--%>
+<%--                <i class="uil uil-share"></i>--%>
+<%--                <span class="link-name">Share</span>--%>
+<%--            </a></li>--%>
         </ul>
 
         <ul class="logout-mode">

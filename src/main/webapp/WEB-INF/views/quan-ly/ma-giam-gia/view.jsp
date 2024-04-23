@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -111,6 +113,29 @@
         .input-group .form-control {
             height: 100%;
         }
+        .status.dangxuly {
+            text-align: center;
+            padding: 2px 4px ;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .status.return {
+            padding: 2px 4px;
+            background: #f00;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .status.pending {
+            padding: 2px 4px;
+            background: #e9b10a;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 12px;
+
+        }
 
     </style>
 </head>
@@ -168,18 +193,43 @@
                 <th scope="col">Stt</th>
                 <th scope="col">Mã Giảm Giá</th>
                 <th scope="col">Tên Mã Giảm Giá</th>
-                <th scope="col">Mã Giảm Giá</th>
+                <th scope="col">Giá Trị Giảm</th>
                 <th scope="col">Ngày Bắt Đầu</th>
                 <th scope="col">Ngày Kết Thúc</th>
                 <th scope="col">Số Lượng</th>
                 <th scope="col">Điều Kiện Giảm</th>
                 <th scope="col">Mô Tả</th>
-                <th scope="col">Trạng Thái</th>
+                <th scope="col" style="vertical-align: middle; text-align: center">Trạng Thái</th>
                 <th scope="col">Khác</th>
             </tr>
             </thead>
             <tbody>
+            <c:set var="currentDate" value="<%= java.time.LocalDate.now() %>" />
+
             <c:forEach items="${listColors.content}" var="sp" varStatus="i">
+                <c:set var="ngayBatDau" value="${sp.ngayBatDau}" />
+                <c:set var="ngayKetThuc" value="${sp.ngayKetThuc}" />
+                <c:set var="trangThai" value="mặc định" />
+                <c:set var="classCss" value="" />
+                <c:choose>
+                    <%-- Nếu ngày hiện tại nằm trong khoảng ngày bắt đầu và ngày kết thúc --%>
+                    <c:when test="${currentDate >= ngayBatDau && currentDate <= ngayKetThuc }">
+                        <c:set var="trangThai" value="Hoạt động" />
+                        <c:set var="classCss" value="status dangxuly" />
+                    </c:when>
+                    <c:when test="${currentDate < ngayBatDau}">
+                        <c:set var="trangThai" value="Chưa bắt đầu" />
+                        <c:set var="classCss" value="status pending" />
+
+
+                    </c:when>
+                    <c:when test="${currentDate > ngayKetThuc}">
+                        <c:set var="trangThai" value="Đã hết hạn" />
+                        <c:set var="classCss" value="status return" />
+
+                    </c:when>
+                </c:choose>
+
                 <tr id="record_${sp.id}">
                     <td>${i.index + 1}</td>
                     <td>${sp.maGiamGia}</td>
@@ -190,9 +240,7 @@
                     <td>${sp.soLuong}</td>
                     <td>${sp.dieuKienGiam}</td>
                     <td>${sp.moTa}</td>
-                    <td>${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
-
-
+                    <td  style="vertical-align: middle; text-align: center"><span class="${classCss}">${trangThai}</span></td>
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>
@@ -269,7 +317,7 @@
                                                 <div class="form-group">
                                                     <label for="ngayBatDauUpdate${sp.id}">Ngày
                                                         Bắt Đầu <span>*</span></label>
-                                                    <input type="datetime-local" value="${sp.ngayBatDau}" name="ngayBatDau"
+                                                    <input type="date" value="${sp.ngayBatDau}" name="ngayBatDau"
                                                            id="ngayBatDauUpdate${sp.id}" class="form-control">
 
                                                 </div>
@@ -286,7 +334,7 @@
                                                 <div class="form-group">
                                                     <label for="ngayKetThucUpdate${sp.id}">Ngày
                                                         Kết Thúc <span>*</span></label>
-                                                    <input type="datetime-local" value="${sp.ngayKetThuc}" name="ngayKetThuc"
+                                                    <input type="date" value="${sp.ngayKetThuc}" name="ngayKetThuc"
                                                            id="ngayKetThucUpdate${sp.id}" class="form-control">
                                                 </div>
 

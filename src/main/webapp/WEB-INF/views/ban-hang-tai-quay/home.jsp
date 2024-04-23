@@ -1669,20 +1669,20 @@
             var formattedPrice = price.toLocaleString('vi-VN', {style: 'decimal'});
             var productHTML = '<div class="item productInCart" style="margin-bottom: 6px ; border: 1px solid #CCD1D1;border-radius: 10px;height: 37px" >' +
                 '<div class= "idCtsp" hidden>' + product.chiTietSanPham.id + '</div>' +
-                '<div class="orderNumber" style="margin-right: 10px">' + count++ + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
-                '<button class="deleteButton" style="margin: 0px 20px;" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3" style="font-size: 22px;"></i></button>' + // Thêm margin-left cho nút giỏ hàng
-                '<div class="orderNumber" style="margin-right: 50px;">' + product.chiTietSanPham.ma + '</div>' +
+                '<div class="orderNumber" style="margin-right: 10px;width: 10px">' + count++ + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
+                '<button class="deleteButton" style="margin: 0px;" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3" style="font-size: 22px;"></i></button>' + // Thêm margin-left cho nút giỏ hàng
+                '<div class="orderNumber" style="margin-right: 45px;width: 40px">' + product.chiTietSanPham.ma + '</div>' +
                 '<div class="info" style="width: 400px; max-width: 400px">' +
                 '<div class="name" >' + '<i class="bi bi-shield-check" style="color: #1d9bf0"></i>' + product.chiTietSanPham.sanPham.tenSanPham + '</div>' +
                 '<div class="price">' + product.chiTietSanPham.mauSac.tenMauSac + '</div>' +
                 '</div>' +
+                '<div style="color: black; font-size: 16px; margin-right: 70px;width: 50px">' + product.chiTietSanPham.giaBan.toLocaleString('vi-VN', {style: 'decimal'}) + '</div>' +
                 '<div class="quantity" style="display: flex; align-items: center;">' + // Sử dụng flexbox để căn chỉnh hàng số lượng
                 '<button class="btn btn-sm btn-outline-secondary" style="background: transparent; border: none; margin-right: 5px; height: 20px;" onclick="decreaseQuantity(' + product.chiTietSanPham.id + ',' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')"><i style="font-size: 18px" class="bi bi-dash-circle"></i></button>' +
                 '<input type="text" style="border: none; font-size: 15px; background-color: #f9f9f9; text-align: center; height: 25px;width: 20px" class="quantityInput" id="quantities' + product.chiTietSanPham.id + '"  onchange="updateSoLuong(' + product.chiTietSanPham.id + ',this.value,' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')" value="' + product.soLuong + '" min="1">' +
                 '<button class="btn btn-sm btn-outline-secondary" style="background: transparent; border: none; margin-left: 5px; height: 20px;" onclick="increaseQuantity(' + product.chiTietSanPham.id + ',' + product.chiTietSanPham.giaBan + ',' + product.chiTietSanPham.soLuong + ')"><i style="font-size: 18px" class="bi bi-plus-circle"></i></button>' +
                 '</div>' +
-                '<div style="color: black; font-size: 16px; margin-right: 50px;">' + product.chiTietSanPham.giaBan.toLocaleString('vi-VN', {style: 'decimal'}) + '</div>' +
-                '<div class="returnPriceCart returnPriceCart' + product.chiTietSanPham.id + '" style="color: black; font-size: 16px;">' + formattedPrice + '</div>' +
+                '<div class="returnPriceCart returnPriceCart' + product.chiTietSanPham.id + '" style="color: black; font-size: 16px; width: 80px">' + formattedPrice + '</div>' +
                 '<div>' +
                 '</div>' +
                 '</div>';
@@ -1772,7 +1772,7 @@
             updateGiaSanPham.textContent = giaBan.toLocaleString('vi-VN', {style: 'decimal'});
             updateTotalPrice();
             errorAdd('Số lượng sản phẩm không đủ');
-            $('.quantityInput').val(1);
+            document.getElementById('quantities' + id).value = soLuongSanPhamKho;
             return;
         } else {
             $.ajax({

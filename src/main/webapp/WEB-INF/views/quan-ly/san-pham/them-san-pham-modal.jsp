@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label for="idDanhMuc">Danh Mục</label>
                                 <form:select path="idDanhMuc" class="form-control">
@@ -102,7 +102,7 @@
                                 </form:select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-7" style="display: flex">
                             <div class="form-group">
                                 <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
                                 <form:select path="idDoiTuongSuDung" class="form-control">
@@ -112,8 +112,15 @@
                                     </c:forEach>
                                 </form:select>
                             </div>
+                            <button style="he">add</button>
+
                         </div>
-                    </div>
+<%--                        <div class="col-md-2">--%>
+
+<%--                                <button>add</button>--%>
+
+
+<%--                    </div>--%>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                         <button type="submit" class="btn btn-primary" id="addSanPham">Lưu</button>

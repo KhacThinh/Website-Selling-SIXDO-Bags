@@ -21,5 +21,6 @@ public interface HoaDonChiTietService {
 
     List<ChiTietHoaDon> getGioHangChiTietFromHoaDon(int idHoaDon);
     void saveProductForCart(int idHoaDon, int idChiTietSp, int soLuong, double gia);
+    void updateTongTien (double tongTien , int id);
 
 }

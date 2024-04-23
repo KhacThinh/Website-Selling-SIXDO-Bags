@@ -60,8 +60,6 @@ public class BanHangTaiQuayController {
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
 
-
-
     @GetMapping(value = {"", "/demo"})
     public String hienThi(Model model, HttpSession session) {
         NhanVien quanLy = (NhanVien) session.getAttribute("quanLy");
@@ -78,9 +76,9 @@ public class BanHangTaiQuayController {
     }
 
 
-
     List<ChiTietHoaDon> listCTHDTruoc = new ArrayList<>();
     private int previousId = -1;
+
     @GetMapping(value = {"/{id}"})
     public String hienThiProductById(Model model, @PathVariable int id) {
 
@@ -102,71 +100,68 @@ public class BanHangTaiQuayController {
 
     //xóa hóa đơn
     @PostMapping("/xoa-hoaDon")
-    public ResponseEntity<?>xoaHoaDon(@RequestParam("id") Integer id,@RequestParam("lyDoHuy") String lyDoHuy){
+    public ResponseEntity<?> xoaHoaDon(@RequestParam("id") Integer id, @RequestParam("lyDoHuy") String lyDoHuy) {
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
-        if(hoaDon.getTrangThai()!=4){
-            if(hoaDon.getTrangThai()!=5){
+        if (hoaDon.getTrangThai() != 4) {
+            if (hoaDon.getTrangThai() != 5) {
 
-            }else {
+            } else {
                 return ResponseEntity.ok("errorGiaoHang");
             }
-            if(hoaDon.getTrangThai()==2){
+            if (hoaDon.getTrangThai() == 2) {
                 hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id,hoaDon);
+                hoaDonService.editHoaDon(id, hoaDon);
                 return ResponseEntity.ok("ok");
-            }else{
+            } else {
                 System.out.println("trang thai 3");
-                for (ChiTietHoaDon cthd:listCTHDTruoc
+                for (ChiTietHoaDon cthd : listCTHDTruoc
                 ) {
                     ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
-                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong()+cthd.getSoLuong());
+                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
                 }
                 hoaDon.setLyDoKhachHuy(lyDoHuy);
                 hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id,hoaDon);
+                hoaDonService.editHoaDon(id, hoaDon);
                 return ResponseEntity.ok("ok");
             }
-        }else{
+        } else {
             return ResponseEntity.ok("error");
         }
 
     }
-
 
 
     //xóa hóa đơn form ls-hd
     @PostMapping("/huy-hoaDon")
-    public ResponseEntity<?>huyHoaDon(@RequestParam("id") Integer id){
+    public ResponseEntity<?> huyHoaDon(@RequestParam("id") Integer id) {
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
-        List<ChiTietHoaDon>chiTietHoaDonList= chiTietHoaDonRepository.getGioHangChiTiet(hoaDon.getId());
-        if(hoaDon.getTrangThai()!=4){
-            if(hoaDon.getTrangThai()!=5){
+        List<ChiTietHoaDon> chiTietHoaDonList = chiTietHoaDonRepository.getGioHangChiTiet(hoaDon.getId());
+        if (hoaDon.getTrangThai() != 4) {
+            if (hoaDon.getTrangThai() != 5) {
 
-            }else {
+            } else {
                 return ResponseEntity.ok("errorGiaoHang");
             }
-            if(hoaDon.getTrangThai()==2){
+            if (hoaDon.getTrangThai() == 2) {
                 hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id,hoaDon);
+                hoaDonService.editHoaDon(id, hoaDon);
                 return ResponseEntity.ok("ok");
-            }else{
+            } else {
                 System.out.println("trang thai 3");
-                for (ChiTietHoaDon cthd:chiTietHoaDonList
+                for (ChiTietHoaDon cthd : chiTietHoaDonList
                 ) {
                     ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
-                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong()+cthd.getSoLuong());
+                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
                 }
                 hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id,hoaDon);
+                hoaDonService.editHoaDon(id, hoaDon);
                 return ResponseEntity.ok("ok");
             }
-        }else{
+        } else {
             return ResponseEntity.ok("error");
         }
 
     }
-
-
 
 
     //check trạng thái ctsp form giao hàng
@@ -176,7 +171,7 @@ public class BanHangTaiQuayController {
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
         List<ChiTietHoaDon> chiTietHoaDons = chiTietHoaDonRepository.getGioHangChiTiet(id);
         List<ChiTietSanPham> listCTSPTrangThai = new ArrayList<>();
-        if(hoaDon.getTrangThai()!=4){
+        if (hoaDon.getTrangThai() != 4) {
             for (ChiTietHoaDon cthd : chiTietHoaDons
             ) {
                 if (cthd.getChiTietSanPham().getTrangThai() == 0) {
@@ -184,7 +179,7 @@ public class BanHangTaiQuayController {
                 }
             }
             return ResponseEntity.ok(listCTSPTrangThai);
-        }else{
+        } else {
             return ResponseEntity.ok("errorHuyHoaDon");
         }
 
@@ -192,27 +187,27 @@ public class BanHangTaiQuayController {
 
     //check số lượng sp trong kho form giao hàng online
     @PostMapping("/check-soLuong-giaoHang")
-    public ResponseEntity<?>checkSoLuongGiaoHang(@RequestParam("id") Integer id){
+    public ResponseEntity<?> checkSoLuongGiaoHang(@RequestParam("id") Integer id) {
         List<ChiTietHoaDon> listCTHDSau = hoaDonChiTietService.getGioHangChiTietFromHoaDon(id);
-        List<ChiTietSanPham>listCTSPVuotQuaSoLuong= new ArrayList<>();
+        List<ChiTietSanPham> listCTSPVuotQuaSoLuong = new ArrayList<>();
 
         for (ChiTietHoaDon cthdt : listCTHDTruoc
         ) {
-            int i=0;
+            int i = 0;
             for (ChiTietHoaDon cthds : listCTHDSau
             ) {
-                int size= listCTHDSau.size();
+                int size = listCTHDSau.size();
 
                 ChiTietSanPham chiTietSanPhamSau = chiTietSanPhamServivce.getChiTietSanPham(cthds.getIdCtSanPham());
                 ChiTietSanPham chiTietSanPhamTruoc = chiTietSanPhamServivce.getChiTietSanPham(cthdt.getIdCtSanPham());
-                System.out.println("trc"+chiTietSanPhamTruoc.getId()+"/");
-                System.out.println("sau"+chiTietSanPhamSau.getId()+"/");
+                System.out.println("trc" + chiTietSanPhamTruoc.getId() + "/");
+                System.out.println("sau" + chiTietSanPhamSau.getId() + "/");
 
 
-                if(chiTietSanPhamSau==chiTietSanPhamTruoc){
+                if (chiTietSanPhamSau == chiTietSanPhamTruoc) {
                     System.out.println("trùng");
-                    if(cthds.getSoLuong()>cthdt.getSoLuong()){
-                        if(chiTietSanPhamSau.getSoLuong()<(cthds.getSoLuong()-cthdt.getSoLuong())){
+                    if (cthds.getSoLuong() > cthdt.getSoLuong()) {
+                        if (chiTietSanPhamSau.getSoLuong() < (cthds.getSoLuong() - cthdt.getSoLuong())) {
                             listCTSPVuotQuaSoLuong.add(chiTietSanPhamSau);
                         }
                     }
@@ -220,17 +215,17 @@ public class BanHangTaiQuayController {
             }
         }
 
-        for (ChiTietHoaDon cthdsau: listCTHDSau
+        for (ChiTietHoaDon cthdsau : listCTHDSau
         ) {
-            int i=0;
-            for (ChiTietHoaDon cthdtruoc:listCTHDTruoc
+            int i = 0;
+            for (ChiTietHoaDon cthdtruoc : listCTHDTruoc
             ) {
                 ChiTietSanPham chiTietSanPhamSau = chiTietSanPhamServivce.getChiTietSanPham(cthdsau.getIdCtSanPham());
                 ChiTietSanPham chiTietSanPhamTruoc = chiTietSanPhamServivce.getChiTietSanPham(cthdtruoc.getIdCtSanPham());
-                if(chiTietSanPhamSau!=chiTietSanPhamTruoc){
+                if (chiTietSanPhamSau != chiTietSanPhamTruoc) {
                     i++;
-                    if(i==listCTHDTruoc.size()){
-                        if(chiTietSanPhamSau.getSoLuong()<cthdsau.getSoLuong()){
+                    if (i == listCTHDTruoc.size()) {
+                        if (chiTietSanPhamSau.getSoLuong() < cthdsau.getSoLuong()) {
                             listCTSPVuotQuaSoLuong.add(chiTietSanPhamSau);
                         }
                     }
@@ -257,57 +252,57 @@ public class BanHangTaiQuayController {
 
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
         List<ChiTietHoaDon> listCTHDSau = hoaDonChiTietService.getGioHangChiTietFromHoaDon(id);
-        List<ChiTietSanPham>listCTSPT= new ArrayList<>();
-        List<ChiTietSanPham>listCTSPS= new ArrayList<>();
+        List<ChiTietSanPham> listCTSPT = new ArrayList<>();
+        List<ChiTietSanPham> listCTSPS = new ArrayList<>();
 
-        for (ChiTietHoaDon ct: listCTHDTruoc
-             ) {
+        for (ChiTietHoaDon ct : listCTHDTruoc
+        ) {
             listCTSPT.add(chiTietSanPhamServivce.getChiTietSanPham(ct.getIdCtSanPham()));
         }
-        for (ChiTietHoaDon cts: listCTHDSau
+        for (ChiTietHoaDon cts : listCTHDSau
         ) {
             listCTSPS.add(chiTietSanPhamServivce.getChiTietSanPham(cts.getIdCtSanPham()));
         }
-        System.out.println("trc"+ listCTSPT);
+        System.out.println("trc" + listCTSPT);
         System.out.println("sau" + listCTSPS);
         for (ChiTietHoaDon cthdt : listCTHDTruoc
         ) {
-            int i=0;
+            int i = 0;
             for (ChiTietHoaDon cthds : listCTHDSau
             ) {
-                int size= listCTHDSau.size();
+                int size = listCTHDSau.size();
 
                 ChiTietSanPham chiTietSanPhamSau = chiTietSanPhamServivce.getChiTietSanPham(cthds.getIdCtSanPham());
                 ChiTietSanPham chiTietSanPhamTruoc = chiTietSanPhamServivce.getChiTietSanPham(cthdt.getIdCtSanPham());
-                System.out.println("trc"+chiTietSanPhamTruoc.getId()+"/");
-                System.out.println("sau"+chiTietSanPhamSau.getId()+"/");
-                if(chiTietSanPhamSau==chiTietSanPhamTruoc){
+                System.out.println("trc" + chiTietSanPhamTruoc.getId() + "/");
+                System.out.println("sau" + chiTietSanPhamSau.getId() + "/");
+                if (chiTietSanPhamSau == chiTietSanPhamTruoc) {
                     System.out.println("trùng");
-                    if(cthds.getSoLuong()>cthdt.getSoLuong()){
-                        chiTietSanPhamSau.setSoLuong(chiTietSanPhamSau.getSoLuong()-(cthds.getSoLuong()-cthdt.getSoLuong()));
-                    } else if(cthds.getSoLuong()<cthdt.getSoLuong()){
-                        chiTietSanPhamSau.setSoLuong(chiTietSanPhamSau.getSoLuong()-(cthds.getSoLuong()-cthdt.getSoLuong()));
+                    if (cthds.getSoLuong() > cthdt.getSoLuong()) {
+                        chiTietSanPhamSau.setSoLuong(chiTietSanPhamSau.getSoLuong() - (cthds.getSoLuong() - cthdt.getSoLuong()));
+                    } else if (cthds.getSoLuong() < cthdt.getSoLuong()) {
+                        chiTietSanPhamSau.setSoLuong(chiTietSanPhamSau.getSoLuong() - (cthds.getSoLuong() - cthdt.getSoLuong()));
                     }
-                }else {
+                } else {
                     i++;
                     System.out.println("khac nhau");
-                    if(i==size){
-                        chiTietSanPhamTruoc.setSoLuong(chiTietSanPhamTruoc.getSoLuong()+cthdt.getSoLuong());
+                    if (i == size) {
+                        chiTietSanPhamTruoc.setSoLuong(chiTietSanPhamTruoc.getSoLuong() + cthdt.getSoLuong());
                     }
                 }
             }
         }
-        for (ChiTietHoaDon cthdsau: listCTHDSau
-             ) {
-            int i=0;
-            for (ChiTietHoaDon cthdtruoc:listCTHDTruoc
-                 ) {
+        for (ChiTietHoaDon cthdsau : listCTHDSau
+        ) {
+            int i = 0;
+            for (ChiTietHoaDon cthdtruoc : listCTHDTruoc
+            ) {
                 ChiTietSanPham chiTietSanPhamSau = chiTietSanPhamServivce.getChiTietSanPham(cthdsau.getIdCtSanPham());
                 ChiTietSanPham chiTietSanPhamTruoc = chiTietSanPhamServivce.getChiTietSanPham(cthdtruoc.getIdCtSanPham());
-                if(chiTietSanPhamSau!=chiTietSanPhamTruoc){
+                if (chiTietSanPhamSau != chiTietSanPhamTruoc) {
                     i++;
-                    if(i==listCTHDTruoc.size()){
-                        chiTietSanPhamSau.setSoLuong(chiTietSanPhamSau.getSoLuong()-cthdsau.getSoLuong());
+                    if (i == listCTHDTruoc.size()) {
+                        chiTietSanPhamSau.setSoLuong(chiTietSanPhamSau.getSoLuong() - cthdsau.getSoLuong());
                     }
                 }
             }
@@ -432,11 +427,12 @@ public class BanHangTaiQuayController {
         ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
         chiTietHoaDon.setIdCtSanPham(Integer.valueOf(productId));
         chiTietHoaDon.setSoLuong(Integer.valueOf(soLuongString));
-        chiTietHoaDon.setGia((double) Integer.valueOf(giaBanString));
+        chiTietHoaDon.setGia((double) Integer.valueOf(giaBanString) *Integer.valueOf(soLuongString));
         chiTietHoaDon.setIdHoaDon(idTab);
         hoaDonChiTietService.addGioHang(chiTietHoaDon);
 //        int soLuongKho = chiTietSanPhamServivce.getSoLuongSanPhamById(Integer.valueOf(productId));
 //        chiTietSanPhamServivce.updateSoLuongSanPham(soLuongKho-1,Integer.valueOf(productId));
+        updateTongGiaHoaDon(idTab);
         return ResponseEntity.ok().build();
     }
 
@@ -498,8 +494,7 @@ public class BanHangTaiQuayController {
         chiTietHoaDon.setSoLuong(Integer.valueOf(soLuongString));
         chiTietHoaDon.setGia(Double.valueOf(tongGiaSanPhamString));
         hoaDonChiTietService.updateChiTietHoaDon(idTab, Integer.valueOf(idCtSanPhamString), chiTietHoaDon);
-
-
+        updateTongGiaHoaDon(idTab);
         return ResponseEntity.ok().build();
     }
 
@@ -565,10 +560,13 @@ public class BanHangTaiQuayController {
         HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
         Integer idHD = hoaDon.getId();
         System.out.println(idHD);
+        int idTab = Integer.parseInt(maHd.substring(4));
 
         try {
             chiTietHoaDonRepository.deleteChiTietHoaDonByIdChiTietSp(idHD, id);
+
         } catch (Exception e) {
+            updateTongGiaHoaDon(idTab);
             String loi = e.getMessage();
             if (loi.contains("The statement did not return a result set")) {
                 System.out.println("khum saooo!");
@@ -576,6 +574,17 @@ public class BanHangTaiQuayController {
         }
 
         return ResponseEntity.ok("ok");
+    }
+    void updateTongGiaHoaDon(int idTab ){
+        List<ChiTietHoaDon> listCtHoaDon = hoaDonChiTietService.getGioHangTaiQuay(idTab);
+        double sum = 0;
+        for (ChiTietHoaDon o : listCtHoaDon) {
+            sum += o.getGia();
+            System.out.println("list ctljj "+o.getGia());
+        }
+        System.out.println("sum "+sum);
+
+        hoaDonChiTietService.updateTongTien(sum,idTab);
     }
 
     @GetMapping("/kiemTraKhachHang")

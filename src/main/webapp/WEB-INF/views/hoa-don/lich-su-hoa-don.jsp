@@ -145,7 +145,7 @@
                     <td>${hd.key.thoiGianTao}</td>
                     <td>${hd.value.size()}</td>
                     <fmt:formatNumber pattern="#,###" var="tongTien"
-                                      value="${hd.key.tongTien+hd.key.phiVanChuyen}"></fmt:formatNumber>
+                                      value="${hd.key.tongTien}"></fmt:formatNumber>
                     <td>${tongTien}</td>
 
                     <td id="trang-thai-hoa-don" data-status="${hd.key.trangThai}">
@@ -325,7 +325,7 @@
 
 
                                         <p style="position: absolute; bottom: 60px;  right: 30px; font-size: 14px">
-                                            Tổng Tạm : ${tongTam} đ</p>
+                                            Tổng Tạm : ${tongTien} đ</p>
 
 
 
@@ -336,10 +336,10 @@
                                             Giảm Giá : ${giamGia} đ</p>
 
 
-                                        <fmt:formatNumber pattern="#,###" var="tongTien"
-                                                          value="${hd.key.tongTien}"></fmt:formatNumber>
+                                        <fmt:formatNumber pattern="#,###" var="tongConLai"
+                                                          value="${hd.key.tongTien-hd.key.giamGia}"></fmt:formatNumber>
                                         <p style="position: absolute; bottom: 0;  right: 30px; font-weight: bold ; font-size: 15px">
-                                            Tổng Thanh Toán : ${tongTien} đ</p>
+                                            Tổng Thanh Toán : ${tongConLai} đ</p>
                                     </div>
                                     <div class="modal-footer">
                                         <c:choose>

@@ -34,7 +34,7 @@ public class HoaDonController {
     private final ChiTietHoaDonRepository chiTietHoaDonRepository;
 
 
-    @GetMapping("lich-su")
+    @GetMapping(value = {"lich-su","/nv-lich-su"})
     public String lichSuHoaDon(Model model) {
         model.addAttribute("hoaDons", hoaDonService.getSortHoaDon());
         return "/hoa-don/lich-su-hoa-don";

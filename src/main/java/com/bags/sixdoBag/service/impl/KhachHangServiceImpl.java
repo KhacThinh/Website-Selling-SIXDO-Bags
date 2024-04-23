@@ -39,7 +39,9 @@ public class KhachHangServiceImpl implements KhachHangService {
     @Override
     @Transactional
     public KhachHang addKhachHang(KhachHang khachHang) {
-        KhachHang kh = khachHangRepository.save(new KhachHang());
+        KhachHang temp = new KhachHang();
+        temp.setMaKhachHang("temp");
+        KhachHang kh = khachHangRepository.save(temp);
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setTenDangNhap(khachHang.getEmail());
         taiKhoan.setMatKhau(khachHang.getMatKhau());
