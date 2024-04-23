@@ -190,7 +190,7 @@
 
                 $.each(products, function (index, product) {
                     var productHTML = '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">';
-                    productHTML += '<a class="block2" href="/sixdo-shop/product/' + product.id + '">';
+                    productHTML += '<a class="block2" href="/sixdo-shop/product-detail?id=' + product.id + '">';
                     productHTML += '<div class="block2-pic hov-img0">';
                     productHTML += '<img src="' + product.hinhAnh + '" alt="Product">';
                     productHTML += '<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="' + product.id + '">Xem Nhanh</a>';

@@ -488,9 +488,9 @@
                         '                    </div>\n' +
                         '\n' +
                         '                    <div class="header-cart-item-txt p-t-8">\n' +
-                        '                        <a href="/sixdo-shop/product/' + product.idSanPham + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.name + ' \n' +
+                        '                        <a href="/sixdo-shop/product-detail?id=' + product.idSanPham + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.name + ' \n' +
                         '                        </a> ' +
-                        '                        <a href="/sixdo-shop/product/' + product.idSanPham + '"class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.colorProduct + '</a>\n' +
+                        '                        <a href="/sixdo-shop/product-detail?id=' + product.idSanPham + '"class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.colorProduct + '</a>\n' +
                         '\n' +
                         '                        <span class="header-cart-item-info" > ' + product.soLuong + '  x  ' + formatter.format(product.gia) + '</span> \n' +
                         '                    </div> \n' +

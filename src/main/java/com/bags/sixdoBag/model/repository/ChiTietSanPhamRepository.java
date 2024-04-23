@@ -71,10 +71,10 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     ChiTietSanPham getChiTietSanPhamByMauSac(String mauSac);
 
     @Query("select ctsp from ChiTietSanPham  ctsp where ctsp.sanPham.id =:idSp and ctsp.mauSac.tenMauSac =:mauSac")
-    List<ChiTietSanPham> getListCTSPByMauSac(Integer idSp,String mauSac);
+    List<ChiTietSanPham> getListCTSPByMauSac(Integer idSp, String mauSac);
 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.sanPham.id =:idSp and ctsp.ma like %:name% or ctsp.sanPham.tenSanPham like %:name% ")
-    List<ChiTietSanPham> getChiTietSanPhamByTenSpAndMa(Integer idSp,String name);
+    List<ChiTietSanPham> getChiTietSanPhamByTenSpAndMa(Integer idSp, String name);
 
 
     @Query(value = "SELECT SUM(cthd.so_luong) " +
@@ -83,6 +83,27 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
             "WHERE hd.trang_thai = 0 " +
             "AND cthd.id_ctsp = :idCtsp", nativeQuery = true)
     Integer soLuongMuaByChiTietSanPham(@Param("idCtsp") int idCtsp);
+
+
+    @Query(value = "select sum(cthd.so_luong) from hoa_don as hd " +
+            "    join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id " +
+            "    join chi_tiet_san_pham as ctsp on ctsp.id = cthd.id_ctsp " +
+            "    join san_pham as sp on sp.id = ctsp.id_san_pham " +
+            "    where hd.trang_thai = 0 and sp.id = :idSp", nativeQuery = true)
+    Integer soLuongMuaBySanPham(@Param("idSp") int idSp);
+
+//    select sp.ten, sum(cthd.so_luong) from hoa_don as hd
+//    join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id
+//    join chi_tiet_san_pham as ctsp on ctsp.id = cthd.id_ctsp
+//    join san_pham as sp on sp.id = ctsp.id_san_pham
+//    where hd.trang_thai = 0 group by sp.ten
+//
+//    select  sp.ten, cthd.id_ctsp, sum(cthd.so_luong) from hoa_don as hd
+//    join chi_tiet_hoa_don as cthd on cthd.id_hoa_don = hd.id
+//    join chi_tiet_san_pham as ctsp on ctsp.id = cthd.id_ctsp
+//    join san_pham as sp on sp.id = ctsp.id_san_pham
+//    where hd.trang_thai = 0
+//    group by cthd.id_ctsp, sp.ten
 
 
 }

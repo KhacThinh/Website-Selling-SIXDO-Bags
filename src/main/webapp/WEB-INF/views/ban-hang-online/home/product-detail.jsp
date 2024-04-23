@@ -194,14 +194,8 @@
                         console.error("Lỗi khi thanh toán:", error);
                     }
                 });
-
-
-
             }
-
         }
-
-
     }
 
 

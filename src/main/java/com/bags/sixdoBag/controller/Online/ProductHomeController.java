@@ -12,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -101,9 +99,17 @@ public class ProductHomeController {
     @PostMapping("/filter/loc-thuong-hieu-mau-sac-components-product-home")
     public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(
             @RequestParam("tenThuongHieu") String tenThuongHieu,
-            @RequestParam("maMauSac") String maMauSac
+            @RequestParam("maMauSac") String maMauSac,
+            @RequestParam("sortBy") int sortBy
     ) {
         List<ProductHomeRequest> searchResults = sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu);
+        if (sortBy == 2) {
+            searchResults.sort(Comparator.comparingInt(p -> -(chiTietSanPhamServivce.soLuongMuaBySanPham(p.getId()))));
+        } else if (sortBy == 3) {
+            searchResults.sort(Comparator.comparing(ProductHomeRequest::getGiaBan));
+        } else if (sortBy == 4) {
+            searchResults.sort(Comparator.comparing(ProductHomeRequest::getGiaBan).reversed());
+        }
         System.out.println(searchResults.size());
         return ResponseEntity.ok(searchResults);
     }

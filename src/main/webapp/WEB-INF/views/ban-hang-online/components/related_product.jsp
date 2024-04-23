@@ -29,7 +29,7 @@
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
                         <!-- Block2 -->
-                        <a class="block2" href="/sixdo-shop/product/${o.id}">
+                        <a class="block2" href="/sixdo-shop/product-detail?id=${o.id}">
                             <div class="block2-pic hov-img0">
                                 <img src="${pageContext.request.contextPath}/${o.hinhAnh}"
                                      alt="IMG-PRODUCT">
@@ -90,7 +90,7 @@
 
                         <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
                             <!-- Block2 -->
-                            <a class="block2" href="/sixdo-shop/product/${o.id}">
+                            <a class="block2" href="/sixdo-shop/product-detail?id=${o.id}">
                                 <div class="block2-pic hov-img0">
                                     <img src="${pageContext.request.contextPath}/${o.hinhAnh}"
                                          alt="IMG-PRODUCT">
@@ -155,7 +155,7 @@
 
                         <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
                             <!-- Block2 -->
-                            <a class="block2" href="/sixdo-shop/product/${o.id}">
+                            <a class="block2" href="/sixdo-shop/product-detail?id=${o.id}">
                                 <div class="block2-pic hov-img0">
                                     <img src="${pageContext.request.contextPath}/${o.hinhAnh}"
                                          alt="IMG-PRODUCT">

@@ -258,8 +258,8 @@ public class ProductController {
     }
 
 
-    @GetMapping("/product/{id}")
-    public String productDetailById(Model model, @PathVariable int id) {
+    @GetMapping("/product-detail")
+    public String productDetailById(Model model, @RequestParam("id") int id) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         model.addAttribute("khachHang", khachHang);
 
