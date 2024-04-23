@@ -504,7 +504,7 @@
                 var formattedTotalAmount = formatter.format(totalAmount);
                 var totalAmountElement = document.getElementById('totalCartValues');
 
-                totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+                totalAmountElement.innerHTML = 'Tổng Cộng:  ' + formattedTotalAmount;
 
             }
         });

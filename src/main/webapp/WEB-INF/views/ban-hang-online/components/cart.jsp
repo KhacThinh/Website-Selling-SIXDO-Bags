@@ -100,7 +100,7 @@
             },
             success: function (response) {
                 if (response === "ok") {
-// Xóa sản phẩm từ giao diện người dùng
+                    // Xóa sản phẩm từ giao diện người dùng
                     var productElement = element.closest('.cart-item');
                     productElement.remove();
                     capNhapSoLuongSanPhamTrongGioHangHearder();

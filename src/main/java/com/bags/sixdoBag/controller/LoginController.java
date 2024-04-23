@@ -263,10 +263,36 @@ public class LoginController {
     @ResponseBody
     public KhachHang checkCustomer(@RequestParam("id") Integer id) {
         KhachHang khachHang = khachHangService.getKhachHang(id);
-        if (Objects.nonNull(khachHang)){
+        if (Objects.nonNull(khachHang)) {
             return khachHang;
         }
         return null;
+    }
+
+    @PostMapping("/sixdo-shop/buyer-forget/reset-password-profile")
+    @ResponseBody
+    public boolean resetPasswordProfile(
+            @RequestParam("password") String password,
+            @RequestParam("passwordNew") String passwordNew,
+            @RequestParam("passwordNewConfig") String passwordNewConfig
+    ) {
+        System.out.println("password :" + password);
+        System.out.println("passwordNew :" + passwordNew);
+        System.out.println("passwordNewConfig :" + passwordNewConfig);
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (password.trim().equals("") || passwordNew.trim().equals("") || passwordNewConfig.trim().equals("")) {
+            throw new IllegalArgumentException("Mật Khẩu không được để trống");
+        }
+        if (!passwordNew.trim().equals(passwordNewConfig.trim())) {
+            return false;
+        }
+
+        if (!khachHang.getMatKhau().equals(password)) {
+            return false;
+        }
+        khachHang.setMatKhau(passwordNew);
+        khachHangService.editKhachHang(khachHang.getId(), khachHang);
+        return true;
     }
 
 
