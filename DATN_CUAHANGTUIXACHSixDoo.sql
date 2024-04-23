@@ -274,6 +274,9 @@ CONSTRAINT FK_HoaDon_CTHD FOREIGN KEY(id_hoa_don) REFERENCES hoa_don(id),
 CONSTRAINT FK_CTSP_CTHD FOREIGN KEY(id_ctsp) REFERENCES chi_tiet_san_pham(id),
 )
 
+ALTER TABLE hoa_don
+    ADD  giam_gia float
+
 create table slide_show(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 ten nvarchar(200),
@@ -554,6 +557,24 @@ select * from gio_hang
 delete khach_hang where id =23
 delete  gio_hang where id =11
 delete tai_khoan where id =25
+
+
+update hoa_don set trang_thai = 0 where id = 131
+
+SELECT COUNT(DISTINCT hd.id)
+FROM hoa_don AS hd
+         JOIN chi_tiet_hoa_don AS cthd ON cthd.id_hoa_don = hd.id
+         JOIN chi_tiet_san_pham AS ctsp ON cthd.id_ctsp = ctsp.id
+         JOIN san_pham AS sp ON sp.id = ctsp.id_san_pham
+         JOIN mau_sac AS ms ON ms.id = ctsp.id_mau_sac
+WHERE hd.trang_thai = 0 AND ctsp.id = 4
+
+
+SELECT SUM(cthd.so_luong) AS tong_so_luong_mua
+FROM chi_tiet_hoa_don cthd
+         JOIN hoa_don hd ON cthd.id_hoa_don = hd.id
+WHERE hd.trang_thai = 0 -- Hóa đơn đã thanh toán
+  AND cthd.id_ctsp = 4;
 
 
 

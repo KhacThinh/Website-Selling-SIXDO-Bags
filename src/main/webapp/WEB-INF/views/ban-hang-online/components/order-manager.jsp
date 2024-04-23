@@ -101,157 +101,6 @@
         </table>
     </div>
 
-
-    <!-- ================ Order Details List ================= -->
-    <div class="details">
-        <div class="recentOrders">
-            <div class="cardHeader">
-                <h2>Lịch sử đơn hàng</h2>
-                <select id="sortBy">
-                    <option value="soLuong">Theo số lượng</option>
-                    <option value="doanhThu">Theo doanh thu</option>
-                </select>
-            </div>
-
-
-            <table id="thongKeTable">
-                <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Hình ảnh</th>
-                    <th>Tên</th>
-                    <th>Màu sắc</th>
-                    <th>Số lượng mua</th>
-                    <th>Giá bán</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- ================= New Customers ================ -->
-        <div class="recentCustomers">
-            <div class="cardHeader">
-                <h2>Khách hàng gần đây</h2>
-            </div>
-
-            <table>
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Khắc Thịnh <br/>
-                            <span>Việt Nam</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            David <br/>
-                            <span>Italy</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            David <br/>
-                            <span>Italy</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            David <br/>
-                            <span>Italy</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
 </div>
 
 <!-- Modal hiển thị -->
@@ -996,13 +845,11 @@
         $('#sortBy').change(function () {
             var sortBy = $(this).val();
             getListCtspDesc(sortBy);
-            console.log(sortBy);
         });
     });
 
 
     function displayThongKeData(data, sortBy) {
-        console.log(data);
         var tbody = document.getElementById('thongKeTable').getElementsByTagName('tbody')[0];
         tbody.innerHTML = '';
         var stt = 1;

@@ -1,7 +1,10 @@
 package com.bags.sixdoBag.config;
 
 import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
+import com.bags.sixdoBag.model.entitys.CuaHang;
 import com.bags.sixdoBag.model.entitys.HoaDon;
+import com.bags.sixdoBag.model.entitys.NhanVien;
+import com.bags.sixdoBag.service.CuaHangService;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.*;
@@ -9,6 +12,7 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
@@ -26,9 +30,12 @@ public class HoaDonPDFExporter {
 
     private List<ChiTietHoaDon> chiTietHoaDons;
 
-    public HoaDonPDFExporter(HoaDon hoaDon, List<ChiTietHoaDon> chiTietHoaDons) {
+    private CuaHang cuaHang;
+
+    public HoaDonPDFExporter(HoaDon hoaDon, List<ChiTietHoaDon> chiTietHoaDons, CuaHang cuaHangService) {
         this.hoaDon = hoaDon;
         this.chiTietHoaDons = chiTietHoaDons;
+        this.cuaHang = cuaHangService;
     }
 
     private void writeTableHeader(PdfPTable table) throws DocumentException, IOException {
@@ -120,7 +127,7 @@ public class HoaDonPDFExporter {
         Font fontLogo = new Font(bsf);
         fontLogo.setSize(30);
 
-        Paragraph p0 = new Paragraph("SIXDO", fontLogo);
+        Paragraph p0 = new Paragraph(cuaHang.getTenCuaHang(), fontLogo);
         p0.setAlignment(Paragraph.ALIGN_CENTER);
         p0.setSpacingBefore(20); // Đặt khoảng cách phía trên đoạn văn bản
         document.add(p0);
@@ -130,7 +137,7 @@ public class HoaDonPDFExporter {
         Font font = new Font(bf);
         font.setSize(16);
 
-        Paragraph p1 = new Paragraph("CỬA HÀNG TÚI XÁCH SIXDO", font);
+        Paragraph p1 = new Paragraph(cuaHang.getTenDayDuCuaHang(), font);
         p1.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(p1);
 
@@ -139,12 +146,12 @@ public class HoaDonPDFExporter {
         Font fontNormal = new Font(bff);
         fontNormal.setSize(12);
 
-        Paragraph p2 = new Paragraph("Địa chỉ: số 24 Hai Bà Trưng, Quận Hoàn Kiếm, Thành Phố Hà Nội", fontNormal);
+        Paragraph p2 = new Paragraph("Địa chỉ: " + cuaHang.getDiaChi(), fontNormal);
         p2.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(p2);
 
         // Thêm các thông tin khác
-        Paragraph p3 = new Paragraph("Hotline: 0963828374", fontNormal);
+        Paragraph p3 = new Paragraph("Hotline: " + cuaHang.getSdt(), fontNormal);
         p3.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(p3);
         p3.setSpacingAfter(30);
@@ -173,7 +180,7 @@ public class HoaDonPDFExporter {
 
         // Thêm các thông tin khách hàng
         Paragraph p7 = null;
-        if (Objects.nonNull(hoaDon.getTenNguoiNhan())) {
+        if (!hoaDon.getTenNguoiNhan().equals("")) {
             p7 = new Paragraph("Khách hàng: " + hoaDon.getTenNguoiNhan(), fontNormal);
         } else {
             p7 = new Paragraph("Khách hàng: Khách lẻ", fontNormal);
@@ -257,6 +264,31 @@ public class HoaDonPDFExporter {
         table2.addCell(pCell);
 
         document.add(table2);
+
+        PdfPTable table3 = new PdfPTable(3);
+        table3.setWidthPercentage(100f);
+        table3.setWidths(new float[]{4f, 4f, 4f});
+        table3.setSpacingBefore(15);
+
+        PdfPCell pCelll = new PdfPCell();
+        pCelll.setPadding(6);
+        pCelll.setBorder(Rectangle.NO_BORDER); // Biên trong suốt
+        pCelll.setHorizontalAlignment(Element.ALIGN_CENTER);
+        pCelll.setPhrase(new Phrase("", fontXacNhan));
+        table3.addCell(pCelll);
+
+        pCelll.setPhrase(new Phrase("", fontXacNhan));
+        table3.addCell(pCelll);
+
+        NhanVien nhanVien = hoaDon.getNhanVien();
+        if (Objects.nonNull(nhanVien)) {
+            pCelll.setPhrase(new Phrase(nhanVien.getHoTen(), fontXacNhan));
+        } else {
+            pCelll.setPhrase(new Phrase("", fontNormal));
+        }
+        table3.addCell(pCelll);
+
+        document.add(table3);
 
 
         document.close();

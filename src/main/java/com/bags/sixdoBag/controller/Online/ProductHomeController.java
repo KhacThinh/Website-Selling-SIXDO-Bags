@@ -7,18 +7,12 @@ import com.bags.sixdoBag.model.entitys.MauSac;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
-import com.bags.sixdoBag.service.impl.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -42,8 +36,14 @@ public class ProductHomeController {
 
 
     @GetMapping("/product-home")
-    public ResponseEntity<List<ProductHomeRequest>> HienThiProductHomePage() {
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+    public ResponseEntity<List<ProductHomeRequest>> hienThiProductHomePage(@RequestParam("limit") int limit) {
+        int page = 8;
+        if (limit <= 1) {
+            page *= 1;
+        } else {
+            page *= limit;
+        }
+        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPhamLimit(page);
         return ResponseEntity.ok(productHomeRequestList);
     }
 
@@ -99,10 +99,40 @@ public class ProductHomeController {
     @PostMapping("/filter/loc-thuong-hieu-mau-sac-components-product-home")
     public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(
             @RequestParam("tenThuongHieu") String tenThuongHieu,
-            @RequestParam("maMauSac") String maMauSac
+            @RequestParam("maMauSac") String maMauSac,
+            @RequestParam("sortBy") int sortBy
     ) {
         List<ProductHomeRequest> searchResults = sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu);
+        if (sortBy == 2) {
+            searchResults.sort(Comparator.comparingInt(p -> -(chiTietSanPhamServivce.soLuongMuaBySanPham(p.getId()))));
+        } else if (sortBy == 3) {
+            searchResults.sort(Comparator.comparing(ProductHomeRequest::getGiaBan));
+        } else if (sortBy == 4) {
+            searchResults.sort(Comparator.comparing(ProductHomeRequest::getGiaBan).reversed());
+        }
         System.out.println(searchResults.size());
         return ResponseEntity.ok(searchResults);
+    }
+
+
+    @GetMapping("/so-luong-mua")
+    @ResponseBody
+    public int soLuongMuaChiTietSanPham(@RequestParam("id") int idChiTietSanPham) {
+        int soLuongMua = chiTietSanPhamServivce.soLuongMuaByChiTietSanPham(idChiTietSanPham);
+        return soLuongMua;
+    }
+
+
+    @GetMapping("/so-luong-san-pham")
+    @ResponseBody
+    public int soLuongSanPham() {
+        int soLuongSanPham = sanPhamService.listHienThiSanPham().size();
+        int page = 1;
+        if (soLuongSanPham % 8 != 0) {
+            page = (soLuongSanPham / 8) + 1;
+        } else {
+            page = soLuongSanPham / 8;
+        }
+        return page;
     }
 }

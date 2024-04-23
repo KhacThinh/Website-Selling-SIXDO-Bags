@@ -55,11 +55,8 @@
                     </h4>
 
                     <p class="mtext-106 cl2" id="product-price">
-                        <fmt:formatNumber
-                                pattern="#,###"
-                                var="tongTam"
-                                value="${product[0].giaBan}"></fmt:formatNumber>
-                        Giá Bán: ${tongTam}đ</p>
+                        <fmt:formatNumber pattern="#,###" var="tongTam" value="${product[0].giaBan}"></fmt:formatNumber>
+                        ${tongTam} đồng</p>
 
                     <!-- Thêm thông tin về thương hiệu -->
                     <p class="stext-102 cl3">
@@ -73,11 +70,11 @@
 
                     <!-- Thêm thông tin về số lượng bán -->
                     <p class="stext-102 cl3 p-tb-1">
-                        Số lượng bán: <strong id="so-luong-ban-ra"></strong>
+                        Đã bán <strong id="so-luong-ban-ra"></strong>
                     </p>
 
                     <p class="stext-102 cl3 ">
-                        Số lượng kho: <strong id="so-luong-kho-detail">${product[0].soLuong}</strong>
+                        Kho: <strong id="so-luong-kho-detail">${product[0].soLuong}</strong>
                     </p>
 
                     <!--  -->
@@ -94,7 +91,8 @@
                                     <select class="js-select2" id="select-id-color" name="time"
                                             onchange="updatePrice(this)">
                                         <c:forEach var="o" items="${product}" varStatus="loop">
-                                            <option value="${o.id}">${o.mauSac.tenMauSac}</option>
+                                            <option data-product-id="${o.id}"
+                                                    value="${o.id}">${o.mauSac.tenMauSac}</option>
                                         </c:forEach>
                                     </select>
                                     <div class="dropDownSelect2"></div>
@@ -128,10 +126,10 @@
                     <!--  -->
                     <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                         <div class="flex-m bor9 p-r-10 m-r-11">
-                            <a href="#"
-                               class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
-                               data-tooltip="Add to Wishlist">
-                                <i class="zmdi zmdi-favorite"></i>
+                            <a class="btn-addwish-b2 dis-block pos-relative js-addwish-b2 js-addedwish-b2"
+                               data-product-id="${product[0].id}" data-wishlist="false">
+                                <i class="bi bi-heart"></i>
+                                <i class="bi bi-heart-fill"></i>
                             </a>
                         </div>
 
@@ -161,13 +159,13 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item p-b-10">
                         <a class="nav-link active inf-title" style="font-size: 19px" data-toggle="tab"
-                           href="#description" role="tab">Mô Tả</a>
+                           href="#information" role="tab">Mô Tả</a>
                     </li>
 
-                    <li class="nav-item p-b-10">
-                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#information"
-                           role="tab">Thông tin bổ sung</a>
-                    </li>
+                    <%--                    <li class="nav-item p-b-10">--%>
+                    <%--                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#information"--%>
+                    <%--                           role="tab">Thông tin bổ sung</a>--%>
+                    <%--                    </li>--%>
 
                     <li class="nav-item p-b-10 ">
                         <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#reviews"
@@ -178,41 +176,28 @@
                 <!-- Tab panes -->
                 <div class="tab-content p-t-43">
                     <!-- - -->
-                    <div class="tab-pane fade show active" id="description" role="tabpanel">
-                        <div class="how-pos2 p-lr-15-md">
-                            <p class="stext-102 cl6" style="font-size: 16px">
-                            <p class="stext-102 cl3">
-                                Mô tả sản phẩm:
-                                <strong>${product[0].sanPham.moTa}</strong>
-                            </p>
-                            <ul class="stext-102 cl3" style="list-style-type: none; padding-left: 0;">
-                                <li><strong>Mã sản phẩm:</strong> SP0022</li>
-                                <li><strong>Kích thước:</strong> 15x20x8 cm</li>
-                                <li><strong>Khối lượng:</strong> 1 gram</li>
-                                <li><strong>Chất liệu:</strong> Nhung</li>
-                                <li><strong>Xuất xứ:</strong> Hàn Quốc</li>
-                                <li><strong>Trọng lượng:</strong> 10000 kg</li>
-                                <li><strong>Thương hiệu:</strong> Louis Vuitton</li>
-                                <li><strong>Danh mục:</strong> Túi Đeo Chéo</li>
-                                <li><strong>Bảo Hành:</strong> Trọn đời</li>
-                            </ul>
-                            </p>
-                        </div>
-                    </div>
-
-
-                    <!-- - -->
-                    <div class="tab-pane fade" id="information" role="tabpanel">
+                    <div class="tab-pane fade show active" id="information" role="tabpanel">
                         <div class="row">
                             <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
                                 <ul class="p-lr-28 p-lr-15-sm">
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Mã Sản Phẩm :
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.maSanPham}
+                                        </span>
+                                    </li>
                                     <li class="flex-w flex-t p-b-7">
 											<span class="stext-102 cl3 size-205 inf">
 												Khối Lượng :
 											</span>
 
                                         <span class="stext-102 cl6 size-206 inf">
-                                            ${product[0].sanPham.khoiLuong}
+                                            <fmt:formatNumber pattern="#,###" var="khoiLuongdt"
+                                                              value="${product[0].sanPham.khoiLuong}"></fmt:formatNumber>
+                                            ${khoiLuongdt} gram
                                         </span>
                                     </li>
 
@@ -222,7 +207,7 @@
 											</span>
 
                                         <span class="stext-102 cl6 size-206 inf">
-                                            ${product[0].sanPham.kichThuoc}
+                                            ${product[0].sanPham.kichThuoc} cm
                                         </span>
                                     </li>
 
@@ -256,6 +241,51 @@
                                         <span class="stext-102 cl6 size-206 inf">
                                             ${product[0].sanPham.xuatXu}
                                         </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Thương Hiệu:
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.thuongHieu.ten}
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Danh Mục:
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.danhMuc.tenDanhMuc}
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Đối tượng sử dụng:
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.doiTuongSuDung.tenDoiTuongSuDung}
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Bảo Hành :
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                            ${product[0].sanPham.thoiGianBaoHanh.thoiGian} tháng
+                                        </span>
+                                    </li>
+                                    <li class="flex-w flex-t p-b-7">
+											<span class="stext-102 cl3 size-205 inf">
+												Mô tả sản phẩm :
+											</span>
+
+                                        <span class="stext-102 cl6 size-206 inf">
+                                       <strong>${product[0].sanPham.moTa}</strong>
+                                    </span>
                                     </li>
                                 </ul>
                             </div>
@@ -353,27 +383,130 @@
         </div>
     </div>
 
-    <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
-			<span class="stext-107 cl6 p-lr-25">
-				Mã Sản Phẩm :                                              ${product[0].sanPham.maSanPham}
-
-			</span>
-
-        <span class="stext-107 cl6 p-lr-25">
-				Categories: Jacket, Men
-			</span>
-    </div>
+    <%--    <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">--%>
+    <%--        <span class="stext-107 cl6 p-lr-25">--%>
+    <%--				Thể loại:  ${product[0].sanPham.danhMuc.tenDanhMuc}--%>
+    <%--			</span>--%>
+    <%--    </div>--%>
 </section>
 
 <script>
     $(document).ready(function () {
-        soLuongMuaDetail("${product[0].id}");
-    })
+        var selectedId = $('#select-id-color').val();
+
+        // Lấy giá trị ID từ thuộc tính data-product-id của option tương ứng
+        var selectedOption = $('#select-id-color option[value="' + selectedId + '"]');
+        var defaultProductId = selectedOption.attr('data-product-id');
+
+        soLuongMuaDetail(defaultProductId);
+    });
+
+
+    $('.js-addcart-detail-customer').on('click', function () {
+        var idKhachHang = document.getElementById("id-khach-hang").value;
+        var selectedIdValue = document.getElementById('select-id-color').value;
+        var quantityProduct = 0;
+        quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
+        var isValid;
+
+        if (idKhachHang == "") {
+            Swal.fire({
+                title: "Đăng nhập để thêm sản phẩm vào giỏ hàng",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Đăng nhập",
+                cancelButtonText: "Đóng",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/sixdo-shop/login-customer";
+                }
+            });
+        }
+
+        if (quantityProduct === 0) {
+            Swal.fire(
+                'Error',
+                'So Luong Phai Lon Hon 0.',
+                'error'
+            );
+            return isValid = false;
+        }
+        if (quantityProduct < 0) {
+            Swal.fire(
+                'Eror',
+                'So Luong khong duoc am.',
+                'error'
+            );
+            return isValid = false;
+        }
+        if (isValid != false) {
+            $.ajax({
+                url: '/sixdo-shop/check-soLuong',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    idKhachHang: idKhachHang,
+                    idChiTietSanPham: selectedIdValue,
+                    soLuong: quantityProduct
+                }),
+                success: function (response) {
+                    if (response === "ok") {
+                        $.ajax({
+                            url: '/sixdo-shop/add-to-cart-buyer',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                idKhachHang: idKhachHang,
+                                idChiTietSanPham: selectedIdValue,
+                                soLuong: quantityProduct
+                            }),
+                            success: function (response) {
+                                if (response === "ok") {
+                                    // Swal.fire({
+                                    //     title: 'Thanh cong!',
+                                    //     text: 'Da them gio hang thanh cong.',
+                                    //     icon: 'success',
+                                    //     timer: 2000, // Thời gian tự động đóng (ms)
+                                    //     showConfirmButton: false // Ẩn nút OK
+                                    // });
+                                    const count = document.querySelector('.icon-count-cart');
+                                    count.setAttribute('data-notify', response);
+                                    showAlertAddCart('Success!', 'Product added to cart!', 'success');
+                                    capNhapSoLuongSanPhamTrongGioHangHearder();
+                                } else if (response === "loiTrangThai") {
+                                    Swal.fire(
+                                        'Error!',
+                                        'San pham khong ton tai.',
+                                        'error'
+                                    );
+                                }
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            'Lỗi!',
+                            'Ban Chi duoc them toi da: ' + response + 'San Pham',
+                            'error'
+                        );
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+
+    });
+
     function soLuongMuaDetail(idCTsp) {
         $.ajax({
             type: 'GET',
-            url: '/chi-tiet-san-pham/so-luong-mua',
-            data: { id: idCTsp },
+            url: '/load-du-lieu/so-luong-mua',
+            data: {id: idCTsp},
             success: function (soLuongMua) {
                 if (soLuongMua > 0) {
                     document.getElementById('so-luong-ban-ra').innerText = soLuongMua;
@@ -385,8 +518,6 @@
                 console.error(xhr.responseText);
             }
         });
-
-
     }
 </script>
 

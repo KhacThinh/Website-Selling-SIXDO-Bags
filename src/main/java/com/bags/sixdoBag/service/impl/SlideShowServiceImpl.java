@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SlideShowServiceImpl implements SlideShowService {
     public final SlideShowRepository slideShowRepository;
+
     @Override
     public SlideShow getSlideShow(Integer idSlideShow) {
         SlideShow slideShow = slideShowRepository.findById(idSlideShow).orElse(null);
@@ -19,31 +21,38 @@ public class SlideShowServiceImpl implements SlideShowService {
 
     @Override
     public List<SlideShow> getListSlideShow() {
-        List<SlideShow>list= slideShowRepository.findAllSlide();
+        List<SlideShow> list = slideShowRepository.findAllSlide();
         return list;
     }
 
     @Override
     public SlideShow addSlideShow(SlideShow slideShow) {
         SlideShow slideShow1 = new SlideShow();
-        slideShow1.setTenSlideShow(slideShow.getTenSlideShow());
-        slideShow1.setTrangThai(true);
+        slideShow1.setTextCollectionTitle(slideShow.getTextCollectionTitle());
+        slideShow1.setTextNewArrivals(slideShow.getTextNewArrivals());
+        slideShow1.setLinkChuyenTrang(slideShow.getLinkChuyenTrang());
+        slideShow1.setUrlHinhAnh(slideShow.getUrlHinhAnh());
+        slideShow1.setTrangThai(1);
         slideShowRepository.save(slideShow1);
         return slideShow1;
     }
 
     @Override
     public SlideShow edit(Integer idSlide, SlideShow slideShow) {
-        SlideShow sl = getSlideShow(idSlide);
-        sl.setTenSlideShow(slideShow.getTenSlideShow());
-        slideShowRepository.save(sl);
-        return sl;
+        SlideShow slideShow1 = getSlideShow(idSlide);
+        slideShow1.setTextCollectionTitle(slideShow.getTextCollectionTitle());
+        slideShow1.setTextNewArrivals(slideShow.getTextNewArrivals());
+        slideShow1.setLinkChuyenTrang(slideShow.getLinkChuyenTrang());
+        slideShow1.setUrlHinhAnh(slideShow.getUrlHinhAnh());
+        slideShow1.setTrangThai(slideShow.getTrangThai());
+        slideShowRepository.save(slideShow1);
+        return slideShow1;
     }
 
     @Override
     public SlideShow delete(Integer idSlide) {
-        SlideShow sl= getSlideShow(idSlide);
-        sl.setTrangThai(false);
+        SlideShow sl = getSlideShow(idSlide);
+        sl.setTrangThai(0);
         slideShowRepository.save(sl);
         return sl;
     }

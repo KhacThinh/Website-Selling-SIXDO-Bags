@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -150,13 +149,27 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
+    public List<ProductHomeRequest> listHienThiSanPhamLimit(int limit) {
+        return queryJpa.tempLimit(limit);
+    }
+
+    @Override
     public List<ProductHomeRequest> displayedByBrand(int idThuongHieu) {
         return queryJpa.displayedByBrand(idThuongHieu);
 
     }
 
-    public List<ProductHomeRequest> searchSanPhamOnlines(String name) {
+    @Override
+    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int min, int max) {
+        return queryJpa.sanPhamCoGiaTienTuongTu(min, max);
+    }
 
+    @Override
+    public List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSP, int idDanhMuc) {
+        return queryJpa.sanPhamCoDanhMucTuongTu(idSP, idDanhMuc);
+    }
+
+    public List<ProductHomeRequest> searchSanPhamOnlines(String name) {
         return queryJpa.searchProductByName(name);
     }
 

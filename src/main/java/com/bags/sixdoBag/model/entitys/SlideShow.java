@@ -33,10 +33,19 @@ public class SlideShow {
     @NotNull(message = "Tên không được để null")
     @NotBlank(message = "Tên Không được để khoảng trắng")
     @Length(max = 200, message = "Tên không được vượt quá 200 ký tự")
-    @Column(name = "ten")
-    private String tenSlideShow;
+    @Column(name = "text_collection_title")
+    private String textCollectionTitle;
+
+    @Column(name = "text_new_arrivals")
+    private String textNewArrivals;
+
+    @Column(name = "url_hinh_anh")
+    private String urlHinhAnh;
+
+    @Column(name = "link_chuyen_trang")
+    private String linkChuyenTrang;
 
     @Column(name = "trang_thai")
-    private Boolean trangThai;
+    private int trangThai;
 
 }

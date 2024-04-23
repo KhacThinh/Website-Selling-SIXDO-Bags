@@ -170,15 +170,32 @@
                 cancelButtonText: 'Hủy',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Hiển thị loading indicator
+                    Swal.fire({
+                        title: 'Đang gửi email...',
+                        text: 'Vui lòng chờ đợi',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     $('#closeModalSendMail').trigger('click');
                     $.ajax({
                         type: 'POST',
                         url: '/buyer-forget/sendMailForgetPassword',
                         data: {email: email},
                         success: function (data) {
+                            // Đóng loading indicator
+                            Swal.close();
+
                             Swal.fire('Thành công', 'Vui lòng kiểm tra email để nhận hướng dẫn', 'success');
                         },
                         error: function () {
+                            // Đóng loading indicator
+                            Swal.close();
+
                             Swal.fire('Lỗi', 'Có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
                         }
                     });
