@@ -111,8 +111,9 @@
                                         <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
                                     </c:forEach>
                                 </form:select>
+
                             </div>
-                            <button style="he">add</button>
+
 
                         </div>
 <%--                        <div class="col-md-2">--%>

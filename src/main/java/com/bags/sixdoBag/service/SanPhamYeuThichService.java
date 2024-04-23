@@ -15,7 +15,10 @@ public interface SanPhamYeuThichService {
 
     public List<ProductHomeRequest> getListSanPhamYeuThich(int idKhachHang);
 
+    List<ProductHomeRequest> searchSanPhamFavoriteOnlines(int idKh, String name);
+
     public SanPhamYeuThich addSanPhamYeuThich(SanPhamYeuThichRequest sanPhamYeuThichRequest);
 
     public SanPhamYeuThich deleteSanPhamYeuThich(Integer idSanPham, Integer idKhachHang);
+
 }

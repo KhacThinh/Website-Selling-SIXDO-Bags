@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
     <title>Đăng ký thành viên | SIXDO</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 

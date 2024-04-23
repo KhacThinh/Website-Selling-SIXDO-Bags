@@ -1,4 +1,4 @@
-(function ($) {
+// (function ($) {
         "use strict";
 
         /*[ Load page ]
@@ -352,205 +352,114 @@
         });
 
 
-        $('.js-addcart-detail-customer').on('click', function () {
-            var idKhachHang = document.getElementById("id-khach-hang").value;
-            var selectedIdValue = document.getElementById('select-id-color').value;
-            var quantityProduct = 0;
-            quantityProduct = parseInt(document.getElementById('quantity-product-add-to-cart').value);
-            var isValid;
-            if (idKhachHang == "") {
-                Swal.fire({
-                    title: "Login to add products to cart",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Log in",
-                    cancelButtonText: "Close",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "/sixdo-shop/login-customer";
-                    }
-                });
+        // $('.js-show-cart').on('click', function () {
+        //
+        //     $.get('/product-favorite/check-thong-tin-khach-hang', function (response) {
+        //         if (response !== 0) {
+        //
+        //
+        //             $('.js-panel-cart').addClass('show-header-cart');
+        //             var cartListElement = document.getElementById('cartProductList');
+        //             cartListElement.innerHTML = ''; // Xóa các mục cũ
+        //             var totalAmount = 0; // Biến để tính tổg giá trị đơn hàng
+        //
+        //             var idKhachHang = document.getElementById('id-khach-hang').value;
+        //             console.log("l" + idKhachHang)
+        //             $.ajax({
+        //                 url: '/sixdo-shop/get-cart-by-buyer',
+        //                 type: 'POST',
+        //                 contentType: 'application/json',
+        //                 data: JSON.stringify({
+        //                     idKhachHang2: idKhachHang
+        //                 }),
+        //                 success: function (response) {
+        //                     if (response.length == 0) {
+        //                         cartListElement.innerHTML = '<p>Cart is empty</p>';
+        //                     } else {
+        //                         var formatter = new Intl.NumberFormat('vi-VN', {
+        //                             style: 'currency',
+        //                             currency: 'VND'
+        //                         });
+        //
+        //                         response.forEach(function (product) {
+        //                             var imageProductForCart = '${pageContext.request.contextPath}/' + product.chiTietSanPham.hinhAnh;
+        //                             var listItem = document.createElement('li');
+        //                             listItem.className = 'cart-item';
+        //
+        //                             if (product.chiTietSanPham.trangThai === 1) {
+        //                                 // Sản phẩm có sẵn
+        //                                 var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12">' +
+        //                                     '<div class="header-cart-item-img">' +
+        //                                     '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
+        //                                     '</div>' +
+        //                                     '<div class="header-cart-item-txt p-t-8">' +
+        //                                     '<a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.chiTietSanPham.sanPham.tenSanPham + '</a>' +
+        //                                     '<a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>' +
+        //                                     '<span class="header-cart-item-info">' + product.soLuong + ' x ' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
+        //                                     '</div>' +
+        //                                     '<div class="header-cart-item-remove">' +
+        //                                     '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
+        //                                     '</div>' +
+        //                                     '</li>';
+        //                                 listItem.innerHTML = itemHTML;
+        //                                 cartListElement.appendChild(listItem);
+        //                                 totalAmount += product.chiTietSanPham.giaBan * product.soLuong;
+        //                             } else {
+        //                                 var trangThaiText;
+        //                                 if (product.chiTietSanPham.trangThai === 0) {
+        //                                     trangThaiText = 'Ngung Ban';
+        //                                 } else if (product.chiTietSanPham.trangThai === 2) {
+        //                                     trangThaiText = 'Het Hang';
+        //                                 } else {
+        //                                     trangThaiText = '';
+        //                                 }
+        //                                 // Sản phẩm không có sẵn
+        //                                 var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12" style="filter: brightness(50%);">' +
+        //                                     '<div class="header-cart-item-img">' +
+        //                                     '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
+        //                                     '</div>' +
+        //                                     '<div class="header-cart-item-txt p-t-8">' +
+        //                                     '<span class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold"> ' + product.chiTietSanPham.sanPham.tenSanPham + '</span>' +
+        //                                     '<span class="header-cart-item-info">' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
+        //                                     '<span class="header-cart-item-info" style="color: red" >' + trangThaiText + '</span>' +
+        //
+        //                                     '</div>' +
+        //                                     '<div class="header-cart-item-remove">' +
+        //                                     '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
+        //                                     '</div>' +
+        //                                     '</li>';
+        //                                 listItem.innerHTML = itemHTML;
+        //                                 cartListElement.appendChild(listItem);
+        //
+        //
+        //                             }
+        //                         });
+        //
+        //                         var formattedTotalAmount = formatter.format(totalAmount);
+        //                         var totalAmountElement = document.getElementById('totalCartValues');
+        //                         totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+        //                     }
+        //                 },
+        //
+        //
+        //                 error: function (error) {
+        //                     console.error(error);
+        //                 }
+        //             });
+        //             return;
+        //
+        //
+        //             var formattedTotalAmount = formatter.format(totalAmount);
+        //             var totalAmountElement = document.getElementById('totalCartValues');
+        //
+        //             totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+        //         } else {
+        //             showLoginPrompt();
+        //         }
+        //     });
+        //
+        // });
 
-            }
-            if (quantityProduct === 0) {
-                Swal.fire(
-                    'Error',
-                    'So Luong Phai Lon Hon 0.',
-                    'error'
-                );
-                return isValid = false;
-            }
-            if (quantityProduct < 0) {
-                Swal.fire(
-                    'Eror',
-                    'So Luong khong duoc am.',
-                    'error'
-                );
-                return isValid = false;
-            }
-            if (isValid != false) {
-                $.ajax({
-                    url: '/sixdo-shop/check-soLuong',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        idKhachHang: idKhachHang,
-                        idChiTietSanPham: selectedIdValue,
-                        soLuong: quantityProduct
-                    }),
-                    success: function (response) {
-                        if (response === "ok") {
-                            $.ajax({
-                                url: '/sixdo-shop/add-to-cart-buyer',
-                                type: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify({
-                                    idKhachHang: idKhachHang,
-                                    idChiTietSanPham: selectedIdValue,
-                                    soLuong: quantityProduct
-                                }),
-                                success: function (response) {
-                                    if (response === "ok") {
-                                        // Swal.fire({
-                                        //     title: 'Thanh cong!',
-                                        //     text: 'Da them gio hang thanh cong.',
-                                        //     icon: 'success',
-                                        //     timer: 2000, // Thời gian tự động đóng (ms)
-                                        //     showConfirmButton: false // Ẩn nút OK
-                                        // });
-                                        const count = document.querySelector('.icon-count-cart');
-                                        count.setAttribute('data-notify', response);
-                                        showAlertAddCart('Success!', 'Product added to cart!', 'success');
-                                        capNhapSoLuongSanPhamTrongGioHangHearder();
-                                    } else if (response === "loiTrangThai") {
-                                        Swal.fire(
-                                            'Error!',
-                                            'San pham khong ton tai.',
-                                            'error'
-                                        );
-                                    }
-                                },
-                                error: function (error) {
-                                    console.error(error);
-                                }
-                            });
-                        } else {
-                            Swal.fire(
-                                'Lỗi!',
-                                'Ban Chi duoc them toi da: ' + response + 'San Pham',
-                                'error'
-
-                            );
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                    }
-                });
-            }
-
-
-        });
-
-
-        $('.js-show-cart').on('click', function () {
-            $('.js-panel-cart').addClass('show-header-cart');
-            var cartListElement = document.getElementById('cartProductList');
-            cartListElement.innerHTML = ''; // Xóa các mục cũ
-            var totalAmount = 0; // Biến để tính tổg giá trị đơn hàng
-
-            var idKhachHang = document.getElementById('id-khach-hang').value;
-            console.log("l" + idKhachHang)
-            $.ajax({
-                url: '/sixdo-shop/get-cart-by-buyer',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    idKhachHang2: idKhachHang
-                }),
-                success: function (response) {
-                    if (response.length == 0) {
-                        cartListElement.innerHTML = '<p>Cart is empty</p>';
-                    } else {
-                        var formatter = new Intl.NumberFormat('vi-VN', {
-                            style: 'currency',
-                            currency: 'VND'
-                        });
-
-                        response.forEach(function (product) {
-                            var imageProductForCart = '${pageContext.request.contextPath}/' + product.chiTietSanPham.hinhAnh;
-                            var listItem = document.createElement('li');
-                            listItem.className = 'cart-item';
-
-                            if (product.chiTietSanPham.trangThai === 1) {
-                                // Sản phẩm có sẵn
-                                var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12">' +
-                                    '<div class="header-cart-item-img">' +
-                                    '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
-                                    '</div>' +
-                                    '<div class="header-cart-item-txt p-t-8">' +
-                                    '<a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.chiTietSanPham.sanPham.tenSanPham + '</a>' +
-                                    '<a href="/sixdo-shop/product/' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>' +
-                                    '<span class="header-cart-item-info">' + product.soLuong + ' x ' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
-                                    '</div>' +
-                                    '<div class="header-cart-item-remove">' +
-                                    '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
-                                    '</div>' +
-                                    '</li>';
-                                listItem.innerHTML = itemHTML;
-                                cartListElement.appendChild(listItem);
-                                totalAmount += product.chiTietSanPham.giaBan * product.soLuong;
-                            } else {
-                                var trangThaiText;
-                                if (product.chiTietSanPham.trangThai === 0) {
-                                    trangThaiText = 'Ngung Ban';
-                                } else if (product.chiTietSanPham.trangThai === 2) {
-                                    trangThaiText = 'Het Hang';
-                                } else {
-                                    trangThaiText = '';
-                                }
-                                // Sản phẩm không có sẵn
-                                var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12" style="filter: brightness(50%);">' +
-                                    '<div class="header-cart-item-img">' +
-                                    '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
-                                    '</div>' +
-                                    '<div class="header-cart-item-txt p-t-8">' +
-                                    '<span class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold"> ' + product.chiTietSanPham.sanPham.tenSanPham + '</span>' +
-                                    '<span class="header-cart-item-info">' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
-                                    '<span class="header-cart-item-info" style="color: red" >' + trangThaiText + '</span>' +
-
-                                    '</div>' +
-                                    '<div class="header-cart-item-remove">' +
-                                    '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
-                                    '</div>' +
-                                    '</li>';
-                                listItem.innerHTML = itemHTML;
-                                cartListElement.appendChild(listItem);
-
-
-                            }
-                        });
-
-                        var formattedTotalAmount = formatter.format(totalAmount);
-                        var totalAmountElement = document.getElementById('totalCartValues');
-                        totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
-                    }
-                },
-
-
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-            return;
-
-
-            var formattedTotalAmount = formatter.format(totalAmount);
-            var totalAmountElement = document.getElementById('totalCartValues');
-
-            totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
-
-        });
         window.onload = function () {
             // Thực hiện các công việc bạn muốn khi trang được tải
 
@@ -613,6 +522,4 @@
         ///////////////đặt hàng
 
 
-    }
-
-)(jQuery);
+    // })(jQuery);

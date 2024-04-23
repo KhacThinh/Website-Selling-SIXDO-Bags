@@ -9,6 +9,7 @@ import com.bags.sixdoBag.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -123,6 +124,7 @@ public class ProductFavoriteController {
     @GetMapping("infomation-profile-header")
     public @ResponseBody
     KhachHang infomationProfileHeader() {
+        System.out.println("/product-favorite/infomation-profile-header");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
             return khachHang;
@@ -140,7 +142,7 @@ public class ProductFavoriteController {
             @RequestParam("diaChi") String diaChi,
             @RequestParam(value = "hinhAnh", required = false) MultipartFile hinhAnh
     ) {
-        System.out.println("Hình Ảnh");
+        System.out.println("/product-favorite/input-infomation-profile-header");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
             if (Objects.nonNull(hinhAnh) && !hinhAnh.isEmpty()) {
@@ -170,6 +172,17 @@ public class ProductFavoriteController {
             return 1;
         }
         return 0;
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductHomeRequest>> searchComponentProductHome(@RequestParam("name") String keyword) {
+        System.out.println("/product-favorite/search");
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.isNull(khachHang)) {
+            throw new IllegalArgumentException("Khách Hàng không tồn tại vui lòng check lại");
+        }
+        List<ProductHomeRequest> searchResults = sanPhamYeuThichService.searchSanPhamFavoriteOnlines(khachHang.getId(), keyword);
+        return ResponseEntity.ok(searchResults);
     }
 
 }

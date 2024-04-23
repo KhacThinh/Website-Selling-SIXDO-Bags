@@ -1692,7 +1692,7 @@
         var khachThanhToan = document.getElementById("khach-thanh-toan").value;
         var phiVanChuyen = document.getElementById("shipping-fee").value;
         var soTienNo = document.getElementById("cash-in-return").innerText;
-        var trangThai;
+        var trangThai
 
 
         phiVanChuyen = parseFloat(phiVanChuyen.replace(/,/g, ''));
@@ -1783,6 +1783,20 @@
                                             Swal.fire({
                                                 title: "No",
                                                 text: "Đơn hàng đã được Hủy từ trước đó",
+                                                icon: "warning",
+                                                showCancelButton: false,
+                                                confirmButtonText: "OK"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                                }
+                                            });
+
+                                        }
+                                        else if(response==="errorTrangThai6"){
+                                            Swal.fire({
+                                                title: "No",
+                                                text: "Đơn hàng đã được Giao Thành Công không xác nhận",
                                                 icon: "warning",
                                                 showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
                                                 confirmButtonText: "OK"
@@ -2125,34 +2139,33 @@
             ;
             updateTotalPrice();
             errorAdd('Số lượng sản phẩm không đủ');
-            $('.quantityInput').val(1);
-            return;
-        } else {
-            $.ajax({
-                url: '/ban-tai-quay/update-so-luong-san-pham',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    maHoaDon: tabActive,
-                    idChiTietSanPham: id,
-                    soLuong: soLuong,
-                    giaSanPham: giaBan * soLuong
-                }),
-
-                success: function (ok) {
-                    let sum = giaBan * soLuong;
-                    document.getElementById('quantities' + id).value = soLuong;
-                    updateGiaSanPham.textContent = sum.toLocaleString('vi-VN', {style: 'decimal'}); // Định dạng giá tiền sau khi cập nhật
-                    updateTotalPrice();
-                    fillSoLuong();
-                },
-                error: function (error) {
-                    console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
-                }
-            });
+            soLuong = 1;
         }
-    }
+        document.getElementById('quantities' + id).value = soLuong;
+        $.ajax({
+            url: '/ban-tai-quay/update-so-luong-san-pham',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                maHoaDon: tabActive,
+                idChiTietSanPham: id,
+                soLuong: soLuong,
+                giaSanPham: giaBan * soLuong
+            }),
 
+            success: function (ok) {
+                let sum = giaBan * soLuong;
+                document.getElementById('quantities' + id).value = soLuong;
+                updateGiaSanPham.textContent = sum.toLocaleString('vi-VN', {style: 'decimal'});
+                updateTotalPrice();
+                // fillSoLuong();
+            },
+            error: function (error) {
+                console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
+            }
+        });
+
+    }
 
     // Xóa Sp trong giỏ hàng
     function deleteProduct(productId, event) {

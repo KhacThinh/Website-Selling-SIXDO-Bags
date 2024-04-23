@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Shoping Cart</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.jpg">
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -300,7 +300,7 @@
 
                                                 let lastPriceValue = sumCart - giaTriMaGiamGia;
                                                 console.log("" + sumCart + "-" + giaTriMaGiamGia)
-                                                document.getElementById('last-price').innerText = formatter.format(lastPriceValue);
+                                                document.getElementById('last-price').innerText = lastPriceValue;
                                             },
                                             error: function (error) {
                                                 // Xử lý lỗi nếu có
@@ -512,7 +512,7 @@
 								</span>
                         </div>
                         <div class="size-209">
-								<span class="mtext-110 cl2" style="color: red" id="maGiamGiaOnline">
+<span class="mtext-110 cl2" style="color: red" id="maGiamGiaOnline">
                                 </span>
                         </div>
                     </div>
@@ -626,7 +626,6 @@
 
 
 <!--===============================================================================================-->
-
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
@@ -776,6 +775,7 @@
             productList.push(product);
             </c:forEach>
 
+
             var errors = [];
 
             if (name === '') {
@@ -804,11 +804,11 @@
 
             if (errors.length > 0) {
                 showErrorAlert(errors.join('\n'));
+
                 return false;
             }
 
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
-
 
             orderData = {
                 cart: productList,
@@ -831,7 +831,7 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
-            console.log("ssssssssmgg "+giamGia)
+            console.log("ssssssssmgg " + giamGia)
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -841,8 +841,6 @@
             };
             productList.push(product);
             </c:forEach>
-
-
             $.ajax({
                 type: 'GET',
                 url: '/check-customer/mail',
@@ -894,9 +892,7 @@
                 }
             }
 
-            console.log(orderData);
             var tableRows = document.querySelectorAll('#cartTableBody .table_row');
-            console.log(tableRows);
 
             Swal.fire({
                 title: 'Xác nhận đặt đơn',
@@ -916,7 +912,7 @@
                         data: JSON.stringify(orderData),
                         success: function (response) {
                             if (response === "ok") {
-                                // ktra so luong trong kho
+// ktra so luong trong kho
                                 $.ajax({
                                     url: '/sixdo-shop/check-soLuong-checkout',
                                     type: 'POST',
@@ -934,13 +930,21 @@
                                                     // Xử lý phản hồi từ máy chủ nếu cần
                                                     console.log(response);
                                                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                                                    showAlertAddCart('Order Success!', 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!', 'success');
+
+                                                    Swal.fire({
+                                                        title: 'Order Success!',
+                                                        text: 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!',
+                                                        icon: 'success',
+                                                        showConfirmButton: false, // Ẩn nút "OK"
+                                                        timer: 1500 // Tự động đóng thông báo sau 1.5 giây
+                                                    }).then(function () {
+                                                        // Sau khi thông báo đóng, chuyển hướng sang trang mới
+                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer';
+                                                    });
+
                                                     document.getElementById('sumCart').innerText = '0 đ';
                                                     document.getElementById('last-price').innerText = '0 đ';
-                                                    // Load lại trang sau 1.5 giây với đường dẫn mới '/new/path'
-                                                    setTimeout(function () {
-                                                        window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer'; // Đặt đường dẫn mới ở đây
-                                                    }, 1500);
+
                                                 },
                                                 error: function (error) {
                                                     // Xử lý lỗi nếu có

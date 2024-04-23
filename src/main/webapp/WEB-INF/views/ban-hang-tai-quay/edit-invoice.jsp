@@ -1732,6 +1732,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
     function huyDonHang(id) {
         // Hiển thị hộp thoại xác nhận
 
@@ -1762,7 +1763,7 @@
                     url: "/ban-tai-quay/xoa-hoaDon",
                     data: {
                         id: id,
-                        lyDoHuy: lyDoHuy
+                        lyDoHuy : lyDoHuy
                     },
                     success: function (response) {
                         if (response === "ok") {
@@ -1795,6 +1796,19 @@
                             Swal.fire({
                                 title: "No",
                                 text: "Đơn hàng đã được giao. Không thể hủy",
+                                icon: "warning",
+                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                }
+                            });
+
+                        }else if(response==="errorTrangThai6"){
+                            Swal.fire({
+                                title: "No",
+                                text: "Đơn hàng đã được Giao Thành Công không thể hủy",
                                 icon: "warning",
                                 showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
                                 confirmButtonText: "OK"
@@ -1883,6 +1897,7 @@
     // }
 
     //Giao hàng
+
     function updateHoaDon2(id) {
         var tenNguoiNhan = document.getElementById("tenNguoiNhanUpdate").value;
         var sdtNguoiNhan = document.getElementById("sdtNguoiNhanUpdate").value;
@@ -1986,10 +2001,23 @@
 
                         }
                     });
-                } else if (response === "errorHuyHoaDon") {
+                }else if(response==="errorHuyHoaDon"){
                     Swal.fire({
                         title: "No",
-                        text: "Đơn hàng đã được xóa từ trước đó.Không thể Giao",
+                        text: "Đơn hàng đã được hủy từ trước đó.Không thể Giao",
+                        icon: "warning",
+                        showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                        }
+                    });
+
+                }else if(response==="errorTrangThai6"){
+                    Swal.fire({
+                        title: "No",
+                        text: "Đơn hàng đã được Giao Thành Công không thể giao hàng",
                         icon: "warning",
                         showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
                         confirmButtonText: "OK"
@@ -2276,10 +2304,10 @@
             ;
             updateTotalPrice();
             errorAdd('Số lượng sản phẩm không đủ');
-            $('.quantityInput').val(1);
-            return;
-        } else {
-            $.ajax({
+            soLuong = 1;
+        }
+        document.getElementById('quantities' + id).value = soLuong;
+        $.ajax({
                 url: '/ban-tai-quay/update-so-luong-san-pham',
                 type: 'POST',
                 contentType: 'application/json',
@@ -2301,7 +2329,7 @@
                     console.error("Lỗi khi gửi yêu cầu lấy sản phẩm:", error);
                 }
             });
-        }
+
     }
 
 

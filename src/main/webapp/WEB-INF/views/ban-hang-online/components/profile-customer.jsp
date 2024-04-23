@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-6">
-<%--                                        <span style="color: red">*</span>--%>
+                                        <%--                                        <span style="color: red">*</span>--%>
                                         <label class="labels">Số điện thoại </label>
                                         <input type="text" class="form-control" placeholder="số điện thoại"
                                                id="js-profile-sdt"/>
@@ -151,22 +151,37 @@
                         <div class="col-md-4">
                             <div class="p-3 py-5">
                                 <div class="d-flex justify-content-between align-items-center experience">
-                                    <span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i
-                                        class="fa fa-plus"></i>&nbsp;Experience</span>
+                                    <span>Bảo mật</span>
+                                    <span class="border px-3 p-1 add-experience" id="changePasswordBtn">
+                                        <i class="bi bi-caret-down-fill"></i>&nbsp;Đổi mật khẩu</span>
                                 </div>
                                 <br/>
-                                <div class="col-md-12">
-                                    <label class="labels">Experience in Designing</label><input type="text"
-                                                                                                class="form-control"
-                                                                                                placeholder="experience"
-                                                                                                value=""/>
-                                </div>
-                                <br/>
-                                <div class="col-md-12">
-                                    <label class="labels">Additional Details</label><input type="text"
-                                                                                           class="form-control"
-                                                                                           placeholder="additional details"
-                                                                                           value=""/>
+                                <div class="change-password ds-none" id="changePasswordSection">
+
+                                    <div class="col-md-12">
+                                        <label class="labels">Nhập mật khẩu hiện tại</label>
+                                        <input type="password" class="form-control" placeholder="Mật khẩu hiện tại"
+                                               id="js-pass-word-now-pro"/>
+                                    </div>
+                                    <br/>
+                                    <div class="col-md-12">
+                                        <label class="labels">Nhập mật khẩu mới</label>
+                                        <input type="password" class="form-control" placeholder="Mật khẩu mới"
+                                               id="js-pass-word-moi-pro"/>
+                                    </div>
+                                    <br/>
+                                    <div class="col-md-12">
+                                        <label class="labels">Nhập lại mật khẩu</label>
+                                        <input type="password" class="form-control" placeholder="Nhập lại mật khẩu"
+                                               id="js-pass-word-moi-cofig-pro" oninput="checkPasswordNewProfile()"/>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span style="color: red" id="errorsCheckProfile"></span>
+                                    </div>
+                                    <br/>
+                                    <div class="col-md-12">
+                                        <button id="confirmPasswordBtn" class="btn btn-primary">Xác nhận</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -194,6 +209,87 @@
         inputInfomationProfileCustumer();
     });
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const changePasswordBtn = document.getElementById("changePasswordBtn");
+        const changePasswordSection = document.getElementById("changePasswordSection");
+        const confirmPasswordBtn = document.getElementById("confirmPasswordBtn");
+
+        changePasswordBtn.addEventListener("click", function () {
+            if (changePasswordSection.classList.contains("ds-none")) {
+                changePasswordSection.classList.remove("ds-none");
+            } else {
+                changePasswordSection.classList.add("ds-none");
+            }
+        });
+
+        confirmPasswordBtn.addEventListener("click", function () {
+            var passwordNow = $('#js-pass-word-now-pro').val().trim();
+            var passwordNew = $('#js-pass-word-moi-pro').val().trim();
+            var passwordNewCofig = $('#js-pass-word-moi-cofig-pro').val().trim();
+
+            if (passwordNow === '' || passwordNew === '' || passwordNewCofig === '') {
+                errorsMessage('Không được để trống!');
+                return false;
+            }
+
+            if (passwordNew.length < 8 || passwordNewCofig.length < 8) {
+                errorsMessage('Mật khẩu mới phải có ít nhất 8 kí tự!');
+                return false;
+            }
+
+            Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có muốn đổi mật khẩu không?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('/sixdo-shop/buyer-forget/reset-password-profile', {
+                        password: passwordNow,
+                        passwordNew: passwordNew,
+                        passwordNewConfig: passwordNewCofig
+                    }, function (data) {
+                        if (!data) {
+                            errorsMessage('Đổi mật khẩu không thành công');
+                        } else {
+                            changePasswordSection.classList.add("ds-none");
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đổi mật khẩu thành công',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                    })
+                }
+            });
+        });
+    });
+
+    function checkPasswordNewProfile() {
+        var passwordNew = $('#js-pass-word-moi-pro').val().trim();
+        var passwordNewCofig = $('#js-pass-word-moi-cofig-pro').val().trim();
+        if (passwordNew != passwordNewCofig) {
+            $('#errorsCheckProfile').text("Mật khẩu không trùng khớp");
+            return false;
+        } else {
+            $('#errorsCheckProfile').text("");
+        }
+    }
+
+    function errorsMessage(massger) {
+        Swal.fire({
+            title: 'Lỗi',
+            text: massger,
+            icon: 'error'
+        });
+    }
+
+
     function loadInfomationProfileCustumer() {
         $.get("/product-favorite/infomation-profile-header", function (khachHang) {
             $('#ten-profile-mac-dinh').text(khachHang.tenKhachHang);
@@ -209,7 +305,7 @@
                 $('#js-rounded-circle-avt-hearder').attr('src', urlHinhAnh);
             } else {
                 $('#js-rounded-circle-avt').attr('src', khachHang.hinhAnh);
-                $('#js-rounded-circle-avt-hearder').attr('src', khachHang.hinhAnh);
+                $('#js-rounded-circle-avt-hearder').attr('src', '${pageContext.request.contextPath}/../' + khachHang.hinhAnh);
             }
 
             if (khachHang.gioiTinh == 1) {
@@ -251,7 +347,7 @@
                         });
                         return false;
                     }
-                    if (file && file.size > 1048576*4) {
+                    if (file && file.size > 1048576 * 4) {
                         Swal.fire({
                             title: 'Lỗi',
                             text: 'Vui lòng chọn ảnh có kích thước dưới 4MB',
@@ -294,7 +390,7 @@
                                     title: 'Lưu Thành Công',
                                     showConfirmButton: false,
                                     timer: 1500
-                                }).then(function() {
+                                }).then(function () {
                                     location.reload();
                                 });
 
