@@ -52,6 +52,7 @@ public class MaGiamGiaController {
             khuyenMais = maGIamGiaService.searchcbb(trangThai, pageable);
         } else {
             khuyenMais = maGiamGiaRepository.findAll(pageable);
+
         }
         model.addAttribute("listColors", khuyenMais);
 
@@ -170,7 +171,7 @@ public class MaGiamGiaController {
         System.out.println("idkh" + idKhachHang);
         System.out.println("mgg" + maGiamGia);
 
-        MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia);
+        MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia.trim());
         System.out.println("gai tri giam" + maGiamGia1.getGiaTriGiam());
         int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang, maGiamGia1.getId());
         if (danhSachKhachHangApMgg > 0) {

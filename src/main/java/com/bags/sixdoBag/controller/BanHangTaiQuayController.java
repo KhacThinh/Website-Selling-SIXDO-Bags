@@ -58,8 +58,8 @@ public class BanHangTaiQuayController {
     private final KhachHangService khachHangService;
 
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
+private final CuaHangService cuaHangService;
 
-    private final CuaHangService cuaHangService;
 
 
     @GetMapping(value = {"", "/demo"})
@@ -76,7 +76,30 @@ public class BanHangTaiQuayController {
         extracted(model, -1);
         return "/ban-hang-tai-quay/home";
     }
+    @GetMapping("/export")
+    public void exportToPDF(HttpServletResponse response, @RequestParam(value = "maHoaDon") String maHd) {
+        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
+        System.out.println("hello000001" + hoaDon.getThoiGianTao());
+        if (Objects.nonNull(hoaDon)) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
 
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=" + hoaDon.getMaHoaDon() + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+
+            HoaDonPDFExporter exporter = new HoaDonPDFExporter(hoaDon, chiTietHoaDons, cuaHangService.getCuaHang());
+            try {
+                byte[] pdfBytes = exporter.export();
+                response.getOutputStream().write(pdfBytes);
+            } catch (IOException | DocumentException e) {
+                // Xử lý ngoại lệ nếu có
+                e.printStackTrace();
+            }
+        }
+//        return "redirect:/ban-tai_quay";
+    }
 
     List<ChiTietHoaDon> listCTHDTruoc = new ArrayList<>();
     private int previousId = -1;
@@ -100,68 +123,78 @@ public class BanHangTaiQuayController {
         }
     }
 
-    //xóa hóa đơn
+    //hủy đơn hàng
     @PostMapping("/xoa-hoaDon")
     public ResponseEntity<?> xoaHoaDon(@RequestParam("id") Integer id, @RequestParam("lyDoHuy") String lyDoHuy) {
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
-        if (hoaDon.getTrangThai() != 4) {
-            if (hoaDon.getTrangThai() != 5) {
+        if (hoaDon.getTrangThai() != 6) {
+            if (hoaDon.getTrangThai() != 4) {
+                if (hoaDon.getTrangThai() != 5) {
+                    if (hoaDon.getTrangThai() == 2) {
+                        hoaDon.setTrangThai(4);
+                        hoaDonService.editHoaDon(id, hoaDon);
+                        return ResponseEntity.ok("ok");
+                    } else {
+                        System.out.println("trang thai 3");
+                        for (ChiTietHoaDon cthd : listCTHDTruoc
+                        ) {
+                            ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
+                        }
+                        hoaDon.setLyDoKhachHuy(lyDoHuy);
+                        hoaDon.setTrangThai(4);
+                        hoaDonService.editHoaDon(id, hoaDon);
+                        return ResponseEntity.ok("ok");
+                    }
+                } else {
+                    return ResponseEntity.ok("errorGiaoHang");
+                }
 
             } else {
-                return ResponseEntity.ok("errorGiaoHang");
-            }
-            if (hoaDon.getTrangThai() == 2) {
-                hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id, hoaDon);
-                return ResponseEntity.ok("ok");
-            } else {
-                System.out.println("trang thai 3");
-                for (ChiTietHoaDon cthd : listCTHDTruoc
-                ) {
-                    ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
-                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
-                }
-                hoaDon.setLyDoKhachHuy(lyDoHuy);
-                hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id, hoaDon);
-                return ResponseEntity.ok("ok");
+                return ResponseEntity.ok("error");
             }
         } else {
-            return ResponseEntity.ok("error");
+            return ResponseEntity.ok("errorTrangThai6");
         }
+
 
     }
 
 
-    //xóa hóa đơn form ls-hd
+    //hủy đơn hàng form ls-hd
     @PostMapping("/huy-hoaDon")
     public ResponseEntity<?> huyHoaDon(@RequestParam("id") Integer id) {
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
         List<ChiTietHoaDon> chiTietHoaDonList = chiTietHoaDonRepository.getGioHangChiTiet(hoaDon.getId());
-        if (hoaDon.getTrangThai() != 4) {
-            if (hoaDon.getTrangThai() != 5) {
+        if (hoaDon.getTrangThai() != 6) {
+            if (hoaDon.getTrangThai() != 4) {
+                if (hoaDon.getTrangThai() != 5) {
 
-            } else {
-                return ResponseEntity.ok("errorGiaoHang");
-            }
-            if (hoaDon.getTrangThai() == 2) {
-                hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id, hoaDon);
-                return ResponseEntity.ok("ok");
-            } else {
-                System.out.println("trang thai 3");
-                for (ChiTietHoaDon cthd : chiTietHoaDonList
-                ) {
-                    ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
-                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
+                } else {
+                    return ResponseEntity.ok("errorGiaoHang");
                 }
-                hoaDon.setTrangThai(4);
-                hoaDonService.editHoaDon(id, hoaDon);
-                return ResponseEntity.ok("ok");
+                if (hoaDon.getTrangThai() == 2) {
+                    hoaDon.setTrangThai(4);
+                    hoaDonService.editHoaDon(id, hoaDon);
+                    return ResponseEntity.ok("ok");
+                } else {
+                    System.out.println("trang thai 3");
+                    for (ChiTietHoaDon cthd : chiTietHoaDonList
+                    ) {
+                        ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
+                    }
+                    hoaDon.setTrangThai(4);
+                    hoaDonService.editHoaDon(id, hoaDon);
+                    return ResponseEntity.ok("ok");
+                }
+            } else {
+                return ResponseEntity.ok("error");
             }
         } else {
-            return ResponseEntity.ok("error");
+            return ResponseEntity.ok("errorTrangThai6");
         }
+
 
     }
 
@@ -173,17 +206,22 @@ public class BanHangTaiQuayController {
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
         List<ChiTietHoaDon> chiTietHoaDons = chiTietHoaDonRepository.getGioHangChiTiet(id);
         List<ChiTietSanPham> listCTSPTrangThai = new ArrayList<>();
-        if (hoaDon.getTrangThai() != 4) {
-            for (ChiTietHoaDon cthd : chiTietHoaDons
-            ) {
-                if (cthd.getChiTietSanPham().getTrangThai() == 0) {
-                    listCTSPTrangThai.add(cthd.getChiTietSanPham());
+        if (hoaDon.getTrangThai() != 6) {
+            if (hoaDon.getTrangThai() != 4) {
+                for (ChiTietHoaDon cthd : chiTietHoaDons
+                ) {
+                    if (cthd.getChiTietSanPham().getTrangThai() == 0) {
+                        listCTSPTrangThai.add(cthd.getChiTietSanPham());
+                    }
                 }
+                return ResponseEntity.ok(listCTSPTrangThai);
+            } else {
+                return ResponseEntity.ok("errorHuyHoaDon");
             }
-            return ResponseEntity.ok(listCTSPTrangThai);
         } else {
-            return ResponseEntity.ok("errorHuyHoaDon");
+            return ResponseEntity.ok("errorTrangThai6");
         }
+
 
     }
 
@@ -382,6 +420,15 @@ public class BanHangTaiQuayController {
         return ResponseEntity.ok(danhSachTab);
     }
 
+    @PostMapping("/saveKhachThanhToan")
+    public ResponseEntity<?> saveKhachThanhToan(@RequestParam("maHoaDon") String maHd, @RequestParam("khachThanhToan") Double khachThanhToan) {
+        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
+        hoaDon.setKhachThanhToan(khachThanhToan);
+        hoaDonRepository.save(hoaDon);
+
+        return ResponseEntity.ok("ok");
+    }
+
     @PostMapping("/kiem-tra-so-luong-trong-kho")
     public ResponseEntity<?> checkQuantity(@RequestParam("productId") Integer id, @RequestParam("quantity") Integer quantity) {
         System.out.println("dfjkhffh" + id);
@@ -501,6 +548,45 @@ public class BanHangTaiQuayController {
     }
 
 
+    @PostMapping("/check-trangThai-ctsp")
+    public ResponseEntity<?> checkTrangThaiCtsp(@RequestParam("maHoaDon") String maHd) {
+        int idTab = Integer.parseInt(maHd.substring(2));
+        List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(idTab);
+        if (chiTietHoaDons.isEmpty()) {
+            return ResponseEntity.ok("null");
+
+        } else {
+            List<ChiTietSanPham> listCTSPTrangThai = new ArrayList<>();
+
+            for (ChiTietHoaDon cthd : chiTietHoaDons
+            ) {
+                if (cthd.getChiTietSanPham().getTrangThai() == 0) {
+                    listCTSPTrangThai.add(cthd.getChiTietSanPham());
+                }
+            }
+            return ResponseEntity.ok(listCTSPTrangThai);
+        }
+
+    }
+
+
+    @PostMapping("/check-soLuong-ctsp")
+    public ResponseEntity<?> checkSoLuong(@RequestParam("maHoaDon") String maHd) {
+        int idTab = Integer.parseInt(maHd.substring(2));
+        List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(idTab);
+        List<ChiTietSanPham> listCTSPQuaSoLuong = new ArrayList<>();
+        for (ChiTietHoaDon cthd : chiTietHoaDons
+        ) {
+            if (cthd.getSoLuong() > cthd.getChiTietSanPham().getSoLuong()) {
+                listCTSPQuaSoLuong.add(cthd.getChiTietSanPham());
+            }
+        }
+        System.out.println(listCTSPQuaSoLuong);
+        return ResponseEntity.ok(listCTSPQuaSoLuong);
+
+    }
+
+
     @PostMapping("/thanh-toan")
     public ResponseEntity<?> thanhToan(@RequestBody Map<String, Object> requestBody) {
         String idTabString = String.valueOf(requestBody.get("maHoaDon"));
@@ -509,30 +595,48 @@ public class BanHangTaiQuayController {
         String tongDonHangString = String.valueOf(requestBody.get("tongGiaTri"));
 
         int idTab = Integer.parseInt(idTabString.substring(2));
+        List<ChiTietSanPham> listCtsp = new ArrayList<>();
 
         List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(idTab);
-        for (ChiTietHoaDon cthd : chiTietHoaDons) {
-            ChiTietSanPham ctsp = (ChiTietSanPham) chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
-            ctsp.setSoLuong(ctsp.getSoLuong() - cthd.getSoLuong());
-        }
+        if (!chiTietHoaDons.isEmpty()) {
+            for (ChiTietHoaDon cthd : chiTietHoaDons) {
+                ChiTietSanPham ctsp = (ChiTietSanPham) chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+                if (ctsp.getSoLuong() >= cthd.getSoLuong()) {
+                    ctsp.setSoLuong(ctsp.getSoLuong() - cthd.getSoLuong());
 
-        HoaDon hoaDon = new HoaDon();
-        hoaDon.setTrangThai(0);
-        hoaDon.setSdtNguoiNhan(soDienThoai);
-        hoaDon.setTenNguoiNhan(tenKhachHang);
-        hoaDon.setTongTien((double) Integer.valueOf(tongDonHangString));
-        hoaDon.setThoiGianXacNhan(utils.getCurrentDateTime());
-        hoaDon.setThoiGianThanhToan(utils.getCurrentDateTime());
-        hoaDonService.updateHoaDon(idTab, hoaDon);
-        List<HoaDon> listTab = hoaDonService.getTabHoaDon();
-        List<HoaDon> danhSachTab = new ArrayList<>();
-        for (HoaDon o : listTab) {
-            if (o.getTrangThai() == 1) {
-                danhSachTab.add(o);
+                } else {
+                    listCtsp.add(ctsp);
+                }
             }
-        }
+            if (listCtsp.isEmpty()) {
+                HoaDon hoaDon = new HoaDon();
+                hoaDon.setTrangThai(0);
+                hoaDon.setSdtNguoiNhan(soDienThoai);
+                if (tenKhachHang.isBlank()) {
+                    hoaDon.setTenNguoiNhan("Khách Lẻ");
+                } else {
+                    hoaDon.setTenNguoiNhan(tenKhachHang);
 
-        return ResponseEntity.ok(danhSachTab);
+                }
+                hoaDon.setTongTien((double) Integer.valueOf(tongDonHangString));
+                hoaDon.setThoiGianXacNhan(utils.getCurrentDateTime());
+                hoaDon.setThoiGianThanhToan(utils.getCurrentDateTime());
+                hoaDonService.updateHoaDon(idTab, hoaDon);
+                List<HoaDon> listTab = hoaDonService.getTabHoaDon();
+                List<HoaDon> danhSachTab = new ArrayList<>();
+                for (HoaDon o : listTab) {
+                    if (o.getTrangThai() == 1) {
+                        danhSachTab.add(o);
+                    }
+                }
+
+                return ResponseEntity.ok(danhSachTab);
+            } else {
+                return ResponseEntity.ok(listCtsp);
+            }
+        } else {
+            return ResponseEntity.ok("null");
+        }
     }
 
     @PostMapping("/xoa-hoa-don")
@@ -595,7 +699,6 @@ public class BanHangTaiQuayController {
             KhachHang kh = new KhachHang();
             kh.setTenKhachHang(tenKh);
             kh.setSdt(sdt);
-            kh.setEmail("abc" + khachHangRepository.count() + "@gmail.com");
             khachHangService.addKhachHang(kh);
             return ResponseEntity.ok("success");
         } else {
@@ -611,30 +714,7 @@ public class BanHangTaiQuayController {
     }
 
 
-    @GetMapping("/export")
-    public void exportToPDF(HttpServletResponse response, @RequestParam(value = "maHoaDon") String maHd) {
-        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
-        System.out.println("hello000001" + hoaDon.getThoiGianTao());
-        if (Objects.nonNull(hoaDon)) {
-            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
-            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-            String currentDateTime = dateFormatter.format(new Date());
 
-            String headerKey = "Content-Disposition";
-            String headerValue = "attachment; filename=" + hoaDon.getMaHoaDon() + currentDateTime + ".pdf";
-            response.setHeader(headerKey, headerValue);
-
-            HoaDonPDFExporter exporter = new HoaDonPDFExporter(hoaDon, chiTietHoaDons, cuaHangService.getCuaHang());
-            try {
-                byte[] pdfBytes = exporter.export();
-                response.getOutputStream().write(pdfBytes);
-            } catch (IOException | DocumentException e) {
-                // Xử lý ngoại lệ nếu có
-                e.printStackTrace();
-            }
-        }
-//        return "redirect:/ban-tai_quay";
-    }
 
 
 }

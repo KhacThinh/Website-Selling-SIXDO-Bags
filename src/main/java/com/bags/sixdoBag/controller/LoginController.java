@@ -49,7 +49,6 @@ public class LoginController {
 
     @GetMapping("/login/hien-thi")
     public String hienThiSanPham(Model model) {
-        session.removeAttribute("nhanVien");
 
         model.addAttribute("action", "/login/dang-nhap-nhan-vien");
 
@@ -82,6 +81,8 @@ public class LoginController {
 
     @PostMapping("/login/dang-nhap-nhan-vien")
     public String dangNhapNhanVien(@RequestParam("email") String email, @RequestParam("mat_khau") String mat_khau, Model model) {
+        session.removeAttribute("nhanVien");
+        session.removeAttribute("quanLy");
         NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
 
         if (email.isEmpty() || mat_khau.isEmpty()) {
@@ -94,10 +95,10 @@ public class LoginController {
             return "login";
         } else if (nv.getChucVu().getId() == 1) {
             session.setAttribute("quanLy", nv);
-            return "redirect:/san-pham";
+            return "redirect:/thong-ke";
         }
         session.setAttribute("nhanVien", nv);
-        return "redirect:/ban-tai-quay";
+        return "redirect:/hoa-don/nv-lich-su";
     }
 
 

@@ -40,12 +40,12 @@ public class InterceptorConfigNhanVien implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticateNhanVien)
-                .addPathPatterns("/ban-tai-quay/demo")
+                .addPathPatterns("/ban-tai-quay/demo","/hoa-don/nv-lich-su","/san-pham/nv")
                 .excludePathPatterns("/login/hien-thi");
             registry.addInterceptor(authenticateQuanLy)
                     .addPathPatterns("/ban-tai-quay/", "/chi-tiet-san-pham/**", "/chucvu/**", "/danh-muc/**", "/dia_chi_khach_hang/**",
                             "/doi-tuong-su-dung/**", "/khach_hang/**", "/khuyen-mai/**", "/ma-giam-gia/**", "/mau-sac/**",
-                            "/nhan-vien/**", "/san-pham/**", "/san_pham_yeu_thich/**", "/slide_show/**", "/thuonghieu/**","/hoa-don/**")
+                            "/nhan-vien/**", "/san-pham", "/san_pham_yeu_thich/**", "/slide_show/**", "/thuonghieu/**","/hoa-don/lich-su","/thong-ke/**")
                     .excludePathPatterns("/login/hien-thi");
 
 

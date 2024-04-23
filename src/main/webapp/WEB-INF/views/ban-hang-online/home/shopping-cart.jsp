@@ -512,7 +512,7 @@
 								</span>
                         </div>
                         <div class="size-209">
-								<span class="mtext-110 cl2" style="color: red" id="maGiamGiaOnline">
+<span class="mtext-110 cl2" style="color: red" id="maGiamGiaOnline">
                                 </span>
                         </div>
                     </div>
@@ -626,7 +626,6 @@
 
 
 <!--===============================================================================================-->
-
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
@@ -842,8 +841,6 @@
             };
             productList.push(product);
             </c:forEach>
-
-
             $.ajax({
                 type: 'GET',
                 url: '/check-customer/mail',
@@ -915,7 +912,7 @@
                         data: JSON.stringify(orderData),
                         success: function (response) {
                             if (response === "ok") {
-                                // ktra so luong trong kho
+// ktra so luong trong kho
                                 $.ajax({
                                     url: '/sixdo-shop/check-soLuong-checkout',
                                     type: 'POST',

@@ -56,7 +56,8 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia, Integer> {
             "JOIN ma_giam_gia mgg ON dskm.id_ma_giam_gia = mgg.id\n" +
             "WHERE dskm.id_khach_hang = :idKhachHang \n" +
             "  AND dskm.id_ma_giam_gia = :idMaGiamGia\n" +
-            "  AND mgg.trang_thai = 1;", nativeQuery = true)
+            "  AND mgg.trang_thai = 1\n" +
+            "  AND GETDATE() BETWEEN mgg.ngay_bat_dau AND mgg.ngay_ket_thuc;", nativeQuery = true)
     int apDungMaGiamGia(@Param("idKhachHang") int idKhachHang, @Param("idMaGiamGia") int idMaGiamGia);
 
     @Query(value = "select danh_sach_kh_mgg.id_khach_hang from danh_sach_kh_mgg where id_ma_giam_gia=:idMaGiamGia", nativeQuery = true)
