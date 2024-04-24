@@ -572,7 +572,10 @@ public class ProductController {
     }
 
     @GetMapping("contact")
-    public String getContact() {
+    public String getContact(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
+        model.addAttribute("khachHang", khachHang);
         return "/ban-hang-online/home/contact";
     }
 

@@ -27,7 +27,7 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
 
     public final KhachHangService khachHangService;
 
-    private final QueryJpa queryJpa = new QueryJpa();
+    private QueryJpa queryJpa = new QueryJpa();
 
 
     @Override

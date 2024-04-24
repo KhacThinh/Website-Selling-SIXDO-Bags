@@ -290,7 +290,7 @@
 
 
         var selectedFilters = {
-            sortBy: '',
+            sortBy: 1,
             maMauSac: '',
             tenThuongHieu: ''
         };
@@ -313,8 +313,9 @@
                 // Lấy giá trị của data-brand
                 var selectedSort = $(this).data('sort');
 
-                if (selectedFilters.tenThuongHieu === selectedSort) {
+                if (selectedFilters.sortBy === selectedSort) {
                     selectedFilters.sortBy = 1;
+                    $(this).addClass('filter-link-active');
                 } else {
                     selectedFilters.sortBy = selectedSort;
                 }
@@ -472,7 +473,7 @@
                 productHTML += '<div class="block2-txt flex-w flex-t p-t-14">';
                 productHTML += '<div class="block2-txt-child1 flex-col-l ">';
                 productHTML += '<a href="product-detail.jsp" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size: 20px; color: #1d1d1d;">' + product.tenSanPham + '</a>';
-                productHTML += '<span class="stext-105 cl3" style="font-size: 15px">' + product.giaBan.toLocaleString() + ' đồng</span>';
+                productHTML += '<span class="stext-105 cl3" style="font-size: 15px">' + product.giaBan.toLocaleString() + ' đồng <span style="margin-left: 115px;    position: absolute;">Bán: ' + product.soLuongBan + ' cái</span></span>';
                 productHTML += '</div>';
                 productHTML += '<div class="block2-txt-child2 flex-r p-t-3">';
                 productHTML += '<a class="btn-addwish-b2 dis-block pos-relative js-addwish-b2 js-addedwish-b2" data-product-id="' + product.id + '" data-wishlist="false">';

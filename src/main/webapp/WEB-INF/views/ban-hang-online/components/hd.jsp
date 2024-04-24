@@ -98,7 +98,6 @@
         <div class="wrap-menu-desktop how-shadow1">
             <nav class="limiter-menu-desktop" style="margin: 0 30px">
 
-
                 <a href="/sixdo-shop" class="logo">
                     <img src="../static/images/logo1.jpg"
                          alt="IMG-PRODUCT" id="logo-header js-logo-header">
@@ -141,12 +140,10 @@
                         <%-- sản phẩm yêu thích--%>
                     </div>
 
-
                     <input type="hidden" id="id-khach-hang" value="${khachHang.id}"/>
 
-
                 </div>
-                <div class="navbar_content">
+                <div class="navbar_content" id="login-profile-nav">
                     <c:choose>
                         <c:when test="${khachHang == null}">
                             <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
@@ -164,7 +161,7 @@
                                 </button>
                                 <div class="dropdown" style="margin-left: -30px;">
                                     <ul class="dropdown-menu" id="dropdownMenu">
-<%--                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>--%>
+                                            <%--                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>--%>
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                data-bs-target="#exampleModalProfile">Hồ sơ</a></li>
                                         <li>
@@ -378,6 +375,7 @@
             const containerDonMua = $('#don-mua-menu-item');
             const containerDonMuaMobi = $('#don-mua-menu-item-mobi');
             const containerSanPhamYeuThich = $('#product-favorite-header');
+
             if (data == 0) {
                 containerDonMuaMobi.hide();
                 containerDonMua.hide();

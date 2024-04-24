@@ -43,13 +43,13 @@ public class ProductHomeController {
         } else {
             page *= limit;
         }
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPhamLimit(page);
+        List<ProductHomeRequest> productHomeRequestList = mapProductRequest(sanPhamService.listHienThiSanPhamLimit(page));
         return ResponseEntity.ok(productHomeRequestList);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<ProductHomeRequest>> searchComponentProductHome(@RequestParam("name") String keyword) {
-        List<ProductHomeRequest> searchResults = sanPhamService.searchSanPhamOnlines(keyword);
+        List<ProductHomeRequest> searchResults = mapProductRequest(sanPhamService.searchSanPhamOnlines(keyword));
         return ResponseEntity.ok(searchResults);
     }
 
@@ -92,7 +92,8 @@ public class ProductHomeController {
 
     @GetMapping("/hien-thi-loc-components-product-home/filter")
     public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(@RequestParam("tenDanhMuc") String tenDoiTuongSuDung) {
-        List<ProductHomeRequest> searchResults = danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung);
+//        List<ProductHomeRequest> searchResults = danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung);
+        List<ProductHomeRequest> searchResults = mapProductRequest(danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung));
         return ResponseEntity.ok(searchResults);
     }
 
@@ -102,7 +103,7 @@ public class ProductHomeController {
             @RequestParam("maMauSac") String maMauSac,
             @RequestParam("sortBy") int sortBy
     ) {
-        List<ProductHomeRequest> searchResults = sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu);
+        List<ProductHomeRequest> searchResults = mapProductRequest(sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu));
         if (sortBy == 2) {
             searchResults.sort(Comparator.comparingInt(p -> -(chiTietSanPhamServivce.soLuongMuaBySanPham(p.getId()))));
         } else if (sortBy == 3) {
@@ -134,5 +135,21 @@ public class ProductHomeController {
             page = soLuongSanPham / 8;
         }
         return page;
+    }
+
+
+    public List<ProductHomeRequest> mapProductRequest(List<ProductHomeRequest> searchResults) {
+        List<ProductHomeRequest> updateProduct = searchResults.stream()
+                .map((sp) -> {
+                            ProductHomeRequest productHomeRequest = new ProductHomeRequest();
+                            productHomeRequest.setId(sp.getId());
+                            productHomeRequest.setHinhAnh(sp.getHinhAnh());
+                            productHomeRequest.setTenSanPham(sp.getTenSanPham());
+                            productHomeRequest.setGiaBan(sp.getGiaBan());
+                            productHomeRequest.setSoLuongBan(chiTietSanPhamServivce.soLuongMuaBySanPham(sp.getId()));
+                            return productHomeRequest;
+                        }
+                ).collect(Collectors.toList());
+        return updateProduct;
     }
 }
