@@ -83,9 +83,9 @@ public class MaGiamGiaController {
             maGIamGiaService.addMaGiamGia(maGiamGia1);
 
             int[] listIdKhachHang = null;
-            listIdKhachHang=  maGiamGiaDTO.getListId();
+            listIdKhachHang = maGiamGiaDTO.getListId();
             if (listIdKhachHang.length == 0) {
-                for (KhachHang o: khachHangService.getListKhachHang()) {
+                for (KhachHang o : khachHangService.getListKhachHang()) {
                     maGIamGiaService.insertKhachHangMgg(o.getId(), maGIamGiaService.top1IdMaGiamGia());
                 }
 
@@ -106,7 +106,8 @@ public class MaGiamGiaController {
             return ResponseEntity.ok("errorTen");
         }
     }
-    public LocalDate formatterDate(String temp){
+
+    public LocalDate formatterDate(String temp) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(temp);
         return date;
@@ -129,10 +130,10 @@ public class MaGiamGiaController {
         maGIamGiaService.deleteDanhSachKhMggByIdMgg(maGiamGia1.getId());
 
         int[] listIdKhachHang = null;
-        listIdKhachHang=  maGiamGiaDTO.getListId();
+        listIdKhachHang = maGiamGiaDTO.getListId();
         if (listIdKhachHang.length == 0) {
-            for (KhachHang o: khachHangService.getListKhachHang()) {
-                maGIamGiaService.insertKhachHangMgg(o.getId(),maGiamGia1.getId());
+            for (KhachHang o : khachHangService.getListKhachHang()) {
+                maGIamGiaService.insertKhachHangMgg(o.getId(), maGiamGia1.getId());
             }
 
         } else {
@@ -141,7 +142,7 @@ public class MaGiamGiaController {
                 System.out.println("do dai " + listIdKhachHang.length);
 
                 System.out.println("idnay" + o);
-                maGIamGiaService.insertKhachHangMgg(o,maGiamGia1.getId());
+                maGIamGiaService.insertKhachHangMgg(o, maGiamGia1.getId());
             }
         }
 
@@ -170,13 +171,11 @@ public class MaGiamGiaController {
                                              @RequestParam("maGiamGia") String maGiamGia) {
         System.out.println("idkh" + idKhachHang);
         System.out.println("mgg" + maGiamGia);
-
-        MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia.trim());
-        System.out.println("gai tri giam" + maGiamGia1.getGiaTriGiam());
-        int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang, maGiamGia1.getId());
-        if (danhSachKhachHangApMgg > 0) {
+        try {
+            MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia.trim());
+            int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang, maGiamGia1.getId());
             return ResponseEntity.ok(maGiamGia1);
-        } else {
+        } catch (Exception e) {
             return ResponseEntity.ok("error");
         }
     }

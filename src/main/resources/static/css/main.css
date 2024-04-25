@@ -963,10 +963,10 @@ body{
     opacity: 0;
 }
 
-/*.header-cart-item-img:hover:after {*/
-/*  width: 74px;*/
-/*  opacity: 1;*/
-/*}*/
+.header-cart-item-img:hover:after {
+  width: 74px;
+  opacity: 1;
+}
 
 /*---------------------------------------------*/
 .header-cart-item-txt {

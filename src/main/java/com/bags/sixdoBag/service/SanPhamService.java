@@ -36,9 +36,9 @@ public interface SanPhamService {
 
     List<ProductHomeRequest> listHienThiSanPhamLimit(int limit);
 
-    List<ProductHomeRequest> displayedByBrand(int idThuongHieu);
+    List<ProductHomeRequest> displayedByBrand(int idSp, int idThuongHieu);
 
-    List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int min, int max);
+    List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int idSp, int min, int max);
 
     List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSp, int idDanhMuc);
 

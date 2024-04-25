@@ -98,7 +98,6 @@
         <div class="wrap-menu-desktop how-shadow1">
             <nav class="limiter-menu-desktop" style="margin: 0 30px">
 
-
                 <a href="/sixdo-shop" class="logo">
                     <img src="../static/images/logo1.jpg"
                          alt="IMG-PRODUCT" id="logo-header js-logo-header">
@@ -115,9 +114,9 @@
                             <a href="/sixdo-shop/product">Sản phẩm</a>
                         </li>
 
-                        <li class="active-menu">
-                            <a href="/sixdo-shop/hello">Bộ sưu tập</a>
-                        </li>
+                        <%--                        <li class="active-menu">--%>
+                        <%--                            <a href="/sixdo-shop/hello">Bộ sưu tập</a>--%>
+                        <%--                        </li>--%>
 
                         <li>
                             <a href="/sixdo-shop/contact">Liên hệ</a>
@@ -141,12 +140,10 @@
                         <%-- sản phẩm yêu thích--%>
                     </div>
 
-
                     <input type="hidden" id="id-khach-hang" value="${khachHang.id}"/>
 
-
                 </div>
-                <div class="navbar_content">
+                <div class="navbar_content" id="login-profile-nav">
                     <c:choose>
                         <c:when test="${khachHang == null}">
                             <button type="button" class="btn btn-outline-secondary me-2 ml-5" id="btn-login"
@@ -164,7 +161,7 @@
                                 </button>
                                 <div class="dropdown" style="margin-left: -30px;">
                                     <ul class="dropdown-menu" id="dropdownMenu">
-<%--                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>--%>
+                                            <%--                                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>--%>
                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                data-bs-target="#exampleModalProfile">Hồ sơ</a></li>
                                         <li>
@@ -230,9 +227,9 @@
                 <a href="/sixdo-shop/product">Sản phẩm</a>
             </li>
 
-            <li>
-                <a href="/sixdo-shop/hello" class="label1 rs1" data-label1="hot">Bộ sưu tập</a>
-            </li>
+            <%--            <li>--%>
+            <%--                <a href="/sixdo-shop/hello" class="label1 rs1" data-label1="hot">Bộ sưu tập</a>--%>
+            <%--            </li>--%>
 
             <li>
                 <a href="/sixdo-shop/contact">Liên hệ</a>
@@ -378,6 +375,7 @@
             const containerDonMua = $('#don-mua-menu-item');
             const containerDonMuaMobi = $('#don-mua-menu-item-mobi');
             const containerSanPhamYeuThich = $('#product-favorite-header');
+
             if (data == 0) {
                 containerDonMuaMobi.hide();
                 containerDonMua.hide();
@@ -401,7 +399,6 @@
                 var totalAmount = 0; // Biến để tính tổg giá trị đơn hàng
 
                 var idKhachHang = document.getElementById('id-khach-hang').value;
-                console.log("l" + idKhachHang)
                 $.ajax({
                     url: '/sixdo-shop/get-cart-by-buyer',
                     type: 'POST',
@@ -411,7 +408,7 @@
                     }),
                     success: function (response) {
                         if (response.length == 0) {
-                            cartListElement.innerHTML = '<p>Cart is empty</p>';
+                            cartListElement.innerHTML = '<p>Giỏ hàng trống</p>';
                         } else {
                             var formatter = new Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
@@ -426,17 +423,17 @@
                                 if (product.chiTietSanPham.trangThai === 1) {
                                     // Sản phẩm có sẵn
                                     var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12">' +
-                                        '<div class="header-cart-item-img">' +
+                                        '<div class="header-cart-item-img" data-product-id="' + product.chiTietSanPham.id + '" data-product-price="' + product.chiTietSanPham.giaBan + '" data-product-soluong="' + product.soLuong + '">' +
                                         '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
                                         '</div>' +
                                         '<div class="header-cart-item-txt p-t-8">' +
-                                        '<a href="/sixdo-shop/product-detail?id=' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold">' + product.chiTietSanPham.sanPham.tenSanPham + '</a>' +
-                                        '<a href="/sixdo-shop/product-detail?id=' + product.chiTietSanPham.id + '" class="header-cart-item-name m-b-12 hov-cl1 trans-04">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>' +
+                                        '<a href="#" class="header-cart-item-name m-b-5 hov-cl1 trans-04 font-weight-bold" style="text-decoration: none;">' + product.chiTietSanPham.sanPham.tenSanPham + '</a>' +
+                                        '<a href="#" class="header-cart-item-name m-b-12 hov-cl1 trans-04" style="text-decoration: none;">' + product.chiTietSanPham.mauSac.tenMauSac + '</a>' +
                                         '<span class="header-cart-item-info">' + product.soLuong + ' x ' + formatter.format(product.chiTietSanPham.giaBan) + '</span>' +
                                         '</div>' +
-                                        '<div class="header-cart-item-remove">' +
-                                        '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
-                                        '</div>' +
+                                        // '<div class="header-cart-item-remove">' +
+                                        // '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
+                                        // '</div>' +
                                         '</li>';
                                     listItem.innerHTML = itemHTML;
                                     cartListElement.appendChild(listItem);
@@ -444,15 +441,15 @@
                                 } else {
                                     var trangThaiText;
                                     if (product.chiTietSanPham.trangThai === 0) {
-                                        trangThaiText = 'Ngung Ban';
+                                        trangThaiText = 'Ngừng Bán';
                                     } else if (product.chiTietSanPham.trangThai === 2) {
-                                        trangThaiText = 'Het Hang';
+                                        trangThaiText = 'Hết hàng';
                                     } else {
                                         trangThaiText = '';
                                     }
                                     // Sản phẩm không có sẵn
                                     var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12" style="filter: brightness(50%);">' +
-                                        '<div class="header-cart-item-img">' +
+                                        '<div class="header-cart-item-img" data-product-id="' + product.chiTietSanPham.id + '">' +
                                         '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
                                         '</div>' +
                                         '<div class="header-cart-item-txt p-t-8">' +
@@ -461,35 +458,38 @@
                                         '<span class="header-cart-item-info" style="color: red" >' + trangThaiText + '</span>' +
 
                                         '</div>' +
-                                        '<div class="header-cart-item-remove">' +
-                                        '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
-                                        '</div>' +
+                                        // '<div class="header-cart-item-remove">' +
+                                        // '<button class="btn-remove-item" onclick="deleteProductToCart(' + product.chiTietSanPham.id + ', this); return false;"><i class="zmdi zmdi-close"></i></button>' +
+                                        // '</div>' +
                                         '</li>';
                                     listItem.innerHTML = itemHTML;
                                     cartListElement.appendChild(listItem);
-
-
                                 }
+                                // Thêm sự kiện click vào phần tử hình ảnh
+                                var headerCartItemImg = listItem.querySelector('.header-cart-item-img');
+                                headerCartItemImg.addEventListener('click', function () {
+                                    var productId = this.getAttribute('data-product-id');
+                                    var productPrice = this.getAttribute('data-product-price');
+                                    var productSoLuong = this.getAttribute('data-product-soluong');
+                                    deleteProductToCart(productId, this);
+                                    totalAmount = totalAmount - productPrice * productSoLuong;
+                                    var formattedTotalAmount = formatter.format(totalAmount);
+                                    var totalAmountElement = document.getElementById('totalCartValues');
+                                    totalAmountElement.innerHTML = 'TỔNG TIỀN:  ' + formattedTotalAmount;
+                                });
                             });
 
                             var formattedTotalAmount = formatter.format(totalAmount);
                             var totalAmountElement = document.getElementById('totalCartValues');
-                            totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
+                            totalAmountElement.innerHTML = 'TỔNG TIỀN:  ' + formattedTotalAmount;
                         }
                     },
-
 
                     error: function (error) {
                         console.error(error);
                     }
                 });
                 return;
-
-
-                var formattedTotalAmount = formatter.format(totalAmount);
-                var totalAmountElement = document.getElementById('totalCartValues');
-
-                totalAmountElement.innerHTML = 'TOTAL:  ' + formattedTotalAmount;
             } else {
                 showLoginPrompt();
             }

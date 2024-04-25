@@ -100,7 +100,7 @@
                     Liên lạc
                 </h3>
 
-                <p class="stext-107 cl7 size-201 f-s">
+                <p class="stext-107 cl7 size-201 f-s" style="font-size: 15px">
                     Bất kỳ câu hỏi? Hãy cho chúng tôi biết tại cửa hàng tại <span id="js-dia-chi-lh-ft"></span> hoặc gọi
                     cho chúng tôi theo số <span id="js-sdt-lh-ft"></span>
                 </p>
@@ -119,49 +119,40 @@
                     </a>
                 </div>
             </div>
-
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h4 class="stext-301 cl0 p-b-30">
-                    Bản tin
-                </h4>
+                <h3 class="stext-301 cl0 p-b-30">
+                    CỬA HÀNG TÚI XÁCH SIXDO
+                </h3>
 
-                <form>
-                    <div class="wrap-input1 w-full p-b-4">
-                        <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email"
-                               placeholder="sixdo@gmail.com">
-                        <div class="focus-input1 trans-04"></div>
-                    </div>
-
-                    <div class="p-t-18">
-                        <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                            Đăng ký
-                        </button>
-                    </div>
-                </form>
+                <p class="stext-107 cl7 size-201 f-s" style="font-size: 15px">Cửa hàng túi xách Sixdo là điểm đến lý
+                    tưởng cho những người yêu thích túi xách cao cấp. Chúng tôi
+                    cung cấp những sản phẩm chất lượng, thiết kế đẹp mắt và phù hợp với mọi phong cách. Hãy ghé thăm cửa
+                    hàng của chúng tôi để tìm cho mình chiếc túi xách ưng ý nhất!
+                </p>
             </div>
         </div>
 
         <div class="p-t-40">
             <div class="flex-c-m flex-w p-b-18">
-                <a href="#" class="m-all-1">
+                <span class="m-all-1">
                     <img src="../static/images/footer/icon-pay-01.png" alt="ICON-PAY">
-                </a>
+                </span>
 
-                <a href="#" class="m-all-1">
+                <span class="m-all-1">
                     <img src="../static/images/footer/icon-pay-02.png" alt="ICON-PAY">
-                </a>
+                </span>
 
-                <a href="#" class="m-all-1">
+                <span class="m-all-1">
                     <img src="../static/images/footer/icon-pay-03.png" alt="ICON-PAY">
-                </a>
+                </span>
 
-                <a href="#" class="m-all-1">
+                <span class="m-all-1">
                     <img src="../static/images/footer/icon-pay-04.png" alt="ICON-PAY">
-                </a>
+                </span>
 
-                <a href="#" class="m-all-1">
+                <span class="m-all-1">
                     <img src="../static/images/footer/icon-pay-05.png" alt="ICON-PAY">
-                </a>
+                </span>
             </div>
 
             <p class="stext-107 cl6 txt-center">

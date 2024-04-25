@@ -57,22 +57,6 @@
 <!-- Header -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/hd.jsp"/>
 
-
-<!-- breadcrumb -->
-<div class="container">
-    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Home
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <span class="stext-109 cl4">
-				Shoping Cart
-			</span>
-    </div>
-</div>
-
-
 <!-- Shoping Cart -->
 <form class="bg0 p-t-75 p-b-85">
     <div class="container">
@@ -84,7 +68,6 @@
                             <thead>
                             <tr class="table_head">
                                 <th class="column-1" colspan="2">Sản Phẩm</th>
-                                <%--                                <th class="column-2"></th>--%>
                                 <th class="column-3">Giá</th>
                                 <th class="column-4" style="vertical-align: middle; text-align: center;">Số Lượng</th>
                                 <th class="column-5">Tổng Tiền</th>
@@ -295,19 +278,23 @@
                                                     document.getElementById('maGiamGiaOnline').innerText = "0 đ"
                                                     console.log("mkkkk " + document.getElementById('maGiamGiaOnlineValue').value)
 
+                                                } else {
+                                                    document.getElementById('maGiamGiaOnlineValue').value = maGiamGia1.giaTriGiam;
+                                                    document.getElementById('maGiamGiaOnline').innerText = maGiamGia1.giaTriGiam > 0 ? formatter.format(maGiamGia1.giaTriGiam) : 0 + " đ";
                                                 }
                                                 let giaTriMaGiamGia = document.getElementById('maGiamGiaOnlineValue').value;
 
                                                 let lastPriceValue = sumCart - giaTriMaGiamGia;
                                                 console.log("" + sumCart + "-" + giaTriMaGiamGia)
-                                                document.getElementById('last-price').innerText = lastPriceValue;
+                                                document.getElementById('last-price').innerText = formatter.format(lastPriceValue);
                                             },
                                             error: function (error) {
                                                 // Xử lý lỗi nếu có
                                                 document.getElementById('maGiamGiaOnlineValue').value = 0;
                                                 document.getElementById('maGiamGiaOnline').innerText = "0 đ"
+                                                document.getElementById('last-price').innerText = formatter.format(sumCart);
+
                                                 console.error(error);
-                                                showAlertAddCart('Mã Giảm Giá Không Hợp Lệ.', '', 'error');
                                             }
                                         });
                                     }
@@ -435,8 +422,10 @@
                                                                 title: 'Đã xóa!',
                                                                 text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
                                                                 icon: 'success',
-                                                                timer: 1500, // Thời gian tự đóng (ms)
-                                                                showConfirmButton: false // Ẩn nút xác nhận
+                                                                timer: 1500,
+                                                                showConfirmButton: false
+                                                            }).then((result) => {
+                                                                window.location.href = '/sixdo-shop/shoping-cart';
                                                             });
                                                         } else {
                                                             Swal.fire(
@@ -459,8 +448,6 @@
                                         });
                                     }
                                 </script>
-
-
                             </c:forEach>
 
                             </tbody>
@@ -469,9 +456,8 @@
                     </div>
                     <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
                         <div class="flex-w flex-m m-r-20 m-tb-5">
-                            <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
-                                   name="coupon" placeholder="Coupon Code" id="maGiamGiaInput">
-
+                                                        <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
+                                                               name="coupon" placeholder="Coupon Code" id="maGiamGiaInput">
                             <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 apply-coupon">
                                 Apply coupon
                             </div>
@@ -589,14 +575,14 @@
                     <div class="flex-w flex-t p-t-27 p-b-33">
                         <div class="size-208">
 								<span class="mtext-101 cl2">
-									Total:
+									Tổng Tiền:
 								</span>
                         </div>
 
                         <div class="size-209 p-t-1">
 								<span class="mtext-110 cl2" id="last-price">
-<fmt:formatNumber pattern="#,###" var="tempTongTam"
-                  value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ</span>
+                        <fmt:formatNumber pattern="#,###" var="tempTongTam"
+                                          value="${totalPrice}"></fmt:formatNumber> ${tempTongTam}đ</span>
                         </div>
                     </div>
 

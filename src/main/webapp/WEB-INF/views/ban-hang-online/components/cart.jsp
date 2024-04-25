@@ -48,11 +48,11 @@
                 </div>
 
                 <div class="header-cart-buttons flex-w w-full" style="text-align: center; justify-content: center">
-                    <a href="/sixdo-shop/shoping-cart"
-                       class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10"
-                       style="width: 280px">
+                    <button id="buyNowButtonCart"
+                            class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10"
+                            style="width: 280px">
                         Mua Ngay
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -63,24 +63,21 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Nhúng thư viện SweetAlert -->
 
 <script>
-    // Lấy phần tử div có id là 'header-cart-item-img-cart'
-    var cartItemDiv = document.getElementById('header-cart-item-img-cart');
 
-    // Thêm sự kiện click vào phần tử div
-    cartItemDiv.addEventListener('click', function () {
-        // Hiển thị thông báo khi click vào phần tử div
-        showAlert();
+    document.getElementById('buyNowButtonCart').addEventListener('click', function () {
+        $.get('/sixdo-shop/hien-thi-so-luong-cart-product', function (condition) {
+            if (condition > 0) {
+                window.location.href = '/sixdo-shop/shoping-cart';
+            } else {
+                Swal.fire({
+                    title: 'Thông báo',
+                    text: 'Giỏ hàng của bạn trống không thể mua hàng.',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
     });
-
-    // Định nghĩa hàm hiển thị thông báo
-    function showAlert() {
-        Swal.fire({
-            title: 'Thông báo',
-            text: 'Nội dung thông báo của bạn ở đây.',
-            icon: 'info',
-            confirmButtonText: 'OK'
-        });
-    }
 </script>
 
 

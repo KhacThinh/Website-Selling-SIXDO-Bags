@@ -127,26 +127,26 @@
                     <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                         <div class="flex-m bor9 p-r-10 m-r-11">
                             <a class="btn-addwish-b2 dis-block pos-relative js-addwish-b2 js-addedwish-b2"
-                               data-product-id="${product[0].id}" data-wishlist="false">
+                               data-product-id="${product[0].sanPham.id}" data-wishlist="false">
                                 <i class="bi bi-heart"></i>
                                 <i class="bi bi-heart-fill"></i>
                             </a>
                         </div>
 
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                        <span class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
                            data-tooltip="Facebook">
                             <i class="fa fa-facebook"></i>
-                        </a>
+                        </span>
 
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                        <span class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
                            data-tooltip="Twitter">
                             <i class="fa fa-twitter"></i>
-                        </a>
+                        </span>
 
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                        <span class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
                            data-tooltip="Google Plus">
                             <i class="fa fa-google-plus"></i>
-                        </a>
+                        </span>
                     </div>
                 </div>
             </div>

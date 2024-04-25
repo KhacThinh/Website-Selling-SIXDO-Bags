@@ -18,4 +18,12 @@ public class ProductHomeRequest {
 
     private String hinhAnh;
 
+    private int soLuongBan;
+
+    public ProductHomeRequest(int id, String tenSanPham, float giaBan, String hinhAnh) {
+        this.id = id;
+        this.tenSanPham = tenSanPham;
+        this.giaBan = giaBan;
+        this.hinhAnh = hinhAnh;
+    }
 }

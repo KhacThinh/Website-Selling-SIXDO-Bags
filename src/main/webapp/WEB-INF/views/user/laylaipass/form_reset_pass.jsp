@@ -82,7 +82,7 @@
 
     <form action="/lay-mk/config" method="post" onsubmit="return validateForm()">
         <div class="form-group">
-            <label for="">Email của bạn</label>
+            <label for="email">Email của bạn</label>
             <input type="email" id="email" name="email" value="${email}" required placeholder="" readonly>
         </div>
         <div class="form-group">
