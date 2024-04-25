@@ -8,6 +8,7 @@ import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
 import com.bags.sixdoBag.service.KhachHangService;
 import com.bags.sixdoBag.service.MaGiamGiaService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +28,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/ma-giam-gia")
 public class MaGiamGiaController {
+
     public final MaGiamGiaService maGIamGiaService;
+
     public final MaGiamGiaRepository maGiamGiaRepository;
+
     private final KhachHangService khachHangService;
+
+    private final HttpSession session;
 
 
     //    @GetMapping("")
@@ -175,6 +181,23 @@ public class MaGiamGiaController {
             MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia.trim());
             int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang, maGiamGia1.getId());
             return ResponseEntity.ok(maGiamGia1);
+        } catch (Exception e) {
+            return ResponseEntity.ok("error");
+        }
+    }
+
+
+    @PostMapping("/check-ma-giam-gia")
+    public ResponseEntity<?> apDungMaGiamGia(@RequestParam("maGiamGia") String maGiamGia) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        System.out.println("/ma-giam-gia/check-ma-giam-gia");
+//        if (maGiamGia.equals("")) {
+//            return ResponseEntity.ok("error");
+//        }
+        try {
+            MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia.trim());
+            MaGiamGia danhSachKhachHangApMgg = maGIamGiaService.getMaGiamGiaByKhachHang(khachHang.getId(), maGiamGia1.getId());
+            return ResponseEntity.ok(danhSachKhachHangApMgg);
         } catch (Exception e) {
             return ResponseEntity.ok("error");
         }

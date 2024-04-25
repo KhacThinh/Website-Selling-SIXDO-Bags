@@ -424,9 +424,10 @@
                                                                 icon: 'success',
                                                                 timer: 1500,
                                                                 showConfirmButton: false
-                                                            }).then((result) => {
-                                                                window.location.href = '/sixdo-shop/shoping-cart';
                                                             });
+                                                            // .then((result) => {
+                                                            //     window.location.href = '/sixdo-shop/shoping-cart';
+                                                            // });
                                                         } else {
                                                             Swal.fire(
                                                                 'Lỗi!',
@@ -455,15 +456,20 @@
                         </table>
                     </div>
                     <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                        <div class="flex-w flex-m m-r-20 m-tb-5">
-                                                        <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
-                                                               name="coupon" placeholder="Coupon Code" id="maGiamGiaInput">
+                        <div class="d-flex align-items-center m-r-20 m-tb-5">
+                            <select class="form-select flex-grow-1 m-r-20" style="width: 50%;"
+                                    aria-label="Default select example" id="maGiamGiaInput">
+                                <option value="">Chọn mã giảm giá</option>
+                                <c:forEach items="${danhSachMaGiamGia}" var="mgg">
+                                    <fmt:formatNumber pattern="#,###" value="${mgg.giaTriGiam}"
+                                                      var="giaTriGiam"></fmt:formatNumber>
+                                    <option value="${mgg.maGiamGia}">${mgg.tenMaGiamGia} - Giảm: ${giaTriGiam}đ</option>
+                                </c:forEach>
+                            </select>
                             <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 apply-coupon">
                                 Apply coupon
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -498,8 +504,7 @@
 								</span>
                         </div>
                         <div class="size-209">
-<span class="mtext-110 cl2" style="color: red" id="maGiamGiaOnline">
-                                </span>
+                            <span class="mtext-110 cl2" style="color: red" id="maGiamGiaOnline"></span>
                         </div>
                     </div>
 
@@ -650,6 +655,7 @@
 
 <script>
 
+    let maGiamGiaValue = '';
 
     var currentClick = "default";
 
@@ -684,7 +690,12 @@
             var sumCart = document.getElementById('giaTriTienTam').value;
 
 
-            var maGiamGiaValue = document.getElementById('maGiamGiaInput').value;
+            maGiamGiaValue = document.getElementById("maGiamGiaInput").value;
+            // if (maGiamGiaValue == '') {
+            //     alert("Vui lòng chọn một giá trị từ danh sách");
+            //     return false;
+            // }
+
             console.log("mggg" + maGiamGiaValue)
             console.log("khachHang" +${khachHang.id})
             $.ajax({
@@ -702,13 +713,14 @@
                         document.getElementById('maGiamGiaOnlineValue').value = maGiamGia1.giaTriGiam;
                         updateTotalPriceForAllProducts();
 
-                        showAlertAddCart('Mã Giảm Giá Được Sử Dụng!', 'Apply Success', 'success');
+                        showAlertAddCart('Mã Giảm Giá Được Sử Dụng!', 'Thành công', 'success');
                     } else {
                         document.getElementById('maGiamGiaOnlineValue').value = 0;
                         updateTotalPriceForAllProducts();
 
                         document.getElementById('maGiamGiaOnline').innerText = "0 đ"
                         showAlertAddCart('Chỉ Áp Dụng Cho Đơn Hàng Tối Thiểu ' + formatter.format(maGiamGia1.dieuKienGiam), '', 'error');
+                        // showAlertAddCart('', 'Bạn đã huỷ áp dụng giảm giá', 'success');
                     }
 
                 },
@@ -751,6 +763,23 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
+            var giaTriGiam = 0;
+            var maGiamGia = '';
+
+            if (maGiamGiaValue !== '') {
+                $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
+                    if (data != 'error') {
+                        if (Number(giamGia) > 0) {
+                            maGiamGia = data;
+                            giaTriGiam = data.giaTriGiam;
+                        }
+                    }
+                });
+            } else {
+                maGiamGia = null;
+                giaTriGiam = 0;
+            }
+
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -799,15 +828,16 @@
             orderData = {
                 cart: productList,
                 hoadon: {
-                    tenNguoiNhan: name,
-                    sdtNguoiNhan: phone,
-                    emailNguoiNhan: email,
-                    diaChiNguoiNhan: address,
+                    tenNguoiNhan: data.tenKhachHang,
+                    sdtNguoiNhan: data.sdt,
+                    emailNguoiNhan: data.email,
+                    diaChiNguoiNhan: data.diaChi,
                     tongTien: parseFloat(lastPriceCleaned),
-                    giamGia: parseFloat(giamGia)
+                    giamGia: parseFloat(giaTriGiam),
+                    maGiamGia: maGiamGia
                 },
                 khachHang: {
-                    id: ${khachHang.id}
+                    id:${khachHang.id}
                 }
             };
 
@@ -817,7 +847,22 @@
             var lastPrice = document.getElementById('last-price').textContent;
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
-            console.log("ssssssssmgg " + giamGia)
+            var giaTriGiam = 0;
+            var maGiamGia = '';
+
+            if (maGiamGiaValue !== '') {
+                $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
+                    if (data != 'error') {
+                        if (Number(giamGia) > 0) {
+                            maGiamGia = data;
+                            giaTriGiam = data.giaTriGiam;
+                        }
+                    }
+                });
+            } else {
+                maGiamGia = null;
+                giaTriGiam = 0;
+            }
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
@@ -845,7 +890,8 @@
                                 emailNguoiNhan: data.email,
                                 diaChiNguoiNhan: data.diaChi,
                                 tongTien: parseFloat(lastPriceCleaned),
-                                giamGia: parseFloat(giamGia)
+                                giamGia: parseFloat(giaTriGiam),
+                                maGiamGia: maGiamGia
                             },
                             khachHang: {
                                 id:${khachHang.id}

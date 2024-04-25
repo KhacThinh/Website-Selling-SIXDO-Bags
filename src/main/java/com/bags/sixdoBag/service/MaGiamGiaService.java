@@ -15,11 +15,13 @@ import java.util.List;
 public interface MaGiamGiaService {
 
     public MaGiamGia getMaGiamGia(Integer idMaGiamGia);
-    int apDungMaGiamGia(int idKhachHang , int maGiamGia);
+
+    int apDungMaGiamGia(int idKhachHang, int maGiamGia);
 
     public List<MaGiamGia> getListMaGiamGia();
 
     public MaGiamGia addMaGiamGia(MaGiamGia maGiamGia);
+
     void deleteDanhSachKhMggByIdMgg(int idMaGiamGia);
 
     public MaGiamGia searchMaGiamGiaByMa(String maGiamGia);
@@ -29,13 +31,20 @@ public interface MaGiamGiaService {
     public MaGiamGia deleteMaGiamGia(Integer idMaGiamGia);
 
     public List<MaGiamGia> pageMaGiamGia(int limit, int size);
-    int [] getidKhByMgg(int idMaGiamGia);
-    public MaGiamGia getidMaGiamGia(Integer idChucVu);
-    void insertKhachHangMgg(int idKhachHang, int idMaGiamGia );
-    int top1IdMaGiamGia();
-    ////////////////////////////////////////////////////////////////////
-    public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable);
-    public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable);
-    ///////////////////////////////////////////////////////////////////
 
+    int[] getidKhByMgg(int idMaGiamGia);
+
+    public MaGiamGia getidMaGiamGia(Integer idChucVu);
+
+    void insertKhachHangMgg(int idKhachHang, int idMaGiamGia);
+
+    int top1IdMaGiamGia();
+
+    public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable);
+
+    public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable);
+
+    List<MaGiamGia> danhSachMaGiamGiaByKhachHang(int idKhachHang);
+
+    MaGiamGia getMaGiamGiaByKhachHang(int idKhachHang, int maGiamGia);
 }

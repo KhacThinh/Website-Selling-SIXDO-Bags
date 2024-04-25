@@ -59,6 +59,7 @@ public class ProductController {
 
     private final ChiTietGioHangRepository chiTietGioHangRepository;
 
+    public final MaGiamGiaService maGIamGiaService;
 
     @Autowired
     private HttpSession session;
@@ -361,11 +362,12 @@ public class ProductController {
                 listCTGHByCTSPTrangThai1.add(ctgh);
             }
         }
-
+        System.out.println("/ma-giam-gia/danh-sach-ma-giam-gia");
+        List<MaGiamGia> maGiamGias = maGIamGiaService.danhSachMaGiamGiaByKhachHang(khachHang.getId());
+        model.addAttribute("danhSachMaGiamGia", maGiamGias);
         model.addAttribute("listGioHangBuyer", listCTGHByCTSPTrangThai1);
         return "ban-hang-online/home/shopping-cart";
     }
-
 
     @PostMapping("/check-trangThai-ctsp-checkout")
     public ResponseEntity<?> checkTrangThaiCTSP(@RequestBody OderDataDto orderData) {

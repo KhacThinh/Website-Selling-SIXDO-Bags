@@ -1,8 +1,5 @@
 package com.bags.sixdoBag.service.impl;
 
-import com.bags.sixdoBag.model.entitys.ChucVu;
-import com.bags.sixdoBag.model.entitys.DanhSachKhachHangApMgg;
-import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
 import com.bags.sixdoBag.service.MaGiamGiaService;
@@ -27,7 +24,7 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
 
     @Override
     public int apDungMaGiamGia(int idKhachHang, int maGiamGia) {
-        return maGiamGiaRepository.apDungMaGiamGia(idKhachHang,maGiamGia);
+        return maGiamGiaRepository.apDungMaGiamGia(idKhachHang, maGiamGia);
     }
 
     @Override
@@ -90,7 +87,7 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
     }
 
     @Override
-    public int [] getidKhByMgg(int idMaGiamGia) {
+    public int[] getidKhByMgg(int idMaGiamGia) {
         return maGiamGiaRepository.getidKhByMgg(idMaGiamGia);
     }
 
@@ -102,22 +99,35 @@ public class MaGiamGiaServiceImpl implements MaGiamGiaService {
 
     @Override
     public void insertKhachHangMgg(int idKhachHang, int idMaGiamGia) {
-        maGiamGiaRepository.insertKhachHangApMgg(idKhachHang,idMaGiamGia);
+        maGiamGiaRepository.insertKhachHangApMgg(idKhachHang, idMaGiamGia);
     }
 
     @Override
     public int top1IdMaGiamGia() {
-        return  maGiamGiaRepository.top1IdMaGiamGia();
+        return maGiamGiaRepository.top1IdMaGiamGia();
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+
     @Override
     public Page<MaGiamGia> searchMGGTenOrMa(String tenMa, Pageable pageable) {
         return maGiamGiaRepository.searchMGGTenOrMa(tenMa, pageable);
     }
+
     @Override
     public Page<MaGiamGia> searchcbb(boolean name, Pageable pageable) {
-        return maGiamGiaRepository.searchCbb(name,pageable);
+        return maGiamGiaRepository.searchCbb(name, pageable);
     }
-    //////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public List<MaGiamGia> danhSachMaGiamGiaByKhachHang(int idKhachHang) {
+        List<MaGiamGia> maGiamGias = maGiamGiaRepository.danhSachMaGiamGiaByKhachHang(idKhachHang);
+        return maGiamGias;
+    }
+
+    @Override
+    public MaGiamGia getMaGiamGiaByKhachHang(int idKhachHang, int maGiamGia) {
+        MaGiamGia maGiamGiaa = maGiamGiaRepository.getMaGiamGiaByKhachHang(idKhachHang, maGiamGia);
+        return maGiamGiaa;
+    }
+
 }
