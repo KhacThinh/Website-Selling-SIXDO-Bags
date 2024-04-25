@@ -766,21 +766,6 @@
             var giaTriGiam = 0;
             var maGiamGia = null;
 
-            if (maGiamGiaValue !== '') {
-                $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
-                    if (data != 'error') {
-                        if (Number(giamGia) > 0) {
-                            maGiamGia = data;
-                            giaTriGiam = data.giaTriGiam;
-                            alert(giaTriGiam);
-                        }
-                    }else{
-                        alert('Thát Bại');
-                    }
-                });
-            }
-
-
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
             var product = {
                 idCtSanPham: ${o.idChiTietSanPham},
@@ -825,22 +810,47 @@
 
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
 
-            // order data này khác với order data ở dưới lên đừng copy chung
-            orderData = {
-                cart: productList,
-                hoadon: {
-                    tenNguoiNhan: name,
-                    sdtNguoiNhan: phone,
-                    emailNguoiNhan: email,
-                    diaChiNguoiNhan: address,
-                    tongTien: parseFloat(lastPriceCleaned),
-                    giamGia: parseFloat(giaTriGiam),
-                    maGiamGia: maGiamGia
-                },
-                khachHang: {
-                    id:${khachHang.id}
-                }
-            };
+            if (maGiamGiaValue !== '') {
+                $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
+                    if (data != 'error') {
+                        if (Number(giamGia) > 0) {
+                            // order data này khác với order data ở dưới lên đừng copy chung
+                            orderData = {
+                                cart: productList,
+                                hoadon: {
+                                    tenNguoiNhan: name,
+                                    sdtNguoiNhan: phone,
+                                    emailNguoiNhan: email,
+                                    diaChiNguoiNhan: address,
+                                    tongTien: parseFloat(lastPriceCleaned),
+                                    giamGia: parseFloat(data.giaTriGiam),
+                                    maGiamGia: data
+                                },
+                                khachHang: {
+                                    id:${khachHang.id}
+                                }
+                            };
+                        }
+                    }
+                });
+            } else {
+                orderData = {
+                    cart: productList,
+                    hoadon: {
+                        tenNguoiNhan: name,
+                        sdtNguoiNhan: phone,
+                        emailNguoiNhan: email,
+                        diaChiNguoiNhan: address,
+                        tongTien: parseFloat(lastPriceCleaned),
+                        giamGia: parseFloat(giaTriGiam),
+                        maGiamGia: maGiamGia
+                    },
+                    khachHang: {
+                        id:${khachHang.id}
+                    }
+                };
+            }
+
 
         }
 
