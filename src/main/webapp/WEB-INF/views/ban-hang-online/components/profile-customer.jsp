@@ -152,8 +152,8 @@
                             <div class="p-3 py-5">
                                 <div class="d-flex justify-content-between align-items-center experience">
                                     <span>Bảo mật</span>
-                                    <span class="border px-3 p-1 add-experience" id="changePasswordBtn">
-                                        <i class="bi bi-caret-down-fill"></i>&nbsp;Đổi mật khẩu</span>
+                                    <button class="border px-3 p-1 add-experience" id="changePasswordBtn">
+                                        <i class="bi bi-caret-down-fill"></i>&nbsp;Đổi mật khẩu</button>
                                 </div>
                                 <br/>
                                 <div class="change-password ds-none" id="changePasswordSection">

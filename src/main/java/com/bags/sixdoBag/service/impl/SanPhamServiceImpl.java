@@ -154,14 +154,14 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public List<ProductHomeRequest> displayedByBrand(int idThuongHieu) {
-        return queryJpa.displayedByBrand(idThuongHieu);
+    public List<ProductHomeRequest> displayedByBrand(int idSp, int idThuongHieu) {
+        return queryJpa.displayedByBrand(idSp, idThuongHieu);
 
     }
 
     @Override
-    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int min, int max) {
-        return queryJpa.sanPhamCoGiaTienTuongTu(min, max);
+    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int idSp, int min, int max) {
+        return queryJpa.sanPhamCoGiaTienTuongTu(idSp, min, max);
     }
 
     @Override

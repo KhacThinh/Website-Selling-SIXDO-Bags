@@ -272,8 +272,8 @@ public class ProductController {
         if (sanPham.getThuongHieu() == null && sanPham.getDanhMuc() == null) {
             throw new IllegalArgumentException("Sản phẩm với danh mục của sản phẩm có id " + id + " có trá trị null");
         }
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.displayedByBrand(sanPham.getThuongHieu().getId());
-        List<ProductHomeRequest> productHomeDanhMuc = sanPhamService.sanPhamCoDanhMucTuongTu(id, sanPham.getDanhMuc().getId());
+        List<ProductHomeRequest> productHomeRequestList = mapProductRequest(sanPhamService.displayedByBrand(id, sanPham.getThuongHieu().getId()));
+        List<ProductHomeRequest> productHomeDanhMuc = mapProductRequest(sanPhamService.sanPhamCoDanhMucTuongTu(id, sanPham.getDanhMuc().getId()));
 
         int giaTien = list.get(0).getGiaBan();
         int min = giaTien - 100000;
@@ -281,7 +281,12 @@ public class ProductController {
         if (min < 0) {
             min = giaTien;
         }
-        List<ProductHomeRequest> productHomeGiaTienTuongUng = sanPhamService.sanPhamCoGiaTienTuongTu(min, max);
+        List<ProductHomeRequest> productHomeGiaTienTuongUng = mapProductRequest(sanPhamService.sanPhamCoGiaTienTuongTu(id, min, max));
+
+        boolean checkThuongHieuTuongUng = true;
+        if (productHomeRequestList.isEmpty()) {
+            checkThuongHieuTuongUng = false;
+        }
 
         boolean checkDanhMucTuongUng = true;
         if (productHomeDanhMuc.isEmpty()) {
@@ -299,51 +304,23 @@ public class ProductController {
         model.addAttribute("productHomeGiaTienTuongUng", productHomeGiaTienTuongUng);
         model.addAttribute("checkDanhMucTuongTu", checkDanhMucTuongUng);
         model.addAttribute("checkSoTienTuongUng", checkSoTienTuongUng);
+        model.addAttribute("checkThuongHieuTuongUng", checkThuongHieuTuongUng);
         return "ban-hang-online/home/product-detail";
     }
 
-    @GetMapping("hello")
-    public String hello(Model model, @RequestParam("id") int id) {
-        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        model.addAttribute("khachHang", khachHang);
-
-        List<ChiTietSanPham> list = chiTietSanPhamRepository.getChiTietSanPhamByIdSpOnline(id);
-        List<ChiTietSanPham> sortedList = list.stream()
-                .sorted(Comparator.comparingDouble(ChiTietSanPham::getGiaBan))
-                .collect(Collectors.toList());
-        SanPham sanPham = list.get(0).getSanPham();
-
-        if (sanPham.getThuongHieu() == null && sanPham.getDanhMuc() == null) {
-            throw new IllegalArgumentException("Sản phẩm với danh mục của sản phẩm có id " + id + " có trá trị null");
-        }
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.displayedByBrand(sanPham.getThuongHieu().getId());
-        List<ProductHomeRequest> productHomeDanhMuc = sanPhamService.sanPhamCoDanhMucTuongTu(id, sanPham.getDanhMuc().getId());
-
-        int giaTien = list.get(0).getGiaBan();
-        int min = giaTien - 100000;
-        int max = giaTien + 100000;
-        if (min < 0) {
-            min = giaTien;
-        }
-        List<ProductHomeRequest> productHomeGiaTienTuongUng = sanPhamService.sanPhamCoGiaTienTuongTu(min, max);
-
-        boolean checkDanhMucTuongUng = true;
-        if (productHomeDanhMuc.isEmpty()) {
-            checkDanhMucTuongUng = false;
-        }
-
-        boolean checkSoTienTuongUng = true;
-        if (productHomeGiaTienTuongUng.isEmpty()) {
-            checkSoTienTuongUng = false;
-        }
-
-        model.addAttribute("product", sortedList);
-        model.addAttribute("listSp", productHomeRequestList);
-        model.addAttribute("productHomeDanhMuc", productHomeDanhMuc);
-        model.addAttribute("productHomeGiaTienTuongUng", productHomeGiaTienTuongUng);
-        model.addAttribute("checkDanhMucTuongTu", checkDanhMucTuongUng);
-        model.addAttribute("checkSoTienTuongUng", checkSoTienTuongUng);
-        return "ban-hang-online/home/product-detail";
+    public List<ProductHomeRequest> mapProductRequest(List<ProductHomeRequest> searchResults) {
+        List<ProductHomeRequest> updateProduct = searchResults.stream()
+                .map((sp) -> {
+                            ProductHomeRequest productHomeRequest = new ProductHomeRequest();
+                            productHomeRequest.setId(sp.getId());
+                            productHomeRequest.setHinhAnh(sp.getHinhAnh());
+                            productHomeRequest.setTenSanPham(sp.getTenSanPham());
+                            productHomeRequest.setGiaBan(sp.getGiaBan());
+                            productHomeRequest.setSoLuongBan(chiTietSanPhamServivce.soLuongMuaBySanPham(sp.getId()));
+                            return productHomeRequest;
+                        }
+                ).collect(Collectors.toList());
+        return updateProduct;
     }
 
     @PostMapping("/get-product-by-id")
@@ -367,15 +344,23 @@ public class ProductController {
     @GetMapping("/shoping-cart")
     public String shopingCart(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId());
+        model.addAttribute("khachHang", khachHang);
+
+        if (soLuong <= 0) {
+            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            model.addAttribute("listSp", productHomeRequestList);
+            return "ban-hang-online/home/home-page";
+        }
         List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(khachHang != null ? khachHang.getId() : -1);
         List<ChiTietGioHang> listCTGHByCTSPTrangThai1 = new ArrayList<>();
+
         for (ChiTietGioHang ctgh : chiTietGioHangList
         ) {
             if (ctgh.getChiTietSanPham().getTrangThai() == 1) {
                 listCTGHByCTSPTrangThai1.add(ctgh);
             }
         }
-        model.addAttribute("khachHang", khachHang);
 
         model.addAttribute("listGioHangBuyer", listCTGHByCTSPTrangThai1);
         return "ban-hang-online/home/shopping-cart";
@@ -562,7 +547,14 @@ public class ProductController {
     }
 
     @GetMapping("login-customer")
-    public String getLoginCustomer() {
+    public String getLoginCustomer(Model model) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        model.addAttribute("khachHang", khachHang);
+        if (Objects.nonNull(khachHang)) {
+            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            model.addAttribute("listSp", productHomeRequestList);
+            return "ban-hang-online/home/home-page";
+        }
         return "/ban-hang-online/home/login-customer";
     }
 

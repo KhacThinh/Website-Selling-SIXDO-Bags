@@ -388,7 +388,9 @@
                 var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
                 var tt = '';
                 var csss = '';
+                var reasonCancel = document.getElementById('th-ly-do-huy');
                 if (trangThai == 2) {
+                    reasonCancel.style.display = 'none';
                     csss = 'status dangxuly'
                     tt = 'Chờ xác nhận';
                 }
@@ -495,7 +497,9 @@
                 var rowIndex = index + 1; // Sử dụng biến rowIndex thay vì index
                 var tt = '';
                 var csss = '';
+                var reasonCancel = document.getElementById('th-ly-do-huy');
                 if (trangThai == 5) {
+                    reasonCancel.style.display = 'none';
                     csss = 'status inProgress'
                     tt = 'Đang Giao Hàng';
                 }

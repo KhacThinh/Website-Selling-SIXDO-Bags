@@ -72,7 +72,7 @@ public class QueryJpa {
 
     }
 
-    public List<ProductHomeRequest> displayedByBrand(int idThuongHieu) {
+    public List<ProductHomeRequest> displayedByBrand(int idSp, int idThuongHieu) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -83,12 +83,13 @@ public class QueryJpa {
                     " ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) " +
                     "AS RowNumber FROM san_pham JOIN chi_tiet_san_pham" +
                     " ON san_pham.id = chi_tiet_san_pham.id_san_pham WHERE " +
-                    "san_pham.id_thuong_hieu = ? ) " +
+                    "san_pham.id_thuong_hieu = ? AND san_pham.id != ? ) " +
                     "SELECT id, ten, gia_ban, anh_ctsp FROM MinPrices WHERE RowNumber = 1;";
 
             // Tạo đối tượng PreparedStatement
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, idThuongHieu);
+            statement.setInt(2, idSp);
 
             // Thực thi câu lệnh SQL và nhận kết quả
             ResultSet resultSet = statement.executeQuery();
@@ -116,7 +117,7 @@ public class QueryJpa {
 
     }
 
-    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int min, int max) {
+    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int idSp, int min, int max) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -127,13 +128,14 @@ public class QueryJpa {
                     " ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) " +
                     "AS RowNumber FROM san_pham JOIN chi_tiet_san_pham" +
                     " ON san_pham.id = chi_tiet_san_pham.id_san_pham WHERE " +
-                    "chi_tiet_san_pham.gia_ban BETWEEN ? AND ?  ) " +
+                    "chi_tiet_san_pham.gia_ban BETWEEN ? AND ? AND san_pham.id != ?  ) " +
                     "SELECT id, ten, gia_ban, anh_ctsp FROM MinPrices WHERE RowNumber = 1;";
 
             // Tạo đối tượng PreparedStatement
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, min);
             statement.setInt(2, max);
+            statement.setInt(3, idSp);
 
             // Thực thi câu lệnh SQL và nhận kết quả
             ResultSet resultSet = statement.executeQuery();

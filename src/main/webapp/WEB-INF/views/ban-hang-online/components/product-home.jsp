@@ -90,36 +90,6 @@
                     </div>
 
                     <div class="filter-col4 p-b-27">
-                        <%--                        <div class="mtext-102 cl2 p-b-15">--%>
-                        <%--                            Tags--%>
-                        <%--                        </div>--%>
-
-                        <%--                        <div class="flex-w p-t-4 m-r--5">--%>
-                        <%--                            <a href="#"--%>
-                        <%--                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">--%>
-                        <%--                                Fashion--%>
-                        <%--                            </a>--%>
-
-                        <%--                            <a href="#"--%>
-                        <%--                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">--%>
-                        <%--                                Lifestyle--%>
-                        <%--                            </a>--%>
-
-                        <%--                            <a href="#"--%>
-                        <%--                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">--%>
-                        <%--                                Denim--%>
-                        <%--                            </a>--%>
-
-                        <%--                            <a href="#"--%>
-                        <%--                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">--%>
-                        <%--                                Streetstyle--%>
-                        <%--                            </a>--%>
-
-                        <%--                            <a href="#"--%>
-                        <%--                               class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">--%>
-                        <%--                                Crafts--%>
-                        <%--                            </a>--%>
-                        <%--                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -130,7 +100,7 @@
         </div>
 
         <!-- Load more -->
-        <div class="flex-c-m flex-w w-full p-t-45 check-btn-xem-them-home">
+        <div class="flex-c-m flex-w w-full p-t-45" id="check-btn-xem-them-home">
             <button type="button"
                     class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04 btn-xem-them-sp">
                 Xem Thêm
@@ -146,7 +116,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-        let countLimitItem = 0;
         let valueLimit = sessionStorage.getItem("limitItem");
         $(document).ready(function () {
             if (valueLimit === null) {
@@ -154,9 +123,6 @@
                 sessionStorage.setItem("limitItem", valueLimit);
             } else {
                 valueLimit = parseInt(valueLimit);
-                $.get('/load-du-lieu/so-luong-san-pham', function (data) {
-                    countLimitItem = data;
-                })
             }
 
             loadData();
@@ -397,8 +363,9 @@
         function displayProducts(products) {
             const container = $('#search-results');
             container.empty();
-
+            let countLimitItem = 0;
             $.each(products, function (index, product) {
+                countLimitItem += 1;
                 var productHTML = '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">';
                 productHTML += '<a class="block2" href="/sixdo-shop/product-detail?id=' + product.id + '">';
                 productHTML += '<div class="block2-pic hov-img0">';
@@ -418,6 +385,23 @@
                 productHTML += '</div></a></div>';
                 container.append(productHTML);
             });
+
+            $.get('/load-du-lieu/so-luong-san-pham', function (data) {
+                console.log('countLimitItem: ' + countLimitItem);
+                console.log('data: ' + data);
+                let count = Number(countLimitItem);
+                const reasonCancel = $('#check-btn-xem-them-home');
+                if (count < 8) {
+                    console.log('count < 8');
+                    reasonCancel.hide();
+                } else if (data === count) {
+                    console.log('data === count');
+                    reasonCancel.hide();
+                } else if (count <= data) {
+                    console.log('block');
+                    reasonCancel.show();
+                }
+            })
         }
 
     </script>
