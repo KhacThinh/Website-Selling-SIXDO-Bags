@@ -764,7 +764,7 @@
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
             var giaTriGiam = 0;
-            var maGiamGia = '';
+            var maGiamGia = null;
 
             if (maGiamGiaValue !== '') {
                 $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
@@ -772,12 +772,12 @@
                         if (Number(giamGia) > 0) {
                             maGiamGia = data;
                             giaTriGiam = data.giaTriGiam;
+                            alert(giaTriGiam);
                         }
+                    }else{
+                        alert('Thát Bại');
                     }
                 });
-            } else {
-                maGiamGia = null;
-                giaTriGiam = 0;
             }
 
 
@@ -825,13 +825,14 @@
 
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
 
+            // order data này khác với order data ở dưới lên đừng copy chung
             orderData = {
                 cart: productList,
                 hoadon: {
-                    tenNguoiNhan: data.tenKhachHang,
-                    sdtNguoiNhan: data.sdt,
-                    emailNguoiNhan: data.email,
-                    diaChiNguoiNhan: data.diaChi,
+                    tenNguoiNhan: name,
+                    sdtNguoiNhan: phone,
+                    emailNguoiNhan: email,
+                    diaChiNguoiNhan: address,
                     tongTien: parseFloat(lastPriceCleaned),
                     giamGia: parseFloat(giaTriGiam),
                     maGiamGia: maGiamGia
@@ -848,7 +849,7 @@
             var lastPriceCleaned = lastPrice.replace(/,/g, '').replace(/\./g, '');
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
             var giaTriGiam = 0;
-            var maGiamGia = '';
+            var maGiamGia = null;
 
             if (maGiamGiaValue !== '') {
                 $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
@@ -859,9 +860,6 @@
                         }
                     }
                 });
-            } else {
-                maGiamGia = null;
-                giaTriGiam = 0;
             }
 
             <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
