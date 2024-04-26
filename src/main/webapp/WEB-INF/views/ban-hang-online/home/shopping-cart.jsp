@@ -265,10 +265,10 @@
                                         console.log("mggg" + maGiamGiaValue)
                                         console.log("khachHang" +${khachHang.id})
                                         $.ajax({
-                                            url: '/ma-giam-gia/ap-dung-ma-giam-gia',
+                                            url: '/sixdo-shop/check-ma-giam-gia',
                                             type: 'POST',
                                             data: {
-                                                idKhachHang:${khachHang.id},
+                                                <%--idKhachHang:${khachHang.id},--%>
                                                 maGiamGia: maGiamGiaValue
                                             },
                                             success: function (maGiamGia1) {
@@ -418,16 +418,23 @@
                                                             var productElement = element.closest('.table_row');
                                                             productElement.remove();
                                                             updateTotalPriceForAllProducts();
+                                                            capNhapSoLuongSanPhamTrongGioHangHearder();
                                                             Swal.fire({
                                                                 title: 'Đã xóa!',
                                                                 text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
                                                                 icon: 'success',
                                                                 timer: 1500,
                                                                 showConfirmButton: false
+                                                            }).then((result) => {
+                                                                $.get('/sixdo-shop/hien-thi-so-luong-cart-product', function (data) {
+                                                                    if (data <= 0) {
+                                                                        window.location.href = '/sixdo-shop/shoping-cart';
+                                                                    }else{
+                                                                        window.location.href = '/sixdo-shop/shoping-cart';
+                                                                    }
+                                                                });
                                                             });
-                                                            // .then((result) => {
-                                                            //     window.location.href = '/sixdo-shop/shoping-cart';
-                                                            // });
+
                                                         } else {
                                                             Swal.fire(
                                                                 'Lỗi!',
@@ -463,11 +470,11 @@
                                 <c:forEach items="${danhSachMaGiamGia}" var="mgg">
                                     <fmt:formatNumber pattern="#,###" value="${mgg.giaTriGiam}"
                                                       var="giaTriGiam"></fmt:formatNumber>
-                                    <option value="${mgg.maGiamGia}">${mgg.tenMaGiamGia} - Giảm: ${giaTriGiam}đ</option>
+                                    <option value="${mgg.maGiamGia}">${mgg.tenMaGiamGia} - Giảm giá: ${giaTriGiam} đ</option>
                                 </c:forEach>
                             </select>
                             <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 apply-coupon">
-                                Apply coupon
+                                Áp dụng ngay
                             </div>
                         </div>
                     </div>
@@ -596,7 +603,6 @@
                         Đặt Hàng
                     </button>
 
-
                 </div>
             </div>
         </div>
@@ -689,25 +695,13 @@
         $('.apply-coupon').on('click', function () {
             var sumCart = document.getElementById('giaTriTienTam').value;
 
-
             maGiamGiaValue = document.getElementById("maGiamGiaInput").value;
-            // if (maGiamGiaValue == '') {
-            //     alert("Vui lòng chọn một giá trị từ danh sách");
-            //     return false;
-            // }
 
-            console.log("mggg" + maGiamGiaValue)
-            console.log("khachHang" +${khachHang.id})
-            $.ajax({
-                url: '/ma-giam-gia/ap-dung-ma-giam-gia',
-                type: 'POST',
-                data: {
-                    idKhachHang:${khachHang.id},
+            if (maGiamGiaValue != '') {
+                $.post('/sixdo-shop/check-ma-giam-gia', {
                     maGiamGia: maGiamGiaValue
-                },
-                success: function (maGiamGia1) {
-                    console.log("sumcart " + sumCart)
-                    if (parseFloat(maGiamGia1.dieuKienGiam) <= parseFloat(sumCart)) {
+                }, function (maGiamGia1) {
+                    if (Number(maGiamGia1.dieuKienGiam) <= Number(sumCart)) {
                         checkDieuKienApMaGiamGia = maGiamGia1.dieuKienGiam;
                         document.getElementById('maGiamGiaOnline').innerText = formatter.format(maGiamGia1.giaTriGiam);
                         document.getElementById('maGiamGiaOnlineValue').value = maGiamGia1.giaTriGiam;
@@ -718,20 +712,21 @@
                         document.getElementById('maGiamGiaOnlineValue').value = 0;
                         updateTotalPriceForAllProducts();
 
-                        document.getElementById('maGiamGiaOnline').innerText = "0 đ"
+                        document.getElementById('maGiamGiaOnline').innerText = "0 đ";
                         showAlertAddCart('Chỉ Áp Dụng Cho Đơn Hàng Tối Thiểu ' + formatter.format(maGiamGia1.dieuKienGiam), '', 'error');
                         // showAlertAddCart('', 'Bạn đã huỷ áp dụng giảm giá', 'success');
                     }
-
-                },
-                error: function (error) {
-                    // Xử lý lỗi nếu có
+                }).fail(function (jqXHR, textStatus, errorThrown) {
                     document.getElementById('maGiamGiaOnline').innerText = "0 đ"
                     console.error(error);
                     showAlertAddCart('Mã Giảm Giá Không Hợp Lệ.', '', 'error');
-                }
-            });
-
+                });
+            } else {
+                document.getElementById('maGiamGiaOnlineValue').value = 0;
+                updateTotalPriceForAllProducts();
+                document.getElementById('maGiamGiaOnline').innerText = "0 đ";
+                showAlertAddCart('', 'Bạn đã huỷ áp dụng giảm giá', 'success');
+            }
 
         });
         var productList = [];
@@ -745,7 +740,7 @@
         }
 
         function isValidPhoneNumber(phone) {
-            var phonePattern = /^[0-9]{10}$/;
+            var phonePattern = /^0[0-9]{9}$/;
             return phone.match(phonePattern);
         }
 
@@ -811,7 +806,7 @@
             var address = village + ', ' + ward + ', ' + district + ', ' + city;
 
             if (maGiamGiaValue !== '') {
-                $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
+                $.post('/sixdo-shop/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
                     if (data != 'error') {
                         if (Number(giamGia) > 0) {
                             // order data này khác với order data ở dưới lên đừng copy chung
@@ -862,11 +857,12 @@
             var maGiamGia = null;
 
             if (maGiamGiaValue !== '') {
-                $.post('/ma-giam-gia/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
+                $.post('/sixdo-shop/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
                     if (data != 'error') {
                         if (Number(giamGia) > 0) {
                             maGiamGia = data;
                             giaTriGiam = data.giaTriGiam;
+                            console.log('akvm' + maGiamGia + giaTriGiam);
                         }
                     }
                 });
@@ -905,6 +901,7 @@
                                 id:${khachHang.id}
                             }
                         };
+                        console.log('akvmm' + orderData.hoadon.maGiamGia + orderData.hoadon.giamGia);
                     }
                 },
                 error: function () {
@@ -920,6 +917,9 @@
 
 
         $('.submit-oder-by-cart').on('click', function () {
+            if( document.getElementById("maGiamGiaInput").value !== maGiamGiaValue){
+                maGiamGiaValue = '';
+            }
             if (Object.keys(orderData).length === 0) {
                 if (currentClick === 'default') {
                     if (defaultAddressCustomer() == false) {
@@ -952,7 +952,7 @@
                         data: JSON.stringify(orderData),
                         success: function (response) {
                             if (response === "ok") {
-// ktra so luong trong kho
+                                // ktra so luong trong kho
                                 $.ajax({
                                     url: '/sixdo-shop/check-soLuong-checkout',
                                     type: 'POST',

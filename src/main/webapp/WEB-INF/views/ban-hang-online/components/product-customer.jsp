@@ -134,17 +134,17 @@
                         </div>
 
                         <span class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                           data-tooltip="Facebook">
+                              data-tooltip="Facebook">
                             <i class="fa fa-facebook"></i>
                         </span>
 
                         <span class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                           data-tooltip="Twitter">
+                              data-tooltip="Twitter">
                             <i class="fa fa-twitter"></i>
                         </span>
 
                         <span class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                           data-tooltip="Google Plus">
+                              data-tooltip="Google Plus">
                             <i class="fa fa-google-plus"></i>
                         </span>
                     </div>
@@ -462,16 +462,15 @@
                             }),
                             success: function (response) {
                                 if (response === "ok") {
-                                    // Swal.fire({
-                                    //     title: 'Thanh cong!',
-                                    //     text: 'Da them gio hang thanh cong.',
-                                    //     icon: 'success',
-                                    //     timer: 2000, // Thời gian tự động đóng (ms)
-                                    //     showConfirmButton: false // Ẩn nút OK
-                                    // });
                                     const count = document.querySelector('.icon-count-cart');
                                     count.setAttribute('data-notify', response);
-                                    showAlertAddCart('Success!', 'Product added to cart!', 'success');
+                                    Swal.fire({
+                                        title: 'Đã thêm!',
+                                        text: 'Sản phẩm đã được thêm vô giỏ hàng!.',
+                                        icon: 'success',
+                                        timer: 1200,
+                                        showConfirmButton: false
+                                    })
                                     capNhapSoLuongSanPhamTrongGioHangHearder();
                                 } else if (response === "loiTrangThai") {
                                     Swal.fire(

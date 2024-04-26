@@ -345,6 +345,11 @@ public class ProductController {
     @GetMapping("/shoping-cart")
     public String shopingCart(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.isNull(khachHang)) {
+            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            model.addAttribute("listSp", productHomeRequestList);
+            return "ban-hang-online/home/home-page";
+        }
         int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId());
         model.addAttribute("khachHang", khachHang);
 
@@ -548,6 +553,20 @@ public class ProductController {
         return 0;
     }
 
+    @PostMapping("/check-ma-giam-gia")
+    public ResponseEntity<?> apDungMaGiamGia(@RequestParam("maGiamGia") String maGiamGia) {
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        System.out.println("/ma-giam-gia/check-ma-giam-gia");
+        try {
+            MaGiamGia maGiamGia1 = maGIamGiaService.searchMaGiamGiaByMa(maGiamGia.trim());
+            MaGiamGia danhSachKhachHangApMgg = maGIamGiaService.getMaGiamGiaByKhachHang(khachHang.getId(), maGiamGia1.getId());
+            return ResponseEntity.ok(danhSachKhachHangApMgg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok("error");
+        }
+    }
+
     @GetMapping("login-customer")
     public String getLoginCustomer(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
@@ -572,6 +591,5 @@ public class ProductController {
         model.addAttribute("khachHang", khachHang);
         return "/ban-hang-online/home/contact";
     }
-
 
 }

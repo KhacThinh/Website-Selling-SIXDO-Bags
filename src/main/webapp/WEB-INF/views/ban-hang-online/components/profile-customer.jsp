@@ -339,7 +339,7 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    if (sdt !== '' && !sdt.match(/^[0-9]{10}$/)) {
+                    if (sdt !== '' && !sdt.match(/^0[0-9]{9}$/)) {
                         Swal.fire({
                             title: 'Lỗi',
                             text: 'Số điện thoại không hợp lệ.',

@@ -750,7 +750,7 @@
                 return;
             }
 
-            if (!sdtNguoiNhan.match(/^[0-9]{10}$/)) {
+            if (!sdtNguoiNhan.match(/^0[0-9]{9}$/)) {
                 showErrorPopup('Số điện thoại người nhận không hợp lệ');
                 return;
             }

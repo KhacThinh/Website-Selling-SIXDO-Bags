@@ -182,6 +182,7 @@ public class MaGiamGiaController {
             int danhSachKhachHangApMgg = maGIamGiaService.apDungMaGiamGia(idKhachHang, maGiamGia1.getId());
             return ResponseEntity.ok(maGiamGia1);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.ok("error");
         }
     }
@@ -199,6 +200,7 @@ public class MaGiamGiaController {
             MaGiamGia danhSachKhachHangApMgg = maGIamGiaService.getMaGiamGiaByKhachHang(khachHang.getId(), maGiamGia1.getId());
             return ResponseEntity.ok(danhSachKhachHangApMgg);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.ok("error");
         }
     }
