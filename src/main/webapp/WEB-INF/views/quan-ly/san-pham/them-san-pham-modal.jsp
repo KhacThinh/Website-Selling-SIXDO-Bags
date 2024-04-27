@@ -17,116 +17,117 @@
             <div class="modal-body">
                 <form:form method="POST" action="/san-pham" modelAttribute="sanPhamRequest" id="addSanPhamForm"
                            enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="tenSanPham">Tên Sản Phẩm<span class="required">*</span></label>
-                                <form:input path="tenSanPham" id="tenSanPham" class="form-control"/>
-                                <span id="tenSanPhamError" class="error text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="chatLieu">Chất Liệu<span class="required">*</span></label>
-                                <form:input path="chatLieu" id="chatLieu" class="form-control"/>
-                                <span id="chatLieuError" class="error text-danger"></span>
-                            </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tenSanPham">Tên Sản Phẩm<span class="required">*</span></label>
+                            <form:input path="tenSanPham" id="tenSanPham" class="form-control"/>
+                            <span id="tenSanPhamError" class="error text-danger"></span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="xuatXu">Xuất Xứ<span class="required">*</span></label>
-                                <form:input path="xuatXu" id="xuatXu" class="form-control"/>
-                                <span id="xuatXuError" class="error text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="hinhAnh">Ảnh</label>
-                                <input type="file" id="hinhAnh" name="hinhAnh" class="form-control"/>
-                                <input type="hidden" name="anh" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="kichThuoc">Kích Thước (cm)<span
-                                        class="required">*</span></label>
-                                <form:input path="kichThuoc" id="kichThuoc" class="form-control"
-                                            placeholder="RộngxDàixCao"/>
-                                <span id="kichThuocError" class="error text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="khoiLuong">Khối Lượng (gram)<span class="required">*</span></label>
-                                <form:input path="khoiLuong" type="number" min="0" id="khoiLuong" class="form-control"/>
-                                <span id="khoiLuongError" class="error text-danger"></span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="chatLieu">Chất Liệu<span class="required">*</span></label>
+                            <form:input path="chatLieu" id="chatLieu" class="form-control"/>
+                            <span id="chatLieuError" class="error text-danger"></span>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="moTa">Mô Tả</label>
-                                <form:textarea path="moTa" id="moTa" class="form-control" style="height: 100px;"/>
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="xuatXu">Xuất Xứ<span class="required">*</span></label>
+                            <form:input path="xuatXu" id="xuatXu" class="form-control"/>
+                            <span id="xuatXuError" class="error text-danger"></span>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
-                                <form:select path="idThoiGianBaoHanh" class="form-control">
-                                    <form:option value="" label="Chọn Thời Gian Bảo Hành"/>
-                                    <c:forEach items="${thoiGianBaoHanhForm}" var="tgbhForm">
-                                        <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
-                                    </c:forEach>
-                                </form:select>
-                            </div>
-                            <div class="form-group">
-                                <label for="idThuongHieu">Thương Hiệu</label>
-                                <form:select path="idThuongHieu" class="form-control">
-                                    <form:option value="" label="Chọn Thương Hiệu"/>
-                                    <c:forEach items="${thuongHieuForm}" var="thForm">
-                                        <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
-                                    </c:forEach>
-                                </form:select>
-                            </div>
+                        <div class="form-group">
+                            <label for="hinhAnh">Ảnh</label>
+                            <input type="file" id="hinhAnh" name="hinhAnh" class="form-control"/>
+                            <input type="hidden" name="anh" class="form-control"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="idDanhMuc">Danh Mục</label>
-                                <form:select path="idDanhMuc" class="form-control">
-                                    <form:option value="" label="Chọn Danh Mục"/>
-                                    <c:forEach items="${danhMucForm}" var="dmForm">
-                                        <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
-                                    </c:forEach>
-                                </form:select>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="kichThuoc">Kích Thước (cm)<span
+                                    class="required">*</span></label>
+                            <form:input path="kichThuoc" id="kichThuoc" class="form-control"
+                                        placeholder="RộngxDàixCao"/>
+                            <span id="kichThuocError" class="error text-danger"></span>
                         </div>
-                        <div class="col-md-7" style="display: flex">
-                            <div class="form-group">
-                                <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
-                                <form:select path="idDoiTuongSuDung" class="form-control">
-                                    <form:option value="" label="Chọn Đối Tượng Sử Dụng"/>
-                                    <c:forEach items="${doiTuongSuDungForm}" var="dtsdForm">
-                                        <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
-                                    </c:forEach>
-                                </form:select>
+                        <div class="form-group">
+                            <label for="khoiLuong">Khối Lượng (gram)<span class="required">*</span></label>
+                            <form:input path="khoiLuong" type="number" min="0" id="khoiLuong" class="form-control"/>
+                            <span id="khoiLuongError" class="error text-danger"></span>
+                        </div>
+                    </div>
+                </div>
 
-                            </div>
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="moTa">Mô Tả</label>
+                            <form:textarea path="moTa" id="moTa" class="form-control" style="height: 100px;"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
+                            <form:select path="idThoiGianBaoHanh" class="form-control">
+                                <form:option value="" label="Chọn Thời Gian Bảo Hành"/>
+                                <c:forEach items="${thoiGianBaoHanhForm}" var="tgbhForm">
+                                    <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+                        <div class="form-group">
+                            <label for="idThuongHieu">Thương Hiệu</label>
+                            <form:select path="idThuongHieu" class="form-control">
+                                <form:option value="" label="Chọn Thương Hiệu"/>
+                                <c:forEach items="${thuongHieuForm}" var="thForm">
+                                    <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="idDanhMuc">Danh Mục</label>
+                            <form:select path="idDanhMuc" class="form-control">
+                                <form:option value="" label="Chọn Danh Mục"/>
+                                <c:forEach items="${danhMucForm}" var="dmForm">
+                                    <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+                    </div>
+                    <div class="col-md-7" style="display: flex">
+                        <div class="form-group">
+                            <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
+                            <form:select path="idDoiTuongSuDung" class="form-control">
+                                <form:option value="" label="Chọn Đối Tượng Sử Dụng"/>
+                                <c:forEach items="${doiTuongSuDungForm}" var="dtsdForm">
+                                    <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
+                                </c:forEach>
+                            </form:select>
 
                         </div>
-<%--                        <div class="col-md-2">--%>
-
-<%--                                <button>add</button>--%>
 
 
-<%--                    </div>--%>
+                    </div>
+                        <%--                        <div class="col-md-2">--%>
+
+                        <%--                                <button>add</button>--%>
+
+
+                        <%--                    </div>--%>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                         <button type="submit" class="btn btn-primary" id="addSanPham">Lưu</button>
                     </div>
-                </form:form>
+                    </form:form>
+                </div>
             </div>
         </div>
     </div>

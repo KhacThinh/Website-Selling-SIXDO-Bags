@@ -135,7 +135,7 @@
     </div>
 </div>
 <script>
-    $.get('/slide-show', function (data) {
+    $.get('/sixdo-shop/slide-show/show', function (data) {
         const container = $('.js-banner-sixdo');
         container.empty();
         $.each(data, function (index, sls) {

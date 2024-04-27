@@ -26,13 +26,19 @@ public class SlideShowServiceImpl implements SlideShowService {
     }
 
     @Override
+    public List<SlideShow> getSlideShowManager() {
+        List<SlideShow> list = slideShowRepository.findAllSlideManager();
+        return list;
+    }
+
+    @Override
     public SlideShow addSlideShow(SlideShow slideShow) {
         SlideShow slideShow1 = new SlideShow();
         slideShow1.setTextCollectionTitle(slideShow.getTextCollectionTitle());
         slideShow1.setTextNewArrivals(slideShow.getTextNewArrivals());
         slideShow1.setLinkChuyenTrang(slideShow.getLinkChuyenTrang());
         slideShow1.setUrlHinhAnh(slideShow.getUrlHinhAnh());
-        slideShow1.setTrangThai(1);
+        slideShow1.setTrangThai(slideShow.getTrangThai());
         slideShowRepository.save(slideShow1);
         return slideShow1;
     }
@@ -52,8 +58,7 @@ public class SlideShowServiceImpl implements SlideShowService {
     @Override
     public SlideShow delete(Integer idSlide) {
         SlideShow sl = getSlideShow(idSlide);
-        sl.setTrangThai(0);
-        slideShowRepository.save(sl);
+        slideShowRepository.delete(sl);
         return sl;
     }
 
