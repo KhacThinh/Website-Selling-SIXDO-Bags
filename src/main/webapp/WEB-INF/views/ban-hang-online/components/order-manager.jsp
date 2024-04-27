@@ -282,16 +282,6 @@
                         <span id="ip-tong-thanh-toan" style="margin-left: 5px;">0</span>
                         <span style="margin-left: 3px;">đồng</span>
                     </div>
-                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">
-                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>
-                        <span id="ip-tong-thanh-toan1" style="margin-left: 5px;">0</span>
-                        <span style="margin-left: 3px;">đồng</span>
-                    </div>
-                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">
-                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>
-                        <span id="ip-tong-thanh-toan2" style="margin-left: 5px;">0</span>
-                        <span style="margin-left: 3px;">đồng</span>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
