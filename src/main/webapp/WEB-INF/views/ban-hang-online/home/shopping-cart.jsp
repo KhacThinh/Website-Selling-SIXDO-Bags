@@ -882,7 +882,7 @@
                 data: {id: "${khachHang.id}"},
                 success: function (data) {
                     if (data != null) {
-                        if (data.tenKhachHang.trim() === '' || data.sdt.trim() === '' || data.diaChi.trim() === '') {
+                        if (data.tenKhachHang.trim() === '' || data.tenKhachHang === null || data.sdt.trim() === '' || data.sdt === null || data.diaChi.trim() === '' || data.diaChi === null) {
                             showErrorAlert("Địa chỉ mặc định vẫn còn thiếu vui lòng vô kiểm tra lại!");
                             return false;
                         }

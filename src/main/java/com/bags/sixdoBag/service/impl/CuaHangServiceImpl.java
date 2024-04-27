@@ -6,6 +6,8 @@ import com.bags.sixdoBag.service.CuaHangService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class CuaHangServiceImpl implements CuaHangService {
@@ -14,8 +16,22 @@ public class CuaHangServiceImpl implements CuaHangService {
 
     @Override
     public CuaHang getCuaHang() {
-        CuaHang cuaHang = cuaHangRepository.findById(1l).get();
-        return cuaHang;
+        CuaHang ch = cuaHangRepository.findById(1l).orElse(null);
+        if (Objects.nonNull(ch)) {
+            return ch;
+        } else {
+            ch = new CuaHang();
+            ch.setId(1L);
+            ch.setTenCuaHang("Abc");
+            ch.setSdt("0123456789");
+            ch.setEmail("store@gmail.com");
+            ch.setHinhAnhLogo("abc.jpg");
+            ch.setTenDayDuCuaHang("Cửa hàng Abc");
+            ch.setToaDoMapX("21.027819");
+            ch.setToaDoMapY("105.852257");
+            ch.setDiaChi("Việt Nam");
+            return cuaHangRepository.save(ch);
+        }
     }
 
     @Override

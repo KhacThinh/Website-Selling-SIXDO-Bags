@@ -1,9 +1,6 @@
 package com.bags.sixdoBag.config;
 
-import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
-import com.bags.sixdoBag.model.entitys.CuaHang;
-import com.bags.sixdoBag.model.entitys.HoaDon;
-import com.bags.sixdoBag.model.entitys.NhanVien;
+import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.service.CuaHangService;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
@@ -82,23 +79,31 @@ public class HoaDonPDFExporter {
             cell.setPadding(5);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
+            SanPham sanPham = chiTietHoaDon.getChiTietSanPham().getSanPham();
+
             cell.setPhrase(new Phrase(String.valueOf(stt), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getMaSanPham(), font));
+            cell.setPhrase(new Phrase(sanPham.getMaSanPham(), font));
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getSanPham().getTenSanPham(), font));
+            cell.setPhrase(new Phrase(sanPham.getTenSanPham(), font));
             table.addCell(cell);
 
-            if (Objects.nonNull(chiTietHoaDon.getChiTietSanPham().getMauSac())) {
-                cell.setPhrase(new Phrase(chiTietHoaDon.getChiTietSanPham().getMauSac().getTenMauSac(), font));
+            MauSac mauSac = chiTietHoaDon.getChiTietSanPham().getMauSac();
+            if (Objects.nonNull(mauSac)) {
+                cell.setPhrase(new Phrase(mauSac.getTenMauSac(), font));
             } else {
                 cell.setPhrase(new Phrase("", font));
             }
             table.addCell(cell);
 
-            cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getChiTietSanPham().getSanPham().getThoiGianBaoHanh().getThoiGian()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            ThoiGianBaoHanh thoiGianBaoHanh = sanPham.getThoiGianBaoHanh();
+            if (Objects.nonNull(thoiGianBaoHanh)) {
+                cell.setPhrase(new Phrase(String.valueOf(thoiGianBaoHanh.getThoiGian()), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            } else {
+                cell.setPhrase(new Phrase(String.valueOf(0), FontFactory.getFont(FontFactory.TIMES_ROMAN)));
+            }
             table.addCell(cell);
 
             cell.setPhrase(new Phrase(String.valueOf(chiTietHoaDon.getSoLuong()), font));

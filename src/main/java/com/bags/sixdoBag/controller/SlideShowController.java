@@ -35,6 +35,12 @@ public class SlideShowController {
         return slideShowService.getSlideShowManager();
     }
 
+    @GetMapping("online")
+    @ResponseBody
+    public List<SlideShow> getSlideShowOnline() {
+        return slideShowService.getListSlideShow();
+    }
+
     @PostMapping("add")
     @ResponseBody
     public SlideShow addSlideShow(

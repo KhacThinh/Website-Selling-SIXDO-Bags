@@ -17,7 +17,8 @@
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <title>Admin Dashboard Panel</title>
+    <title>Quản lý | SIXDO</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -44,6 +45,7 @@
         justify-content: center;
         text-align: center;
     }
+
     .loader::after {
         content: '';
         box-sizing: border-box;
@@ -57,6 +59,7 @@
         border-bottom: 4px solid transparent;
         animation: rotation 0.25s linear infinite reverse;
     }
+
     @keyframes rotation {
         0% {
             transform: rotate(0deg);
@@ -596,7 +599,6 @@
         }
 
 
-
     }
 </style>
 
@@ -606,7 +608,7 @@
 
     <div class="logo-name">
         <div class="logo-image">
-            <img src="images/logo.png" alt="">
+            <img src="../static/images/logo1.jpg" alt="LOGO">
         </div>
         <span class="logo_name">Sixdo Shop</span>
     </div>
@@ -635,7 +637,6 @@
                 <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
                 <ul class="sub-menu" id="subMenu" style="display: none ;
             transition: opacity 0.8s ease">
-
 
 
                     <% if (session.getAttribute("quanLy") != null) { %>
@@ -669,7 +670,7 @@
                         <span class="link-name">Nhân Viên</span>
                     </a></li>
                     <li><a href="/ma-giam-gia?trangThai=true" id="btnMaGiamGia">
-                       <i class="bi bi-tag"></i>
+                        <i class="bi bi-tag"></i>
                         <span class="link-name">Mã Giảm Giá</span>
                     </a></li>
                     <% } else { %>
@@ -677,23 +678,45 @@
                 </ul>
 
             </li>
+            <li>
+                <a href="#" id="">
+                    <i class="bi bi-gear"></i>
+                    <span class="link-name" onclick="toggleSubMenuu()">HỆ THỐNG</span>
+                </a>
+                <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
+                <ul class="sub-menu" id="subMenu2" style="display: none ;
+            transition: opacity 0.8s ease">
+                    <% if (session.getAttribute("quanLy") != null) { %>
+                    <li><a href="/sixdo-shop/cua-hang/manager" id="btnCuaHang">
+                        <i class="bi bi-shop"></i>
+                        <span class="link-name">Thông Tin Cửa Hàng</span>
+                    </a></li>
+                    <li><a href="/sixdo-shop/slide-show/manager" id="btnSlideShow">
+                        <i class="bi bi-card-image"></i>
+                        <span class="link-name">Slide Show</span>
+                    </a></li>
+                    <%} %>
+                </ul>
 
-<%--            <li><a href="#">--%>
-<%--                <i class="uil uil-chart"></i>--%>
-<%--                <span class="link-name">Analytics</span>--%>
-<%--            </a></li>--%>
-<%--            <li><a href="#">--%>
-<%--                <i class="uil uil-thumbs-up"></i>--%>
-<%--                <span class="link-name">Like</span>--%>
-<%--            </a></li>--%>
-<%--            <li><a href="#">--%>
-<%--                <i class="uil uil-comments"></i>--%>
-<%--                <span class="link-name">Comment</span>--%>
-<%--            </a></li>--%>
-<%--            <li><a href="#">--%>
-<%--                <i class="uil uil-share"></i>--%>
-<%--                <span class="link-name">Share</span>--%>
-<%--            </a></li>--%>
+            </li>
+
+
+            <%--            <li><a href="#">--%>
+            <%--                <i class="uil uil-chart"></i>--%>
+            <%--                <span class="link-name">Analytics</span>--%>
+            <%--            </a></li>--%>
+            <%--            <li><a href="#">--%>
+            <%--                <i class="uil uil-thumbs-up"></i>--%>
+            <%--                <span class="link-name">Like</span>--%>
+            <%--            </a></li>--%>
+            <%--            <li><a href="#">--%>
+            <%--                <i class="uil uil-comments"></i>--%>
+            <%--                <span class="link-name">Comment</span>--%>
+            <%--            </a></li>--%>
+            <%--            <li><a href="#">--%>
+            <%--                <i class="uil uil-share"></i>--%>
+            <%--                <span class="link-name">Share</span>--%>
+            <%--            </a></li>--%>
         </ul>
 
         <ul class="logout-mode">
@@ -713,7 +736,8 @@
         </ul>
     </div>
 </nav>
-<div id="loading-spinner" class="spinner-container loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
+<div id="loading-spinner" class="spinner-container loader"
+     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
     <div class="spinner"></div>
 </div>
 <select>
@@ -731,7 +755,7 @@
     //     });
     // });
 
-    document.getElementById("logoutLink").addEventListener("click", function(event) {
+    document.getElementById("logoutLink").addEventListener("click", function (event) {
         event.preventDefault();
 
         Swal.fire({
@@ -747,15 +771,16 @@
         });
 
     });
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Hiển thị spinner
         document.getElementById("loading-spinner").style.display = "block";
 
         // Ẩn spinner sau 3 giây
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById("loading-spinner").style.display = "none";
         }, 150);
     });
+
     function toggleSubMenu() {
         var subMenu = document.getElementById("subMenu");
         subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active
@@ -766,6 +791,18 @@
             subMenu.style.display = "none";
         }
     }
+
+    function toggleSubMenuu() {
+        var subMenu = document.getElementById("subMenu2");
+        subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active
+
+        if (subMenu.style.display === "none") {
+            subMenu.style.display = "block";
+        } else {
+            subMenu.style.display = "none";
+        }
+    }
+
     const body = document.querySelector("body"),
         modeToggle = body.querySelector(".mode-toggle");
     sidebar = body.querySelector("nav");
