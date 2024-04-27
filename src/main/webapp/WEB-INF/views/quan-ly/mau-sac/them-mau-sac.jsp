@@ -65,6 +65,9 @@
         .alert {
             margin-top: 20px;
         }
+        .red-star {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -74,23 +77,23 @@
         <div class="modal-content">
             <h1>MÀU SẮC</h1>
             <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="maMauSac">Mã Màu Sắc</label>
-                                <input  id="maMauSac" class="form-control"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="tenMauSac">Tên Màu Sắc</label>
-                                <input id="tenMauSac" class="form-control"/>
-                            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="maMauSac">Mã Màu Sắc</label><span class="red-star"> *</span>
+                            <input  id="maMauSac" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="tenMauSac">Tên Màu Sắc</label><span class="red-star"> *</span>
+                            <input id="tenMauSac" class="form-control"/>
                         </div>
                     </div>
+                </div>
 
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                        <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addMauSac()">Lưu</button>
-                    </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addMauSac()">Lưu</button>
+                </div>
             </div>
         </div>
     </div>

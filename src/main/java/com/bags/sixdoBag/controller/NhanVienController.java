@@ -21,7 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequestMapping("nhan-vien")
@@ -32,7 +36,8 @@ public class NhanVienController {
     private final TaiKhoanService taiKhoanService;
     private final ChucVuService chucVuService;
     private final NhanVienRepository nhanVienRepository;
-//    @GetMapping("")
+
+    //    @GetMapping("")
 //    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name) {
 //        model.addAttribute("listColors", nhanVienService.getNhanViens());
 //        model.addAttribute("listColors1", taiKhoanService.getTaiKhoans());
@@ -52,7 +57,7 @@ public class NhanVienController {
             khuyenMais = nhanVienService.searchDCKHByChucVuId(chucVuId, pageable);
         } else if (name != null && !name.isEmpty()) {
             model.addAttribute("nameSearch", name);
-            khuyenMais = nhanVienService.searchNhanVienTenOrMa(name, pageable);
+            khuyenMais = nhanVienService.searchNhanVienTenOrMa(name.trim(), pageable);
         } else if (trangThai != null) {
             khuyenMais = nhanVienService.searchcbb(trangThai, pageable);
         } else if (chucVu != null) {
@@ -66,10 +71,10 @@ public class NhanVienController {
         model.addAttribute("listColors2", chucVuService.getListChucVu());
         return "/quan-ly/nhan-vien/view";
     }
+
     @PostMapping("/add")
     public ResponseEntity<?> add(
-
-            @RequestParam("maNhanVien") String maNhanVien,
+            @RequestParam(value = "maNhanVien", required = false) String maNhanVien,
             @RequestParam("hoTen") String hoTen,
             @RequestParam("ngaySinh") String ngaySinh,
             @RequestParam("sdt") String sdt,
@@ -77,15 +82,16 @@ public class NhanVienController {
             @RequestParam("matKhau") String matKhau,
             @RequestParam("queQuan") String queQuan,
             @RequestParam("cccd") String cccd,
-            @RequestParam("thoiGianVao") LocalDateTime thoiGianVao,
-            @RequestParam("thoiGianRa") LocalDateTime thoiGianRa,
+            @RequestParam("thoiGianVao") String thoiGianVao,
             @RequestParam("gioiTinh") Integer gioiTinh,
             @RequestParam("trangThai") Integer trangThai,
             @RequestParam("id") Integer id,
             Model model
     ) {
+
+        String temp;
         System.out.println(id);
-        ChucVu chucVu= chucVuService.getChucVu(id);
+        ChucVu chucVu = chucVuService.getChucVu(id);
         System.out.println(chucVu);
         NhanVien gg = nhanVienRepository.searchNhanVienByMa(maNhanVien);
 
@@ -101,14 +107,24 @@ public class NhanVienController {
             nhanVien1.setQueQuan(queQuan);
             nhanVien1.setCccd(cccd);
             nhanVien1.setThoiGianVao(thoiGianVao);
-            nhanVien1.setThoiGianRa(thoiGianRa);
             nhanVien1.setGioiTinh(gioiTinh);
             nhanVien1.setTrangThai(trangThai);
-            nhanVienService.addNhanVien(nhanVien1);
+            nhanVien1= nhanVienService.addNhanVien(nhanVien1);
+            if (maNhanVien == null || maNhanVien.isEmpty()) {
+                nhanVien1.setMaNhanVien("NV0"+ nhanVien1.getId());
+                nhanVienService.editNhanVien(nhanVien1.getId() , nhanVien1);
+
+            }
             return ResponseEntity.ok("ok");
-        } else{
+        } else {
             return ResponseEntity.ok("errorTen");
         }
+    }
+
+    private String generateRandomMaNhanVien() {
+        // Tạo chuỗi ngẫu nhiên gồm "NV" và hai số ngẫu nhiên
+        String randomNumbers = String.format("%02d", new Random().nextInt(100));
+        return "NV" + randomNumbers;
     }
 
     @PostMapping("/update")
@@ -122,14 +138,13 @@ public class NhanVienController {
                                     @RequestParam("matKhau") String matKhau,
                                     @RequestParam("queQuan") String queQuan,
                                     @RequestParam("cccd") String cccd,
-                                    @RequestParam("thoiGianVao") LocalDateTime thoiGianVao,
-                                    @RequestParam("thoiGianRa") LocalDateTime thoiGianRa,
+                                    @RequestParam("thoiGianVao") String thoiGianVao,
                                     @RequestParam("trangThai") Integer trangThai,
                                     @RequestParam("idCV") Integer idCV
 
     ) {
 
-        ChucVu chucVu= chucVuService.getChucVu(idCV);
+        ChucVu chucVu = chucVuService.getChucVu(idCV);
 
         NhanVien nhanVien = nhanVienService.getidNhanVien(id);
 //        System.out.println(maChucVu);
@@ -145,7 +160,6 @@ public class NhanVienController {
         nhanVien.setCccd(cccd);
         nhanVien.setQueQuan(queQuan);
         nhanVien.setThoiGianVao(thoiGianVao);
-        nhanVien.setThoiGianRa(thoiGianRa);
         nhanVien.setChucVu(chucVu);
 
         nhanVienService.editNhanVien(id, nhanVien);
@@ -157,6 +171,7 @@ public class NhanVienController {
         NhanVien khuyenMai = nhanVienService.getidNhanVien(id);
         if (khuyenMai != null) {
             khuyenMai.setTrangThai(0); // Đánh dấu là không hoạt động thay vì xóa
+
             nhanVienService.editNhanVien(id, khuyenMai); // Cập nhật khuyến mãi
             return ResponseEntity.ok("ok");
         } else {
@@ -164,4 +179,78 @@ public class NhanVienController {
         }
     }
 
+
+    //    @GetMapping("/checkMail")
+//    public @ResponseBody
+//    boolean checkMail(@RequestParam("email") String email) {
+//        NhanVien nhanVien = nhanVienService.getNhanVienByEmail(email);
+//        if (nhanVien != null) {
+//            return true;
+//        }
+//        return false;
+//    }
+    @GetMapping("/checkMail")
+    public @ResponseBody
+    boolean checkMail(@RequestParam("email") String email) {
+        NhanVien nhanVien = nhanVienService.getNhanVienByEmail(email);
+        if (nhanVien != null) {
+            return true; // Email đã tồn tại
+        }
+        return false; // Email không tồn tại
+    }
+
+    //    @GetMapping("/checkSDT")
+//    public @ResponseBody
+//    boolean checkSDT(@RequestParam("sdt") String sdt) {
+//        NhanVien nhanVien = nhanVienService.getNhanVienBySDT(sdt);
+//        if (nhanVien != null) {
+//            return true;
+//        }
+//        return false;
+//    }
+    @GetMapping("/checkSDT")
+    public @ResponseBody
+    boolean checkSDT(@RequestParam("sdt") String sdt) {
+        NhanVien nhanVien = nhanVienService.getNhanVienBySDT(sdt);
+        return nhanVien != null;
+    }
+
+    //    @GetMapping("/checkCCCD")
+//    public @ResponseBody
+//    boolean checkCCCD(@RequestParam("cccd") String cccd) {
+//        NhanVien nhanVien = nhanVienService.getNhanVienByCCCD(cccd);
+//        if (nhanVien != null) {
+//            return true;
+//        }
+//        return false;
+//    }
+    @GetMapping("/checkCCCD")
+    public @ResponseBody
+    boolean checkCCCD(@RequestParam("cccd") String cccd) {
+        NhanVien nhanVien = nhanVienService.getNhanVienByCCCD(cccd);
+        return nhanVien != null;
+    }
+
+    @GetMapping("/checkInfo")
+    public @ResponseBody
+    Map<String, Boolean> checkInfo(
+            @RequestParam("sdt") String sdt,
+            @RequestParam("cccd") String cccd) {
+
+        Map<String, Boolean> result = new HashMap<>();
+
+        // Kiểm tra số điện thoại
+        NhanVien nhanVienBySDT = nhanVienService.getNhanVienBySDT(sdt);
+        result.put("sdtExist", nhanVienBySDT != null);
+
+        // Kiểm tra số căn cước
+        NhanVien nhanVienByCCCD = nhanVienService.getNhanVienByCCCD(cccd);
+        result.put("cccdExist", nhanVienByCCCD != null);
+
+        return result;
+    }
 }
+
+// Kiểm tra email
+//        NhanVien nhanVienByEmail = nhanVienService.getNhanVienByEmail(email);
+//        result.put("emailExist", nhanVienByEmail != null);

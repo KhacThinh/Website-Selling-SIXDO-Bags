@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.repository.DoiTuongSuDungRepository;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -61,7 +64,9 @@ public String getMGG(Model model, @RequestParam(name = "name", required = false)
             doiTuongSuDung.setTenDoiTuongSuDung(tenDoiTuongSuDung);
             doiTuongSuDung.setTrangThai(trangThai);
             doiTuongSuDungService.addDoiTuongSuDung(doiTuongSuDung);
-            return ResponseEntity.ok("ok");
+
+            List<DoiTuongSuDung> listDM = doiTuongSuDungService.getListDoiTuongSuDung();
+            return ResponseEntity.ok(listDM);
         } else  {
             return ResponseEntity.ok("errorMa");
         }

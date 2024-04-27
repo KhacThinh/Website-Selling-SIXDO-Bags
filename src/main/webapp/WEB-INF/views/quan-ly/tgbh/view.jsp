@@ -56,14 +56,6 @@
         .detail-product {
             background-color: #f8f9fa;
         }
-        #test th,
-        #test td {
-            font-size: smaller; /* Hoặc bạn có thể sử dụng kích thước chữ mong muốn */
-        }
-        /* CSS styles */
-        #test th {
-            border-bottom: 1px #007bff dashed; /* Màu và kiểu của đường vạch ngăn cách */
-        }
         /*//*/
         .search-form .input-group-append .btn {
             border-radius: 20px;
@@ -105,32 +97,60 @@
         .input-group .form-control {
             height: 100%;
         }
+        .status.pending {
+            padding: 2px 4px;
+            background: red;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status.dangxuly {
+            padding: 2px 4px;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
         .bold {
             font-weight: bold;
         }
-
     </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container">
     <div class="title text-center pt-5">
-        <h2 class="position-relative d-inline-block">QUẢN LÝ MÀU SẮC</h2>
+        <h2 class="position-relative d-inline-block">QUẢN LÝ BẢO HÀNH</h2>
     </div>
     <div class="row">
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
-                data-bs-target="#modalAdd">
-            <i class="bi bi-plus-square-fill"></i><span>THÊM MÀU SẮC</span>
+                data-bs-target="#modalAddTGBH">
+            <i class="bi bi-bag-plus-fill"></i> <span>THÊM LOẠI BẢO HÀNH</span>
         </button>
-        <jsp:include page="them-mau-sac.jsp"/>
+        <jsp:include page="them-thoi-gian.jsp"/>
     </div>
 </div>
 <div class="container mt-4">
     <div class="row justify-content-between">
         <div class="col-md-4">
+            <form action="/thoi_gian_bao_hanh" class="search-form" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="form-select" name="trangThai" id="trangThaiSelect">
+                            <option value="">Tất Cả</option>
+                            <option  value="true">Hoạt động</option>
+                            <option value="false">Không hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
+
         <div class="col-md-4">
-            <form action="/mau-sac" class="search-form" method="get">
+            <form action="/thoi_gian_bao_hanh" class="search-form" method="get">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -148,60 +168,98 @@
     <div id="test">
         <table class="table table-sm table-hover table-striped mb-5">
             <thead>
-            <tr>
+            <tr >
                 <th scope="col">Stt</th>
-                <th scope="col">Mã</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Hoạt Động</th>
+                <th scope="col">MÃ</th>
+                <th scope="col">THỜI GIAN</th>
+                <th scope="col">TRẠNG THÁI</th>
+                <th scope="col">HOẠT ĐỘNG</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${listColors.content}" var="sp" varStatus="i">
-                <tr id="record_${sp.id}">
+            <c:forEach items="${ listColors.content }" var="th" varStatus="i">
+                <tr id="record_${th.id}">
                     <td class="bold">${i.index + 1}</td>
-                    <td>${sp.maMauSac}</td>
-                    <td>${sp.tenMauSac}</td>
+                    <td>${th.ma}</td>
+                    <td>${th.thoiGian}</td>
+                    <td><span
+                            class="status ${th.trangThai == true ? 'dangxuly' : 'pending'}">${th.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span>
+                    </td>
+
+
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                            <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalUpdate${sp.id}"><i class="bi bi-pencil"></i> Sửa
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#modalUpdate${th.id}"><i
+                                        class="bi bi-pencil"></i> Sửa
                                 </button>
-                            </li>
-                            <a class="dropdown-item delete-color" href="#" onclick="xoaMauSac(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>
+                            <li>
+                                    <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
+                                <a class="dropdown-item delete-color" href="#" onclick="xoaTGBH(${th.id})"><i class="bi bi-trash3"></i> Xóa</a>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                         </ul>
-                        <div class="modal fade" id="modalUpdate${sp.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                            <%--                        Modal update--%>
+                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Màu Sắc</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Thời Gian Bảo Hành</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" hidden>
+                                            <label  class="form-label">Id
+                                                <span>*</span></label>
+                                            <input value="${th.id}" name="id" id="id" class="form-control"/>
+                                        </div>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
-                                            <div class="mb-3 row">
-                                                <label for="maMauSac" class="col-sm-3 col-form-label">Mã <span>*</span></label>
-                                                <div class="col-sm-9">
-                                                    <input value="${sp.maMauSac}" name="maMauSac" id="maUpdate${sp.id}" class="form-control"readonly>
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Mã
+                                                        <span>*</span></label>
+                                                    <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control"/>
                                                 </div>
                                             </div>
-                                            <div class="mb-3 row">
-                                                <label for="tenMauSac" class="col-sm-3 col-form-label">Tên <span>*</span></label>
-                                                <div class="col-sm-9">
-                                                    <input value="${sp.tenMauSac}" name="ten" id="tenUpdate${sp.id}" class="form-control">
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label">Thời Gian
+                                                        <span>*</span></label>
+                                                    <input value="${th.thoiGian}" name="thoiGian" id="thoiGianUpdate${th.id}" class="form-control"/>
+
                                                 </div>
                                             </div>
-                                        </form>
+                                            <div class="form-group">
+                                                <label  class="form-label">Trạng thái
+                                                    <span>*</span></label>
+                                                <select name="trangThai" id="trangThaiUpdate${th.id}" class="form-select">
+                                                    <option value="true"${th.trangThai == true ? 'selected' : ''}>Hoạt động</option>
+                                                    <option value="false" ${th.trangThai == false? 'selected' : ''}>Không hoạt động</option>
+                                                </select>
+                                                    <%--                                                <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>--%>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                                        <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateMauSac(${sp.id})">Lưu</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Thoát
+                                        </button>
+                                        <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateTGBH(${th.id})">Lưu</button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -214,7 +272,7 @@
             <ul class="pagination">
                 <c:forEach begin="1" end="${listColors.totalPages}" varStatus="loop">
                     <li class="page-item">
-                        <a class="page-link" href="/mau-sac?page=${loop.begin+loop.count-2}">
+                        <a class="page-link" href="/thoi_gian_bao_hanh?page=${loop.begin+loop.count-2}">
                                 ${loop.begin+loop.count-1}
                         </a>
                     </li>
@@ -228,98 +286,107 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+
 <script>
-    function xoaMauSac(idMauSac) {
+    function xoaTGBH(id) {
         $.ajax({
-            url: '/mau-sac/delete',
+            url: '/thoi_gian_bao_hanh/delete/' + id,
             type: 'POST',
-            data: ({idMauSac: idMauSac}),
-            success: function (response) {
-                $('#record_' + idMauSac).remove();
-                Swal.fire({
-                    title: "Good job!",
-                    text: "Xóa Thành Công!",
-                    icon: "success"
-                });
-            },
-            error: function (error) {
-                console.error("Lỗi khi xóa màu sắc:", error);
-            }
-        });
-
-    }
-
-    function addMauSac(){
-        var maMauSac = document.getElementById("maMauSac").value;
-        var tenMauSac = document.getElementById("tenMauSac").value;
-
-        console.log(maMauSac);
-        console.log(tenMauSac);
-        if (
-            maMauSac.trim() === ""
-            || tenMauSac.trim() === ""
-        ) {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
-            return false;
-        }
-        $.ajax({
-            url: '/mau-sac/add',
-            type: 'POST',
-            data:{
-                maMauSac: maMauSac,
-                tenMauSac: tenMauSac,
-            },
-            success: function (response) {
-                if(response === "ok"){
+            success: function(response) {
+                if (response === "ok") {
                     Swal.fire({
                         title: "Good job!",
-                        text: "Thêm Thành Công!",
+                        text: "Xóa Thành Công!",
                         icon: "success"
                     }).then((result) => {
                         if (result.isConfirmed || result.isDismissed) {
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Lỗi khi xóa thời gian bảo hành",
+                        icon: "error"
+                    });
                 }
-                else if(response === "errorMa"){
-                    toastr.error("mã trùng");
-                }else if(response === "errorTen"){
-                    toastr.error("Trùng Tên");
-                }
-
             },
-            error: function (error) {
-                console.error("Lỗi khi thanh toán:", error);
-                toastr.error("Có lỗi xảy ra");
+            error: function(xhr, status, error) {
+                console.error("Có lỗi xảy ra:", error);
+
+                Swal.fire({
+                    title: "Error!",
+                    text: "Có lỗi xảy ra khi xóa thời gian bảo hành",
+                    icon: "error"
+                });
             }
         });
     }
 
-    function updateMauSac(id) {
-        var maMauSac = document.getElementById("maUpdate" + id).value;
-        var tenMauSac = document.getElementById("tenUpdate" + id).value;
+    function addThoiGian() {
+        var ma = document.getElementById("ma").value;
+        var thoiGian = document.getElementById("thoiGian").value;
+        var trangThai = document.getElementById("trangThai").value;
+
+        if (ma.trim() === ""||thoiGian==="" ) {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+        $.ajax({
+            url: '/thoi_gian_bao_hanh/add',
+            type: 'POST',
+            data: {
+                ma: ma,
+                thoiGian: thoiGian,
+                trangThai: trangThai,
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload();
+                        }
+                    });
+                } else if (response === "errorMa") {
+                    toastr.error("Mã trùng");
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
+            }
+        });
+
+    }
+
+    function updateTGBH(id) {
+        var ma = document.getElementById("maUpdate" + id).value;
+        var thoiGian = document.getElementById("thoiGianUpdate" + id).value;
+        var trangThai = document.getElementById("trangThaiUpdate" + id).value;
 
 
-
-        console.log(maMauSac);
-        if (maMauSac.trim() === "" || tenMauSac.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+        console.log(ma);
+        if (ma.trim() === "" || thoiGian === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
             return false;
         }
 
         $.ajax({
-            url: '/mau-sac/update',
+            url: '/thoi_gian_bao_hanh/update',
             type: 'POST',
             data: {
                 id: id,
-                maMauSac: maMauSac,
-                tenMauSac: tenMauSac,
-
+                ma: ma,
+                thoiGian: thoiGian,
+                trangThai: trangThai,
             },
             success: function (response) {
                 if (response === "ok") {
@@ -334,8 +401,6 @@
                     });
                 } else if (response === "errorMa") {
                     toastr.error("Mã trùng");
-                } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {
@@ -345,8 +410,25 @@
         });
 
     }
+    document.getElementById('trangThaiSelect').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue !== '') {
+            window.location.href = '/thoi_gian_bao_hanh?trangThai=' + selectedValue;
+        } else {
+            window.location.href = '/thoi_gian_bao_hanh';
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var trangThaiValue = urlParams.get('trangThai');
+        if (trangThaiValue !== null) {
+            document.getElementById('trangThaiSelect').value = trangThaiValue;
+        }
+    });
 </script>
+
+
 </body>
 
 </html>
-

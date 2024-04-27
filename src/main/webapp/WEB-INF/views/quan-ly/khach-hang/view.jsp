@@ -105,7 +105,26 @@
         .input-group .form-control {
             height: 100%;
         }
+        .status.pending {
+            padding: 2px 4px;
+            background: red;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
+        .status.dangxuly {
+            padding: 2px 4px;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -144,10 +163,10 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                     </div>
-                    <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                    </div>
+                    <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo sđt hoặc tên...">
+                    <%--                    <div class="input-group-append">--%>
+                    <%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
+                    <%--                    </div>--%>
                 </div>
             </form>
         </div>
@@ -173,7 +192,7 @@
             <tbody>
             <c:forEach items="${listColors.content}" var="sp" varStatus="i">
                 <tr  id="record_${sp.id}">
-                    <td>${i.index + 1}</td>
+                    <td class="bold">${i.index + 1}</td>
                     <td>${sp.taiKhoan.tenDangNhap}</td>
                     <td>${sp.maKhachHang}</td>
                     <td>${sp.tenKhachHang}</td>
@@ -181,7 +200,8 @@
                     <td>${sp.ngaySinh}</td>
                     <td>${sp.sdt}</td>
                     <td>${sp.email}</td>
-                    <td>${sp.trangThai == 1 ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
+                    <td><span class="status ${sp.trangThai == 1 ? 'dangxuly' : 'pending'}">${sp.trangThai == 1 ? 'Hoạt Động' : 'Không Hoạt Động'}</span></td>
+
 
 
                     <td>
@@ -189,16 +209,21 @@
                                 class="bi bi-three-dots-vertical"></i></a>
                         <ul class="dropdown-menu">
                             <li>
-                            <li>
-                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalUpdateKhachHang${sp.id}"><i class="bi bi-pencil"></i> Sửa
-                            </button>
-                        </li>
+                                    <%--                            <li>--%>
+                                    <%--                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalUpdateKhachHang${sp.id}"><i class="bi bi-pencil"></i> Sửa--%>
+                                    <%--                            </button>--%>
+                                    <%--                        </li>--%>
 
                             </li>
                                 <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
                             <a class="dropdown-item delete-color" href="#" onclick="xoaKhachHang(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>
                             <li>
                                 <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item btnXemDonHang" data-id="${sp.id}" data-bs-toggle="modal" data-bs-target="#modalThongTinDonHang${sp.id}">
+                                    <i class="bi bi-eye"></i> Xem Đơn Hàng
+                                </button>
                             </li>
                         </ul>
 
@@ -268,6 +293,36 @@
                                 </div>
                             </div>
                         </div>
+                            <%--                        Modal xem dơn hàng--%>
+                        <div class="modal fade" id="modalThongTinDonHang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Đơn Hàng</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>MÃ HOÁ ĐƠN</th>
+                                                <th>TÊN KHÁCH HÀNG</th>
+                                                <th>SDT KHÁCH HÀNG</th>
+                                                <th>THỜI GIAN TẠO</th>
+                                                <th>TỔNG TIỀN</th>
+                                                <th>TRẠNG THÁI</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="donHangTableBody"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
 
@@ -278,7 +333,7 @@
             <ul class="pagination">
                 <c:forEach begin="1" end="${listColors.totalPages}" varStatus="loop">
                     <li class="page-item">
-                        <a class="page-link" href="/khuyen_mai?page=${loop.begin+loop.count-2}">
+                        <a class="page-link" href="/khach_hang?page=${loop.begin+loop.count-2}">
                                 ${loop.begin+loop.count-1}
                         </a>
                     </li>
@@ -295,6 +350,83 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
+<%--Xem đơn hàng--%>
+<script>
+    $(document).ready(function () {
+        $('.btnXemDonHang').click(function () {
+            var idKh = $(this).data('id');
+
+            $.ajax({
+                url: '/khach_hang/getHoaDonByKhachHang',
+                type: 'GET',
+                data: {id: idKh},
+                success: function (response) {
+                    console.log(response);
+                    var tableBody = $('#donHangTableBody');
+                    tableBody.empty();
+                    if(response.length===0){
+                        var noResultRow = "<tr  style='color: #0E4BF1'>";
+                        noResultRow += "<td colspan='4'>Chưa có đơn hàng nào...</td>";
+                        noResultRow += "</tr>";
+                        tableBody.append(noResultRow);
+                    }
+
+
+                    response.forEach(function (donHang, index) {
+                        var row = $('<tr></tr>');
+                        row.append('<td>' + (index + 1) + '</td>');
+                        row.append('<td>' + donHang.maHoaDon + '</td>');
+                        row.append('<td>' + donHang.tenNguoiNhan + '</td>');
+                        row.append('<td>' + donHang.sdtNguoiNhan + '</td>');
+                        row.append('<td>' + donHang.thoiGianTao + '</td>');
+                        row.append('<td>' + donHang.tongTien.toLocaleString() + ' đ</td>');
+                        var trangThaiString = '';
+                        switch (donHang.trangThai) {
+                            case 0:
+                                trangThaiString = 'Đã Thanh Toán Tại Quầy';
+                                break;
+                            case 1:
+                                trangThaiString = 'Hóa Đơn Tạm';
+                                break;
+                            case 2:
+                                trangThaiString = 'Chưa Xác Nhận';
+                                break;
+                            case 3:
+                                trangThaiString = 'Đã Xác Nhận';
+                                break;
+                            case 4:
+                                trangThaiString = 'Đã Hủy';
+                                break;
+                            case 5:
+                                trangThaiString = 'Đang Giao Hàng';
+                                break;
+                            case 6:
+                                trangThaiString = 'Giao Hàng Thành Công';
+                                break;
+                            default:
+                                trangThaiString = 'Unknown';
+                        }
+                        row.append('<td >' + trangThaiString + '</td>');
+                        tableBody.append(row);
+
+
+                    });
+
+                    $('#modalThongTinDonHang').modal('show');
+                },
+
+
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+
 
 <script>
 
@@ -333,37 +465,41 @@
     }
 
     function addKhachHang() {
-        // var maKhachHang = document.getElementById("maKhachHang").value;
+        var maKhachHang = document.getElementById("maKhachHang").value;
         var tenKhachHang = document.getElementById("tenKhachHang").value;
-         var gioiTinh = document.getElementById("gioiTinh").value;
+        var gioiTinh = document.getElementById("gioiTinh").value;
         var ngaySinh = document.getElementById("ngaySinh").value;
         var sdt = document.getElementById("sdt").value;
         var email = document.getElementById("email").value;
-        var matKhau = document.getElementById("matKhau").value;
+        // var matKhau = document.getElementById("matKhau").value;
         var trangThai = document.getElementById("trangThai").value;
-        if (
-             tenKhachHang.trim() === ""
-            || sdt.trim() === ""
-        ) {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
+        if (tenKhachHang.trim() === "") {
+            toastr.error("Vui lòng điền tên khách hàng ");
             return false;
-        }   var phoneNumberRegex = /^(0\d{9,9})$/;
+        }
+        if (sdt.trim() === "") {
+            toastr.error("Vui lòng điền sđt ");
+            return false;
+        }
+
+
+        var phoneNumberRegex = /^(0\d{9}|\+84\d{9}|84\d{9})$/;
         if (!phoneNumberRegex.test(sdt)) {
             toastr.error("Số điện thoại không đúng định dạng");
             return false;
         }
 
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            toastr.error("Email không đúng định dạng.");
-            return false;
+
+        // Kiểm tra nếu email được nhập vào
+        if (email.trim() !== "") {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                toastr.error("Email không đúng định dạng.");
+                return false;
+            }
         }
 
-        // Kiểm tra độ dài mật khẩu
-        if (matKhau.trim().length < 6) {
-            toastr.error("Mật khẩu phải có ít nhất 6 kí tự.");
-            return false;
-        }
+
         var dob = new Date(ngaySinh);
         var currentDate = new Date();
         if (dob >= currentDate) {
@@ -371,46 +507,115 @@
             return false;
         }
 
-
         $.ajax({
-            url: '/khach_hang/add',
-            type: 'POST',
+            url: '/khach_hang/checkSDT',
+            type: 'GET',
             data: {
-                // maKhachHang:maKhachHang,
-                tenKhachHang: tenKhachHang,
-                gioiTinh: gioiTinh,
-                ngaySinh: ngaySinh,
-                sdt: sdt,
-                email: email,
-                matKhau: matKhau,
-                trangThai: trangThai,
-                // taiKhoan : taiKhoan,
+                sdt: sdt
             },
-            success: function (response) {
-                if (response === "ok") {
-                    Swal.fire({
-                        title: "Good job!",
-                        text: "Thêm Thành Công!",
-                        icon: "success"
-                    }).then((result) => {
-                        if (result.isConfirmed || result.isDismissed) {
-                            window.location.reload(); // Load lại trang nếu thành công
-                        }
-                    });
+            success: function (sdtResponse) {
+                if (sdtResponse) {
+                    toastr.error("Số điện thoại đã tồn tại.");
+                } else {
+                    // Kiểm tra nếu email được nhập vào
+                    if (email.trim() !== "") {
+                        // Tiếp tục kiểm tra email
+                        $.ajax({
+                            url: '/khach_hang/checkMail',
+                            type: 'GET',
+                            data: {
+                                mail: email // Sửa thành 'email' thay vì 'mail'
+                            },
+                            success: function (mailResponse) {
+                                if (mailResponse) {
+                                    toastr.error("Email đã tồn tại.");
+                                } else {
+                                    // Tiếp tục thêm khách hàng
+                                    $.ajax({
+                                        url: '/khach_hang/add',
+                                        type: 'POST',
+                                        data: {
+                                            maKhachHang: maKhachHang,
+                                            tenKhachHang: tenKhachHang,
+                                            gioiTinh: gioiTinh,
+                                            ngaySinh: ngaySinh,
+                                            sdt: sdt,
+                                            email: email,
+
+                                            trangThai: trangThai,
+                                        },
+                                        success: function (response) {
+                                            if (response === "ok") {
+                                                Swal.fire({
+                                                    title: "Good job!",
+                                                    text: "Thêm Thành Công!",
+                                                    icon: "success"
+                                                }).then((result) => {
+                                                    if (result.isConfirmed || result.isDismissed) {
+                                                        window.location.reload();
+                                                    }
+                                                });
+                                            } else if (response === "errorMa") {
+                                                toastr.error("Mã trùng");
+                                            }
+                                        },
+                                        error: function (error) {
+                                            console.error("Có lỗi xảy ra:", error);
+                                            toastr.error("Có lỗi xảy ra");
+                                        }
+                                    });
+                                }
+                            },
+                            error: function (error) {
+                                console.error("Có lỗi xảy ra:", error);
+                                toastr.error("Đã có lỗi xảy ra khi kiểm tra email.");
+                            }
+                        });
+                    } else {
+                        // Nếu không có email, tiếp tục thêm khách hàng mà không cần kiểm tra email
+                        $.ajax({
+                            url: '/khach_hang/add',
+                            type: 'POST',
+                            data: {
+                                maKhachHang: maKhachHang,
+                                tenKhachHang: tenKhachHang,
+                                gioiTinh: gioiTinh,
+                                ngaySinh: ngaySinh,
+                                sdt: sdt,
+                                email: email,
+
+                                trangThai: trangThai,
+                            },
+                            success: function (response) {
+                                if (response === "ok") {
+                                    Swal.fire({
+                                        title: "Good job!",
+                                        text: "Thêm Thành Công!",
+                                        icon: "success"
+                                    }).then((result) => {
+                                        if (result.isConfirmed || result.isDismissed) {
+                                            window.location.reload();
+                                        }
+                                    });
+                                } else if (response === "errorMa") {
+                                    toastr.error("Mã trùng");
+                                }
+                            },
+                            error: function (error) {
+                                console.error("Có lỗi xảy ra:", error);
+                                toastr.error("Khách hàng này đã tồn tại");
+                            }
+                        });
+                    }
                 }
-                // else if (response === "errorMa") {
-                //     alert("mã trùng");
-                // } else if (response === "errorTen") {
-                //     alert("Trùng Tên");
-                // }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
-                toastr.error("Có lỗi xảy ra");
+                toastr.error("Đã có lỗi xảy ra khi kiểm tra số điện thoại.");
             }
         });
-
     }
+
 
     function updateKhachHang(id) {
         var tenKhachHang = document.getElementById("tenUpdate" + id).value;
@@ -418,7 +623,7 @@
         var ngaySinh = document.getElementById("ngaySinhUpdate" + id).value;
         var sdt = document.getElementById("sdtUpdate" + id).value;
         var email = document.getElementById("emailUpdate" + id).value;
-        var matKhau = document.getElementById("matKhauUpdate" + id).value;
+
         var trangThai = document.getElementById("trangThaiUpdate" + id).value;
 
         if (tenKhachHang.trim() === "" || sdt.trim() === "") {
@@ -440,10 +645,7 @@
         }
 
         // Kiểm tra độ dài mật khẩu
-        if (matKhau.trim().length < 6) {
-            toastr.error("Mật khẩu phải có ít nhất 6 kí tự.");
-            return false;
-        }
+
 
         var dob = new Date(ngaySinh);
         var currentDate = new Date();
@@ -462,7 +664,7 @@
                 ngaySinh: ngaySinh,
                 sdt: sdt,
                 email: email,
-                matKhau: matKhau,
+
                 trangThai: trangThai
             },
             success: function (response) {

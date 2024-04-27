@@ -2,6 +2,9 @@ package com.bags.sixdoBag.model.repository;
 
 import com.bags.sixdoBag.model.entitys.ThoiGianBaoHanh;
 
+import com.bags.sixdoBag.model.entitys.ThuongHieu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,9 +21,15 @@ public interface ThoiGianBaoHanhRepository extends JpaRepository<ThoiGianBaoHanh
             "where trang_thai = 1) select * from x where rs between :page and :size", nativeQuery = true)
     public List<ThoiGianBaoHanh> findByPageing(int page, int size);
 
-    @Query(value = "select * from thoi_gian_bao_hanh where ma like %:tenMa%", nativeQuery = true)
-    List<ThoiGianBaoHanh> searchTenThuongHieuMa(String tenMa);
+    @Query(value = "select th from ThoiGianBaoHanh th where th.ma =:maTG")
+    ThoiGianBaoHanh searchTGByMa(String maTG);
+
+    Page<ThoiGianBaoHanh> findAll(Pageable pageable);
 
     @Query(value = "select * from thoi_gian_bao_hanh where thoi_gian  =?1", nativeQuery = true)
-    List<ThoiGianBaoHanh> searchTenThuongHieuTime(Integer time);
+    Page<ThoiGianBaoHanh> searchTime(Integer tenMa,Pageable pageable);
+
+
+    @Query("select x from ThoiGianBaoHanh x where x.trangThai = :name")
+    Page<ThoiGianBaoHanh> searchCbb(boolean name, Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.ThuongHieuRepository;
@@ -76,7 +77,9 @@ public class ThuongHieuController {
             thuongHieu.setTen(tenThuongHieu);
             thuongHieu.setTrangThai(trangThaiTT);
             thuongHieuService.addThuongHieu(thuongHieu);
-            return ResponseEntity.ok("ok");
+
+            List<ThuongHieu> listDM = thuongHieuService.getThuongHieus();
+            return ResponseEntity.ok(listDM);
         } else if (th1 != null && th2 == null) {
             return ResponseEntity.ok("errorMa");
         } else {

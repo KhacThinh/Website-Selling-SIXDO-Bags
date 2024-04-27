@@ -65,6 +65,9 @@
         .alert {
             margin-top: 20px;
         }
+        .red-star {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -77,19 +80,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="maDanhMuc">Mã Chức Vụ</label>
+                            <label for="maDanhMuc">Mã Danh Mục</label><span class="red-star"> *</span>
                             <input  id="maDanhMuc" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="tenDanhMuc">Tên Chức Vụ</label>
+                            <label for="tenDanhMuc">Tên Danh Mục</label><span class="red-star"> *</span>
                             <input id="tenDanhMuc" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="trangThai">Trạng Thái:</label>
-                        <select id="trangThai" name="trangThai">
+                        <select id="trangThai" name="trangThai" class="form-select" disabled>
                             <option value="1">Hoạt Động</option>
-                            <%--                            <option value="0">Không Hoạt Động</option>--%>
                         </select>
                     </div>
                 </div>

@@ -203,6 +203,7 @@ trang_thai int
 )
 
 
+
 create table ma_giam_gia(
 id int IDENTITY(1, 1)  PRIMARY KEY not null,
 ma_giam_gia varchar(100) unique,

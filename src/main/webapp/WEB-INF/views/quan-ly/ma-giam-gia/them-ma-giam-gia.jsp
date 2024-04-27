@@ -79,6 +79,9 @@
         .alert {
             margin-top: 20px;
         }
+        .red-star {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -92,12 +95,12 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="maGiamGia">Mã Giảm Giá</label>
+                            <label for="maGiamGia">Mã Giảm Giá</label><span class="red-star"> *</span>
                             <input id="maGiamGia" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="giaTriGiam">Giá Trị Giảm</label>
+                            <label for="giaTriGiam">Giá Trị Giảm</label><span class="red-star"> *</span>
                             <input id="giaTriGiam" class="form-control"/>
                         </div>
 
@@ -106,23 +109,23 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="tenMaGiamGia">Tên Mã Giảm Giá</label>
+                            <label for="tenMaGiamGia">Tên Mã Giảm Giá</label><span class="red-star"> *</span>
                             <input id="tenMaGiamGia" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="soLuong">Số lượng</label>
+                            <label for="soLuong">Số lượng</label><span class="red-star"> *</span>
                             <input id="soLuong" class="form-control"/>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="ngayBatDau">Ngày Bắt Đầu</label>
+                            <label for="ngayBatDau">Ngày Bắt Đầu</label><span class="red-star"> *</span>
                             <input type="datetime-local" id="ngayBatDau" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="dieuKienGiam">Điều Kiện</label>
+                            <label for="dieuKienGiam">Điều Kiện</label><span class="red-star"> *</span>
                             <input id="dieuKienGiam" class="form-control"/>
                         </div>
                     </div>
@@ -131,7 +134,7 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="ngayKetThuc">Ngày Kết Thúc</label>
+                            <label for="ngayKetThuc">Ngày Kết Thúc</label><span class="red-star"> *</span>
                             <input type="datetime-local" id="ngayKetThuc" class="form-control"/>
                         </div>
 

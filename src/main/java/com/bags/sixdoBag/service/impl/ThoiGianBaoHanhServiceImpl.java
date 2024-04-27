@@ -4,6 +4,9 @@ import com.bags.sixdoBag.model.entitys.ThoiGianBaoHanh;
 import com.bags.sixdoBag.model.repository.ThoiGianBaoHanhRepository;
 import com.bags.sixdoBag.service.ThoiGianBaoHanhService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,16 +58,28 @@ public class ThoiGianBaoHanhServiceImpl implements ThoiGianBaoHanhService {
         return thoiGianBaoHanhs;
     }
 
-    @Override
-    public List<ThoiGianBaoHanh> searchMa(String ma) {
-        List<ThoiGianBaoHanh>listSearchMa= thoiGianBaoHanhRepository.searchTenThuongHieuMa(ma);
-        return listSearchMa;
-    }
+//    @Override
+//    public List<ThoiGianBaoHanh> searchMa(String ma) {
+//        List<ThoiGianBaoHanh>listSearchMa= thoiGianBaoHanhRepository.searchTenThuongHieuMa(ma);
+//        return listSearchMa;
+//    }
+//
+//    @Override
+//    public List<ThoiGianBaoHanh> searchTime(Integer time) {
+//        List<ThoiGianBaoHanh>listSearchTime = thoiGianBaoHanhRepository.searchTenThuongHieuTime(time);
+//        return listSearchTime;
+//    }
 
     @Override
-    public List<ThoiGianBaoHanh> searchTime(Integer time) {
-        List<ThoiGianBaoHanh>listSearchTime = thoiGianBaoHanhRepository.searchTenThuongHieuTime(time);
-        return listSearchTime;
+    public Page<ThoiGianBaoHanh> searchTime(Integer tenMa, Pageable pageable) {
+        return thoiGianBaoHanhRepository.searchTime(tenMa,pageable);
+    }
+
+
+
+    @Override
+    public Page<ThoiGianBaoHanh> searchcbb(boolean name, Pageable pageable) {
+        return thoiGianBaoHanhRepository.searchCbb(name,pageable);
     }
 
 

@@ -53,7 +53,6 @@ public class NhanVienServiceImpl implements NhanVienService {
         nv.setQueQuan(nhanVien.getQueQuan());
         nv.setCccd(nhanVien.getCccd());
         nv.setThoiGianVao(nhanVien.getThoiGianVao());
-        nv.setThoiGianRa(nhanVien.getThoiGianRa());
         nv.setGioiTinh(nhanVien.getGioiTinh());
         nv.setTrangThai(1);
 
@@ -63,10 +62,6 @@ public class NhanVienServiceImpl implements NhanVienService {
         } else {
             nv.setChucVu(chucVuService.getChucVu(idChucVu));
         }
-
-//        Integer idChucVu = nhanVien.getIdChucVu();
-//        Optional.ofNullable(idChucVu)
-//        .ifPresent(idCV -> nv.setChucVu(chucVuService.getChucVu(idCV)));
 
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setTenDangNhap(nhanVien.getEmail());
@@ -139,4 +134,21 @@ public class NhanVienServiceImpl implements NhanVienService {
     public Page<NhanVien> searchDCKHByChucVuId(Long khachHangId, Pageable pageable) {
         return nhanVienRepository.findByChucVuId(khachHangId, pageable);
     }
+
+    @Override
+    public NhanVien getNhanVienByEmail(String email) {
+        return nhanVienRepository.getNhanVienByEmail(email);
+    }
+
+    @Override
+    public NhanVien getNhanVienBySDT(String sdt) {
+        return nhanVienRepository.getNhanVienBySDT(sdt);
+    }
+
+    @Override
+    public NhanVien getNhanVienByCCCD(String cccd) {
+        return nhanVienRepository.getNhanVienByCCCD(cccd);
+    }
+
+
 }

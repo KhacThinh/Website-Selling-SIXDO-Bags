@@ -62,22 +62,31 @@ public class LoginController {
         return "redirect:/login/hien-thi";
     }
 
-//    @PostMapping("/buyer-login/check")
-//    public String loginByBuyer(@RequestParam("username-login") String userName,
-//                               @RequestParam("password-login") String passWord, Model model) {
-//        GioHangRequest gioHangRequest = new GioHangRequest();
-//
-//        KhachHang khachHang = khachHangService.getKhachHangByUserNameAndPassword(userName, passWord);
-//        if (khachHang != null) {
-//            gioHangRequest.setIdKhachHang(khachHang.getId());
-//            gioHangService.addGioHang(gioHangRequest);
-//            session.setAttribute("buyer", khachHang);
-//            return "redirect:/sixdo-shop";
-//        } else {
-//            return "ban-hang-online/home/buyer-login";
-//        }
-//
-//    }
+    @PostMapping("/mmployee-login/check")
+    public @ResponseBody
+    int Employeeloginr(@RequestParam("email") String email,
+                       @RequestParam("mat_khau") String mat_khau, Model model) {
+
+        NhanVien nv = nhanVienService.loginNhanVien(email, mat_khau);
+        if (email.trim().isEmpty() && mat_khau.trim().isEmpty()) {
+            throw new IllegalArgumentException("tài khoản mật khẩu không được để trống");
+
+        }
+
+        if (Objects.nonNull(nv)) {
+            if (nv.getChucVu().getId() == 1) {
+                session.setAttribute("quanLy", nv);
+                return 1;
+            } else {
+                session.setAttribute("nhanVien", nv);
+                return 2;
+            }
+
+        } else {
+            return 0;
+        }
+
+    }
 
     @PostMapping("/login/dang-nhap-nhan-vien")
     public String dangNhapNhanVien(@RequestParam("email") String email, @RequestParam("mat_khau") String mat_khau, Model model) {
@@ -93,7 +102,7 @@ public class LoginController {
             session.setAttribute("error", "Sai tên hoặc mk");
 
             return "login";
-        } else if (nv.getChucVu().getId() == 1) {
+        } else if (nv.getChucVu().getId() == 4) {
             session.setAttribute("quanLy", nv);
             return "redirect:/thong-ke";
         }

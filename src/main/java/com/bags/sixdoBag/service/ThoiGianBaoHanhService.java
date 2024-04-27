@@ -1,6 +1,9 @@
 package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.entitys.ThoiGianBaoHanh;
+import com.bags.sixdoBag.model.entitys.ThuongHieu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +23,10 @@ public interface ThoiGianBaoHanhService {
 
     public List<ThoiGianBaoHanh> pageThoiGianBaoHanh(int limit, int size);
 
-    public List<ThoiGianBaoHanh>searchMa(String ma);
-    public List<ThoiGianBaoHanh>searchTime(Integer time);
+    //    public List<ThoiGianBaoHanh>searchMa(String ma);
+//    public List<ThoiGianBaoHanh>searchTime(Integer time);
+    public Page<ThoiGianBaoHanh> searchTime(Integer tenMa, Pageable pageable);
 
+
+    public Page<ThoiGianBaoHanh> searchcbb(boolean name, Pageable pageable);
 }

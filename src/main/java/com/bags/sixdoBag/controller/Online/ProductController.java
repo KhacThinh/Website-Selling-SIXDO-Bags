@@ -428,11 +428,16 @@ public class ProductController {
         hoaDonService.saveHoaDon(hoaDon);
         System.out.println("hihihihihi");
 
-
+        //trừ sl sp trong kho
+        for (ChiTietHoaDon cthd : orderData.getCart()) {
+            ChiTietSanPham ctsp = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+            ctsp.setSoLuong(ctsp.getSoLuong() - cthd.getSoLuong());
+        }
         for (ChiTietHoaDon o : orderData.getCart()) {
             o.setIdHoaDon(hoaDon.getId());
             hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
         }
+
         //xóa giỏ hàng chi tiết khi thanh toán
         for (ChiTietHoaDon cthd : orderData.getCart()
         ) {

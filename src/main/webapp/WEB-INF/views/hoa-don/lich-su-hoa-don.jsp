@@ -21,6 +21,9 @@
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bao gồm Bootstrap CSS nếu cần -->
+
 
     <style type="text/css">
         #test {
@@ -60,13 +63,45 @@
             color: #179954;
         }
 
+        #trang-thai-hoa-don[data-status="2"] {
+            color: #0b3cc1;
+        }
+
         #trang-thai-hoa-don[data-status="1"] {
+            color: #F39C12;
+        }
+
+        #trang-thai-hoa-don[data-status="3"] {
             color: #F39C12;
         }
 
         /* Trạng thái đã hủy */
         #trang-thai-hoa-don[data-status="4"] {
             color: darkred;
+        }
+
+        #trang-thai-hoa-don[data-status="5"] {
+            color: #007bff;
+        }
+
+        #trang-thai-hoa-don[data-status="6"] {
+            color:#0abf30;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between; /* Canh các phần tử theo chiều ngang */
+            align-items: center; /* Căn các phần tử theo chiều dọc */
+        }
+
+
+
+        .btn:last-child {
+            margin-right: 0; /* Loại bỏ khoảng cách bên phải của nút cuối cùng */
+        }
+
+        .btn i {
+            margin-right: 5px; /* Khoảng cách giữa icon và văn bản trong nút */
         }
 
     </style>
@@ -79,36 +114,10 @@
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-7 mb-3">
-            <form action="/san-pham/filter" class="filter-form" method="post">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <select name="tenChatLieu" class="form-select" name="category">
-                            <option value="">Chọn Chất Liệu</option>
-                            <c:forEach items="${tenChatLieuSelects}" var="cl">
-                                <option value="${cl}" ${tenChatLieuSelect eq cl ? 'selected' : ''}>${cl}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <select name="tenThuongHieu" class="form-select" name="category">
-                            <option value="">Chọn thương hiệu</option>
-                            <c:forEach items="${tenThuongHieuSelects}" var="th">
-                                <option value="${th}" ${tenThuongHieuSelect eq th ? 'selected' : ''}>${th}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <button type="submit" class="btn btn-primary">Lọc</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
         <div class="col-md-5 mb-3">
-            <form action="/san-pham" class="search-form" method="get">
+            <form action="/hoa-don/search-hoa-don" class="search-form" method="get">
                 <div class="input-group">
-                    <input type="text" name="name" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
+                    <input type="text" name="nameSearch" class="form-control" placeholder="Tìm kiếm theo mã hoặc sdt...">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                     </div>
@@ -120,6 +129,34 @@
 
 
 <div class="container">
+
+    <div class="filter-bar">
+        <form action="/hoa-don/filterBanTaiQuay" method="post">
+            <button type="submit" class="btn btn-light" id="taiQuayBtn"><i class="fas fa-store"></i> Tại quầy</button>
+        </form>
+        <form action="/hoa-don/filterChoXacNhan" method="post">
+            <button type="submit" class="btn btn-light" id="pendingBtn"><i class="fas fa-hourglass-half" ></i> Chờ xác nhận </button>
+        </form>
+        <form action="/hoa-don/filterXuLy" method="post">
+            <button type="submit" class="btn btn-light" id="processingBtn"><i class="fas fa-cog" ></i> Đang xử lý </button>
+
+        </form>
+        <form action="/hoa-don/filterGiaoHang" method="post">
+            <button type="submit" class="btn btn-light" id="shippingBtn"><i class="fas fa-truck"></i> Đang giao hàng </button>
+
+        </form>
+        <form action="/hoa-don/filterHoanThanh" method="post">
+            <button type="submit" class="btn btn-light" id="deliveredBtn"><i class="fas fa-check-circle"></i> Hoàn Thành </button>
+
+        </form>
+        <form action="/hoa-don/filterHuy" method="post">
+            <button type="submit" class="btn btn-light" id="btnHuy"><i class="fas fa-times" ></i> Đã Hủy</button>
+
+        </form>
+
+    </div>
+
+
     <div id="test">
         <table class="table table-hover table-striped mb-5">
             <thead>
@@ -154,7 +191,7 @@
                             var trangThaiString = '';
                             switch (trangThai) {
                                 case 0:
-                                    trangThaiString = 'Đã Thanh Toán';
+                                    trangThaiString = 'Đã Thanh Toán Tại Quầy';
                                     break;
                                 case 1:
                                     trangThaiString = 'Hóa Đơn Tạm';
@@ -170,6 +207,9 @@
                                     break;
                                 case 5:
                                     trangThaiString = 'Đang Giao Hàng';
+                                    break;
+                                case 6:
+                                    trangThaiString = 'Giao Hàng Thành Công';
                                     break;
                                 default:
                                     trangThaiString = 'Unknown';
@@ -239,6 +279,9 @@
                     break;
                 case 5:
                     trangThaiString = 'Đang Giao Hàng';
+                    break;
+                case 6:
+                    trangThaiString = 'Giao Hàng Thành Công';
                     break;
                 default:
                     trangThaiString = 'Unknown';
@@ -320,12 +363,13 @@
 
                                             </table>
                                         </div>
-                                        <fmt:formatNumber pattern="#,###" var="tongTam"
-                                                          value="${hd.key.giamGia +hd.key.tongTien }"></fmt:formatNumber>
 
 
-                                        <p style="position: absolute; bottom: 60px;  right: 30px; font-size: 14px">
-                                            Tổng Tạm : ${tongTien} đ</p>
+
+                                        <c:set var="phiVanChuyen" value="${empty hd.key.phiVanChuyen ? '0' : hd.key.phiVanChuyen}" />
+                                        <p style="position: absolute; bottom: 60px; right: 30px; font-size: 14px">
+                                            Phí Vận Chuyển : <script>document.write(parseInt(${phiVanChuyen}).toLocaleString('en'))</script> đ</p>
+
 
 
 
@@ -336,10 +380,10 @@
                                             Giảm Giá : ${giamGia} đ</p>
 
 
-                                        <fmt:formatNumber pattern="#,###" var="tongConLai"
-                                                          value="${hd.key.tongTien-hd.key.giamGia}"></fmt:formatNumber>
+                                        <fmt:formatNumber pattern="#,###" var="tongTien"
+                                                          value="${hd.key.tongTien}"></fmt:formatNumber>
                                         <p style="position: absolute; bottom: 0;  right: 30px; font-weight: bold ; font-size: 15px">
-                                            Tổng Thanh Toán : ${tongConLai} đ</p>
+                                            Tổng Thanh Toán : ${tongTien} đ</p>
                                     </div>
                                     <div class="modal-footer">
                                         <c:choose>
@@ -375,7 +419,9 @@
 
                                             </c:when>
                                             <c:when test="${hd.key.trangThai == 5}">
-                                                <button type="button" class="btn btn-success">Xác Nhận Giao Hàng Thành
+                                                <button type="button" class="btn btn-success"
+                                                        onclick="giaoHangThanhCong(${hd.key.id})">Xác Nhận Giao Hàng
+                                                    Thành
                                                     Công
                                                 </button>
                                                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -407,137 +453,138 @@
 
 <!-- Bootstrap JS (Tùy chọn) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 
 <%--xóa hóa đơn chưa xác nhận--%>
 
 <script>
     function xoaHoaDonChuaXacNhan(id) {
-    Swal.fire({
-        title: 'Bạn có chắc chắn muốn huỷ đơn hàng này không?',
-        showCancelButton: true,
-        confirmButtonText: 'Có, huỷ đơn hàng',
-        cancelButtonText: 'Không, giữ nguyên',
-        reverseButtons: true,
-        preConfirm: async () => {
-            const {value: inputReason, dismiss} = await Swal.fire({
-                title: 'Vui lòng cung cấp lý do huỷ đơn',
-                input: 'text',
-                inputPlaceholder: 'Nhập lý do ở đây...',
-                inputAttributes: {
-                    autocapitalize: 'off'
-                },
-                showCancelButton: true,
-                cancelButtonText: 'Hủy',
-                confirmButtonText: 'Xác nhận',
-                showLoaderOnConfirm: true,
-                preConfirm: (inputReason) => {
-                    if (!inputReason || inputReason.trim().length === 0) {
-                        Swal.showValidationMessage('Vui lòng nhập lý do');
-                        return false;
-                    }
-                    // Gửi request POST
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn huỷ đơn hàng này không?',
+            showCancelButton: true,
+            confirmButtonText: 'Có, huỷ đơn hàng',
+            cancelButtonText: 'Không, giữ nguyên',
+            reverseButtons: true,
+            preConfirm: async () => {
+                const {value: inputReason, dismiss} = await Swal.fire({
+                    title: 'Vui lòng cung cấp lý do huỷ đơn',
+                    input: 'text',
+                    inputPlaceholder: 'Nhập lý do ở đây...',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (inputReason) => {
+                        if (!inputReason || inputReason.trim().length === 0) {
+                            Swal.showValidationMessage('Vui lòng nhập lý do');
+                            return false;
+                        }
+                        // Gửi request POST
 
-                },
-            });
-
-            if (dismiss === 'cancel' && !inputReasonEntered) {
-                // Nếu người dùng ấn nút "Huỷ" mà không nhập lý do, hủy hành động
-                return false;
-            }
-
-            return inputReason;
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-        if (result.isConfirmed) {
-            if (result !== true) {
-                Swal.fire({
-                    title: 'Đã huỷ đơn hàng',
-                    text: `Đơn hàng của bạn đã được huỷ. Lý do: ${inputReason}`,
-                    icon: 'success'
+                    },
                 });
-            } else {
-                // Hiển thị thông báo lỗi
-                Swal.fire({
-                    title: 'Lỗi',
-                    text: 'Có lỗi xảy ra khi huỷ đơn hàng',
-                    icon: 'error'
-                });
+
+                if (dismiss === 'cancel' && !inputReasonEntered) {
+                    // Nếu người dùng ấn nút "Huỷ" mà không nhập lý do, hủy hành động
+                    return false;
+                }
+
+                return inputReason;
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (result !== true) {
+                    Swal.fire({
+                        title: 'Đã huỷ đơn hàng',
+                        text: `Đơn hàng của bạn đã được huỷ. Lý do: ${inputReason}`,
+                        icon: 'success'
+                    });
+                } else {
+                    // Hiển thị thông báo lỗi
+                    Swal.fire({
+                        title: 'Lỗi',
+                        text: 'Có lỗi xảy ra khi huỷ đơn hàng',
+                        icon: 'error'
+                    });
+                }
             }
-        }
-    });
+        });
     }
 
 
+    function xoaHoaDonChuaXacNhan(id) {
 
-    // function xoaHoaDonChuaXacNhan(id) {
-    //
-    //     // Nếu người dùng chọn "Hủy Đơn"
-    //     Swal.fire({
-    //         title: 'Nhập lí do hủy đơn',
-    //         input: 'text',
-    //         inputAttributes: {
-    //             autocapitalize: 'off'
-    //         },
-    //         showCancelButton: true,
-    //         confirmButtonText: 'Hủy Đơn',
-    //         cancelButtonText: 'Quay lại',
-    //         showLoaderOnConfirm: true,
-    //         preConfirm: (cancelReason) => {
-    //             if (!cancelReason) {
-    //                 Swal.showValidationMessage('Vui lòng nhập lí do hủy đơn');
-    //             }
-    //             return cancelReason;
-    //         },
-    //         allowOutsideClick: () => !Swal.isLoading()
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             // Nếu người dùng chọn "Hủy Đơn"
-    //             const cancelReason = result.value;
-    //             $.ajax({
-    //                 type: "POST",
-    //                 url: "/ban-tai-quay/huy-hoaDon",
-    //                 data: {
-    //                     id: id,
-    //                     reason: cancelReason
-    //                 },
-    //                 success: function (response) {
-    //                     if (response === "ok") {
-    //                         Swal.fire({
-    //                             title: "Good job!",
-    //                             text: "Đơn hàng đã được Hủy!",
-    //                             icon: "success",
-    //                             confirmButtonText: "OK"
-    //                         }).then(() => {
-    //                             window.location.href = "http://localhost:8080/hoa-don/lich-su";
-    //                         });
-    //                     } else if (response === "error") {
-    //                         Swal.fire({
-    //                             title: "No",
-    //                             text: "Đơn hàng đã được hủy từ trước đó",
-    //                             icon: "warning",
-    //                             confirmButtonText: "OK"
-    //                         }).then(() => {
-    //                             window.location.href = "http://localhost:8080/hoa-don/lich-su";
-    //                         });
-    //                     } else if (response === "errorGiaoHang") {
-    //                         Swal.fire({
-    //                             title: "No",
-    //                             text: "Đơn hàng đã được giao. Không thể hủy",
-    //                             icon: "warning",
-    //                             confirmButtonText: "OK"
-    //                         }).then(() => {
-    //                             window.location.href = "http://localhost:8080/hoa-don/lich-su";
-    //                         });
-    //                     }
-    //                 },
-    //                 error: function (xhr, status, error) {
-    //                     console.error(xhr.responseText);
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
+        // Nếu người dùng chọn "Hủy Đơn"
+        Swal.fire({
+            title: 'Nhập lí do hủy đơn',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Hủy Đơn',
+            cancelButtonText: 'Quay lại',
+            showLoaderOnConfirm: true,
+            preConfirm: (cancelReason) => {
+                if (!cancelReason) {
+                    Swal.showValidationMessage('Vui lòng nhập lí do hủy đơn');
+                }
+                return cancelReason;
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng chọn "Hủy Đơn"
+                const cancelReason = result.value;
+                $.ajax({
+                    type: "POST",
+                    url: "/ban-tai-quay/huy-hoaDon",
+                    data: {
+                        id: id,
+                        reason: cancelReason
+                    },
+                    success: function (response) {
+                        if (response === "ok") {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "Đơn hàng đã được Hủy!",
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                            });
+                        } else if (response === "error") {
+                            Swal.fire({
+                                title: "No",
+                                text: "Đơn hàng đã được hủy từ trước đó",
+                                icon: "warning",
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                            });
+                        } else if (response === "errorGiaoHang") {
+                            Swal.fire({
+                                title: "No",
+                                text: "Đơn hàng đã được giao. Không thể hủy",
+                                icon: "warning",
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+    }
 
 
     function inHoaDon(maHD) {
@@ -727,6 +774,46 @@
     }
 
 </script>
+
+<script>
+    function giaoHangThanhCong(id) {
+        $.ajax({
+            url: '/hoa-don/giao-hang-thanh-cong',
+            type: 'POST',
+            data: {
+                id: id
+            },
+            success: function (response) {
+                if (response === "ok") {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Đơn hàng đã được giao thành công",
+                        icon: "success"
+                    });
+
+                    setTimeout(function () {
+                        window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                    }, 2000); // Đợi 2 giây trước khi chuyển trang
+                } else {
+                    Swal.fire({
+                        title: "No",
+                        text: "Đơn hàng đã được hủy từ trước đó",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+            }
+        });
+    }
+</script>
+
+<%--Lọc--%>
+
 
 
 </body>

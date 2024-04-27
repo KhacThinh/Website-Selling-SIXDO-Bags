@@ -66,6 +66,9 @@
         .alert {
             margin-top: 20px;
         }
+        .red-star {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -78,7 +81,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="tenKhachHang" class="form-label">Tên Khách Hàng</label>
+                            <label for="maKhachHang" class="form-label">Mã Khách Hàng</label>
+                            <input  id="maKhachHang" class="form-control" placeholder="Nhập mã khách hàng" />
+                        </div>
+                        <div class="form-group">
+                            <label for="tenKhachHang" class="form-label">Tên Khách Hàng</label><span class="red-star"> *</span>
                             <input id="tenKhachHang" class="form-control" placeholder="Nhập tên khách hàng"/>
                         </div>
                         <div class="form-group">
@@ -92,26 +99,26 @@
                             <label for="ngaySinh" class="form-label">Ngày Sinh</label>
                             <input type="date" id="ngaySinh" class="form-control"/>
                         </div>
-                        <div class="form-group">
-                            <label for="trangThai" class="form-label">Trạng Thái:</label>
-                            <select id="trangThai" name="trangThai" class="form-select">
-                                <option value="1">Hoạt Động</option>
-                                <!-- <option value="0">Không Hoạt Động</option> -->
-                            </select>
-                        </div>
+
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="sdt" class="form-label">SDT</label>
+                            <label for="sdt" class="form-label">SDT</label><span class="red-star"> *</span>
                             <input id="sdt" class="form-control" placeholder="Nhập số điện thoại"/>
                         </div>
                         <div class="form-group">
                             <label for="email" class="form-label">Email</label>
                             <input id="email" class="form-control" placeholder="Nhập địa chỉ email"/>
                         </div>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <label for="matKhau" class="form-label">Mật Khẩu</label>--%>
+                        <%--                            <input  id="matKhau" class="form-control" placeholder="Nhập mật khẩu"/>--%>
+                        <%--                        </div>--%>
                         <div class="form-group">
-                            <label for="matKhau" class="form-label">Mật Khẩu</label>
-                            <input  id="matKhau" class="form-control" placeholder="Nhập mật khẩu"/>
+                            <label for="trangThai" class="form-label">Trạng Thái:</label>
+                            <select id="trangThai" name="trangThai" class="form-select" disabled>
+                                <option value="1">Hoạt Động</option>
+                            </select>
                         </div>
                     </div>
                 </div>

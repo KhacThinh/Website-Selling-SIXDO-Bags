@@ -30,6 +30,8 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setThoiGianTao(LocalDateTime.now());
         hoaDon.setTrangThai(1); // Thiết lập trạng thái hóa đơn
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
+        hoaDon.setKhachThanhToan(0.0);
+
 
 // Lưu hóa đơn vào cơ sở dữ liệu để nhận ID
         hoaDon = hoaDonRepository.save(hoaDon);
@@ -76,7 +78,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Override
     public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDon() {
         Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
-        List<HoaDon> hoaDons = hoaDonRepository.findAll();
+        List<HoaDon> hoaDons = hoaDonRepository.getListHd();
 
         // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
         hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
@@ -87,6 +89,102 @@ public class HoaDonServiceImpl implements HoaDonService {
         }
 
         return hoaDonListMap;
+    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonChuaXacNhan() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.listHDChuaXacNhan();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonDangXuLy() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.listHDDangXuLy();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonGiao() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.listHDDangGiao();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonHoanThanh() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.listHDHoanThanh();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonHuy() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.listHDHuyy();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonTaiQuay() {
+        Map<HoaDon, List<ChiTietHoaDon>> hoaDonListMap = new LinkedHashMap<>();
+        List<HoaDon> hoaDons = hoaDonRepository.listHDTaiQuay();
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+        for (HoaDon hoaDon : hoaDons) {
+            List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(hoaDon.getId());
+            hoaDonListMap.put(hoaDon, chiTietHoaDons);
+        }
+
+        return hoaDonListMap;
+    }
+
+    @Override
+    public Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonSearch() {
+        return null;
     }
 
     @Override
@@ -209,5 +307,18 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         return hoaDonSoLuong;
     }
+
+    @Override
+    public List<HoaDon> getListSortHoaDonByKhachHang(int idKh) {
+        List<HoaDon> hoaDons = hoaDonRepository.getListHoaDonByKhachHang(idKh);
+
+        // Sắp xếp danh sách hoaDons theo thời gian tạo giảm dần
+        hoaDons.sort(Comparator.comparing(HoaDon::getThoiGianTao, Comparator.nullsLast(Comparator.reverseOrder())));
+
+
+
+        return hoaDons;
+    }
+
 
 }

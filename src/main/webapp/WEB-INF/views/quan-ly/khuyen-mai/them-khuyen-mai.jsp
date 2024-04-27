@@ -65,6 +65,9 @@
         .alert {
             margin-top: 20px;
         }
+        .red-star {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -77,25 +80,25 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="maKhuyenMai">Mã Khuyến Mãi</label>
+                            <label for="maKhuyenMai">Mã Khuyến Mãi</label><span class="red-star"> *</span>
                             <input id="maKhuyenMai" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="ten">Tên Khuyến Mãi</label>
+                            <label for="ten">Tên Khuyến Mãi</label><span class="red-star"> *</span>
                             <input id="ten" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="giaTriGiam">Giá Trị Giảm</label>
+                            <label for="giaTriGiam">Giá Trị Giảm</label><span class="red-star"> *</span>
                             <input id="giaTriGiam" class="form-control"/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="ngayBatDau">Ngày Bắt Đầu</label>
+                            <label for="ngayBatDau">Ngày Bắt Đầu</label><span class="red-star"> *</span>
                             <input type="datetime-local" id="ngayBatDau" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="ngayKetThuc">Ngày Kết Thúc</label>
+                            <label for="ngayKetThuc">Ngày Kết Thúc</label><span class="red-star"> *</span>
                             <input type="datetime-local" id="ngayKetThuc" class="form-control"/>
                         </div>
                         <div class="form-group">

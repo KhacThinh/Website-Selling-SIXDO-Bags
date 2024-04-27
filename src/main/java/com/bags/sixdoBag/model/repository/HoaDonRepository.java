@@ -20,6 +20,34 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
     @Query("select hd from HoaDon hd where hd.id =:id ")
     HoaDonResponse getHoaDonResponseById(int id);
 
+    @Query("select hd from HoaDon hd where hd.trangThai =2")
+    List<HoaDon>listHDChuaXacNhan();
+
+    @Query("select hd from HoaDon hd where hd.trangThai =3")
+    List<HoaDon>listHDDangXuLy();
+
+    @Query("select hd from HoaDon hd where hd.trangThai =4")
+    List<HoaDon>listHDHuyy();
+
+    @Query("select hd from HoaDon hd where hd.trangThai =5")
+    List<HoaDon>listHDDangGiao();
+
+    @Query("select hd from HoaDon hd where hd.trangThai =0")
+    List<HoaDon>listHDTaiQuay();
+
+    @Query("select hd from HoaDon hd where hd.trangThai =6")
+    List<HoaDon>listHDHoanThanh();
+
+    @Query("select hd from HoaDon hd where hd.maHoaDon =:key or hd.tenNguoiNhan like %:key% or hd.sdtNguoiNhan =:key")
+    List<HoaDon> searchHDByMaorSdt(String key);
+
+
+
+
+
+    @Query("SELECT hd FROM HoaDon hd WHERE hd.trangThai <> 1")
+    List<HoaDon>getListHd();
+
     @Query(value = "select hd from HoaDon hd where hd.maHoaDon =:maHd")
     HoaDon getHoaDonByMaHoaDon(String maHd);
 
@@ -42,4 +70,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Integer> {
 
     @Query(value = "select hd from HoaDon hd join KhachHang as kh on hd.khachHang = kh where kh.id = :idKh")
     List<HoaDon> getHoaDonByKhachHang(int idKh);
+
+    @Query(value = "select hd.* from hoa_don as hd join khach_hang kh on hd.id_khach_hang = kh.id where kh.id = :idKh",nativeQuery = true)
+    List<HoaDon> getListHoaDonByKhachHang(int idKh);
+
 }
