@@ -66,6 +66,83 @@
             color: red;
             margin-left: 5px;
         }
+
+        /*.colDM {*/
+        /*    margin-left: 100px;*/
+        /*    */
+        /*}*/
+
+        #idDoiTuongSuDung {
+            width: 400px;
+        }
+
+
+        .modal-body1 {
+            display: flex;
+        }
+
+        .form-container1 {
+            flex: 1;
+            padding-right: 20px; /* Khoảng cách giữa form và table */
+        }
+
+        .table-container1 {
+            flex: 1;
+            overflow-y: auto; /* Kích hoạt thanh cuộn khi nội dung vượt quá chiều cao */
+            max-height: 300px; /* Đặt chiều cao tối đa cho bảng */
+        }
+
+        @media (max-width: 768px) {
+            /* Đảo chiều của cả form và table khi trên thiết bị có độ rộng nhỏ hơn hoặc bằng 768px */
+            .modal-body1 {
+                flex-direction: column;
+            }
+
+            .form-container1, .table-container1 {
+                width: 100%; /* Chiếm toàn bộ chiều rộng */
+                padding-right: 0; /* Xóa khoảng cách */
+            }
+        }
+
+        .formcon {
+            width: 700px;
+            margin-left: 250px;
+        }
+
+        .table-container1 th {
+            font-size: 12px; /* Đặt kích thước font chữ cho tiêu đề */
+            background-color: #f2f2f2; /* Màu nền của tiêu đề */
+        }
+
+        /* Nếu bạn muốn đặt kích thước font chữ cho các ô <td> luôn giữ nguyên */
+        .table-container1 td {
+            font-size: 12px; /* Đặt kích thước font chữ cho ô */
+        }
+
+
+        .status.pending {
+            padding: 2px 4px;
+            background: red;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status.dangxuly {
+            padding: 2px 4px;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+
     </style>
 
     <!-- Bootstrap JS (Tùy chọn) -->
@@ -183,7 +260,8 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item" href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}"><i class="bi bi-box-arrow-right"></i> Quản lý sản phẩm chi tiết</a>
+                                <a class="dropdown-item" href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}"><i
+                                        class="bi bi-box-arrow-right"></i> Quản lý sản phẩm chi tiết</a>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item btn-modal-sua" data-bs-toggle="modal"
@@ -253,7 +331,379 @@
 <jsp:include page="sua-san-pham-modal.jsp"></jsp:include>
 <jsp:include page="xoa-san-pham.jsp"></jsp:include>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
 
+    function addDanhMuc() {
+        var maDanhMuc = document.getElementById("maDanhMuc").value;
+        var tenDanhMuc = document.getElementById("tenDanhMuc").value;
+        var trangThai = document.getElementById("trangThai").value;
+
+        if (maDanhMuc.trim() === "" || tenDanhMuc.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+        $.ajax({
+            url: '/danh-muc/add',
+            type: 'POST',
+            data: {
+                maDanhMuc: maDanhMuc,
+                tenDanhMuc: tenDanhMuc,
+                trangThai: trangThai,
+            },
+
+            success: function (response) {
+
+                if (response === "errorMa") {
+                    toastr.error("mã trùng");
+                } else if (response === "errorTen") {
+                    toastr.error("Trùng Tên");
+                } else {
+
+
+
+                    var selectElement = document.getElementById("idDanhMuc");
+                    selectElement.innerHTML = "";
+                    var defaultOption = document.createElement("option");
+                    defaultOption.text = "Chọn Danh Mục";
+                    defaultOption.value = "";
+                    selectElement.add(defaultOption);
+
+
+                    response.forEach(function (item) {
+                        var option = document.createElement("option");
+                        option.value = item.id;
+                        option.text = item.tenDanhMuc;
+                        selectElement.add(option);
+                    });
+
+//table
+                    var tableBody = document.querySelector("#test1 tbody");
+
+                   // Xóa hết các hàng hiện có trong bảng
+                    while (tableBody.firstChild) {
+                        tableBody.removeChild(tableBody.firstChild);
+                    }
+
+                    response.forEach(function(item, index) {
+                        var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
+
+                        var cellSTT = newRow.insertCell(0);
+                        cellSTT.textContent = index + 1;
+
+                        var cellMaDanhMuc = newRow.insertCell(1);
+                        cellMaDanhMuc.textContent = item.maDanhMuc;
+
+                        var cellTenDanhMuc = newRow.insertCell(2);
+                        cellTenDanhMuc.textContent = item.tenDanhMuc;
+
+                        var cellTrangThai = newRow.insertCell(3);
+                        var statusSpan = document.createElement("span");
+                        statusSpan.className = "status " + (item.trangThai ? "dangxuly" : "pending");
+                        statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
+                        cellTrangThai.appendChild(statusSpan);
+                    });
+
+
+
+
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            document.getElementById("maDanhMuc").value = '';
+                            document.getElementById("tenDanhMuc").value = '';
+                            closeModal2();
+                        }
+                    });
+
+
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
+            }
+        });
+
+    }
+
+
+    function addDTSD() {
+        var maDoiTuongSuDung = document.getElementById("maDoiTuongSuDung").value;
+        var tenDoiTuongSuDung = document.getElementById("tenDoiTuongSuDung").value;
+        var trangThai = document.getElementById("trangThai").value;
+
+        if (maDoiTuongSuDung.trim() === "" || tenDoiTuongSuDung.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+        $.ajax({
+            url: '/doi-tuong-su-dung/add',
+            type: 'POST',
+            data: {
+                maDoiTuongSuDung: maDoiTuongSuDung,
+                tenDoiTuongSuDung: tenDoiTuongSuDung,
+                trangThai: trangThai,
+            },
+            success: function (response) {
+                if (response === "errorMa") {
+                    toastr.error("mã đối tượng đã tồn tại");
+                }else {
+
+
+
+                    var selectElement = document.getElementById("idDoiTuongSuDung");
+                    selectElement.innerHTML = "";
+                    var defaultOption = document.createElement("option");
+                    defaultOption.text = "Chọn Đối Tượng Sử Dụng";
+                    defaultOption.value = "";
+                    selectElement.add(defaultOption);
+
+
+                    response.forEach(function (item) {
+                        var option = document.createElement("option");
+                        option.value = item.id;
+                        option.text = item.tenDoiTuongSuDung;
+                        selectElement.add(option);
+                    });
+
+//table
+                    var tableBody = document.querySelector("#test1 tbody");
+
+                    // Xóa hết các hàng hiện có trong bảng
+                    while (tableBody.firstChild) {
+                        tableBody.removeChild(tableBody.firstChild);
+                    }
+
+                    response.forEach(function(item, index) {
+                        var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
+
+                        var cellSTT = newRow.insertCell(0);
+                        cellSTT.textContent = index + 1;
+
+                        var cellMaDoiTuongSuDung = newRow.insertCell(1);
+                        cellMaDoiTuongSuDung.textContent = item.maDoiTuongSuDung;
+
+                        var cellTenDoiTuongSuDung = newRow.insertCell(2);
+                        cellTenDoiTuongSuDung.textContent = item.tenDoiTuongSuDung;
+
+                        var cellTrangThai = newRow.insertCell(3);
+                        var statusSpan = document.createElement("span");
+                        statusSpan.className = "status " + (item.trangThai ? "dangxuly" : "pending");
+                        statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
+                        cellTrangThai.appendChild(statusSpan);
+                    });
+
+
+
+
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            document.getElementById("maDoiTuongSuDung").value = '';
+                            document.getElementById("tenDoiTuongSuDung").value = '';
+                            closeModal2DTSD();
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Tên đối tượng đã tồn tại");
+            }
+        });
+
+    }
+
+
+    function addThuongHieu() {
+        var ma = document.getElementById("ma").value;
+        var ten = document.getElementById("ten").value;
+        var trangThai = document.getElementById("trangThai").value;
+        console.log(ma);
+        console.log(ten);
+        if (ma.trim() === "" || ten.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+        $.ajax({
+            url: '/thuonghieu/add',
+            type: 'POST',
+            data: {
+                ma: ma,
+                ten: ten,
+                trangThai: trangThai,
+            },
+            success: function (response) {
+                if (response === "errorMa") {
+                    toastr.error("Mã trùng");
+                } else if (response === "errorTen") {
+                    toastr.error("Trùng Tên");
+                }else {
+
+                    var selectElement = document.getElementById("idThuongHieu");
+                    selectElement.innerHTML = "";
+                    var defaultOption = document.createElement("option");
+                    defaultOption.text = "Chọn Thương Hiệu";
+                    defaultOption.value = "";
+                    selectElement.add(defaultOption);
+
+
+                    response.forEach(function (item) {
+                        var option = document.createElement("option");
+                        option.value = item.id;
+                        option.text = item.ten;
+                        selectElement.add(option);
+                    });
+
+//table
+                    var tableBody = document.querySelector("#test1 tbody");
+
+                    // Xóa hết các hàng hiện có trong bảng
+                    while (tableBody.firstChild) {
+                        tableBody.removeChild(tableBody.firstChild);
+                    }
+
+                    response.forEach(function(item, index) {
+                        var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
+
+                        var cellSTT = newRow.insertCell(0);
+                        cellSTT.textContent = index + 1;
+
+                        var cellMaTH = newRow.insertCell(1);
+                        cellMaTH.textContent = item.ma;
+
+                        var cellTenTH = newRow.insertCell(2);
+                        cellTenTH.textContent = item.ten;
+
+                        var cellTrangThai = newRow.insertCell(3);
+                        var statusSpan = document.createElement("span");
+                        statusSpan.className = "status " + (item.trangThai ? "dangxuly" : "pending");
+                        statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
+                        cellTrangThai.appendChild(statusSpan);
+                    });
+
+
+
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            document.getElementById("ma").value = '';
+                            document.getElementById("ten").value = '';
+                            closeModal2TH();
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
+            }
+        });
+
+    }
+
+
+    function addThoiGian() {
+        var ma = document.getElementById("ma").value;
+        var thoiGian = document.getElementById("thoiGian").value;
+        var trangThai = document.getElementById("trangThai").value;
+
+        if (ma.trim() === "" || thoiGian === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+        $.ajax({
+            url: '/thoi_gian_bao_hanh/add',
+            type: 'POST',
+            data: {
+                ma: ma,
+                thoiGian: thoiGian,
+                trangThai: trangThai,
+            },
+            success: function (response) {
+                if (response === "errorMa") {
+                    toastr.error("Mã trùng");
+                }else{
+
+
+                    var selectElement = document.getElementById("idThoiGianBaoHanh");
+                    selectElement.innerHTML = "";
+                    var defaultOption = document.createElement("option");
+                    defaultOption.text = "Chọn Thời Gian Bảo Hành";
+                    defaultOption.value = "";
+                    selectElement.add(defaultOption);
+
+
+                    response.forEach(function (item) {
+                        var option = document.createElement("option");
+                        option.value = item.id;
+                        option.text = item.thoiGian;
+                        selectElement.add(option);
+                    });
+
+//table
+                    var tableBody = document.querySelector("#test1 tbody");
+
+                    // Xóa hết các hàng hiện có trong bảng
+                    while (tableBody.firstChild) {
+                        tableBody.removeChild(tableBody.firstChild);
+                    }
+
+                    response.forEach(function(item, index) {
+                        var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
+
+                        var cellSTT = newRow.insertCell(0);
+                        cellSTT.textContent = index + 1;
+
+                        var cellMaBH = newRow.insertCell(1);
+                        cellMaBH.textContent = item.ma;
+
+                        var cellTG = newRow.insertCell(2);
+                        cellTG.textContent = item.thoiGian;
+
+                        var cellTrangThai = newRow.insertCell(3);
+                        var statusSpan = document.createElement("span");
+                        statusSpan.className = "status " + (item.trangThai ? "dangxuly" : "pending");
+                        statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
+                        cellTrangThai.appendChild(statusSpan);
+                    });
+
+
+
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Thêm Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            document.getElementById("ma").value = '';
+                            document.getElementById("thoiGian").value = '';
+                            closeModal2BH();
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+                toastr.error("Có lỗi xảy ra");
+            }
+        });
+
+    }
+</script>
 </body>
 
 </html>

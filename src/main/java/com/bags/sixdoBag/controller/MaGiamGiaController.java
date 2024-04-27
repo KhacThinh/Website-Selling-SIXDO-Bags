@@ -2,14 +2,18 @@ package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.MaGiamGiaDTO;
 import com.bags.sixdoBag.model.entitys.DanhSachKhachHangApMgg;
+import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.entitys.MaGiamGia;
+import com.bags.sixdoBag.model.repository.HoaDonRepository;
 import com.bags.sixdoBag.model.repository.MaGiamGiaRepository;
+import com.bags.sixdoBag.service.HoaDonService;
 import com.bags.sixdoBag.service.KhachHangService;
 import com.bags.sixdoBag.service.MaGiamGiaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +22,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -36,6 +43,8 @@ public class MaGiamGiaController {
     private final KhachHangService khachHangService;
 
     private final HttpSession session;
+
+    private final HoaDonRepository hoaDonRepository;
 
 
     //    @GetMapping("")
@@ -209,6 +218,37 @@ public class MaGiamGiaController {
     public ResponseEntity<?> getListKhByMgg(@RequestParam("id") int id) {
         int[] maGiamGia = maGIamGiaService.getidKhByMgg(id);
         return ResponseEntity.ok(maGiamGia);
+
+    }
+
+
+    @PostMapping("/checkDieuKhienMaGiamGia")
+    public ResponseEntity<?> checkDkMgg(@RequestParam("maHoaDon") String maHd, @RequestParam("tongTienHang") Double tongTienHang,@RequestParam("phiShip") Double phiShip) {
+        HoaDon hoaDon = hoaDonRepository.getHoaDonByMaHoaDon(maHd);
+
+
+        if (hoaDon.getMaGiamGia() != null) {
+
+            int dkGiam = hoaDon.getMaGiamGia().getDieuKienGiam();
+            if (tongTienHang >= dkGiam) {
+                hoaDon.setGiamGia(hoaDon.getMaGiamGia().getGiaTriGiam().floatValue());
+                hoaDon.setTongTien(tongTienHang-hoaDon.getMaGiamGia().getGiaTriGiam()+phiShip);
+                hoaDon.setPhiVanChuyen(phiShip);
+                hoaDonRepository.save(hoaDon);
+
+                return ResponseEntity.ok(hoaDon.getMaGiamGia().getGiaTriGiam());
+            } else {
+                hoaDon.setGiamGia(0);
+                hoaDon.setTongTien(tongTienHang+phiShip);
+                hoaDon.setPhiVanChuyen(phiShip);
+                hoaDonRepository.save(hoaDon);
+
+                return ResponseEntity.ok("error");
+            }
+        } else {
+            return ResponseEntity.ok("error");
+        }
+
 
     }
 }

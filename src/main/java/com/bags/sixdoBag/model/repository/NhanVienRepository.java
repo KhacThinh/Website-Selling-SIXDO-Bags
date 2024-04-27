@@ -33,7 +33,7 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
     ///////////////////////////////////////////////////////////
     Page<NhanVien> findAll(Pageable pageable);
 
-    @Query(value = "select * from nhan_vien where ho_ten like %:tenMa% or ma_nhan_vien like %:tenMa%", nativeQuery = true)
+    @Query(value = "select * from nhan_vien where ho_ten like %:tenMa% or sdt like %:tenMa%", nativeQuery = true)
     Page<NhanVien> searchNhanVienTenOrMa(String tenMa, Pageable pageable);
 
 
@@ -48,4 +48,8 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Integer> {
 
     @Query("select nv from NhanVien nv where nv.email =:email")
     NhanVien getNhanVienByEmail(String email);
+    @Query("select nv from NhanVien nv where nv.sdt =:sdt")
+    NhanVien getNhanVienBySDT(String sdt);
+    @Query("select nv from NhanVien nv where nv.cccd =:cccd")
+    NhanVien getNhanVienByCCCD(String cccd);
 }

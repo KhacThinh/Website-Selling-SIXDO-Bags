@@ -136,7 +136,26 @@
             font-size: 12px;
 
         }
+        .status.pending {
+            padding: 2px 4px;
+            background: red;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
+        .status.dangxuly {
+            padding: 2px 4px;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -148,7 +167,7 @@
     <div class="row">
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
                 data-bs-target="#modalAddMaGiamGia">
-            <i class="bi bi-bag-plus-fill"></i> <span>THÊM MÃ GIẢM GIÁ</span>
+            <i class="bi bi-plus-square-fill"></i> <span>THÊM MÃ GIẢM GIÁ</span>
         </button>
         <jsp:include page="them-ma-giam-gia.jsp"/>
     </div>
@@ -231,7 +250,7 @@
                 </c:choose>
 
                 <tr id="record_${sp.id}">
-                    <td>${i.index + 1}</td>
+                    <td class="bold">${i.index + 1}</td>
                     <td>${sp.maGiamGia}</td>
                     <td>${sp.tenMaGiamGia}</td>
                     <td>${sp.giaTriGiam}</td>

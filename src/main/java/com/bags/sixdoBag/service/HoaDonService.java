@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+
 public interface HoaDonService {
     void themHoaDon();
 
@@ -21,6 +22,26 @@ public interface HoaDonService {
     void deleteHoaDonById(int id);
 
     Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDon();
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonChuaXacNhan();
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonDangXuLy();
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonGiao();
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonHoanThanh();
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonHuy();
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonTaiQuay();
+
+
+    Map<HoaDon, List<ChiTietHoaDon>> getSortHoaDonSearch();
+
+
+
+
+
 
     Map<HoaDon, List<ChiTietHoaDon>> getSearchMaSdtSortHoaDon(String maSdt);
 
@@ -37,5 +58,8 @@ public interface HoaDonService {
     DonHangOnlineResponse getHoaDonByIdHoaDonKhachHangTrangThai(int id);
 
     Map<Integer, Integer> getSortHoaDonByKhachHang(int idKh);
+
+    List<HoaDon>getListSortHoaDonByKhachHang(int idKh);
+
 
 }

@@ -66,6 +66,27 @@
         .alert {
             margin-top: 20px;
         }
+        .modal-content{
+            background-color: whitesmoke;
+        }
+        /* Đặt kích thước font cho placeholder */
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            font-size: 12px; /* Đặt kích thước font là 12px */
+        }
+        ::-moz-placeholder { /* Firefox 19+ */
+            font-size: 12px; /* Đặt kích thước font là 12px */
+        }
+        :-ms-input-placeholder { /* IE 10+ */
+            font-size: 12px; /* Đặt kích thước font là 12px */
+        }
+        :-moz-placeholder { /* Firefox 18- */
+            font-size: 12px; /* Đặt kích thước font là 12px */
+        }
+        /* Sử dụng flexbox cho hàng */
+        .red-star {
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -80,7 +101,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3 row">
-                            <label for="chucVu" class="col-sm-4 col-form-label">Chức Vụ</label>
+                            <label for="chucVu" class="mb-3">Chức Vụ</label>
                             <div class="col-sm-8">
                                 <select id="chucVu" name="chucVu" class="form-select">
                                     <c:forEach items="${listColors2}" var="cv">
@@ -91,10 +112,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="maNhanVien" class="form-label">Mã Nhân Viên</label>
-                            <input id="maNhanVien" class="form-control" placeholder="Nhập mã nhân viên"/>
+                            <input id="maNhanVien" class="form-control" placeholder="Nhập mã nhân viên" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="mb-3">
-                            <label for="hoTen" class="form-label">Họ Tên</label>
+                            <label for="hoTen" class="form-label">Họ Tên</label><span class="red-star"> *</span>
                             <input id="hoTen" class="form-control" placeholder="Nhập họ tên"/>
                         </div>
                         <div class="mb-3">
@@ -110,23 +131,23 @@
                                 <input type="date" id="ngaySinh" class="form-control"/>
                             </div>
                             <div class="col">
-                                <label for="sdt" class="form-label">SDT</label>
+                                <label for="sdt" class="form-label">SDT</label><span class="red-star"> *</span>
                                 <input id="sdt" class="form-control" placeholder="Nhập số điện thoại"/>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label">Email</label><span class="red-star"> *</span>
                             <input id="email" class="form-control" placeholder="Nhập địa chỉ email"/>
                         </div>
                         <div class="mb-3">
-                            <label for="matKhau" class="form-label">Mật Khẩu</label>
+                            <label for="matKhau" class="form-label">Mật Khẩu</label><span class="red-star"> *</span>
                             <input type="password" id="matKhau" class="form-control" placeholder="Nhập mật khẩu"/>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label for="cccd" class="form-label">Số Căn Cước</label>
+                                <label for="cccd" class="form-label">Số Căn Cước</label><span class="red-star"> *</span>
                                 <input id="cccd" class="form-control" placeholder="Nhập số căn cước"/>
                             </div>
                             <div class="col">
@@ -137,12 +158,12 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="thoiGianVao" class="form-label">Thời Gian Vào Làm</label>
-                                <input type="datetime-local" id="thoiGianVao" class="form-control"/>
+                                <input type="date" id="thoiGianVao" class="form-control"/>
                             </div>
-                            <div class="col">
-                                <label for="thoiGianRa" class="form-label">Thời Gian Ra Làm</label>
-                                <input type="datetime-local" id="thoiGianRa" class="form-control"/>
-                            </div>
+                            <%--                            <div class="col">--%>
+                            <%--                                <label for="thoiGianRa" class="form-label">Thời Gian Ra Làm</label>--%>
+                            <%--                                <input type="datetime-local" id="thoiGianRa" class="form-control"/>--%>
+                            <%--                            </div>--%>
                         </div>
                         <div class="mb-3">
                             <label for="trangThai" class="form-label">Trạng Thái</label>

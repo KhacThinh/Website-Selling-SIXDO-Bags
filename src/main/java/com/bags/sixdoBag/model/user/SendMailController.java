@@ -1,7 +1,9 @@
 package com.bags.sixdoBag.model.user;
 
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.model.entitys.NhanVien;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
+import com.bags.sixdoBag.model.repository.NhanVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -17,16 +19,16 @@ public class SendMailController {
     @Autowired
     private EmailService emailService;
     @Autowired
-    private KhachHangRepository khachHangRepository;
+    private NhanVienRepository nhanVienRepository;
 
     @PostMapping(value = "/send-email")
     public String sendEmail(@RequestParam String email, Model model, RedirectAttributes redirectAttributes) {
-        KhachHang khachHang = new KhachHang();
-        khachHang = khachHangRepository.searchKh(email);
+        NhanVien nhanVien = new NhanVien();
+        nhanVien = nhanVienRepository.getNhanVienByEmail(email);
 
 
-        if (khachHang != null) {
-            String ten = khachHang.getTenKhachHang();
+        if (nhanVien != null) {
+            String ten = nhanVien.getHoTen();
             MimeMessagePreparator messagePreparator = mimeMessage -> {
                 MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
                 messageHelper.setTo(email);
@@ -38,7 +40,7 @@ public class SendMailController {
                         "<title>Reset Password</title>" +
                         "</head>" +
                         "<body>" +
-                        "<h2> Xin chào:" + ten + "  </h2>" +
+                        "<h2> Xin chào bạn: " + ten + "  </h2>" +
                         "<p>Click <a href='" + link + "'>vào đây</a> để thay đổi mật khẩu của bạn.</p>" +
                         "</body>" +
                         "</html>";
@@ -49,7 +51,8 @@ public class SendMailController {
 
             return "/user/laylaipass/thong_bao";
 
-        } else {
+        }
+        else {
             redirectAttributes.addFlashAttribute("tb", "Email này không tồn tại");
             redirectAttributes.addAttribute("email", email);
             return "redirect:/lay-mk";

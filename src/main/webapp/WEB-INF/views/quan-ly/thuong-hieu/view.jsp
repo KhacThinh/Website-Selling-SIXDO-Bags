@@ -97,7 +97,26 @@
         .input-group .form-control {
             height: 100%;
         }
+        .status.pending {
+            padding: 2px 4px;
+            background: red;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
+        .status.dangxuly {
+            padding: 2px 4px;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -160,10 +179,10 @@
             <tbody>
             <c:forEach items="${ listColors.content }" var="th" varStatus="i">
                 <tr id="record_${th.id}">
-                    <td>${i.index + 1}</td>
+                    <td class="bold">${i.index + 1}</td>
                     <td>${th.ma}</td>
                     <td>${th.ten}</td>
-                    <td>${th.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
+                    <td><span class="status ${th.trangThai == true ? 'dangxuly' : 'pending'}">${th.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span></td>
 
 
                     <td>
@@ -357,7 +376,7 @@
 
         console.log(ma);
         if (ma.trim() === "" || ten.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
             return false;
         }
 
@@ -416,3 +435,7 @@
 </body>
 
 </html>
+
+
+
+

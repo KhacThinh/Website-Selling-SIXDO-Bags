@@ -66,6 +66,10 @@
         .alert {
             margin-top: 20px;
         }
+        .red-star {
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -81,7 +85,7 @@
                 <div class="row">
                     <div class="mb-3 row">
                         <div class="form-group">
-                            <label for="khachHang" class="col-sm-3 col-form-label">Khách Hàng</label>
+                            <label for="khachHang" class="col-sm-3 col-form-label">Khách Hàng</label><span class="red-star"> *</span>
                             <select id="khachHang" name="khachHang" class="form-select">
                                 <c:forEach items="${listColors1}" var="cv">
                                     <option value="${cv.id}"> ${cv.tenKhachHang} </option>
@@ -90,7 +94,7 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="tenDiaChi">Tên Địa Chỉ</label>
+                            <label for="tenDiaChi">Tên Địa Chỉ</label><span class="red-star"> *</span>
                             <input id="tenDiaChi" class="form-control"/>
                         </div>
                         <div class="form-group">
@@ -99,7 +103,7 @@
                         </div>
                         <div class="form-group">
                             <label for="trangThai">Trạng Thái:</label>
-                            <select id="trangThai" name="trangThai">
+                            <select id="trangThai" name="trangThai" class="form-select" disabled>
                                 <option value="true">Hoạt Động</option>
                             </select>
                         </div>

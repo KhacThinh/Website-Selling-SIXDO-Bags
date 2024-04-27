@@ -29,4 +29,8 @@ public interface KhachHangService {
     public Page<KhachHang> searchcbb(Integer name, Pageable pageable);
     KhachHang getKhachHangByUserNameAndPassword(String email,String matKhau);
 
+    public KhachHang addKhachHang1(KhachHang khachHang);
+    public KhachHang getKhachHangByEmail(String email);
+    public KhachHang getKhachHangBySDT(String sdt);
+
 }

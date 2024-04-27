@@ -29,4 +29,8 @@ public interface NhanVienService {
     public Page<NhanVien> searchcbb(Integer name, Pageable pageable);
     public Page<NhanVien> searchcbb1(String name1, Pageable pageable);
     Page<NhanVien> searchDCKHByChucVuId(Long chucVuId, Pageable pageable);
+
+    public NhanVien getNhanVienByEmail(String email);
+    public NhanVien getNhanVienBySDT(String sdt);
+    public NhanVien getNhanVienByCCCD(String cccd);
 }

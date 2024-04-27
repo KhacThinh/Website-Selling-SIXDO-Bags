@@ -42,6 +42,12 @@ public class SanPhamController {
         hienThiChung(model);
         if (Objects.isNull(name)) {
             model.addAttribute("sanPhams", sanPhamService.getSanPhams());
+            model.addAttribute("listColors",danhMucService.getDanhMucs());
+            model.addAttribute("listColorsBH",thoiGianBaoHanhService.getThoiGianBaoHanhs());
+            model.addAttribute("listColorsTH",thuongHieuService.getThuongHieus());
+            model.addAttribute("listColorsDTSD",doiTuongSuDungService.getListDoiTuongSuDung());
+
+
         } else {
             model.addAttribute("nameSearch", name);
             model.addAttribute("sanPhams", sanPhamService.searchSanPhamTenOrMa(name));

@@ -1,8 +1,10 @@
 package com.bags.sixdoBag.controller;
 
+import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
+import com.bags.sixdoBag.service.HoaDonService;
 import com.bags.sixdoBag.service.KhachHangService;
 import com.bags.sixdoBag.service.TaiKhoanService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -23,16 +26,10 @@ public class KhachHangController {
     public final KhachHangService khachHangService;
     public final KhachHangRepository khachHangRepository;
     public final TaiKhoanService taiKhoanService;
+    public final HoaDonService hoaDonService;
 
 
-    //    @GetMapping("")
-//    public String getMGG(Model model, @RequestParam(name = "name", required = false) String name) {
-////            List<TaiKhoan> accountList = taiKhoanService.getTaiKhoans(); // Example method, you should replace it with your actual method
-////            model.addAttribute("accountList", accountList);
-//        model.addAttribute("listColors", khachHangService.getListKhachHang());
-//        model.addAttribute("listColors1", taiKhoanService.getTaiKhoans());
-//        return "/quan-ly/khach-hang/view";
-//    }
+
     @GetMapping("")
     public String getMGG(Model model, @RequestParam(name = "name", required = false) String name,
                          @RequestParam(defaultValue = "0", name = "page") int page,
@@ -57,43 +54,41 @@ public class KhachHangController {
 
     @PostMapping("/add")
     public ResponseEntity<?> add(
-
+            @RequestParam(value = "maKhachHang", required = false) String maKhachHang,
             @RequestParam("tenKhachHang") String tenKhachHang,
             @RequestParam("gioiTinh") Integer gioiTinh,
             @RequestParam("ngaySinh") String ngaySinh,
             @RequestParam("sdt") String sdt,
             @RequestParam("email") String email,
-            @RequestParam("matKhau") String matKhau,
             @RequestParam("trangThai") Integer trangThai,
             Model model
     ) {
-        System.out.println(sdt);
-        System.out.println(email);
-//        model.addAttribute("listColors1", taiKhoanService.getTaiKhoans());
-//        KhachHang gg1 = khachHangRepository.searchKhBySdt(sdt);
-//        KhachHang gg2 = khachHangRepository.searchKhByGM(email);
-//
-//        System.out.println(gg1);
-//        System.out.println(gg2);
-
-//        System.out.println(trangThai);
-//        if (gg1 == null || gg2 == null) {
+        String temp;
         KhachHang khachhang1 = new KhachHang();
+        khachhang1.setMaKhachHang(maKhachHang);
         khachhang1.setTenKhachHang(tenKhachHang);
         khachhang1.setGioiTinh(gioiTinh);
         khachhang1.setNgaySinh(ngaySinh);
         khachhang1.setSdt(sdt);
         khachhang1.setEmail(email);
-        khachhang1.setMatKhau(matKhau);
         khachhang1.setTrangThai(trangThai);
-        khachHangService.addKhachHang(khachhang1);
+        khachhang1 = khachHangService.addKhachHang1(khachhang1);
+        if (maKhachHang == null || maKhachHang.isEmpty()) {
+            khachhang1.setMaKhachHang("KH0"+ khachhang1.getId());
+            khachHangService.editKhachHang(khachhang1.getId() , khachhang1);
+
+        }else {
+            temp = maKhachHang;
+        }
         return ResponseEntity.ok("ok");
-//        }
-//        else if ( gg1 == null || gg2 != null) {
-//            return ResponseEntity.ok("errorEmail");
-//        } else {
-//            return ResponseEntity.ok("error");
-//        }
+    }
+
+
+    @GetMapping("/getHoaDonByKhachHang")
+    public ResponseEntity<?> getHoaDonByKhachHang(@RequestParam("id") int idKh,Model model){
+        List<HoaDon> listHd= hoaDonService.getListSortHoaDonByKhachHang(idKh);
+        return ResponseEntity.ok(listHd);
+
     }
 
 

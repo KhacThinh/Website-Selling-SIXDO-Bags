@@ -659,12 +659,12 @@
                     <% } %>
 
                     <% if (session.getAttribute("quanLy") != null) { %>
-                    <li><a href="/khach_hang" id="btnKhachHang">
+                    <li><a href="/khach_hang?trangThai=1" id="btnKhachHang">
                         <i class="bi bi-people-fill"></i>
                         <span class="link-name">Khách Hàng</span>
                     </a></li>
 
-                    <li><a href="/nhan-vien" id="btnNhanVien">
+                    <li><a href="/nhan-vien?trangThai=1" id="btnNhanVien">
                         <i class="bi bi-person-fill-gear"></i>
                         <span class="link-name">Nhân Viên</span>
                     </a></li>

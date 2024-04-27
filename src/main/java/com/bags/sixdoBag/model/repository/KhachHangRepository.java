@@ -35,12 +35,17 @@ public interface KhachHangRepository extends JpaRepository<KhachHang,Integer> {
     ///////////////////////////////////////////////////////////
     Page<KhachHang> findAll(Pageable pageable);
 
-    @Query(value = "select * from khach_hang where ten_khach_hang like %:tenMa% or ma_khach_hang like %:tenMa%", nativeQuery = true)
+    @Query(value = "select * from khach_hang where ten_khach_hang like %:tenMa% or sdt like %:tenMa%", nativeQuery = true)
     Page<KhachHang> searchKhachHangTenOrMa(String tenMa, Pageable pageable);
 
 
     @Query("select x from KhachHang x where x.trangThai = :name")
     Page<KhachHang> searchCbb(Integer name, Pageable pageable);
 
+
+    @Query("select kh from KhachHang kh where kh.email =:email")
+    KhachHang getKhachHangByEmail(String email);
+    @Query("select kh from KhachHang kh where kh.sdt =:sdt")
+    KhachHang getKhachHangBySDT(String sdt);
     ////////////////////////////////////////////////////////////
 }

@@ -119,5 +119,35 @@ public class KhachHangServiceImpl implements KhachHangService {
     public KhachHang getKhachHangByUserNameAndPassword(String email, String matKhau) {
         return khachHangRepository.findByTenEndMatKhau(email, matKhau);
     }
+    @Override
+    public KhachHang getKhachHangByEmail(String email) {
+        return khachHangRepository.getKhachHangByEmail(email);
+    }
 
+    @Override
+    public KhachHang getKhachHangBySDT(String sdt) {
+        return khachHangRepository.getKhachHangBySDT(sdt);
+    }
+    @Override
+    @Transactional
+    public KhachHang addKhachHang1(KhachHang khachHang) {
+        KhachHang kh = khachHangRepository.save(new KhachHang());
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setTenDangNhap(khachHang.getEmail());
+        taiKhoan.setMatKhau(khachHang.getMatKhau());
+        taiKhoanRepository.save(taiKhoan);
+        kh.setSdt(khachHang.getSdt());
+        kh.setTaiKhoan(taiKhoan);
+        kh.setMaKhachHang(khachHang.getMaKhachHang());
+        kh.setNgaySinh(khachHang.getNgaySinh());
+        kh.setGioiTinh(khachHang.getGioiTinh());
+        kh.setTenKhachHang(khachHang.getTenKhachHang());
+        kh.setEmail(khachHang.getEmail());
+        kh.setMatKhau(khachHang.getMatKhau());
+        kh.setHinhAnh(khachHang.getHinhAnh());
+        kh.setDiaChi(khachHang.getDiaChi());
+        kh.setTrangThai(1);
+
+        return khachHangRepository.save(kh);
+    }
 }

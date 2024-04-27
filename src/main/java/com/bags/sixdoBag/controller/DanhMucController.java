@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("danh-muc")
@@ -63,7 +65,9 @@ public class DanhMucController {
             danhMuc.setTenDanhMuc(tenDanhMuc);
             danhMuc.setTrangThai(trangThai);
             danhMucService.addDanhMuc(danhMuc);
-            return ResponseEntity.ok("ok");
+
+            List<DanhMuc> listDM = danhMucService.getDanhMucs();
+            return ResponseEntity.ok(listDM);
         } else if (cv1 != null && cv2 == null) {
             return ResponseEntity.ok("errorMa");
         } else {

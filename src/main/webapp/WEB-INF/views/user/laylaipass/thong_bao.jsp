@@ -33,6 +33,7 @@
         h2 {
             margin-bottom: 20px;
             text-align: center;
+            color: #0E4BF1;
         }
 
         p {
@@ -56,9 +57,25 @@
         .btn-back:hover {
             background-color: #0056b3;
         }
+
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Đảm bảo hình ảnh làm nền ở phía sau */
+            filter: blur(5px); /* Áp dụng hiệu ứng làm mờ */
+            object-fit: cover;
+        }
+
     </style>
 </head>
 <body>
+<img class="background-image"
+     src="https://png.pngtree.com/thumb_back/fh260/background/20230523/pngtree-cyan-blue-light-effect-abstract-vector-stock-photos-image-guardian-bright-image_2806077.jpg">
+
 <div class="container">
     <h2>Thư đã được gửi đến Email của bạn!</h2>
     <p>Vui lòng kiểm tra email và làm tiếp các bước.</p>

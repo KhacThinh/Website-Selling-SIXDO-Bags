@@ -140,7 +140,26 @@
         .input-group .form-control {
             height: 100%;
         }
+        .status.pending {
+            padding: 2px 4px;
+            background: red;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
+        .status.dangxuly {
+            padding: 2px 4px;
+            background: #0b3cc1;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -152,7 +171,8 @@
     <div class="row">
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
                 data-bs-target="#modalAddDanhMuc">
-            <i class="bi bi-bag-plus-fill"></i> <span>THÊM DANH MỤC</span>
+
+            <i class="bi bi-plus-square-fill"></i> <span>THÊM DANH MỤC</span>
         </button>
         <jsp:include page="them-danh-muc-modal.jsp"/>
     </div>
@@ -180,9 +200,9 @@
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                     </div>
                     <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                    </div>
+<%--                    <div class="input-group-append">--%>
+<%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
+<%--                    </div>--%>
                 </div>
             </form>
         </div>
@@ -203,10 +223,10 @@
             <tbody>
             <c:forEach items="${listColors.content}" var="sp" varStatus="i">
                 <tr id="record_${sp.id}">
-                    <td>${i.index + 1}</td>
+                    <td class="bold">${i.index + 1}</td>
                     <td>${sp.maDanhMuc}</td>
                     <td>${sp.tenDanhMuc}</td>
-                    <td>${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</td>
+                    <td><span class="status ${sp.trangThai == true ? 'dangxuly' : 'pending'}">${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span></td>
 
 
                     <td>
@@ -242,7 +262,8 @@
                                             <div class="mb-3 row">
                                                 <label for="maUpdate${sp.id}" class="col-sm-3 col-form-label">Mã Danh Mục <span>*</span></label>
                                                 <div class="col-sm-9">
-                                                    <input value="${sp.maDanhMuc}" name="maDanhMuc" id="maUpdate${sp.id}" class="form-control">
+                                                    <input value="${sp.maDanhMuc}" name="maDanhMuc" id="maUpdate${sp.id}" class="form-control" readonly
+                                                    >
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">

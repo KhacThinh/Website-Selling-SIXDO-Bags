@@ -1,385 +1,375 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <%--    <link rel="stylesheet" href="style.css">--%>
     <title>Modern Login Page | AsmrProg</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Import jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+
+        .button:hover {
+            background-color: #0056b3;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            cursor: pointer;
+        }
+
+        .button:hover {
+            cursor: pointer;
+        }
+
+        .button:hover {
+            cursor: pointer;
+        }
+
+        body {
+            margin: 0;
+            color: #6a6f8c;
+            background: #ced4da;
+            font: 600 16px/18px 'Open Sans', sans-serif;
+
+        }
+
+        *, :after, :before {
+            box-sizing: border-box
+        }
+
+        .clearfix:after, .clearfix:before {
+            content: '';
+            display: table
+        }
+
+        .clearfix:after {
+            clear: both;
+            display: block
+        }
+
+        a {
+            color: lemonchiffon;
+            text-decoration: none
+        }
+
+        .login-wrap {
+
+            width: 100%;
+            margin: auto;
+            border-radius:  10px;
+            max-width: 525px;
+            min-height: 670px;
+            position: relative;
+
+            background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+            box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+        }
+
+        .login-html {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            padding: 90px 70px 50px 70px;
+            background: rgba(40, 57, 101, .55);
+            border-radius: 10px;
+
+
+        }
+
+        .login-html .sign-in-htm,
+        .login-html .sign-up-htm {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+            transition: all .4s linear;
+        }
+
+        .login-html .sign-in,
+        .login-html .sign-up,
+        .login-form .group .check {
+            display: none;
+        }
+
+        .login-html .tab,
+        .login-form .group .label,
+        .login-form .group .button {
+            text-transform: uppercase;
+        }
+
+        .login-html .tab {
+            font-size: 22px;
+            margin-right: 15px;
+            padding-bottom: 5px;
+            margin: 0 15px 10px 0;
+            display: inline-block;
+            border-bottom: 2px solid transparent;
+        }
+
+        .login-html .sign-in:checked + .tab,
+        .login-html .sign-up:checked + .tab {
+            color: #fff;
+            border-color: #1161ee;
+        }
+
+        .login-form {
+            min-height: 345px;
+            position: relative;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .login-form .group {
+            margin-bottom: 15px;
+        }
+
+        .login-form .group .label,
+        .login-form .group .input,
+        .login-form .group .button {
+            width: 100%;
+            color: #fff;
+            display: block;
+        }
+
+        .login-form .group .input,
+        .login-form .group .button {
+            border: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, .1);
+
+        }
+
+        .login-form .group input[data-type="password"] {
+            text-security: circle;
+            -webkit-text-security: circle;
+        }
+
+        .login-form .group .label {
+            color: white;
+            font-size: 12px;
+        }
+
+        .login-form .group .button {
+            background: #1161ee;
+        }
+
+        .login-form .group label .icon {
+            width: 15px;
+            height: 15px;
+            border-radius: 2px;
+            position: relative;
+            display: inline-block;
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .login-form .group label .icon:before,
+        .login-form .group label .icon:after {
+            content: '';
+            width: 10px;
+            height: 2px;
+            background: #fff;
+            position: absolute;
+            transition: all .2s ease-in-out 0s;
+        }
+
+        .login-form .group label .icon:before {
+            left: 3px;
+            width: 5px;
+            bottom: 6px;
+            transform: scale(0) rotate(0);
+        }
+
+        .login-form .group label .icon:after {
+            top: 6px;
+            right: 0;
+            transform: scale(0) rotate(0);
+        }
+
+        .login-form .group .check:checked + label {
+            color: #fff;
+        }
+
+        .login-form .group .check:checked + label .icon {
+            background: #1161ee;
+        }
+
+        .login-form .group .check:checked + label .icon:before {
+            transform: scale(1) rotate(45deg);
+        }
+
+        .login-form .group .check:checked + label .icon:after {
+            transform: scale(1) rotate(-45deg);
+        }
+
+        .login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm {
+            transform: rotate(0);
+        }
+
+        .login-html .sign-up:checked + .tab + .login-form .sign-up-htm {
+            transform: rotate(0);
+        }
+
+        .hr {
+            height: 2px;
+            margin: 60px 0 50px 0;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .foot-lnk {
+            text-align: center;
+        }
+
+        .error-message {
+            font-size: small;
+
+        }
+
+        .small-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px; /* Adjust this value as needed */
+            transform: translateY(-50%);
+            cursor: pointer;
+            margin-top: -50px;
+            margin-right: 10px;
+            color: #1d1d1d;
+        }
+
+        .login-wrap {
+            margin-top: 30px;
+
+        }
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Đảm bảo hình ảnh làm nền ở phía sau */
+            filter: blur(5px); /* Áp dụng hiệu ứng làm mờ */
+            object-fit: cover;
+            background-color: rgba(40, 57, 101, 0.9); /* Màu nền trong suốt */
+            opacity: 0.9; /* Độ trong suốt */
+        }
+        .input::placeholder {
+            color: silver; /* Thiết lập màu cho placeholder là trắng */
+        }
+
+
+
+    </style>
 </head>
+<body>
+<img class="background-image"
+     src="https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg">
 
-<body >
+<div class="login-wrap">
+    <div class="login-html">
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+        <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+        <div class="login-form">
+            <div class="sign-in-htm">
+                <form id="login-form" method="post">
+                    <div class="group">
+                        <label for="email" class="label">Email</label>
+                        <input id="email" type="text" name="email" placeholder="Email" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" name="mat_khau" placeholder="Password" class="input"
+                               data-type="text">
+                        <i class="toggle-password fa fa-eye-slash small-icon" aria-hidden="true"
+                           onclick="togglePasswordVisibility()"></i>
+                    </div>
 
-
-<div class="container" id="container">
-    <div class="form-container sign-up">
-        <form action="/user/add" method="post" onsubmit="return validateForm()">
-            <h1>Tạo tài khoản</h1>
-            <div class="social-icons">
-                <!-- social icons here -->
-            </div>
-            <span>hoặc sử dụng email của bạn để đăng ký</span>
-            <input type="text" id="fullName" name="ten" placeholder="Full Name">
-            <span id="nameError" style="color: red; display: none;">Tên chỉ được chứa các ký tự chữ cái!</span>
-            <input type="email" id="email" name="email" placeholder="Email">
-            <c:if test="${not empty tbtb}">
-                <span  style="color: red;">${tbtb}</span>
-            </c:if>
-            <span id="emailError" style="color: red; display: none;">Email không được trống hoặc không hợp lệ!</span>
-            <input type="text" id="address" name="diaChi" placeholder="Address">
-            <span id="addressError" style="color: red; display: none;">Địa chỉ không được để trống!</span>
-            <input type="password" id="pass" name="pass" placeholder="Password">
-            <span id="passError" style="color: red; display: none;">Mật khẩu ít nhất 6 kí tự và phải chứa cả chữ và số!</span>
-            <input type="password" id="confirm" name="confirm" placeholder="Confirm Password">
-            <span id="confirmError" style="color: red; display: none;">Xác nhận mật khẩu không khớp!</span>
-            <button type="submit">Đăng ký</button>
-        </form>
-
-        <script>
-            function validateForm() {
-                var fullName = document.getElementById("fullName").value.trim();
-                var email = document.getElementById("email").value.trim();
-                var address = document.getElementById("address").value.trim();
-                var pass = document.getElementById("pass").value.trim();
-                var confirmPass = document.getElementById("confirm").value.trim();
-                var nameErrorSpan = document.getElementById("nameError");
-                var emailErrorSpan = document.getElementById("emailError");
-                var addressErrorSpan = document.getElementById("addressError");
-
-                var passErrorSpan = document.getElementById("passError");
-                var confirmErrorSpan = document.getElementById("confirmError");
-                var namePattern = /^[a-zA-Z]+$/;
-                var passPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
-
-                if (!fullName || !fullName.match(namePattern)) {
-                    nameErrorSpan.style.display = "block";
-                    return false;
-                } else {
-                    nameErrorSpan.style.display = "none";
-                }
-
-                if (!email || !validateEmail(email)) {
-                    emailErrorSpan.style.display = "block";
-                    return false;
-                } else {
-                    emailErrorSpan.style.display = "none";
-                }
-
-                if (!address) {
-                    addressErrorSpan.style.display = "block";
-                    return false;
-                } else {
-                    addressErrorSpan.style.display = "none";
-                }
-
-                if (!pass || !pass.match(passPattern)) {
-                    passErrorSpan.style.display = "block";
-                    return false;
-                } else {
-                    passErrorSpan.style.display = "none";
-                }
-
-                if (!confirmPass) {
-                    confirmErrorSpan.style.display = "block";
-                    return false;
-                } else if (pass !== confirmPass) {
-                    confirmErrorSpan.style.display = "block";
-                    return false;
-                } else {
-                    confirmErrorSpan.style.display = "none";
-                }
-
-                // Thực hiện các kiểm tra khác nếu cần
-
-                return true; // Submit form nếu tất cả điều kiện đều đúng
-            }
-
-            function validateEmail(email) {
-                var re = /\S+@\S+\.\S+/;
-                return re.test(email);
-            }
-        </script>
-
-
-
-
-
-    </div>
-    <div class="form-container sign-in">
-        <c:if test="${ not empty sessionScope.error }">
-        <div class="alert alert-danger text-center">${sessionScope.error}</div>
-            <c:remove var="error" scope="session"/>
-        </c:if>
-        <form method="post"  action="${action}">
-            <h1>Đăng nhập</h1>
-            <div class="social-icons">
-                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-            <span>hoặc sử dụng mật khẩu email của bạn</span>
-            <input name="email" type="email" placeholder="Email">
-            <input name = "mat_khau" type="password" placeholder="Password">
-            <a href="#">Quên mật khẩu?</a>
-            <button>Đăng Nhập</button>
-        </form>
-    </div>
-    <div class="toggle-container">
-        <div class="toggle">
-            <div class="toggle-panel toggle-left">
-                <h1>Xin chào đến với SIXDO!</h1>
-                <p>Nhập thông tin cá nhân của bạn để sử dụng tất cả các tính năng của trang web</p>
-                <button class="hidden" id="login">Đăng Nhập</button>
-            </div>
-            <div class="toggle-panel toggle-right">
-                <h1>Xin chào bạn!</h1>
-                <p>Đăng ký với thông tin cá nhân của bạn để sử dụng tất cả các tính năng của trang web</p>
-                <button class="hidden" id="register">Đăng ký</button>
+                    <div id="error-message" class="error-message" style="color: darkorange;"></div>
+                    <!-- Placeholder for error message -->
+                    <div class="group">
+                        <input id="check" type="checkbox" class="check" checked>
+                        <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In" id="btn-login-nv">
+                    </div>
+                    <div class="hr"></div>
+                    <div class="foot-lnk">
+                        <a href="/lay-mk">Forgot Password?</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    const container = document.getElementById('container');
-    const registerBtn = document.getElementById('register');
-    const loginBtn = document.getElementById('login');
+    $(document).ready(function () {
+        $('#login-form').submit(function (event) {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của form
 
-    registerBtn.addEventListener('click', () => {
-        container.classList.add("active");
+            var email = $('#email').val();
+            var password = $('#pass').val();
+            var errorMessage = $('#error-message');
+
+            var hasError = false;
+
+            if (email.trim() === '' || password.trim() === '') {
+                errorMessage.text('Vui lòng điền đầy đủ thông tin email và mật khẩu.');
+                hasError = true;
+            } else {
+                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    errorMessage.text('Vui lòng nhập đúng định dạng email.');
+                    hasError = true;
+                }
+            }
+
+            if (!hasError) {
+                $.post('/mmployee-login/check', {email: email, mat_khau: password})
+                    .done(function (response) {
+                        if (response == 2) {
+                            window.location.href = "http://localhost:8080/hoa-don/nv-lich-su";
+                        } else if (response == 4) {
+                            window.location.href = "http://localhost:8080/thong-ke";
+                        } else {
+                            errorMessage.text('Đăng nhập thất bại. Email hoặc mật khẩu không chính xác');
+                        }
+                    })
+                    .fail(function () {
+                        errorMessage.text('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                    });
+            }
+        });
     });
 
-    loginBtn.addEventListener('click', () => {
-        container.classList.remove("active");
-    });
+    function togglePasswordVisibility() {
+        var passField = document.getElementById("pass");
+        var passIcon = document.querySelector(".toggle-password");
+
+        if (passField.type === "password") {
+            passField.type = "text";
+            passIcon.classList.remove("fa-eye-slash");
+            passIcon.classList.add("fa-eye");
+        } else {
+            passField.type = "password";
+            passIcon.classList.remove("fa-eye");
+            passIcon.classList.add("fa-eye-slash");
+        }
+    }
 </script>
 </body>
-
-<style>
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Montserrat', sans-serif;
-    }
-
-    body{
-        background-color: #c9d6ff;
-        background: linear-gradient(to right, #e2e2e2, #c9d6ff);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 100vh;
-    }
-
-    .container{
-        background-color: #fff;
-        border-radius: 30px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-        position: relative;
-        overflow: hidden;
-        width: 768px;
-        max-width: 100%;
-        min-height: 480px;
-    }
-
-    .container p{
-        font-size: 14px;
-        line-height: 20px;
-        letter-spacing: 0.3px;
-        margin: 20px 0;
-    }
-
-    .container span{
-        font-size: 12px;
-    }
-
-    .container a{
-        color: #333;
-        font-size: 13px;
-        text-decoration: none;
-        margin: 15px 0 10px;
-    }
-
-    .container button{
-        background-color: #512da8;
-        color: #fff;
-        font-size: 12px;
-        padding: 10px 45px;
-        border: 1px solid transparent;
-        border-radius: 8px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        margin-top: 10px;
-        cursor: pointer;
-    }
-
-    .container button.hidden{
-        background-color: transparent;
-        border-color: #fff;
-    }
-
-    .container form{
-        background-color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 0 40px;
-        height: 100%;
-    }
-
-    .container input{
-        background-color: #eee;
-        border: none;
-        margin: 8px 0;
-        padding: 10px 15px;
-        font-size: 13px;
-        border-radius: 8px;
-        width: 100%;
-        outline: none;
-    }
-
-    .form-container{
-        position: absolute;
-        top: 0;
-        height: 100%;
-        transition: all 0.6s ease-in-out;
-    }
-
-    .sign-in{
-        left: 0;
-        width: 50%;
-        z-index: 2;
-    }
-
-    .container.active .sign-in{
-        transform: translateX(100%);
-    }
-
-    .sign-up{
-        left: 0;
-        width: 50%;
-        opacity: 0;
-        z-index: 1;
-    }
-
-    .container.active .sign-up{
-        transform: translateX(100%);
-        opacity: 1;
-        z-index: 5;
-        animation: move 0.6s;
-    }
-
-    @keyframes move{
-        0%, 49.99%{
-            opacity: 0;
-            z-index: 1;
-        }
-        50%, 100%{
-            opacity: 1;
-            z-index: 5;
-        }
-    }
-
-    .social-icons{
-        margin: 20px 0;
-    }
-
-    .social-icons a{
-        border: 1px solid #ccc;
-        border-radius: 20%;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 3px;
-        width: 40px;
-        height: 40px;
-    }
-
-    .toggle-container{
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 50%;
-        height: 100%;
-        overflow: hidden;
-        transition: all 0.6s ease-in-out;
-        border-radius: 150px 0 0 100px;
-        z-index: 1000;
-    }
-
-    .container.active .toggle-container{
-        transform: translateX(-100%);
-        border-radius: 0 150px 100px 0;
-    }
-
-    .toggle{
-        background-color: #512da8;
-        height: 100%;
-        background: linear-gradient(to right, #5c6bc0, #512da8);
-        color: #fff;
-        position: relative;
-        left: -100%;
-        height: 100%;
-        width: 200%;
-        transform: translateX(0);
-        transition: all 0.6s ease-in-out;
-    }
-
-    .container.active .toggle{
-        transform: translateX(50%);
-    }
-
-    .toggle-panel{
-        position: absolute;
-        width: 50%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 0 30px;
-        text-align: center;
-        top: 0;
-        transform: translateX(0);
-        transition: all 0.6s ease-in-out;
-    }
-
-    .toggle-left{
-        transform: translateX(-200%);
-    }
-
-    .container.active .toggle-left{
-        transform: translateX(0);
-    }
-
-    .toggle-right{
-        right: 0;
-        transform: translateX(0);
-    }
-
-    .container.active .toggle-right{
-        transform: translateX(200%);
-    }
-
-    /* ... các quy tắc CSS giữ nguyên ... */
-
-    .container form .row {
-        margin-bottom: 15px;
-    }
-</style>
-
 </html>
+

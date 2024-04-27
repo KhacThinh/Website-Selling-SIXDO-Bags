@@ -72,32 +72,35 @@
 </head>
 <body>
 
-<div class="modal modal-xl" id="modalAddDTSD" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+<div class="modal modal-xl" id="modalAddTGBH" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <h1>MÀU SẮC</h1>
+            <h1>THÊM THỜI GIAN BẢO HÀNH</h1>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="maDoiTuongSuDung">Mã Đối Tượng Sử Dụng</label><span class="red-star"> *</span>
-                            <input  id="maDoiTuongSuDung" class="form-control"/>
+                            <label for="ma">Mã Bảo Hành</label><span class="red-star"> *</span>
+                            <div class="input-group">
+                                <input id="ma" class="form-control" />
+
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="tenDoiTuongSuDung">Tên Đối Tượng Sử Dụng</label><span class="red-star"> *</span>
-                            <input id="tenDoiTuongSuDung" class="form-control"/>
+                            <label for="thoiGian">Thời Gian Bảo Hành</label><span class="red-star"> *</span>
+                            <input id="thoiGian" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="trangThai">Trạng Thái:</label>
                         <select id="trangThai" name="trangThai" class="form-select" disabled>
-                            <option value="1">Hoạt Động</option>
+                            <option value="true">Hoạt Động</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addDTSD()">Lưu</button>
+                    <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addThoiGian()">Lưu</button>
                 </div>
             </div>
         </div>
@@ -105,6 +108,3 @@
 </div>
 </body>
 </html>
-
-
-

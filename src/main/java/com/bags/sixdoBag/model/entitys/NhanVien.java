@@ -52,10 +52,10 @@ public class NhanVien {
     private String cccd;
 
     @Column(name = "thoi_gian_vao")
-    private LocalDateTime thoiGianVao;
+    private String  thoiGianVao;
 
     @Column(name = "thoi_gian_ra")
-    private LocalDateTime thoiGianRa;
+    private String  thoiGianRa;
 
     @Column(name = "gioiTinh")
     private Integer gioiTinh;

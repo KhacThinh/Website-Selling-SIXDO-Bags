@@ -115,13 +115,13 @@
     <div class="title text-center pt-5">
         <h2 class="position-relative d-inline-block">QUẢN LÝ MÀU SẮC</h2>
     </div>
-    <div class="row">
-        <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
-                data-bs-target="#modalAddChucVu">
-            <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>
-        </button>
-        <jsp:include page="them-chuc-vu.jsp"/>
-    </div>
+<%--    <div class="row">--%>
+<%--        <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"--%>
+<%--                data-bs-target="#modalAddChucVu">--%>
+<%--            <i class="bi bi-bag-plus-fill"></i> <span>THÊM SẢN PHẨM</span>--%>
+<%--        </button>--%>
+<%--        <jsp:include page="them-chuc-vu.jsp"/>--%>
+<%--    </div>--%>
 </div>
 <div class="container">
     <div id="test">
@@ -147,19 +147,19 @@
                     <td>
                         <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i
                                 class="bi bi-three-dots-vertical"></i></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                            <li>
-                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalUpdateCV${sp.id}"><i class="bi bi-pencil"></i> Sửa
-                            </button>
-                        </li>
+<%--                        <ul class="dropdown-menu">--%>
+<%--                            <li>--%>
+<%--                            <li>--%>
+<%--                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalUpdateCV${sp.id}"><i class="bi bi-pencil"></i> Sửa--%>
+<%--                            </button>--%>
+<%--                        </li>--%>
 
-                            </li>
-                            <a class="dropdown-item delete-color" href="#" onclick="xoaChucVu(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        </ul>
+<%--                            </li>--%>
+<%--                            <a class="dropdown-item delete-color" href="#" onclick="xoaChucVu(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>--%>
+<%--                            <li>--%>
+<%--                                <hr class="dropdown-divider">--%>
+<%--                            </li>--%>
+<%--                        </ul>--%>
 
 
 

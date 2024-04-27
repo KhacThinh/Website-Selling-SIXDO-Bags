@@ -48,6 +48,24 @@
             width: 1200px;
 
         }
+
+        /* CSS cho các trạng thái */
+        .trang-thai-0 {
+            color: #ff0000; /* Màu đỏ cho "Ngừng bán" */
+        }
+
+        .trang-thai-1 {
+            color: #008000; /* Màu xanh cho "Đang bán" */
+        }
+
+        .trang-thai-2 {
+            color: #ff8c00; /* Màu cam cho "Hết hàng" */
+        }
+
+        .trang-thai-default {
+            color: #000000; /* Màu đen cho "Không xác định" */
+        }
+
     </style>
 </head>
 
@@ -87,6 +105,18 @@
                             </c:forEach>
                         </select>
                     </div>
+
+                    <%--                    <div class="col-md-4 mb-3">--%>
+                    <%--                        <select name="trangThai" class="form-select">--%>
+                    <%--                            <option value="">Chọn Trạng Thái</option>--%>
+                    <%--                            <option value="0">Ngừng bán</option>--%>
+                    <%--                            <option value="1">Đang bán</option>--%>
+                    <%--                            <option value="2">Hết hàng</option>--%>
+
+                    <%--                        </select>--%>
+                    <%--                    </div>--%>
+
+
                     <div class="col-md-4 mb-3">
                         <button type="submit" class="btn btn-primary">Lọc</button>
                     </div>
@@ -109,16 +139,19 @@
 
 <script>
     function getTrangThaiString(trangThai) {
+        // Hàm để trả về chuỗi màu dựa trên trạng thái
         switch (trangThai) {
             case 0:
-                return "Ngừng bán";
+                return '<span class="trang-thai-0">Ngừng bán</span>';
             case 1:
-                return "Đang bán";
+                return '<span class="trang-thai-1">Đang bán</span>';
             case 2:
-                return "Hết hàng";
+                return '<span class="trang-thai-2">Hết hàng</span>';
             default:
-                return "Không xác định";
+                return '<span class="trang-thai-default">Không xác định</span>';
         }
+
+
     }
 
 </script>
@@ -153,7 +186,7 @@
                 <td>${sp.soLuong}</td>
                 <td>${sp.giaNhap}</td>
                 <td>${sp.giaBan}</td>
-                <td><script>document.write(getTrangThaiString(${sp.trangThai}))</script></td>
+                <td id="trang-thai-chi-tiet-san-pham"><script>document.write(getTrangThaiString(${sp.trangThai}))</script></td>
 
 
                 <td>
@@ -266,40 +299,40 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                <label for="trangThai" class="form-label">Trạng Thái </label>
+                                                    <label for="trangThai" class="form-label">Trạng Thái </label>
                                                     <select name="trangThai" class="form-select" id="trangThaiUpdate${sp.id}">
                                                         <option value="1"${sp.trangThai == 1 ? 'selected' : ''}>Đang Bán</option>
                                                         <option value="0"${sp.trangThai == 0? 'selected' : ''}>Ngừng Bán</option>
                                                     </select>
                                                 </div>
-                                                </div>
                                             </div>
-
-
                                         </div>
-                                    </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            Thoát
-                                        </button>
-                                        <button type="submit" id="uploadButton" class="btn btn-primary"
-                                                onclick="validateFormUpdate(${sp.id})">Lưu
-                                        </button>
-                                    </div>
 
+
+                                    </div>
                                 </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Thoát
+                                    </button>
+                                    <button type="submit" id="uploadButton" class="btn btn-primary"
+                                            onclick="validateFormUpdate(${sp.id})">Lưu
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-
-
-                    </c:forEach>
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
     </div>
+
+
+    </c:forEach>
+    </td>
+    </tr>
+
+    </tbody>
+    </table>
+</div>
 </div>
 
 
