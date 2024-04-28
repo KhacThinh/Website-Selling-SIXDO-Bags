@@ -1,14 +1,13 @@
 package com.bags.sixdoBag.controller.Online;
 
-import com.bags.sixdoBag.config.UserLoginKhachHang;
 import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietGioHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +28,8 @@ import java.util.stream.Collectors;
 public class ProductFavoriteController {
 
     private final ChiTietSanPhamServivce chiTietSanPhamServivce;
+
+    private final ChiTietGioHangService chiTietGioHangService;
 
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
@@ -183,6 +184,18 @@ public class ProductFavoriteController {
         }
         List<ProductHomeRequest> searchResults = sanPhamYeuThichService.searchSanPhamFavoriteOnlines(khachHang.getId(), keyword);
         return ResponseEntity.ok(searchResults);
+    }
+
+
+    @GetMapping("/check-gio-hang-chi-tiet")
+    public @ResponseBody
+    List<ChiTietGioHang> checkGioHangChiTiet() {
+        List<ChiTietGioHang> chiTietGioHangList = new ArrayList<>();
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.nonNull(khachHang)) {
+            chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(khachHang.getId());
+        }
+        return chiTietGioHangList;
     }
 
 }

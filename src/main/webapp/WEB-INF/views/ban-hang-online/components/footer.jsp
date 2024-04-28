@@ -120,8 +120,7 @@
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h3 class="stext-301 cl0 p-b-30">
-                    CỬA HÀNG TÚI XÁCH SIXDO
+                <h3 class="stext-301 cl0 p-b-30" id="ten-cua-hang-ft">
                 </h3>
 
                 <p class="stext-107 cl7 size-201 f-s" style="font-size: 15px">Cửa hàng túi xách Sixdo là điểm đến lý
@@ -169,17 +168,5 @@
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
-<script>
-    $(document).ready(function () {
-        thongTinCuaHangFt();
-    })
-
-    function thongTinCuaHangFt() {
-        $.get('/lien-he/thong-tin-cua-hang', function (data) {
-            $('#js-dia-chi-lh-ft').text(data.diaChi);
-            $('#js-sdt-lh-ft').text(data.sdt);
-        })
-    }
-</script>
 </body>
 </html>

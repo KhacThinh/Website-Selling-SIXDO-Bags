@@ -181,10 +181,19 @@
                             </tbody>
                         </table>
                     </div>
-                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">
-                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>
-                        <span id="js-tong-thanh-toan" style="margin-left: 5px;">0</span>
-                        <span style="margin-left: 3px;">đồng</span>
+                    <%--                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">--%>
+                    <%--                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>--%>
+                    <%--                        <span id="js-tong-thanh-toan" style="margin-left: 5px;">0</span>--%>
+                    <%--                        <span style="margin-left: 3px;">đồng</span>--%>
+                    <%--                    </div>--%>
+
+                    <div style="position: absolute; bottom: -20px; right: 36px; align-items: center;">
+                        <p style="font-size: 14px; margin: 0;">Phí Vận Chuyển : <span
+                                id="js-phi-giao-hang-thanh-toan">0</span></p>
+                        <p style="font-size: 14px; color: red; margin: 0;">Giảm Giá : <span id="js-giam-gia-thanh-toan">0</span>
+                            đ</p>
+                        <p style="font-weight: bold; font-size: 15px; margin: 0;">Tổng Thanh Toán : <span
+                                id="js-tong-thanh-toan" style="margin-left: 5px;">0</span> đ</p>
                     </div>
 
 
@@ -277,10 +286,18 @@
                             </tbody>
                         </table>
                     </div>
-                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">
-                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>
-                        <span id="ip-tong-thanh-toan" style="margin-left: 5px;">0</span>
-                        <span style="margin-left: 3px;">đồng</span>
+                    <%--                    <div style="font-weight: bold;position: absolute; bottom: -20px; right: 36px; display: flex; align-items: center;">--%>
+                    <%--                        <p style="font-size: 15px; margin: 0;">Tổng Thanh Toán:</p>--%>
+                    <%--                        <span id="ip-tong-thanh-toan" style="margin-left: 5px;">0</span>--%>
+                    <%--                        <span style="margin-left: 3px;">đồng</span>--%>
+                    <%--                    </div>--%>
+                    <div style="position: absolute; bottom: -20px; right: 36px; align-items: center;">
+                        <p style="font-size: 14px; margin: 0;">Phí Vận Chuyển : <span
+                                id="ip-phi-giao-hang-thanh-toan">0</span></p>
+                        <p style="font-size: 14px; color: red; margin: 0;">Giảm Giá : <span id="ip-giam-gia-thanh-toan">0</span>
+                            đ</p>
+                        <p style="font-weight: bold; font-size: 15px; margin: 0;">Tổng Thanh Toán : <span
+                                id="ip-tong-thanh-toan" style="margin-left: 5px;">0</span> đ</p>
                     </div>
                 </div>
             </div>
@@ -622,9 +639,17 @@
             $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
                 var tt = '';
                 var trangThai = item.hoaDon.trangThai;
+
+                if (item.hoaDon.phiVanChuyen != null) {
+                    $('#js-phi-giao-hang-thanh-toan').text(item.hoaDon.phiVanChuyen.toLocaleString() + ' đ');
+                } else {
+                    $('#js-phi-giao-hang-thanh-toan').text('0 đ');
+                }
+
                 if (trangThai == 0) {
                     tt = 'Hoàn Thành';
                 } else if (trangThai == 2) {
+                    $('#js-phi-giao-hang-thanh-toan').text('Phí giao hàng chưa được cập nhật.');
                     tt = 'Chờ xác nhận';
                 } else if (trangThai == 3) {
                     tt = 'Đang xử lý';
@@ -642,7 +667,13 @@
                 $('#js-dia-chi-nguoi-nhan').text(item.hoaDon.diaChiNguoiNhan);
                 $('#js-sdt-nguoi-nhan').text(item.hoaDon.sdtNguoiNhan);
                 $('#js-email-nguoi-nhan').text(item.hoaDon.emailNguoiNhan);
+
                 $('#js-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
+                if (item.hoaDon.maGiamGia != null) {
+                    $('#js-giam-gia-thanh-toan').text(item.hoaDon.maGiamGia.giaTriGiam.toLocaleString());
+                } else {
+                    $('#js-giam-gia-thanh-toan').text('0'.toLocaleString());
+                }
 
                 $("#chi-tiet-don-hang-order tbody").empty();
                 $.each(item.chiTietHoaDons, function (index, cthd) {
@@ -671,9 +702,17 @@
             $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
                 var tt = '';
                 var trangThai = item.hoaDon.trangThai;
+
+                if (item.hoaDon.phiVanChuyen != null) {
+                    $('#ip-phi-giao-hang-thanh-toan').text(item.hoaDon.phiVanChuyen.toLocaleString() + ' đ');
+                } else {
+                    $('#ip-phi-giao-hang-thanh-toan').text('0 đ');
+                }
+
                 if (trangThai == 0) {
                     tt = 'Hoàn Thành';
                 } else if (trangThai == 2) {
+                    $('#ip-phi-giao-hang-thanh-toan').text('Phí giao hàng chưa được cập nhật.');
                     tt = 'Chờ xác nhận';
                 } else if (trangThai == 3) {
                     tt = 'Đang xử lý';
@@ -693,6 +732,12 @@
                 $('#ip-sdt-nguoi-nhan').val(item.hoaDon.sdtNguoiNhan);
                 $('#ip-email-nguoi-nhan').val(item.hoaDon.emailNguoiNhan);
                 $('#ip-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
+
+                if (item.hoaDon.maGiamGia != null) {
+                    $('#ip-giam-gia-thanh-toan').text(item.hoaDon.giamGia.toLocaleString());
+                } else {
+                    $('#ip-giam-gia-thanh-toan').text('0'.toLocaleString());
+                }
 
                 $("#ip-chi-tiet-don-hang-order tbody").empty();
                 $.each(item.chiTietHoaDons, function (index, cthd) {

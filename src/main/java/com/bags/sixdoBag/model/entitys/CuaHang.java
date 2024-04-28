@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class CuaHang {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

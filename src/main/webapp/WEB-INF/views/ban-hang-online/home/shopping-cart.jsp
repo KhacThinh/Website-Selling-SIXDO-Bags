@@ -429,8 +429,6 @@
                                                                 $.get('/sixdo-shop/hien-thi-so-luong-cart-product', function (data) {
                                                                     if (data <= 0) {
                                                                         window.location.href = '/sixdo-shop/shoping-cart';
-                                                                    }else{
-                                                                        window.location.href = '/sixdo-shop/shoping-cart';
                                                                     }
                                                                 });
                                                             });
@@ -470,7 +468,8 @@
                                 <c:forEach items="${danhSachMaGiamGia}" var="mgg">
                                     <fmt:formatNumber pattern="#,###" value="${mgg.giaTriGiam}"
                                                       var="giaTriGiam"></fmt:formatNumber>
-                                    <option value="${mgg.maGiamGia}">${mgg.tenMaGiamGia} - Giảm giá: ${giaTriGiam} đ</option>
+                                    <option value="${mgg.maGiamGia}">${mgg.tenMaGiamGia} - Giảm giá: ${giaTriGiam} đ
+                                    </option>
                                 </c:forEach>
                             </select>
                             <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 apply-coupon">
@@ -761,14 +760,33 @@
             var giaTriGiam = 0;
             var maGiamGia = null;
 
-            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
-            var product = {
-                idCtSanPham: ${o.idChiTietSanPham},
-                soLuong: document.getElementById('quantityProduct-${i.index}').value,
-                gia:${o.chiTietSanPham.giaBan *o.soLuong},
-            };
-            productList.push(product);
-            </c:forEach>
+
+            $.get('/product-favorite/check-gio-hang-chi-tiet', function (data) {
+                if (data.length > 0) {
+                    // Xử lý dữ liệu nhận được
+                    data.forEach(function (item) {
+                        var product = {
+                            idCtSanPham: item.idChiTietSanPham,
+                            soLuong: item.soLuong,
+                            gia: item.chiTietSanPham.giaBan * item.soLuong,
+                        };
+                        productList.push(product);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Giỏ hàng của bạn đang trống',
+                    });
+                }
+            });
+            <%--            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">--%>
+            <%--            var product = {--%>
+            <%--                idCtSanPham: ${o.idChiTietSanPham},--%>
+            <%--                soLuong: document.getElementById('quantityProduct-${i.index}').value,--%>
+            <%--                gia:${o.chiTietSanPham.giaBan *o.soLuong},--%>
+            <%--            };--%>
+            <%--            productList.push(product);--%>
+            <%--            </c:forEach>--%>
 
 
             var errors = [];
@@ -868,14 +886,37 @@
                 });
             }
 
-            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">
-            var product = {
-                idCtSanPham: ${o.idChiTietSanPham},
-                soLuong: document.getElementById('quantityProduct-${i.index}').value,
-                gia:${o.chiTietSanPham.giaBan *o.soLuong},
-            };
-            productList.push(product);
-            </c:forEach>
+            $.get('/product-favorite/check-gio-hang-chi-tiet', function (data) {
+                if (data.length > 0) {
+                    // Xử lý dữ liệu nhận được
+                    data.forEach(function (item) {
+                        var product = {
+                            idCtSanPham: item.idChiTietSanPham,
+                            soLuong: item.soLuong,
+                            gia: item.chiTietSanPham.giaBan * item.soLuong,
+                        };
+                        productList.push(product);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Giỏ hàng của bạn đang trống',
+                    });
+                }
+            });
+
+            console.log(JSON.stringify(productList));
+            // return false;
+
+
+            <%--            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">--%>
+            <%--            var product = {--%>
+            <%--                idCtSanPham: ${o.idChiTietSanPham},--%>
+            <%--                soLuong: document.getElementById('quantityProduct-${i.index}').value,--%>
+            <%--                gia:${o.chiTietSanPham.giaBan *o.soLuong},--%>
+            <%--            };--%>
+            <%--            productList.push(product);--%>
+            <%--            </c:forEach>--%>
             $.ajax({
                 type: 'GET',
                 url: '/check-customer/mail',
@@ -917,7 +958,7 @@
 
 
         $('.submit-oder-by-cart').on('click', function () {
-            if( document.getElementById("maGiamGiaInput").value !== maGiamGiaValue){
+            if (document.getElementById("maGiamGiaInput").value !== maGiamGiaValue) {
                 maGiamGiaValue = '';
             }
             if (Object.keys(orderData).length === 0) {
@@ -972,7 +1013,7 @@
                                                     document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
                                                     Swal.fire({
-                                                        title: 'Order Success!',
+                                                        title: 'Đặt hàng thành công!',
                                                         text: 'Đơn hàng đã được đặt, để ý điện thoại shop sẽ gọi để xác nhận nha!',
                                                         icon: 'success',
                                                         showConfirmButton: false, // Ẩn nút "OK"

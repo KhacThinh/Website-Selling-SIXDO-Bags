@@ -97,6 +97,7 @@
                                         <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
                                     </c:forEach>
                                 </select>
+                                <span id="thoiGianBaoHanhErrorSua" class="error text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label for="idThuongHieuSua">Thương Hiệu</label>
@@ -106,6 +107,7 @@
                                         <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
                                     </c:forEach>
                                 </select>
+                                <span id="thuongHieuErrorSua" class="error text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -119,6 +121,7 @@
                                         <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
                                     </c:forEach>
                                 </select>
+                                <span id="danhMucErrorSua" class="error text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -130,6 +133,7 @@
                                         <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
                                     </c:forEach>
                                 </select>
+                                <span id="doiTuongSuDungErrorSua" class="error text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -200,6 +204,10 @@
         var idDanhMuc = $("#idDanhMucSua").val();
         var idDoiTuongSuDung = $("#idDoiTuongSuDungSua").val();
         var moTa = $("#moTaSua").val();
+        var idThoiGianBaoHanh = document.getElementById('idThoiGianBaoHanhSua').value;
+        var idDanhMuc = document.getElementById('idDanhMucSua').value;
+        var idThuongHieu = document.getElementById('idThuongHieuSua').value;
+        var idDoiTuongSuDung = document.getElementById('idDoiTuongSuDungSua').value;
 
         // Biến để kiểm tra xem có lỗi không
         let hasError = false;
@@ -266,6 +274,34 @@
             hasError = true;
         } else {
             document.getElementById('kichThuocErrorr').innerText = '';
+        }
+
+        if (idThuongHieu === '') {
+            document.getElementById('thuongHieuErrorSua').innerText = 'Vui lòng nhập chọn thương hiệu.';
+            hasError = true;
+        } else {
+            document.getElementById('thuongHieuErrorSua').innerText = '';
+        }
+
+        if (idDanhMuc === '') {
+            document.getElementById('danhMucErrorSua').innerText = 'Vui lòng nhập chọn danh mục.';
+            hasError = true;
+        } else {
+            document.getElementById('danhMucErrorSua').innerText = '';
+        }
+
+        if (idDoiTuongSuDung === '') {
+            document.getElementById('doiTuongSuDungErrorSua').innerText = 'Vui lòng nhập chọn đối tượng sử dụng.';
+            hasError = true;
+        } else {
+            document.getElementById('doiTuongSuDungErrorSua').innerText = '';
+        }
+
+        if (idThoiGianBaoHanh === '') {
+            document.getElementById('thoiGianBaoHanhErrorSua').innerText = 'Vui lòng nhập chọn thời gian bảo hành.';
+            hasError = true;
+        } else {
+            document.getElementById('thoiGianBaoHanhErrorSua').innerText = '';
         }
 
         // Kiểm tra sự tồn tại của tên sản phẩm (thực hiện AJAX sau khi kiểm tra lỗi)
