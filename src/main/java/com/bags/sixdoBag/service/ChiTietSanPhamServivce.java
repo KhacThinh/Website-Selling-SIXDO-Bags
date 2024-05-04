@@ -2,6 +2,7 @@ package com.bags.sixdoBag.service;
 
 import com.bags.sixdoBag.model.dto.request.ChiTietSanPhamRequest;
 import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
+import com.bags.sixdoBag.model.entitys.SanPham;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

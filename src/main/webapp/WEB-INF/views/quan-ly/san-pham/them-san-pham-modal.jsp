@@ -15,14 +15,6 @@
             <div class="modal-body">
                 <form:form method="POST" action="/san-pham" modelAttribute="sanPhamRequest" id="addSanPhamForm"
                            enctype="multipart/form-data">
-<<<<<<< HEAD
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tenSanPham">Tên Sản Phẩm<span class="required">*</span></label>
-                            <form:input path="tenSanPham" id="tenSanPham" class="form-control"/>
-                            <span id="tenSanPhamError" class="error text-danger"></span>
-=======
 
                     <div class="row">
                         <div class="col-md-6">
@@ -38,50 +30,48 @@
                                 <form:input path="chatLieu" id="chatLieu" class="form-control"/>
                                 <span id="chatLieuError" class="error text-danger"></span>
                             </div>
->>>>>>> 9eb3fa1f573a38ccb8baa864041a1beb183a350b
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="chatLieu">Chất Liệu<span class="required">*</span></label>
-                            <form:input path="chatLieu" id="chatLieu" class="form-control"/>
-                            <span id="chatLieuError" class="error text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="xuatXu">Xuất Xứ<span class="required">*</span></label>
-                            <form:input path="xuatXu" id="xuatXu" class="form-control"/>
-                            <span id="xuatXuError" class="error text-danger"></span>
-                        </div>
-<<<<<<< HEAD
-                        <div class="form-group">
-                            <label for="hinhAnh">Ảnh</label>
-                            <input type="file" id="hinhAnh" name="hinhAnh" class="form-control"/>
-                            <input type="hidden" name="anh" class="form-control"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="kichThuoc">Kích Thước (cm)<span
-                                    class="required">*</span></label>
-                            <form:input path="kichThuoc" id="kichThuoc" class="form-control"
-                                        placeholder="RộngxDàixCao"/>
-                            <span id="kichThuocError" class="error text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="khoiLuong">Khối Lượng (gram)<span class="required">*</span></label>
-                            <form:input path="khoiLuong" type="number" min="0" id="khoiLuong" class="form-control"/>
-                            <span id="khoiLuongError" class="error text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-=======
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
+                                <label for="xuatXu">Xuất Xứ<span class="required">*</span></label>
+                                <form:input path="xuatXu" id="xuatXu" class="form-control"/>
+                                <span id="xuatXuError" class="error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="hinhAnh">Ảnh</label>
+                                <input type="file" id="hinhAnh" name="hinhAnh" class="form-control"/>
+                                <input type="hidden" name="anh" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kichThuoc">Kích Thước (cm)<span
+                                        class="required">*</span></label>
+                                <form:input path="kichThuoc" id="kichThuoc" class="form-control"
+                                            placeholder="RộngxDàixCao"/>
+                                <span id="kichThuocError" class="error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="khoiLuong">Khối Lượng (gram)<span class="required">*</span></label>
+                                <form:input path="khoiLuong" type="number" min="0" id="khoiLuong" class="form-control"/>
+                                <span id="khoiLuongError" class="error text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="moTa">Mô Tả</label>
+                                <form:textarea path="moTa" id="moTa" class="form-control" style="height: 100px;"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành(Tháng)<span
+                                        class="required">*</span></label>
                                 <div class="input-group">
                                     <form:select path="idThoiGianBaoHanh" class="form-control">
                                         <form:option value="" label="Chọn Thời Gian Bảo Hành"/>
@@ -96,10 +86,11 @@
                                         </button>
                                     </div>
                                 </div>
+                                <span id="thoiGianBaoHanhError" class="error text-danger"></span>
                             </div>
 
                             <div class="form-group">
-                                <label for="idThuongHieu">Thương Hiệu</label>
+                                <label for="idThuongHieu">Thương Hiệu <span class="required">*</span></label>
                                 <div class="input-group">
                                     <form:select path="idThuongHieu" class="form-control">
                                         <form:option value="" label="Chọn Thương Hiệu"/>
@@ -108,12 +99,13 @@
                                         </c:forEach>
                                     </form:select>
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-secondary"data-bs-toggle="modal"
-                                                data-bs-target="#modalAddThuongHieu" >
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                                data-bs-target="#modalAddThuongHieu">
                                             <i class="bi bi-plus-circle-fill"></i>
                                         </button>
                                     </div>
                                 </div>
+                                <span id="thuongHieuError" class="error text-danger"></span>
                             </div>
 
                         </div>
@@ -122,7 +114,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idDanhMuc">Danh Mục</label>
+                                <label for="idDanhMuc">Danh Mục <span class="required">*</span></label>
                                 <div class="input-group">
                                     <form:select path="idDanhMuc" class="form-control">
                                         <form:option value="" label="Chọn Danh Mục"/>
@@ -137,11 +129,12 @@
                                         </button>
                                     </div>
                                 </div>
+                                <span id="danhMucError" class="error text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
+                                <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng <span class="required">*</span></label>
                                 <div class="input-group">
                                     <form:select path="idDoiTuongSuDung" class="form-control">
                                         <form:option value="" label="Chọn Đối Tượng Sử Dụng"/>
@@ -155,99 +148,36 @@
                                             <i class="bi bi-plus-circle-fill"></i>
                                         </button>
                                     </div>
+                                    <span id="doiTuongSuDungError" class="error text-danger"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
->>>>>>> 9eb3fa1f573a38ccb8baa864041a1beb183a350b
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="moTa">Mô Tả</label>
-                            <form:textarea path="moTa" id="moTa" class="form-control" style="height: 100px;"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành</label>
-                            <form:select path="idThoiGianBaoHanh" class="form-control">
-                                <form:option value="" label="Chọn Thời Gian Bảo Hành"/>
-                                <c:forEach items="${thoiGianBaoHanhForm}" var="tgbhForm">
-                                    <option value="${tgbhForm.id}" ${tgbhForm.id == sp.thoiGianBaoHanh.id ? 'selected' : ''}>${tgbhForm.thoiGian}</option>
-                                </c:forEach>
-                            </form:select>
-                        </div>
-                        <div class="form-group">
-                            <label for="idThuongHieu">Thương Hiệu</label>
-                            <form:select path="idThuongHieu" class="form-control">
-                                <form:option value="" label="Chọn Thương Hiệu"/>
-                                <c:forEach items="${thuongHieuForm}" var="thForm">
-                                    <option value="${thForm.id}" ${thForm.id == sp.thuongHieu.id ? 'selected' : ''}>${thForm.ten}</option>
-                                </c:forEach>
-                            </form:select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="idDanhMuc">Danh Mục</label>
-                            <form:select path="idDanhMuc" class="form-control">
-                                <form:option value="" label="Chọn Danh Mục"/>
-                                <c:forEach items="${danhMucForm}" var="dmForm">
-                                    <option value="${dmForm.id}" ${dmForm.id == sp.danhMuc.id ? 'selected' : ''}>${dmForm.tenDanhMuc}</option>
-                                </c:forEach>
-                            </form:select>
-                        </div>
-                    </div>
-                    <div class="col-md-7" style="display: flex">
-                        <div class="form-group">
-                            <label for="idDoiTuongSuDung">Đối Tượng Sử Dụng</label>
-                            <form:select path="idDoiTuongSuDung" class="form-control">
-                                <form:option value="" label="Chọn Đối Tượng Sử Dụng"/>
-                                <c:forEach items="${doiTuongSuDungForm}" var="dtsdForm">
-                                    <option value="${dtsdForm.id}" ${dtsdForm.id == sp.doiTuongSuDung.id ? 'selected' : ''}>${dtsdForm.tenDoiTuongSuDung}</option>
-                                </c:forEach>
-                            </form:select>
-
-<<<<<<< HEAD
-                        </div>
 
 
-                    </div>
-                        <%--                        <div class="col-md-2">--%>
-
-                        <%--                                <button>add</button>--%>
-
-
-                        <%--                    </div>--%>
-=======
->>>>>>> 9eb3fa1f573a38ccb8baa864041a1beb183a350b
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                         <button type="submit" class="btn btn-primary" id="addSanPham">Lưu</button>
                     </div>
-                    </form:form>
-                </div>
+                </form:form>
             </div>
         </div>
     </div>
 </div>
 
 
-
 <div class="modal modal-xl" id="modalAddDanhMuc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content formcon">
-            <h1 style="font-size: 20px ; margin-top: 20px ;margin-left:250px ; font-family:sans-serif">Thông Tin Danh Mục</h1>
+            <h1 style="font-size: 20px ; margin-top: 20px ;margin-left:250px ; font-family:sans-serif">Thông Tin Danh
+                Mục</h1>
             <hr>
             <div class="modal-body1">
                 <div class="form-container1">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="maDanhMuc">Mã Danh Mục</label><span class="red-star"> *</span>
-                            <input id="maDanhMuc" class="form-control"/>
+                            <input id="maDanhMuc" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="tenDanhMuc">Tên Danh Mục</label><span class="red-star"> *</span>
@@ -275,7 +205,7 @@
                             <tbody>
                             <c:forEach items="${listColors}" var="sp" varStatus="i">
                                 <tr id="record_${sp.id}">
-                                    <td >${i.index + 1}</td>
+                                    <td>${i.index + 1}</td>
                                     <td>${sp.maDanhMuc}</td>
                                     <td>${sp.tenDanhMuc}</td>
                                     <td><span
@@ -299,21 +229,20 @@
 </div>
 
 
-
-
 <%--tgbh--%>
 
 <div class="modal modal-xl" id="modalAddTGBH" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content formcon">
-            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Bảo Hành</h1>
+            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Bảo
+                Hành</h1>
             <hr>
             <div class="modal-body1">
                 <div class="form-container1">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="ma">Mã Bảo Hành</label><span class="red-star"> *</span>
-                            <input id="ma" class="form-control"/>
+                            <input id="ma" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="thoiGian">Thời Gian</label><span class="red-star"> *</span>
@@ -328,20 +257,20 @@
                     </div>
                 </div>
                 <div class="table-container1">
-                    <div id="test1">
+                    <div id="test2">
                         <table class="table table-sm table-hover table-striped mb-5">
                             <thead>
                             <tr>
                                 <th scope="col">STT</th>
                                 <th scope="col">MÃ BẢO HÀNH</th>
-                                <th scope="col">THỜI GIAN</th>
+                                <th scope="col">THỜI GIAN(Tháng)</th>
                                 <th scope="col">TRẠNG THÁI</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${listColorsBH}" var="sp" varStatus="i">
                                 <tr id="record_${sp.id}">
-                                    <td >${i.index + 1}</td>
+                                    <td>${i.index + 1}</td>
                                     <td>${sp.ma}</td>
                                     <td>${sp.thoiGian}</td>
                                     <td><span
@@ -367,17 +296,19 @@
 
 <%--thương hiệu--%>
 
-<div class="modal modal-xl" id="modalAddThuongHieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-xl" id="modalAddThuongHieu" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content formcon">
-            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Thương Hiệu</h1>
+            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Thương
+                Hiệu</h1>
             <hr>
             <div class="modal-body1">
                 <div class="form-container1">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="ma">Mã Thương Hiệu</label><span class="red-star"> *</span>
-                            <input id="ma" class="form-control"/>
+                            <label for="maTH">Mã Thương Hiệu</label><span class="red-star"> *</span>
+                            <input id="maTH" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="ten">Tên Thương Hiệu</label><span class="red-star"> *</span>
@@ -392,21 +323,21 @@
                     </div>
                 </div>
                 <div class="table-container1">
-                    <div id="test1">
+                    <div id="test3">
                         <table class="table table-sm table-hover table-striped mb-5">
                             <thead>
                             <tr>
                                 <th scope="col">STT</th>
-                                <th scope="col">MÃ </th>
-                                <th scope="col">TÊN </th>
+                                <th scope="col">MÃ</th>
+                                <th scope="col">TÊN</th>
                                 <th scope="col">TRẠNG THÁI</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${listColorsTH}" var="sp" varStatus="i">
                                 <tr id="record_${sp.id}">
-                                    <td >${i.index + 1}</td>
-                                    <td>${sp.ma}</td>
+                                    <td>${i.index + 1}</td>
+                                    <td>${sp.maTH}</td>
                                     <td>${sp.ten}</td>
                                     <td><span
                                             class="status ${sp.trangThai == true ? 'dangxuly' : 'pending'}">${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span>
@@ -433,14 +364,15 @@
 <div class="modal modal-xl" id="modalAddDTSD" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content formcon">
-            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Đôi Tượng</h1>
+            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Đối
+                Tượng</h1>
             <hr>
             <div class="modal-body1">
                 <div class="form-container1">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="maDoiTuongSuDung">Mã Đối Tượng</label><span class="red-star"> *</span>
-                            <input id="maDoiTuongSuDung" class="form-control"/>
+                            <input id="maDoiTuongSuDung" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="tenDoiTuongSuDung">Tên Đối Tượng</label><span class="red-star"> *</span>
@@ -455,7 +387,7 @@
                     </div>
                 </div>
                 <div class="table-container1">
-                    <div id="test1">
+                    <div id="test4">
                         <table class="table table-sm table-hover table-striped mb-5">
                             <thead>
                             <tr>
@@ -468,7 +400,7 @@
                             <tbody>
                             <c:forEach items="${listColorsDTSD}" var="sp" varStatus="i">
                                 <tr id="record_${sp.id}">
-                                    <td >${i.index + 1}</td>
+                                    <td>${i.index + 1}</td>
                                     <td>${sp.maDoiTuongSuDung}</td>
                                     <td>${sp.tenDoiTuongSuDung}</td>
                                     <td><span
@@ -482,7 +414,8 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal2DTSD()">Thoát
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal2DTSD()">
+                    Thoát
                 </button>
                 <button type="submit" class="btn btn-primary" id="them" value="submit" onclick="addDTSD()">Lưu
                 </button>
@@ -505,7 +438,7 @@
         $('#exampleModal').modal('show'); // Mở lại modal 1
     }
 
-// bảo hành
+    // bảo hành
 
     function openModal2BH() {
         $('#exampleModal').modal('hide'); // Đóng modal 1
@@ -543,7 +476,6 @@
     }
 
 
-
     document.getElementById('addSanPham').addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -552,12 +484,25 @@
         var xuatXu = document.getElementById('xuatXu').value.trim();
         var khoiLuong = document.getElementById('khoiLuong').value.trim();
         var kichThuoc = document.getElementById('kichThuoc').value.trim();
+        var idThoiGianBaoHanh = document.getElementById('idThoiGianBaoHanh').value;
+        var idDanhMuc = document.getElementById('idDanhMuc').value;
+        var idThuongHieu = document.getElementById('idThuongHieu').value;
+        var idDoiTuongSuDung = document.getElementById('idDoiTuongSuDung').value;
 
         let hasError = false;
 
         function checkErrorsAndSubmitAdd() {
             if (!hasError) {
                 document.getElementById('addSanPhamForm').submit();
+                Swal.fire({
+                    icon: "success",
+                    title: "Sản phẩm của bạn đã thêm thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function () {
+
+                    window.location.href = 'http://localhost:8080/san-pham';
+                });
             }
         }
 
@@ -615,6 +560,34 @@
             hasError = true;
         } else {
             document.getElementById('kichThuocError').innerText = '';
+        }
+
+        if (idThuongHieu === '') {
+            document.getElementById('thuongHieuError').innerText = 'Vui lòng nhập chọn thương hiệu.';
+            hasError = true;
+        } else {
+            document.getElementById('thuongHieuError').innerText = '';
+        }
+
+        if (idDanhMuc === '') {
+            document.getElementById('danhMucError').innerText = 'Vui lòng nhập chọn danh mục.';
+            hasError = true;
+        } else {
+            document.getElementById('danhMucError').innerText = '';
+        }
+
+        if (idDoiTuongSuDung === '') {
+            document.getElementById('doiTuongSuDungError').innerText = 'Vui lòng nhập chọn đối tượng sử dụng.';
+            hasError = true;
+        } else {
+            document.getElementById('doiTuongSuDungError').innerText = '';
+        }
+
+        if (idThoiGianBaoHanh === '') {
+            document.getElementById('thoiGianBaoHanhError').innerText = 'Vui lòng nhập chọn thời gian bảo hành.';
+            hasError = true;
+        } else {
+            document.getElementById('thoiGianBaoHanhError').innerText = '';
         }
 
         if (!hasError) {

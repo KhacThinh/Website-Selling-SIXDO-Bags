@@ -133,10 +133,9 @@
             displaySort();
 
             // yêu thích
-            capNhapSoLuongSanPhamYeuThichHearder();
             checkSanPhamYeuThichTrangChu();
+            capNhapSoLuongSanPhamYeuThichHearder();
             themSanPhamYeuThich();
-
             pageXemThemSanPham();
 
             // Sự kiện khi form tìm kiếm được submit
@@ -146,6 +145,79 @@
                 searchProducts(searchTerm);
             });
         });
+
+
+        // sản phẩm yêu thích product favorites
+        function themSanPhamYeuThich() {
+            $(document).on('click', '.js-addwish-b2', function () {
+                var heartFill = $(this).find('.bi-heart-fill');
+                var heartOutline = $(this).find('.bi-heart');
+                var productId = $(this).data('product-id');
+
+                $.get('/product-favorite/check-thong-tin-khach-hang', function (response) {
+                    if (response !== 0) {
+                        console.log('Khách hàng đã đăng nhập với ID:', response);
+                        if (heartFill.css('display') === 'none') {
+                            $.post('/product-favorite/them-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                                if (sanPhamCheck != 0) {
+                                    heartFill.css('display', 'inline');
+                                    heartOutline.css('display', 'none');
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã thêm vào danh sách yêu thích!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    capNhapSoLuongSanPhamYeuThichHearder();
+                                } else {
+                                    console.log("không thêm được vô sản phẩm yêu thích");
+                                }
+                            })
+                        } else {
+                            $.get('/product-favorite/xoa-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
+                                if (sanPhamCheck != 0) {
+                                    // Ngược lại, chuyển về icon đậm và ẩn icon fill
+                                    heartFill.css('display', 'none');
+                                    heartOutline.css('display', 'inline');
+                                    // Hiển thị thông báo hủy thành công
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã xóa khỏi danh sách yêu thích!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    capNhapSoLuongSanPhamYeuThichHearder();
+                                } else {
+                                    console.log("không xoá được sản phẩm yêu thích");
+                                    alert("Lỗi");
+                                }
+                            });
+                        }
+                    } else {
+                        Swal.fire({
+                            title: 'Vui lòng đăng nhập để thêm sản phẩm này vào danh sách yêu thích',
+                            text: 'Bằng cách đăng nhập, bạn có thể quản lý danh sách sản phẩm yêu thích cá nhân.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Đăng nhập',
+                            cancelButtonText: 'Để sau',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/sixdo-shop/login-customer";
+                            }
+                        });
+                    }
+                }).fail(function (xhr, status, error) {
+                    console.error('Lỗi khi gửi yêu cầu kiểm tra thông tin khách hàng:', error);
+                });
+            });
+        }
+
+        function capNhapSoLuongSanPhamYeuThichHearder() {
+            $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
+                displaySoLuongSanPhamFavorite(data);
+            });
+        }
 
         function pageXemThemSanPham() {
             $('.btn-xem-them-sp').on('click', function (event) {
@@ -369,7 +441,7 @@
                 var productHTML = '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">';
                 productHTML += '<a class="block2" href="/sixdo-shop/product-detail?id=' + product.id + '">';
                 productHTML += '<div class="block2-pic hov-img0">';
-                productHTML += '<img src="' + product.hinhAnh + '" alt="Product">';
+                productHTML += '<img style="height: 300px ; width: 300px" src="' + product.hinhAnh + '" alt="Product">';
                 productHTML += '<a href="/sixdo-shop/product-detail?id=' + product.id + '" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="' + product.id + '">Xem Nhanh</a>';
                 productHTML += '</div>';
                 productHTML += '<div class="block2-txt flex-w flex-t p-t-14">';
@@ -401,9 +473,31 @@
                     console.log('block');
                     reasonCancel.show();
                 }
+                checkSanPhamYeuThichTrangChu();
             })
         }
 
+        // check xem sản phẩm đã được yêu thích chưa
+        function checkSanPhamYeuThichTrangChu() {
+            $.get('/product-favorite/check-san-pham-yeu-thich-home', function (data) {
+                var productIDs = data;
+                $(".js-addwish-b2").each(function () {
+                    var productID = $(this).data("product-id");
+                    if (productIDs.includes(productID)) {
+                        $(this).find('.bi-heart').hide();
+                        $(this).find('.bi-heart-fill').show();
+                    }
+                });
+            });
+        }
+
+        window.addEventListener("load", function () {
+            checkSanPhamYeuThichTrangChu();
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            checkSanPhamYeuThichTrangChu();
+        });
     </script>
 </section>
 </body>

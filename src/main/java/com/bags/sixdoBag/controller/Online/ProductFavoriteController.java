@@ -1,14 +1,13 @@
 package com.bags.sixdoBag.controller.Online;
 
-import com.bags.sixdoBag.config.UserLoginKhachHang;
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietGioHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +29,8 @@ public class ProductFavoriteController {
 
     private final ChiTietSanPhamServivce chiTietSanPhamServivce;
 
+    private final ChiTietGioHangService chiTietGioHangService;
+
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     private final DoiTuongSuDungService doiTuongSuDungService;
@@ -50,8 +51,8 @@ public class ProductFavoriteController {
 
     @GetMapping("load-data")
     public @ResponseBody
-    List<ProductHomeRequest> getListResponseEntity() {
-        List<ProductHomeRequest> productHomeControllers = new ArrayList<>();
+    List<ProductHomeResponse> getListResponseEntity() {
+        List<ProductHomeResponse> productHomeControllers = new ArrayList<>();
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
             productHomeControllers = sanPhamYeuThichService.getListSanPhamYeuThich(khachHang.getId());
@@ -114,7 +115,7 @@ public class ProductFavoriteController {
             idSanPhamYeuThich = sanPhamYeuThichService
                     .getListSanPhamYeuThich(khachHang.getId())
                     .stream()
-                    .map(ProductHomeRequest::getId)
+                    .map(ProductHomeResponse::getId)
                     .collect(Collectors.toList());
 
         }
@@ -175,14 +176,25 @@ public class ProductFavoriteController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductHomeRequest>> searchComponentProductHome(@RequestParam("name") String keyword) {
+    public ResponseEntity<List<ProductHomeResponse>> searchComponentProductHome(@RequestParam("name") String keyword) {
         System.out.println("/product-favorite/search");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.isNull(khachHang)) {
             throw new IllegalArgumentException("Khách Hàng không tồn tại vui lòng check lại");
         }
-        List<ProductHomeRequest> searchResults = sanPhamYeuThichService.searchSanPhamFavoriteOnlines(khachHang.getId(), keyword);
+        List<ProductHomeResponse> searchResults = sanPhamYeuThichService.searchSanPhamFavoriteOnlines(khachHang.getId(), keyword);
         return ResponseEntity.ok(searchResults);
+    }
+
+    @GetMapping("/check-gio-hang-chi-tiet")
+    public @ResponseBody
+    List<ChiTietGioHang> checkGioHangChiTiet() {
+        List<ChiTietGioHang> chiTietGioHangList = new ArrayList<>();
+        KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        if (Objects.nonNull(khachHang)) {
+            chiTietGioHangList = chiTietGioHangService.getChiTietGioHangs(khachHang.getId());
+        }
+        return chiTietGioHangList;
     }
 
 }

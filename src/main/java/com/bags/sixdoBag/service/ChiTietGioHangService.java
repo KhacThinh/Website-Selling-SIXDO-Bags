@@ -18,5 +18,5 @@ public interface ChiTietGioHangService {
 
     public ChiTietGioHang deleteChiTietGioHang(Integer idChiTietGioHang);
 
-    public int soLuongGioHangByKhachHang(int idKH);
+    public List<ChiTietGioHang>  soLuongGioHangByKhachHang(int idKH);
 }

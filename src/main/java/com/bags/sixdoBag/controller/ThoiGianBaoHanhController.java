@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class ThoiGianBaoHanhController {
         Pageable pageable = PageRequest.of(page, 10);
         Page<ThoiGianBaoHanh> khuyenMais;
 
-        if (name != null ) {
+        if (name != null) {
             model.addAttribute("nameSearch", name);
             khuyenMais = thoiGianBaoHanhService.searchTime(name, pageable);
         } else if (trangThai != null) {
@@ -49,28 +50,36 @@ public class ThoiGianBaoHanhController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestParam("ma") String maTG,
-                                 @RequestParam("thoiGian") Integer thoiGian,
-                                 @RequestParam("trangThai") boolean trangThaiTG, Model model
+    public ResponseEntity<?> add(
+            @RequestParam(value = "ma", required = false) String maTG,
+//                                 @RequestParam("ma") String maTG,
+            @RequestParam("thoiGian") Integer thoiGian,
+            @RequestParam("trangThai") boolean trangThaiTG, Model model
     ) {
 
-        ThoiGianBaoHanh th1 = thoiGianBaoHanhRepository.searchTGByMa(maTG);
+        ThoiGianBaoHanh th1 = thoiGianBaoHanhRepository.searchTGByMa(maTG.trim());
+        ThoiGianBaoHanh th2 = thoiGianBaoHanhRepository.searchTGByTen(thoiGian);
 
-
-
-        if (th1 == null ) {
+        if (Objects.nonNull(th2)) {
+            return ResponseEntity.ok("errorTen");
+        } else if (th1 != null) {
+            return ResponseEntity.ok("errorMa");
+        } else {
             ThoiGianBaoHanh thuongHieu = new ThoiGianBaoHanh();
             thuongHieu.setMa(maTG);
             thuongHieu.setThoiGian(thoiGian);
             thuongHieu.setTrangThai(trangThaiTG);
-            thoiGianBaoHanhService.addThoiGianBaoHanh(thuongHieu);
+            thuongHieu = thoiGianBaoHanhService.addThoiGianBaoHanh(thuongHieu);
 
+            if (maTG == null || maTG.isEmpty()) {
+                thuongHieu.setMa("TH0" + thuongHieu.getId());
+                thoiGianBaoHanhService.editThoiGianBaoHanh(thuongHieu.getId(), thuongHieu);
+            }
             List<ThoiGianBaoHanh> listDM = thoiGianBaoHanhService.getThoiGianBaoHanhs();
             return ResponseEntity.ok(listDM);
-        } else {
-            return ResponseEntity.ok("errorMa");
         }
     }
+
     //
     @PostMapping("/update")
     public ResponseEntity<?> suaThuongHieu(@RequestParam("id") Integer id,
@@ -78,13 +87,20 @@ public class ThoiGianBaoHanhController {
                                            @RequestParam("thoiGian") Integer thoiGian,
                                            @RequestParam("trangThai") boolean trangThaiTG) {
 
-        ThoiGianBaoHanh thuongHieu = thoiGianBaoHanhService.getThoiGianBaoHanh(id);
 
-        thuongHieu.setMa(maTG);
-        thuongHieu.setThoiGian(thoiGian);
-        thuongHieu.setTrangThai(trangThaiTG);
-        thoiGianBaoHanhService.editThoiGianBaoHanh(id, thuongHieu);
-        return ResponseEntity.ok("ok");
+        ThoiGianBaoHanh th2 = thoiGianBaoHanhRepository.searchTGByTen(thoiGian);
+        ThoiGianBaoHanh thuongHieu = thoiGianBaoHanhService.getThoiGianBaoHanh(id);
+        Integer tg = thuongHieu.getThoiGian();
+        if (th2 == null || thoiGian == tg) {
+
+            thuongHieu.setMa(maTG);
+            thuongHieu.setThoiGian(thoiGian);
+            thuongHieu.setTrangThai(trangThaiTG);
+            thoiGianBaoHanhService.editThoiGianBaoHanh(id, thuongHieu);
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.ok("errorTen");
+        }
     }
 
 

@@ -33,6 +33,7 @@ public class MauSacServiceImpl implements MauSacService {
     @Override
     public MauSac addMauSac(MauSac mauSac) {
         MauSac ms = new MauSac();
+    ms.setTrangThai(1);
         ms.setMaMauSac(mauSac.getMaMauSac().trim());
         ms.setTenMauSac(mauSac.getTenMauSac().trim());
         return mauSacRepository.save(ms);
@@ -49,7 +50,8 @@ public class MauSacServiceImpl implements MauSacService {
     @Override
     public MauSac deleteMauSac(Integer idMauSac) {
         MauSac ms = getMauSac(idMauSac);
-        mauSacRepository.delete(ms);
+        ms.setTrangThai(0);
+        mauSacRepository.save(ms);
         return ms;
     }
 

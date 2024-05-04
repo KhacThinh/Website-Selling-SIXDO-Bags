@@ -68,7 +68,7 @@
             min-height: 670px;
             position: relative;
 
-            background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+            background: url(https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1554883509375-28LTBL987ZMPIC0VBG5J/image-asset.jpeg) no-repeat center;
             box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
         }
 
@@ -272,11 +272,11 @@
 </head>
 <body>
 <img class="background-image"
-     src="https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg">
+     src="https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1551171355307-M56B4RQW3Z9UFFWV31JY/chup-anh-tui-xach-5.jpg">
 
 <div class="login-wrap">
     <div class="login-html">
-        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Đăng Nhập</label>
         <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
         <div class="login-form">
             <div class="sign-in-htm">
@@ -286,8 +286,8 @@
                         <input id="email" type="text" name="email" placeholder="Email" class="input">
                     </div>
                     <div class="group">
-                        <label for="pass" class="label">Password</label>
-                        <input id="pass" type="password" name="mat_khau" placeholder="Password" class="input"
+                        <label for="pass" class="label">Mật khẩu</label>
+                        <input id="pass" type="password" name="mat_khau" placeholder="Mật khẩu" class="input"
                                data-type="text">
                         <i class="toggle-password fa fa-eye-slash small-icon" aria-hidden="true"
                            onclick="togglePasswordVisibility()"></i>
@@ -295,16 +295,13 @@
 
                     <div id="error-message" class="error-message" style="color: darkorange;"></div>
                     <!-- Placeholder for error message -->
+
                     <div class="group">
-                        <input id="check" type="checkbox" class="check" checked>
-                        <label for="check"><span class="icon"></span> Keep me Signed in</label>
-                    </div>
-                    <div class="group">
-                        <input type="submit" class="button" value="Sign In" id="btn-login-nv">
+                        <input type="submit" class="button" value="Đăng Nhập" id="btn-login-nv">
                     </div>
                     <div class="hr"></div>
                     <div class="foot-lnk">
-                        <a href="/lay-mk">Forgot Password?</a>
+                        <a href="/lay-mk">Quên Mật Khẩu ?</a>
                     </div>
                 </form>
             </div>
@@ -342,7 +339,7 @@
                     .done(function (response) {
                         if (response == 2) {
                             window.location.href = "http://localhost:8080/hoa-don/nv-lich-su";
-                        } else if (response == 1) {
+                        } else if (response == 4) {
                             window.location.href = "http://localhost:8080/thong-ke";
                         } else {
                             errorMessage.text('Đăng nhập thất bại. Email hoặc mật khẩu không chính xác');

@@ -214,11 +214,11 @@
                                     <%--                            </button>--%>
                                     <%--                        </li>--%>
 
-                            </li>
-                                <%--                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>--%>
-                            <a class="dropdown-item delete-color" href="#" onclick="xoaKhachHang(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>
-                            <li>
-                                <hr class="dropdown-divider">
+<%--                            </li>--%>
+<%--                                &lt;%&ndash;                            <a class="dropdown-item delete-color" href="/mau-sac/delete/${sp.id}" ><i class="bi bi-trash3"></i> Xóa</a>&ndash;%&gt;--%>
+<%--                            <a class="dropdown-item delete-color" href="#" onclick="xoaKhachHang(${sp.id})"><i class="bi bi-trash3"></i> Xóa</a>--%>
+<%--                            <li>--%>
+<%--                                <hr class="dropdown-divider">--%>
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item btnXemDonHang" data-id="${sp.id}" data-bs-toggle="modal" data-bs-target="#modalThongTinDonHang${sp.id}">
@@ -465,8 +465,8 @@
     }
 
     function addKhachHang() {
-        var maKhachHang = document.getElementById("maKhachHang").value;
-        var tenKhachHang = document.getElementById("tenKhachHang").value;
+        var maKhachHang = document.getElementById("maKhachHang").value.trim();
+        var tenKhachHang = document.getElementById("tenKhachHang").value.trim();
         var gioiTinh = document.getElementById("gioiTinh").value;
         var ngaySinh = document.getElementById("ngaySinh").value;
         var sdt = document.getElementById("sdt").value;
@@ -481,7 +481,6 @@
             toastr.error("Vui lòng điền sđt ");
             return false;
         }
-
 
         var phoneNumberRegex = /^(0\d{9}|\+84\d{9}|84\d{9})$/;
         if (!phoneNumberRegex.test(sdt)) {
@@ -498,7 +497,6 @@
                 return false;
             }
         }
-
 
         var dob = new Date(ngaySinh);
         var currentDate = new Date();
@@ -541,7 +539,6 @@
                                             ngaySinh: ngaySinh,
                                             sdt: sdt,
                                             email: email,
-
                                             trangThai: trangThai,
                                         },
                                         success: function (response) {
@@ -617,8 +614,9 @@
     }
 
 
+
     function updateKhachHang(id) {
-        var tenKhachHang = document.getElementById("tenUpdate" + id).value;
+        var tenKhachHang = document.getElementById("tenUpdate" + id).value.trim();
         var gioiTinh = document.getElementById("gioiTinhUpdate" + id).value;
         var ngaySinh = document.getElementById("ngaySinhUpdate" + id).value;
         var sdt = document.getElementById("sdtUpdate" + id).value;

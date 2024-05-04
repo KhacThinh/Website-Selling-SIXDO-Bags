@@ -3,9 +3,11 @@ package com.bags.sixdoBag.controller;
 import com.bags.sixdoBag.model.dto.response.ThongKeResponse;
 import com.bags.sixdoBag.model.repository.ThongKeRespository;
 import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
+import com.bags.sixdoBag.service.SanPhamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +22,8 @@ public class ThongKeController {
 
     private ThongKeRespository thongKeRespository = new ThongKeRespository();
     private final ChiTietSanPhamServivce chiTietSanPhamServivce;
+    private final SanPhamService SanPhamServivce;
+
 
     @GetMapping("")
     public String getThongKe() {
@@ -35,7 +39,8 @@ public class ThongKeController {
     public @ResponseBody
     Map<Integer, ThongKeResponse> getThongKeTheoNam(@RequestParam("year") Integer year) {
         Map<Integer, ThongKeResponse> thongKeSanPhamTheoNam = thongKeRespository.getThongKeSanPhamTheoNam(year);
-        System.out.println(thongKeSanPhamTheoNam.size());
+        System.out.println(thongKeSanPhamTheoNam.toString());
+
         return thongKeSanPhamTheoNam;
     }
 
@@ -44,9 +49,8 @@ public class ThongKeController {
     public @ResponseBody
     Long getTongDoanhThu() {
         long tongDoanhThu = 0;
-        for (ThongKeResponse thongKeResponse : thongKeRespository.getTongDoanhThu()) {
-            tongDoanhThu += thongKeResponse.getDoanhThuTrenTungSanPham();
-        }
+        ThongKeResponse thongKeResponse = thongKeRespository.getTongDoanhThuTaiQuayAndOnline();
+        tongDoanhThu= thongKeResponse.getTongDoanhThu();
         return tongDoanhThu;
     }
 
@@ -70,7 +74,7 @@ public class ThongKeController {
     @GetMapping("so-luong-san-pham")
     public @ResponseBody
     Long soLuongSanPham() {
-        long soLuong = chiTietSanPhamServivce.getChiTietSanPhams().stream().count();
+        long soLuong = SanPhamServivce.getSoLuongThongKe().stream().count();
         return soLuong;
     }
 
@@ -82,6 +86,33 @@ public class ThongKeController {
             return thongKeRespository.getAllCTSPOrderByDESCDoanhThu();
         }
         return null;
+    }
+
+
+    @GetMapping("/top-khach-hang-mua-sam")
+    public @ResponseBody List<ThongKeResponse> getListKh() {
+        List<ThongKeResponse>listKh = thongKeRespository.getKhachHangMuaSamDESC();
+        return listKh;
+    }
+
+    @GetMapping("/thong-ke-theo-ngay")
+    public @ResponseBody List<ThongKeResponse> thongkeTheoNgay(@RequestParam(required = false) String selectedDate) {
+        List<ThongKeResponse>list = thongKeRespository.thongKeDoanhThuTheoNgay(selectedDate);
+        System.out.println(list.toString());
+        return list;
+    }
+
+    @GetMapping("/thong-ke-doanh-thu-theo-ngay")
+    public @ResponseBody ThongKeResponse thongkeTongDoanhThuTheoNgay(@RequestParam(required = false) String selectedDate) {
+        ThongKeResponse thongKeResponse = thongKeRespository.tongDoanhThuTheoNgay(selectedDate);
+        return thongKeResponse;
+    }
+
+    @GetMapping("/thong-ke-doanh-thu-theo-tuan")
+    public @ResponseBody ThongKeResponse thongkeTongDoanhThuTheoTuan(@RequestParam("tuan") int tuan, @RequestParam("nam") int nam) {
+        ThongKeResponse thongKeResponse = thongKeRespository.tongDoanhThuTheoTuan(tuan,nam);
+        System.out.println(thongKeResponse);
+        return thongKeResponse;
     }
 
 }

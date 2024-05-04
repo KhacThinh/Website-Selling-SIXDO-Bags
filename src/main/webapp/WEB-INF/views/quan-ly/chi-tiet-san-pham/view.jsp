@@ -287,8 +287,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                        <div class="col-md-6" >
+                                            <div class="form-group" style="display: none">
                                                 <label for="khuyenMai" class="form-label">Khuyến Mãi</label>
                                                 <select name="khuyenMai" id="khuyenMai${sp.id}" class="form-control">
                                                     <option value="" label="Chọn Khuyến Mãi"/>

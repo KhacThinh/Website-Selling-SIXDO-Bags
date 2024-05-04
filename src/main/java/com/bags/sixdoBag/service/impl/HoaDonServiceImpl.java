@@ -53,6 +53,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Override
     public void updateHoaDon(int idHoaDon, HoaDon hoaDon) {
         HoaDon hoaDonTemp = getHoaDonById(idHoaDon);
+        hoaDonTemp.setNhanVien(hoaDon.getNhanVien());
         hoaDonTemp.setTenNguoiNhan(hoaDon.getTenNguoiNhan());
         hoaDonTemp.setDiaChiNguoiNhan(hoaDon.getDiaChiNguoiNhan());
         hoaDonTemp.setTrangThai(hoaDon.getTrangThai());
@@ -293,7 +294,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     public Map<Integer, Integer> getSortHoaDonByKhachHang(int idKh) {
         Map<Integer, Integer> hoaDonSoLuong = new LinkedHashMap<>();
         List<HoaDon> hoaDons = hoaDonRepository.getHoaDonByKhachHang(idKh);
-        int[] trangThai = {0, 1, 2, 3, 4, 5};
+        int[] trangThai = {0, 1, 2, 3, 4, 5,6};
 
         // Khởi tạo số lượng trạng thái ban đầu là 0
         for (int i = 0; i < trangThai.length; i++) {

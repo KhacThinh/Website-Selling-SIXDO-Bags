@@ -12,7 +12,53 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<style>
+    .out-of-stock {
+        color: red;
+        font-size: 16px;
+    }
+    .stocking{
+        color: black;
+    }
 
+    .img__wrapper{
+
+        position:relative;
+        overflow:hidden;
+    }
+
+    .sold_out {
+        top: 2em;
+        left: -4em;
+        color: #fff;
+        display: block;
+        position:absolute;
+        text-align: center;
+        text-decoration: none;
+        letter-spacing: .06em;
+        background-color: #A00;
+        padding: 0.5em 5em 0.4em 5em;
+        text-shadow: 0 0 0.75em #444;
+        box-shadow: 0 0 0.5em rgba(0,0,0,0.5);
+        font: bold 26px/1.2em Arial, Sans-Serif;
+        -webkit-text-shadow: 0 0 0.75em #444;
+        -webkit-box-shadow: 0 0 0.5em rgba(0,0,0,0.5);
+        -webkit-transform: rotate(-45deg) scale(0.75,1);
+        z-index:10;
+    }
+    .sold_out:before {
+        content: '';
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        margin: -0.3em -5em;
+        transform: scale(0.7);
+        -webkit-transform: scale(0.7);
+        border: 2px rgba(255,255,255,0.7) dashed;
+    }
+</style>
 <body>
 
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
@@ -27,10 +73,11 @@
                         <div class="slick3 gallery-lb">
                             <c:forEach var="o" items="${product}" varStatus="loop">
                                 <div class="item-slick3" data-thumb="${pageContext.request.contextPath}/${o.hinhAnh}">
-                                    <div class="wrap-pic-w pos-relative">
-                                        <img id="product-image"
+                                    <div class="wrap-pic-w pos-relative img__wrapper">
+                                        <p class="${o.soLuong < 1 ? 'sold_out' : ''}" > ${o.soLuong < 1 ? 'HẾT HÀNG' : ''}</p>
+                                        <img id="product-image" style="height: 500px"
                                              onclick="('${pageContext.request.contextPath}/${o.hinhAnh}')"
-                                             class="hset"
+                                             class="hset "
                                              src="${pageContext.request.contextPath}/${o.hinhAnh}">
                                         <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
                                            href="${pageContext.request.contextPath}/${o.hinhAnh}">
@@ -74,7 +121,9 @@
                     </p>
 
                     <p class="stext-102 cl3 ">
-                        Kho: <strong id="so-luong-kho-detail">${product[0].soLuong}</strong>
+                        Kho: <strong id="so-luong-kho-detail">
+                        ${product[0].soLuong < 1 ? 'Hết hàng' : product[0].soLuong}
+                    </strong>
                     </p>
 
                     <!--  -->
@@ -158,7 +207,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item p-b-10">
-                        <a class="nav-link active inf-title" style="font-size: 19px" data-toggle="tab"
+                        <a class="nav-link active inf-title" style="font-size: 26px" data-toggle="tab"
                            href="#information" role="tab">Mô Tả</a>
                     </li>
 
@@ -167,10 +216,7 @@
                     <%--                           role="tab">Thông tin bổ sung</a>--%>
                     <%--                    </li>--%>
 
-                    <li class="nav-item p-b-10 ">
-                        <a class="nav-link inf-title" style="font-size: 19px" data-toggle="tab" href="#reviews"
-                           role="tab">Nhận xét</a>
-                    </li>
+
                 </ul>
 
                 <!-- Tab panes -->
@@ -487,7 +533,7 @@
                     } else {
                         Swal.fire(
                             'Lỗi!',
-                            'Ban Chi duoc them toi da: ' + response + 'San Pham',
+                            'Số lượng sản phẩm không đủ ',
                             'error'
                         );
                     }

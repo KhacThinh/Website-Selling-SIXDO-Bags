@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,28 +51,39 @@ public class DanhMucController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestParam("maDanhMuc") String maDanhMuc,
-                                 @RequestParam("tenDanhMuc") String tenDanhMuc,
-                                 @RequestParam("trangThai") boolean trangThai, Model model
+    public ResponseEntity<?> add(
+            @RequestParam(value = "maDanhMuc", required = false) String maDanhMuc,
+//            @RequestParam("maDanhMuc") String maDanhMuc,
+            @RequestParam("tenDanhMuc") String tenDanhMuc,
+            @RequestParam("trangThai") boolean trangThai, Model model
     ) {
         System.out.println(maDanhMuc);
-        DanhMuc cv1 = danhMucRepository.searchDanhMucByMa(maDanhMuc);
-        DanhMuc cv2 = danhMucRepository.searchDanhMucByTen(tenDanhMuc);
+        DanhMuc cv1 = danhMucRepository.searchDanhMucByMa(maDanhMuc.trim());
+        DanhMuc cv2 = danhMucRepository.searchDanhMucByTen(tenDanhMuc.trim());
 
 
-        if (cv1 == null && cv2 == null) {
+        if (Objects.nonNull(cv2)) {
+            return ResponseEntity.ok("errorTen");
+        } else if( cv1 != null){
+            return ResponseEntity.ok("errorMa");
+        }
+
+        else {
             DanhMuc danhMuc = new DanhMuc();
             danhMuc.setMaDanhMuc(maDanhMuc);
             danhMuc.setTenDanhMuc(tenDanhMuc);
             danhMuc.setTrangThai(trangThai);
-            danhMucService.addDanhMuc(danhMuc);
+            danhMuc = danhMucService.addDanhMuc(danhMuc);
+
+            if (maDanhMuc == null || maDanhMuc.isEmpty()) {
+                danhMuc.setMaDanhMuc("DM0"+ danhMuc.getId());
+                danhMucService.editDanhMuc(danhMuc.getId() , danhMuc);
+            }
+
+
 
             List<DanhMuc> listDM = danhMucService.getDanhMucs();
             return ResponseEntity.ok(listDM);
-        } else if (cv1 != null && cv2 == null) {
-            return ResponseEntity.ok("errorMa");
-        } else {
-            return ResponseEntity.ok("errorTen");
         }
     }
 
@@ -81,13 +93,25 @@ public class DanhMucController {
                                        @RequestParam("tenDanhMuc") String tenDanhMuc,
                                        @RequestParam("trangThai") boolean trangThai) {
 
-        DanhMuc danhMuc = danhMucService.getidDanhMuc(id);
 
-        danhMuc.setMaDanhMuc(maDanhMuc);
-        danhMuc.setTenDanhMuc(tenDanhMuc);
-        danhMuc.setTrangThai(trangThai);
-        danhMucService.editDanhMuc(id, danhMuc);
-        return ResponseEntity.ok("ok");
+
+        DanhMuc cv2 = danhMucRepository.searchDanhMucByTen(tenDanhMuc.trim());
+
+        DanhMuc danhMuc = danhMucService.getidDanhMuc(id);
+        String tenDm = danhMuc.getTenDanhMuc();
+
+        if (cv2 == null ||tenDanhMuc.equals(tenDm)) {
+
+            danhMuc.setMaDanhMuc(maDanhMuc);
+            danhMuc.setTenDanhMuc(tenDanhMuc);
+            danhMuc.setTrangThai(trangThai);
+            danhMucService.editDanhMuc(id, danhMuc);
+            return ResponseEntity.ok("ok");
+
+        } else {
+            return ResponseEntity.ok("errorTen");
+        }
+
     }
 
 

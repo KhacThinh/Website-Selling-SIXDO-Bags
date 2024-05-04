@@ -17,8 +17,7 @@
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <title>Quản lý | SIXDO</title>
-    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
+    <title>QUẢN LÝ</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -45,7 +44,6 @@
         justify-content: center;
         text-align: center;
     }
-
     .loader::after {
         content: '';
         box-sizing: border-box;
@@ -59,7 +57,6 @@
         border-bottom: 4px solid transparent;
         animation: rotation 0.25s linear infinite reverse;
     }
-
     @keyframes rotation {
         0% {
             transform: rotate(0deg);
@@ -599,6 +596,7 @@
         }
 
 
+
     }
 </style>
 
@@ -608,8 +606,7 @@
 
     <div class="logo-name">
         <div class="logo-image">
-            <img src="../static/images/logo1.jpg" alt="LOGO">
-        </div>
+         </div>
         <span class="logo_name">Sixdo Shop</span>
     </div>
     <div class="menu-items">
@@ -636,8 +633,7 @@
                 </a>
                 <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
                 <ul class="sub-menu" id="subMenu" style="display: none ;
-            transition: opacity 0.8s ease">
-
+                transition: opacity 0.8s ease">
 
                     <% if (session.getAttribute("quanLy") != null) { %>
                     <li><a href="/san-pham" id="btnSanPham">
@@ -649,10 +645,7 @@
                         <span class="link-name">Lịch Sử Hoá đơn</span>
                     </a></li>
                     <% } else { %>
-                    <li><a href="/san-pham/nv" id="btnSanPham">
-                        <i class="uil uil-box"></i>
-                        <span class="link-name">Sản phẩm</span>
-                    </a></li>
+
                     <li><a href="/hoa-don/nv-lich-su" id="btnHoaDon">
                         <i class="uil uil-file-alt"></i>
                         <span class="link-name">Lịch Sử Hoá đơn</span>
@@ -673,11 +666,47 @@
                         <i class="bi bi-tag"></i>
                         <span class="link-name">Mã Giảm Giá</span>
                     </a></li>
+
                     <% } else { %>
                     <% } %>
                 </ul>
 
             </li>
+            <% if (session.getAttribute("quanLy") != null) { %>
+
+            <li>
+                <a href="#" >
+                    <i class="bi bi-collection"></i>
+                    <span class="link-name" onclick="toggleSubMenuKhac()">Khác</span>
+                </a>
+
+                <ul class="sub-menu" id="subMenu3" style="display: none ;
+            transition: opacity 0.8s ease">
+                    <li><a href="/thuonghieu?trangThai=true" id="btnMaGiamGia">
+                        <i class="bi bi-r-circle-fill"></i>
+                        <span class="link-name">Thương Hiệu</span>
+                    </a></li>
+                    <li><a href="/thoi_gian_bao_hanh?trangThai=true" id="btnMaGiamGia">
+                        <i class="bi bi-alarm-fill"></i>
+                        <span class="link-name">Bảo Hành</span>
+                    </a></li>
+                    <li><a href="/doi-tuong-su-dung?trangThai=true" id="btnMaGiamGia">
+                        <i class="bi bi-person-vcard-fill"></i>
+                        <span class="link-name">Đối Tượng</span>
+                    </a></li>
+                    <li><a href="/danh-muc?trangThai=true" id="btnMaGiamGia">
+                        <i class="bi bi-bookmark-check-fill"></i>
+                        <span class="link-name">Danh Mục</span>
+                    </a></li>
+                    <li><a href="/mau-sac" id="btnMaGiamGia">
+                        <i class="bi bi-palette-fill"></i>
+                        <span class="link-name">Màu Sắc</span>
+                    </a></li>
+
+                </ul>
+
+            </li>
+
             <li>
                 <a href="#" id="">
                     <i class="bi bi-gear"></i>
@@ -686,7 +715,7 @@
                 <!-- Thêm class "sub-menu" vào thẻ ul chứa submenu -->
                 <ul class="sub-menu" id="subMenu2" style="display: none ;
             transition: opacity 0.8s ease">
-                    <% if (session.getAttribute("quanLy") != null) { %>
+
                     <li><a href="/sixdo-shop/cua-hang/manager" id="btnCuaHang">
                         <i class="bi bi-shop"></i>
                         <span class="link-name">Thông Tin Cửa Hàng</span>
@@ -695,34 +724,19 @@
                         <i class="bi bi-card-image"></i>
                         <span class="link-name">Slide Show</span>
                     </a></li>
-                    <%} %>
+
                 </ul>
 
             </li>
 
 
-            <%--            <li><a href="#">--%>
-            <%--                <i class="uil uil-chart"></i>--%>
-            <%--                <span class="link-name">Analytics</span>--%>
-            <%--            </a></li>--%>
-            <%--            <li><a href="#">--%>
-            <%--                <i class="uil uil-thumbs-up"></i>--%>
-            <%--                <span class="link-name">Like</span>--%>
-            <%--            </a></li>--%>
-            <%--            <li><a href="#">--%>
-            <%--                <i class="uil uil-comments"></i>--%>
-            <%--                <span class="link-name">Comment</span>--%>
-            <%--            </a></li>--%>
-            <%--            <li><a href="#">--%>
-            <%--                <i class="uil uil-share"></i>--%>
-            <%--                <span class="link-name">Share</span>--%>
-            <%--            </a></li>--%>
+            <%} %>
         </ul>
 
         <ul class="logout-mode">
             <li id="logoutLink"><a href="#">
                 <i class="uil uil-signout"></i>
-                <span class="link-name">Logout</span>
+                <span class="link-name">Đăng xuất</span>
             </a></li>
             <li class="mode">
                 <a href="#">
@@ -736,8 +750,7 @@
         </ul>
     </div>
 </nav>
-<div id="loading-spinner" class="spinner-container loader"
-     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
+<div id="loading-spinner" class="spinner-container loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100">
     <div class="spinner"></div>
 </div>
 <select>
@@ -745,25 +758,17 @@
 </select>
 
 <script>
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var manageBtn = document.getElementById("manageBtn");
-    //     var subMenu = document.getElementById("subMenu");
-    //
-    //     manageBtn.addEventListener("click", function (event) {
-    //         event.preventDefault(); // Prevent default link behavior
-    //         subMenu.classList.toggle("active");
-    //     });
-    // });
 
-    document.getElementById("logoutLink").addEventListener("click", function (event) {
+
+    document.getElementById("logoutLink").addEventListener("click", function(event) {
         event.preventDefault();
 
         Swal.fire({
-            title: "You want to log out ?",
+            title: "Bạn có muốn đăng xuất không ?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Log out",
-            cancelButtonText: "No",
+            confirmButtonText: "Đăng xuất",
+            cancelButtonText: "Không",
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "/logout/quan-ly";
@@ -771,26 +776,15 @@
         });
 
     });
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         // Hiển thị spinner
         document.getElementById("loading-spinner").style.display = "block";
 
         // Ẩn spinner sau 3 giây
-        setTimeout(function () {
+        setTimeout(function() {
             document.getElementById("loading-spinner").style.display = "none";
         }, 150);
     });
-
-    function toggleSubMenu() {
-        var subMenu = document.getElementById("subMenu");
-        subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active
-
-        if (subMenu.style.display === "none") {
-            subMenu.style.display = "block";
-        } else {
-            subMenu.style.display = "none";
-        }
-    }
 
     function toggleSubMenuu() {
         var subMenu = document.getElementById("subMenu2");
@@ -802,7 +796,27 @@
             subMenu.style.display = "none";
         }
     }
+    function toggleSubMenuKhac() {
+        var subMenu = document.getElementById("subMenu3");
+        subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active
 
+        if (subMenu.style.display === "none") {
+            subMenu.style.display = "block";
+        } else {
+            subMenu.style.display = "none";
+        }
+    }
+
+    function toggleSubMenu() {
+        var subMenu = document.getElementById("subMenu");
+        subMenu.classList.toggle("active"); // Thêm hoặc loại bỏ lớp active
+
+        if (subMenu.style.display === "none") {
+            subMenu.style.display = "block";
+        } else {
+            subMenu.style.display = "none";
+        }
+    }
     const body = document.querySelector("body"),
         modeToggle = body.querySelector(".mode-toggle");
     sidebar = body.querySelector("nav");

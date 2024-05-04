@@ -85,7 +85,6 @@
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/related_product.jsp"/>
 
 
-
 <!-- Footer -->
 <jsp:include page="/WEB-INF/views/ban-hang-online/components/footer.jsp"/>
 
@@ -165,7 +164,7 @@
 
 <script>
 
-    var products ; // Giả sử product là một List hoặc Array chứa dữ liệu sản phẩm
+    var products; // Giả sử product là một List hoặc Array chứa dữ liệu sản phẩm
 
 
     function updatePriceQuickView(selectElement) {
@@ -173,7 +172,7 @@
         var colorSelectQuickView = selectElement;
 
         for (var i = 0; i < colorSelectQuickView.options.length; i++) {
-            if (selectedId===colorSelectQuickView.options[i].value){
+            if (selectedId === colorSelectQuickView.options[i].value) {
                 $.ajax({
                     url: '/sixdo-shop/quick-view?',
                     type: 'POST',
@@ -183,7 +182,7 @@
                     }),
                     success: function (response) {
                         var formattedGiaBan = gia.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
-                        if (selectedId===colorSelectQuickView.options[i].value){
+                        if (selectedId === colorSelectQuickView.options[i].value) {
                             document.getElementById('price-product-quick-view').innerText = '<fmt:formatNumber value="${o.giaBan}" type="currency"/>';
                             return;
                         }
@@ -200,19 +199,40 @@
 
 
     function updatePrice(selectElement) {
+
         var selectedId = selectElement.value;
-        console.log("idddddđ"+selectedId)
+        console.log("idddddđ" + selectedId)
 
         <c:forEach var="o" items="${product}" varStatus="loop">
         if (selectedId == ${o.id}) {
-            console.log("day roi "+${o.giaBan})
+            console.log("day roi " +${o.giaBan})
             document.getElementById('product-price').innerText = '<fmt:formatNumber
                                            pattern="#,###"
                                            var="tongTam"
                                            value="${o.giaBan}"></fmt:formatNumber> ${tongTam}đ';
             var newImagePath = "${pageContext.request.contextPath}/" + "${o.hinhAnh}";
             document.getElementById('product-image').src = newImagePath;
-            document.getElementById('so-luong-kho-detail').innerText = "${o.soLuong}"
+
+
+            var imgWrapper = document.querySelector('.wrap-pic-w');
+            var soldOutElement;
+            if (1 >${o.soLuong}) {
+
+                 soldOutElement = document.createElement('p');
+                soldOutElement.className = 'sold_out';
+                soldOutElement.innerText = 'HẾT HÀNG';
+
+                document.getElementById('so-luong-kho-detail').innerText = "Hết Hàng";
+                imgWrapper.insertBefore(soldOutElement, imgWrapper.firstChild);
+
+            }else{
+                soldOutElement = document.querySelector('.sold_out');
+                if (soldOutElement) {
+                    soldOutElement.parentNode.removeChild(soldOutElement);
+                }
+
+                document.getElementById('so-luong-kho-detail').innerText = "${o.soLuong}"
+            }
             soLuongMuaDetail(${o.id})
             return;
         }
@@ -264,7 +284,6 @@
     });
 
 
-
 </script>
 <!--===============================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
@@ -282,7 +301,6 @@
             ps.update();
         })
     });
-
 
 
 </script>

@@ -11,7 +11,7 @@
 <c:if test="${checkThuongHieuTuongUng}">
     <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
         <h5 class="ltext-106 cl5 txt-center">
-            Sản Phẩm Tương Tự Theo Thương Hiệu
+            Sản Phẩm Cùng Thương Hiệu
         </h5>
     </div>
     <section class="sec-relate-product bg0 p-t-45 p-b-105">
@@ -26,7 +26,7 @@
                             <a class="block2" href="/sixdo-shop/product-detail?id=${o.id}">
                                 <div class="block2-pic hov-img0">
                                     <img src="${pageContext.request.contextPath}/${o.hinhAnh}"
-                                         alt="IMG-PRODUCT">
+                                         alt="IMG-PRODUCT" style= "height: 320px">
 
                                     <a href="/sixdo-shop/product-detail?id=${o.id}"
                                        class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
@@ -68,7 +68,7 @@
 <c:if test="${checkDanhMucTuongTu}">
     <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
         <h5 class="ltext-106 cl5 txt-center">
-            Sản Phẩm Tương Tự Theo Danh Mục
+            Sản Phẩm Cùng Danh Mục
         </h5>
     </div>
     <section class="sec-relate-product bg0 p-t-45 p-b-105">
@@ -83,7 +83,7 @@
                             <a class="block2" href="/sixdo-shop/product-detail?id=${o.id}">
                                 <div class="block2-pic hov-img0">
                                     <img src="${pageContext.request.contextPath}/${o.hinhAnh}"
-                                         alt="IMG-PRODUCT">
+                                         alt="IMG-PRODUCT" style= "height: 320px">
 
                                     <a href="/sixdo-shop/product-detail?id=${o.id}"
                                        class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
@@ -142,7 +142,7 @@
                             <a class="block2" href="/sixdo-shop/product-detail?id=${o.id}">
                                 <div class="block2-pic hov-img0">
                                     <img src="${pageContext.request.contextPath}/${o.hinhAnh}"
-                                         alt="IMG-PRODUCT">
+                                         alt="IMG-PRODUCT" style= "height: 320px">
 
                                     <a href="/sixdo-shop/product-detail?id=${o.id}"
                                        class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"

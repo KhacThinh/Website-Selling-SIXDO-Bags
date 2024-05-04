@@ -1,6 +1,9 @@
 package com.bags.sixdoBag.model.user;
 
+import com.bags.sixdoBag.model.entitys.NhanVien;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
+import com.bags.sixdoBag.model.repository.NhanVienRepository;
+import com.bags.sixdoBag.service.NhanVienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +19,9 @@ import com.bags.sixdoBag.service.KhachHangService;
 @RequestMapping("/lay-mk")
 public class ReSetPassController {
     @Autowired
-    private KhachHangRepository khachHangRepository;
+    private NhanVienRepository nhanVienRepository;
     @Autowired
-    private KhachHangService khachHangService;
+    private NhanVienService nhanVienService;
     @GetMapping("")
     public String formEmail(Model model){
         return "/user/laylaipass/form_email";
@@ -26,8 +29,8 @@ public class ReSetPassController {
 
     @GetMapping("/Reset/{email}")
     public String formReset(@PathVariable("email") String email,Model model){
-        KhachHang khachHang = khachHangService.searchKh(email);
-        if(khachHang != null){
+        NhanVien nhanVien = nhanVienRepository.getNhanVienByEmail(email);
+        if(nhanVien != null){
             System.out.println(email);
             model.addAttribute("email",email);
 
@@ -35,14 +38,13 @@ public class ReSetPassController {
         }else{
             return "redirect:/user";
         }
-
     }
     @PostMapping("/config")
     public String updatePass(@RequestParam("email") String email,@RequestParam("pass") String pass){
-        KhachHang khachHang = khachHangService.searchKh(email);
+        NhanVien nhanVien = nhanVienRepository.getNhanVienByEmail(email);
 
-        khachHang.setMatKhau(pass);
-        khachHangService.editKhachHang(khachHang.getId(),khachHang);
+        nhanVien.setMatKhau(pass);
+        nhanVienService.editNhanVien(nhanVien.getId(),nhanVien);
 
 
 

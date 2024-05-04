@@ -75,13 +75,13 @@
 <div class="modal modal-xl" id="modalAddDTSD" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <h1>MÀU SẮC</h1>
+            <h1 style="font-family: sans-serif">THÊM ĐỐI TƯỢNG SỬ DỤNG</h1>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="maDoiTuongSuDung">Mã Đối Tượng Sử Dụng</label><span class="red-star"> *</span>
-                            <input  id="maDoiTuongSuDung" class="form-control"/>
+                            <input  id="maDoiTuongSuDung" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="tenDoiTuongSuDung">Tên Đối Tượng Sử Dụng</label><span class="red-star"> *</span>

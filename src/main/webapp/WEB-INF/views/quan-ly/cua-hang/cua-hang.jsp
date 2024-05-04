@@ -562,6 +562,60 @@
         margin-left: 5px;
     }
 
+    body {
+        background: rgb(99, 39, 120);
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #ba68c8;
+    }
+
+    .profile-button {
+        background: rgb(99, 39, 120);
+        box-shadow: none;
+        border: none;
+    }
+
+    .profile-button:hover {
+        background: #682773;
+    }
+
+    .profile-button:focus {
+        background: #682773;
+        box-shadow: none;
+    }
+
+    .profile-button:active {
+        background: #682773;
+        box-shadow: none;
+    }
+
+    .back:hover {
+        color: #682773;
+        cursor: pointer;
+    }
+
+    .labels {
+        font-size: 14px;
+    }
+
+    .labels-gioi-tinh {
+        font-size: 14px;
+        margin-top: 8px;
+    }
+
+    .add-experience:hover {
+        background: #ba68c8;
+        color: #fff;
+        cursor: pointer;
+        border: solid 1px #ba68c8;
+    }
+
+    .modal-profile-customer {
+        margin-top: 60px;
+    }
+
 </style>
 <!-- Bootstrap Icons CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -574,176 +628,88 @@
     <div class="container">
         <!-- Form -->
         <div class="title text-center pt-5">
-            <h2 class="position-relative d-inline-block">QUẢN LÝ THÔNG TIN CỬA HÀNG</h2>
+            <h2 class="position-relative d-inline-block"></h2>
         </div>
+    </div>
+
+    <div class="container rounded bg-white">
         <div class="row">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
-                <i class="bi bi-bag-plus-fill"></i> <span>THÊM SLIDE SHOW</span>
-            </button>
-
-        </div>
-    </div>
-
-
-    <!-- Bảng -->
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <table class="table" id="dataTable">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tiêu đề trình chiếu văn bản</th>
-                    <th>Nội dung tiêu đề</th>
-                    <th>Ảnh</th>
-                    <th>Link Chuyển Trang</th>
-                    <th>Trạng Thái</th>
-                    <th colspan="2">Hoạt động</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-</div>
-
-<!-- Modal -->
-<div class="modal modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Silde Show</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <img class="rounded-circle mt-5" width="150px" id="js-logo-pl"
+                         src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"/>
+                    <span class="font-weight-bold mt-3" id="ten-cua-hang-pl"></span>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="tieuDeSlideShow">Tiêu đề trình chiếu văn bản<span
-                                    class="required">*</span></label>
-                            <input type="text" id="tieuDeSlideShow" class="form-control">
-                            <span id="tieuDeSlideShowError" class="error text-danger"></span>
+            <div class="col-md-5 border-right">
+                <div class="p-3" id="information-profile-show">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="text-right">THÔNG TIN CỬA HÀNG</h3>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Tên đầy đủ cửa hàng <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" placeholder="họ và tên"
+                                   id="js-profile-ten"/>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="noiDungTieuDe">Nội dung tiêu đề<span class="required">*</span></label>
-                            <input type="text" id="noiDungTieuDe" class="form-control">
-                            <span id="noiDungTieuDeError" class="error text-danger"></span>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Tên cửa hàng <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" id="js-ten-ch"
+                                   placeholder="state"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Số điện thoại <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" placeholder="số điện thoại"
+                                   id="js-sdt-ch"/>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="urlHinhAnh">Hình ảnh<span class="required">*</span></label>
-                            <input type="file" id="urlHinhAnh" class="form-control">
-                            <span id="urlHinhAnhError" class="error text-danger"></span>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Email <span style="color: red">*</span></label>
+                            <input type="email" class="form-control" id="js-email-ch" placeholder="abc@gmail.com"/>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels-gioi-tinh">Ảnh Logo</label>
+                            <input type="file" class="form-control"
+                                   id="js-hinhAnh-ch" multiple/>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="noiDungTieuDe">Link chuyển trang<span class="required">*</span></label>
-                            <input type="text" id="linkChuyenTrang" class="form-control">
-                            <span id="linkChuyenTrangError" class="error text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="trangThai">Trạng Thái</label>
-                            <select id="trangThai" class="form-select" aria-label="Default select example">
-                                <option value="1" selected>Hoạt động</option>
-                                <option value="0">Không hoạt động</option>
-                            </select>
-                        </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="button"
+                                id="save-form-cua-hang">
+                            Lưu thông tin cửa hàng
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                <button type="button" class="btn btn-primary" id="addSlideShow">Lưu</button>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="col-md-4">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center experience">
+                        <span>Địa chỉ</span>
+                    </div>
+                    <br/>
+                    <div class="change-password ds-none">
+                        <div class="col-md-12">
+                            <label class="labels">Địa chỉ <span style="color: red">*</span></label>
+                            <textarea class="form-control" placeholder="ngõ a phường B quận C" id="js-dia-chi-ch"></textarea>
 
-
-<div class="modal modal-lg" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabell">Thông Tin Silde Show</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="idSlideShow">ID</label>
-                            <input readonly type="text" id="idSlideShow" class="form-control">
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tieuDeSlideShow">Tiêu đề trình chiếu văn bản<span
-                                    class="required">*</span></label>
-                            <input type="text" id="tieuDeSlideShowEdit" class="form-control">
-                            <span id="tieuDeSlideShowErrorEdit" class="error text-danger"></span>
+                        <br/>
+                        <div class="col-md-12">
+                            <label class="labels">Toạ độ X <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" placeholder="105.36575894"
+                                   id="js-toa-do-x"/>
+                        </div>
+                        <br/>
+                        <div class="col-md-12">
+                            <label class="labels">Toạ độ Y <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" placeholder="204.394738374"
+                                   id="js-toa-do-y"/>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="noiDungTieuDe">Nội dung tiêu đề<span class="required">*</span></label>
-                            <input type="text" id="noiDungTieuDeEdit" class="form-control">
-                            <span id="noiDungTieuDeErrorEdit" class="error text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="urlHinhAnh">Hình ảnh<span class="required">*</span></label>
-                            <input type="file" id="urlHinhAnhEdit" class="form-control">
-                            <span id="urlHinhAnhErrorEdit" class="error text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <img src="" id="hinhAnhEditShow" style="max-width: 100px; max-height: 60px" alt="Hình ảnh">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="noiDungTieuDe">Link chuyển trang<span class="required">*</span></label>
-                            <input type="text" id="linkChuyenTrangEdit" class="form-control">
-                            <span id="linkChuyenTrangErrorEdit" class="error text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="trangThaiEdit">Trạng Thái</label>
-                            <select id="trangThaiEdit" class="form-select" aria-label="Default select example">
-                                <option value="1" selected>Hoạt động</option>
-                                <option value="0">Không hoạt động</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                <button type="button" class="btn btn-primary" id="EditSlideShow">Lưu</button>
             </div>
         </div>
     </div>
@@ -772,230 +738,106 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
-        hienThiSlideShow();
+        hienThiCuaHangShow();
 
-        $("#addSlideShow").on("click", function () {
+        $("#save-form-cua-hang").on("click", function () {
             postDataToController();
         });
-    });
-
-    $("#EditSlideShow").on("click", function () {
-        var id = $('#idSlideShow').val();
-        var tieuDeSlideShow = $('#tieuDeSlideShowEdit').val();
-        var noiDungTieuDe = $('#noiDungTieuDeEdit').val();
-        var linkChuyenTrang = $('#linkChuyenTrangEdit').val();
-        var trangThai = $('#trangThaiEdit').val();
-
-        // Kiểm tra validate
-        if (tieuDeSlideShow.trim() === '') {
-            $('#tieuDeSlideShowErrorEdit').text('Vui lòng nhập tiêu đề trình chiếu văn bản');
-            return;
-        } else {
-            $('#tieuDeSlideShowErrorEdit').text('');
-        }
-
-        if (noiDungTieuDe.trim() === '') {
-            $('#noiDungTieuDeErrorEdit').text('Vui lòng nhập nội dung tiêu đề');
-            return;
-        } else {
-            $('#noiDungTieuDeErrorEdit').text('');
-        }
-
-        var fileInput = $('#urlHinhAnhEdit')[0].files[0];
+    })
 
 
-        var formData = new FormData();
-        formData.append('idSlide', id);
-        formData.append('textCollectionTitle', tieuDeSlideShow);
-        formData.append('textNewArrivals', noiDungTieuDe);
-        formData.append('linkChuyenTrang', linkChuyenTrang);
-        formData.append('trangThai', trangThai);
-        if (fileInput) {
-            formData.append('hinhAnh', fileInput);
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/sixdo-shop/slide-show/sua",
-            processData: false,
-            contentType: false,
-            data: formData,
-            success: function (data) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sửa Thành công',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    location.reload();
-                });
-            },
-            error: function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Đã có lỗi xảy ra',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        });
-    });
-
-    $(document).on('click', '.btn-edit-slide-show', function () {
-        var slideShowId = $(this).data("id");
-        $.ajax({
-            type: "POST",
-            url: "/sixdo-shop/slide-show/findById",
-            data: {id: slideShowId},
-            success: function (data) {
-                if (data != null) {
-                    var backgroundImageUrl = '${pageContext.request.contextPath}/../' + data.urlHinhAnh + ';'
-                    $("#idSlideShow").val(data.id);
-                    $("#tieuDeSlideShowEdit").val(data.textCollectionTitle);
-                    $("#noiDungTieuDeEdit").val(data.textNewArrivals);
-                    $("#linkChuyenTrangEdit").val(data.linkChuyenTrang);
-                    $("#hinhAnhEditShow").attr("src", backgroundImageUrl);
-                    $("#trangThaiEdit").val(data.trangThai);
-                    $('#exampleModalEdit').modal('show');
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Lỗi không sửa được',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            },
-            error: function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Đã có lỗi xảy ra',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        });
-
-    });
-
-    $(document).on('click', '.btn-delete-slide-show', function () {
-        var id = $(this).data("id");
-        $.ajax({
-            type: "POST",
-            url: "/sixdo-shop/slide-show/delete",
-            data: {id: id},
-            success: function (data) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Xoá Thành công',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    hienThiSlideShow();
-                });
-            },
-            error: function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Đã có lỗi xảy ra',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        });
-    });
-
-
-    function hienThiSlideShow() {
+    function hienThiCuaHangShow() {
         // Sử dụng jQuery để gọi endpoint và nhận dữ liệu SlideShow từ server
-        $.get("/sixdo-shop/slide-show/show", function (data) {
-            // Xóa dữ liệu cũ trong bảng
-            $('#dataTable tbody').empty();
-
-            // Lặp qua danh sách SlideShow và thêm từng dòng vào bảng
-            var index = 1;
-            data.forEach(function (slideShow) {
-                var csss = '';
-                if (slideShow.trangThai === 1) {
-                    csss = 'status delivered'
-                } else {
-                    csss = 'status return'
-                }
-                var backgroundImageUrl = '${pageContext.request.contextPath}/../' + slideShow.urlHinhAnh + ';'
-                var row = "<tr>" +
-                    "<th>" + index + "</th>" +
-                    "<td>" + slideShow.textCollectionTitle + "</td>" +
-                    "<td>" + slideShow.textNewArrivals + "</td>" +
-                    "<td><img src='" + backgroundImageUrl + "' alt='Image' style='max-width: 100px; height: 50px; max-height: 60px'></td>" +
-                    "<td>" + slideShow.linkChuyenTrang + "</td>" +
-                    "<td><span class='" + csss + "'>" + (slideShow.trangThai === 1 ? "Hoạt động" : "Không hoạt động") + "</span></td>" +
-                    "<td><button class='btn btn-primary btn-edit-slide-show' data-id='" + slideShow.id + "' >Sửa</button></td>" +
-                    "<td><button class='btn btn-danger btn-delete-slide-show' data-id='" + slideShow.id + "'>Xoá</button></td>" +
-                    "</tr>";
-                $('#dataTable tbody').append(row);
-                index += 1;
-            });
+        $.get("/sixdo-shop/cua-hang/show", function (data) {
+            var backgroundImageUrl = '${pageContext.request.contextPath}/../' + data.hinhAnhLogo + ';'
+            $('#js-profile-ten').val(data.tenDayDuCuaHang);
+            $('#js-ten-ch').val(data.tenCuaHang);
+            $('#js-dia-chi-ch').val(data.diaChi);
+            $('#js-sdt-ch').val(data.sdt);
+            $('#js-email-ch').val(data.email);
+            $('#js-toa-do-x').val(data.toaDoMapX);
+            $('#js-toa-do-y').val(data.toaDoMapY);
+            $("#js-logo-pl").attr("src", backgroundImageUrl);
+            $('#ten-cua-hang-pl').text(data.tenCuaHang);
         });
 
     }
 
     function postDataToController() {
-        var tieuDeSlideShow = $('#tieuDeSlideShow').val();
-        var noiDungTieuDe = $('#noiDungTieuDe').val();
-        var linkChuyenTrang = $('#linkChuyenTrang').val();
-        var trangThai = $('#trangThai').val();
+        var tenDayDuCuaHang = $('#js-profile-ten').val().trim();
+        var tenCuaHang = $('#js-ten-ch').val().trim();
+        var diaChi = $('#js-dia-chi-ch').val().trim();
+        var hinhAnhLogo = $('#js-hinhAnh-ch')[0].files[0]; // Lấy file từ input type file
+        var sdt = $('#js-sdt-ch').val().trim();
+        var email = $('#js-email-ch').val().trim();
+        var toaDoMapX = $('#js-toa-do-x').val().trim();
+        var toaDoMapY = $('#js-toa-do-y').val().trim();
 
-        // Kiểm tra validate
-        if (tieuDeSlideShow.trim() === '') {
-            $('#tieuDeSlideShowError').text('Vui lòng nhập tiêu đề trình chiếu văn bản');
+        if (!tenDayDuCuaHang || !tenCuaHang || !diaChi || !sdt || !email || !toaDoMapX || !toaDoMapY) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Vui lòng điền đầy đủ thông tin.',
+            });
             return;
-        } else {
-            $('#tieuDeSlideShowError').text('');
         }
 
-        if (noiDungTieuDe.trim() === '') {
-            $('#noiDungTieuDeError').text('Vui lòng nhập nội dung tiêu đề');
-            return;
-        } else {
-            $('#noiDungTieuDeError').text('');
+        // Kiểm tra validate số điện thoại
+        var phonePattern = /^0[0-9]{9}$/;
+        if (!phonePattern.test(sdt)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Số điện thoại không hợp lệ.',
+            });
+            return; // Không gửi yêu cầu nếu số điện thoại không đúng
         }
 
-        var fileInput = $('#urlHinhAnh')[0].files[0];
-        if (!fileInput) {
-            $('#urlHinhAnhError').text('Vui lòng chọn hình ảnh');
-            return;
-        } else {
-            $('#urlHinhAnhError').text('');
-        }
 
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Địa chỉ email không hợp lệ.',
+            });
+            return;
+        }
 
         var formData = new FormData();
-        formData.append('textCollectionTitle', tieuDeSlideShow);
-        formData.append('textNewArrivals', noiDungTieuDe);
-        formData.append('hinhAnh', fileInput);
-        formData.append('linkChuyenTrang', linkChuyenTrang);
-        formData.append('trangThai', trangThai);
+        formData.append('tenDayDuCuaHang', tenDayDuCuaHang);
+        formData.append('tenCuaHang', tenCuaHang);
+        formData.append('diaChi', diaChi);
+        formData.append('sdt', sdt);
+        formData.append('email', email);
+        formData.append('toaDoMapX', toaDoMapX);
+        formData.append('toaDoMapY', toaDoMapY);
+        if (hinhAnhLogo) {
+            formData.append('hinhAnhLogo', hinhAnhLogo);
+        }
 
         $.ajax({
             type: "POST",
-            url: "/sixdo-shop/slide-show/add",
+            url: "/sixdo-shop/cua-hang/add",
             processData: false,
             contentType: false,
             data: formData,
             success: function (data) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Thêm Thành công',
+                    title: 'Thành công',
+                    text: 'Sửa Thành công',
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    location.reload();
+                    hienThiCuaHangShow();
                 });
             },
             error: function () {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Đã có lỗi xảy ra',
+                    title: 'Lỗi',
+                    text: 'Đã có lỗi xảy ra',
                     showConfirmButton: false,
                     timer: 1500
                 });

@@ -24,6 +24,10 @@ public interface ThoiGianBaoHanhRepository extends JpaRepository<ThoiGianBaoHanh
     @Query(value = "select th from ThoiGianBaoHanh th where th.ma =:maTG")
     ThoiGianBaoHanh searchTGByMa(String maTG);
 
+    @Query(value = "select th from ThoiGianBaoHanh th where th.thoiGian=:thoiGian")
+    ThoiGianBaoHanh searchTGByTen(Integer thoiGian);
+
+
     Page<ThoiGianBaoHanh> findAll(Pageable pageable);
 
     @Query(value = "select * from thoi_gian_bao_hanh where thoi_gian  =?1", nativeQuery = true)

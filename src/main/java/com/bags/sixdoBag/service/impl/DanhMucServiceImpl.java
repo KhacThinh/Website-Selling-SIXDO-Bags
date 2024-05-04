@@ -1,9 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
-import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
-import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.DanhMucRepository;
 import com.bags.sixdoBag.model.repository.QueryJpa;
 import com.bags.sixdoBag.service.DanhMucService;
@@ -88,8 +86,8 @@ public class DanhMucServiceImpl implements DanhMucService {
     }
 
     @Override
-    public List<ProductHomeRequest> filterDanhMucCTSPOnline(String tenDanhMuc) {
-        List<ProductHomeRequest> productHomeRequest = queryJpa.filterDanhMucProductHome(tenDanhMuc);
+    public List<ProductHomeResponse> filterDanhMucCTSPOnline(String tenDanhMuc) {
+        List<ProductHomeResponse> productHomeRequest = queryJpa.filterDanhMucProductHome(tenDanhMuc);
         return productHomeRequest;
     }
 }

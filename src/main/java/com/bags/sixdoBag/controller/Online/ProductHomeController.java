@@ -1,6 +1,6 @@
 package com.bags.sixdoBag.controller.Online;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
 import com.bags.sixdoBag.model.entitys.MauSac;
@@ -36,20 +36,20 @@ public class ProductHomeController {
 
 
     @GetMapping("/product-home")
-    public ResponseEntity<List<ProductHomeRequest>> hienThiProductHomePage(@RequestParam("limit") int limit) {
+    public ResponseEntity<List<ProductHomeResponse>> hienThiProductHomePage(@RequestParam("limit") int limit) {
         int page = 8;
         if (limit <= 1) {
             page *= 1;
         } else {
             page *= limit;
         }
-        List<ProductHomeRequest> productHomeRequestList = mapProductRequest(sanPhamService.listHienThiSanPhamLimit(page));
+        List<ProductHomeResponse> productHomeRequestList = mapProductRequest(sanPhamService.listHienThiSanPhamLimit(page));
         return ResponseEntity.ok(productHomeRequestList);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductHomeRequest>> searchComponentProductHome(@RequestParam("name") String keyword) {
-        List<ProductHomeRequest> searchResults = mapProductRequest(sanPhamService.searchSanPhamOnlines(keyword));
+    public ResponseEntity<List<ProductHomeResponse>> searchComponentProductHome(@RequestParam("name") String keyword) {
+        List<ProductHomeResponse> searchResults = mapProductRequest(sanPhamService.searchSanPhamOnlines(keyword));
         return ResponseEntity.ok(searchResults);
     }
 
@@ -91,25 +91,25 @@ public class ProductHomeController {
     }
 
     @GetMapping("/hien-thi-loc-components-product-home/filter")
-    public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(@RequestParam("tenDanhMuc") String tenDoiTuongSuDung) {
+    public ResponseEntity<List<ProductHomeResponse>> filterComponentProductHomeFilter(@RequestParam("tenDanhMuc") String tenDoiTuongSuDung) {
 //        List<ProductHomeRequest> searchResults = danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung);
-        List<ProductHomeRequest> searchResults = mapProductRequest(danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung));
+        List<ProductHomeResponse> searchResults = mapProductRequest(danhMucService.filterDanhMucCTSPOnline(tenDoiTuongSuDung));
         return ResponseEntity.ok(searchResults);
     }
 
     @PostMapping("/filter/loc-thuong-hieu-mau-sac-components-product-home")
-    public ResponseEntity<List<ProductHomeRequest>> filterComponentProductHomeFilter(
+    public ResponseEntity<List<ProductHomeResponse>> filterComponentProductHomeFilter(
             @RequestParam("tenThuongHieu") String tenThuongHieu,
             @RequestParam("maMauSac") String maMauSac,
             @RequestParam("sortBy") int sortBy
     ) {
-        List<ProductHomeRequest> searchResults = mapProductRequest(sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu));
+        List<ProductHomeResponse> searchResults = mapProductRequest(sanPhamService.filterMaMauSacOrThuongHieuOnlineProductHome(maMauSac, tenThuongHieu));
         if (sortBy == 2) {
             searchResults.sort(Comparator.comparingInt(p -> -(chiTietSanPhamServivce.soLuongMuaBySanPham(p.getId()))));
         } else if (sortBy == 3) {
-            searchResults.sort(Comparator.comparing(ProductHomeRequest::getGiaBan));
+            searchResults.sort(Comparator.comparing(ProductHomeResponse::getGiaBan));
         } else if (sortBy == 4) {
-            searchResults.sort(Comparator.comparing(ProductHomeRequest::getGiaBan).reversed());
+            searchResults.sort(Comparator.comparing(ProductHomeResponse::getGiaBan).reversed());
         }
         System.out.println(searchResults.size());
         return ResponseEntity.ok(searchResults);
@@ -138,10 +138,10 @@ public class ProductHomeController {
     }
 
 
-    public List<ProductHomeRequest> mapProductRequest(List<ProductHomeRequest> searchResults) {
-        List<ProductHomeRequest> updateProduct = searchResults.stream()
+    public List<ProductHomeResponse> mapProductRequest(List<ProductHomeResponse> searchResults) {
+        List<ProductHomeResponse> updateProduct = searchResults.stream()
                 .map((sp) -> {
-                            ProductHomeRequest productHomeRequest = new ProductHomeRequest();
+                            ProductHomeResponse productHomeRequest = new ProductHomeResponse();
                             productHomeRequest.setId(sp.getId());
                             productHomeRequest.setHinhAnh(sp.getHinhAnh());
                             productHomeRequest.setTenSanPham(sp.getTenSanPham());

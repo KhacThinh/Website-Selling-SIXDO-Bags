@@ -76,9 +76,8 @@ public class ChiTietGioHangServiceImpl implements ChiTietGioHangService {
     }
 
     @Override
-    public int soLuongGioHangByKhachHang(int idKH) {
-        Integer soLuongGioHang = chiTietGioHangRepository.soLuongGioHangByIdKhachHang(idKH);
-        int soLuong = soLuongGioHang != null ? soLuongGioHang : 0;
-        return soLuong;
+    public List<ChiTietGioHang> soLuongGioHangByKhachHang(int idKH) {
+        List<ChiTietGioHang>  list = chiTietGioHangRepository.soLuongGioHangByIdKhachHang(idKH);
+        return list;
     }
 }

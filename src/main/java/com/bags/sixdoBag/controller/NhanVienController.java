@@ -6,6 +6,7 @@ import com.bags.sixdoBag.model.entitys.ChucVu;
 import com.bags.sixdoBag.model.entitys.DiaChiKhachHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.NhanVien;
+import com.bags.sixdoBag.model.entitys.TaiKhoan;
 import com.bags.sixdoBag.model.repository.NhanVienRepository;
 import com.bags.sixdoBag.service.ChucVuService;
 import com.bags.sixdoBag.service.NhanVienService;
@@ -93,9 +94,10 @@ public class NhanVienController {
         System.out.println(id);
         ChucVu chucVu = chucVuService.getChucVu(id);
         System.out.println(chucVu);
-        NhanVien gg = nhanVienRepository.searchNhanVienByMa(maNhanVien);
-
-        if (gg == null) {
+        NhanVien gg = nhanVienRepository.searchNhanVienByMa(maNhanVien.trim());
+        if (gg != null) {
+            return ResponseEntity.ok("errorMa");
+        } else {
             NhanVien nhanVien1 = new NhanVien();
             nhanVien1.setChucVu(chucVu);
             nhanVien1.setMaNhanVien(maNhanVien);
@@ -109,18 +111,16 @@ public class NhanVienController {
             nhanVien1.setThoiGianVao(thoiGianVao);
             nhanVien1.setGioiTinh(gioiTinh);
             nhanVien1.setTrangThai(trangThai);
-            nhanVien1= nhanVienService.addNhanVien(nhanVien1);
+            nhanVien1 = nhanVienService.addNhanVien(nhanVien1);
             if (maNhanVien == null || maNhanVien.isEmpty()) {
-                nhanVien1.setMaNhanVien("NV0"+ nhanVien1.getId());
-                nhanVienService.editNhanVien(nhanVien1.getId() , nhanVien1);
+                nhanVien1.setMaNhanVien("NV0" + nhanVien1.getId());
+                nhanVienService.editNhanVien(nhanVien1.getId(), nhanVien1);
 
             }
             return ResponseEntity.ok("ok");
-        } else {
-            return ResponseEntity.ok("errorTen");
+
         }
     }
-
     private String generateRandomMaNhanVien() {
         // Tạo chuỗi ngẫu nhiên gồm "NV" và hai số ngẫu nhiên
         String randomNumbers = String.format("%02d", new Random().nextInt(100));
@@ -137,7 +137,6 @@ public class NhanVienController {
                                     @RequestParam("email") String email,
                                     @RequestParam("matKhau") String matKhau,
                                     @RequestParam("queQuan") String queQuan,
-                                    @RequestParam("cccd") String cccd,
                                     @RequestParam("thoiGianVao") String thoiGianVao,
                                     @RequestParam("trangThai") Integer trangThai,
                                     @RequestParam("idCV") Integer idCV
@@ -147,6 +146,17 @@ public class NhanVienController {
         ChucVu chucVu = chucVuService.getChucVu(idCV);
 
         NhanVien nhanVien = nhanVienService.getidNhanVien(id);
+        TaiKhoan taiKhoan = nhanVien.getTaiKhoan();
+        if(taiKhoan == null){
+            TaiKhoan taiKhoan1 = new TaiKhoan();
+            taiKhoan1.setTenDangNhap(email);
+            taiKhoan1.setMatKhau(matKhau);
+            nhanVien.setTaiKhoan(taiKhoan1);
+        }else {
+            taiKhoan.setTenDangNhap(email);
+            taiKhoan.setMatKhau(matKhau);
+            nhanVien.setTaiKhoan(taiKhoan);
+        }
 //        System.out.println(maChucVu);
         nhanVien.setChucVu(chucVu);
         nhanVien.setMaNhanVien(maNhanVien);
@@ -156,8 +166,9 @@ public class NhanVienController {
         nhanVien.setSdt(sdt);
         nhanVien.setEmail(email);
         nhanVien.setMatKhau(matKhau);
+
+
         nhanVien.setTrangThai(trangThai);
-        nhanVien.setCccd(cccd);
         nhanVien.setQueQuan(queQuan);
         nhanVien.setThoiGianVao(thoiGianVao);
         nhanVien.setChucVu(chucVu);
@@ -180,34 +191,45 @@ public class NhanVienController {
     }
 
 
-    //    @GetMapping("/checkMail")
-//    public @ResponseBody
-//    boolean checkMail(@RequestParam("email") String email) {
-//        NhanVien nhanVien = nhanVienService.getNhanVienByEmail(email);
-//        if (nhanVien != null) {
-//            return true;
-//        }
-//        return false;
-//    }
+    @GetMapping("/checkMail-update")
+    public @ResponseBody
+    boolean checkMailUpdate(@RequestParam("email") String email, @RequestParam("idNv") int id) {
+        NhanVien nhanVien1 = nhanVienService.getNhanVien(id);
+        NhanVien nhanVien2 = nhanVienService.getNhanVienByEmail(email);
+
+        String email1 = nhanVien1.getEmail();
+        if(email1.equals(email) || nhanVien2==null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    @GetMapping("/checkSDT-update")
+    public @ResponseBody
+    boolean checkSDTUpdate(@RequestParam("sdt") String sdt, @RequestParam("idNv") int id) {
+        NhanVien nhanVien1 = nhanVienService.getNhanVien(id);
+        NhanVien nhanVien2 = nhanVienService.getNhanVienBySDT(sdt);
+        if(nhanVien1.getSdt().equals(sdt) || nhanVien2==null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+
     @GetMapping("/checkMail")
     public @ResponseBody
     boolean checkMail(@RequestParam("email") String email) {
-        NhanVien nhanVien = nhanVienService.getNhanVienByEmail(email);
-        if (nhanVien != null) {
+        NhanVien nhanVien2 = nhanVienService.getNhanVienByEmail(email);
+        if (nhanVien2 != null) {
             return true; // Email đã tồn tại
         }
         return false; // Email không tồn tại
     }
 
-    //    @GetMapping("/checkSDT")
-//    public @ResponseBody
-//    boolean checkSDT(@RequestParam("sdt") String sdt) {
-//        NhanVien nhanVien = nhanVienService.getNhanVienBySDT(sdt);
-//        if (nhanVien != null) {
-//            return true;
-//        }
-//        return false;
-//    }
     @GetMapping("/checkSDT")
     public @ResponseBody
     boolean checkSDT(@RequestParam("sdt") String sdt) {
@@ -215,15 +237,6 @@ public class NhanVienController {
         return nhanVien != null;
     }
 
-    //    @GetMapping("/checkCCCD")
-//    public @ResponseBody
-//    boolean checkCCCD(@RequestParam("cccd") String cccd) {
-//        NhanVien nhanVien = nhanVienService.getNhanVienByCCCD(cccd);
-//        if (nhanVien != null) {
-//            return true;
-//        }
-//        return false;
-//    }
     @GetMapping("/checkCCCD")
     public @ResponseBody
     boolean checkCCCD(@RequestParam("cccd") String cccd) {

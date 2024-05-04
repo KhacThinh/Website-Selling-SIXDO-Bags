@@ -1,6 +1,6 @@
 package com.bags.sixdoBag.model.repository;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ public class QueryJpa {
     static final String USERNAME = "sa";
     static final String PASSWORD = "123456";
 
-    public List<ProductHomeRequest> temp() {
+    public List<ProductHomeResponse> temp() {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -31,7 +31,7 @@ public class QueryJpa {
                     "    FROM " +
                     "        san_pham " +
                     "    JOIN " +
-                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham " +
+                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham where san_pham.trang_thai = 1" +
                     ") " +
                     "SELECT" +
                     "    id, " +
@@ -50,13 +50,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -72,7 +72,7 @@ public class QueryJpa {
 
     }
 
-    public List<ProductHomeRequest> displayedByBrand(int idSp, int idThuongHieu) {
+    public List<ProductHomeResponse> displayedByBrand(int idSp, int idThuongHieu) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -83,7 +83,7 @@ public class QueryJpa {
                     " ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) " +
                     "AS RowNumber FROM san_pham JOIN chi_tiet_san_pham" +
                     " ON san_pham.id = chi_tiet_san_pham.id_san_pham WHERE " +
-                    "san_pham.id_thuong_hieu = ? AND san_pham.id != ? ) " +
+                    "san_pham.id_thuong_hieu = ? AND san_pham.id != ? and san_pham.trang_thai=1 ) " +
                     "SELECT id, ten, gia_ban, anh_ctsp FROM MinPrices WHERE RowNumber = 1;";
 
             // Tạo đối tượng PreparedStatement
@@ -95,13 +95,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -117,7 +117,7 @@ public class QueryJpa {
 
     }
 
-    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int idSp, int min, int max) {
+    public List<ProductHomeResponse> sanPhamCoGiaTienTuongTu(int idSp, int min, int max) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -128,7 +128,7 @@ public class QueryJpa {
                     " ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) " +
                     "AS RowNumber FROM san_pham JOIN chi_tiet_san_pham" +
                     " ON san_pham.id = chi_tiet_san_pham.id_san_pham WHERE " +
-                    "chi_tiet_san_pham.gia_ban BETWEEN ? AND ? AND san_pham.id != ?  ) " +
+                    "chi_tiet_san_pham.gia_ban BETWEEN ? AND ? AND san_pham.id != ? and san_pham.trang_thai=1 ) " +
                     "SELECT id, ten, gia_ban, anh_ctsp FROM MinPrices WHERE RowNumber = 1;";
 
             // Tạo đối tượng PreparedStatement
@@ -141,13 +141,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -163,7 +163,7 @@ public class QueryJpa {
 
     }
 
-    public List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSp, int idDanhMuc) {
+    public List<ProductHomeResponse> sanPhamCoDanhMucTuongTu(int idSp, int idDanhMuc) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -174,7 +174,7 @@ public class QueryJpa {
                     " ROW_NUMBER() OVER (PARTITION BY san_pham.id ORDER BY chi_tiet_san_pham.gia_ban ASC) " +
                     "AS RowNumber FROM san_pham JOIN chi_tiet_san_pham" +
                     " ON san_pham.id = chi_tiet_san_pham.id_san_pham WHERE " +
-                    "san_pham.id_danh_muc = ? and san_pham.id != ? ) " +
+                    "san_pham.id_danh_muc = ? and san_pham.id != ? and san_pham.trang_thai=1 ) " +
                     "SELECT id, ten, gia_ban, anh_ctsp FROM MinPrices WHERE RowNumber = 1;";
 
             // Tạo đối tượng PreparedStatement
@@ -186,13 +186,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -209,7 +209,7 @@ public class QueryJpa {
     }
 
 
-    public List<ProductHomeRequest> searchProductByName(String name) {
+    public List<ProductHomeResponse> searchProductByName(String name) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -225,7 +225,7 @@ public class QueryJpa {
                     "    FROM " +
                     "        san_pham " +
                     "    JOIN " +
-                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham " +
+                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham where san_pham.trang_thai = 1" +
                     ") " +
                     "SELECT " +
                     "    id, " +
@@ -254,13 +254,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -276,7 +276,7 @@ public class QueryJpa {
     }
 
 
-    public List<ProductHomeRequest> filterDoiTuongSuDungProductHome(String doiTuongSuDung) {
+    public List<ProductHomeResponse> filterDoiTuongSuDungProductHome(String doiTuongSuDung) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -298,7 +298,7 @@ public class QueryJpa {
                     "        doi_tuong_su_dung ON san_pham.id_doi_tuong_su_dung = doi_tuong_su_dung.id ";
             // Nếu tên được cung cấp, thêm điều kiện tìm kiếm vào câu lệnh SQL
             if (doiTuongSuDung != null && !doiTuongSuDung.isEmpty()) {
-                sql += "WHERE doi_tuong_su_dung.ten LIKE ? )";
+                sql += "WHERE doi_tuong_su_dung.ten LIKE ? and san_pham.trang_thai = 1 )";
             }
 
             sql += "SELECT " +
@@ -323,13 +323,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -344,7 +344,7 @@ public class QueryJpa {
         }
     }
 
-    public List<ProductHomeRequest> filterDanhMucProductHome(String danhMuc) {
+    public List<ProductHomeResponse> filterDanhMucProductHome(String danhMuc) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -366,7 +366,7 @@ public class QueryJpa {
                     "        danh_muc ON san_pham.id_danh_muc = danh_muc.id ";
             // Nếu tên được cung cấp, thêm điều kiện tìm kiếm vào câu lệnh SQL
             if (danhMuc != null && !danhMuc.isEmpty()) {
-                sql += "WHERE danh_muc.ten LIKE ? )";
+                sql += "WHERE danh_muc.ten LIKE ? and san_pham.trang_thai = 1  )";
             }
 
             sql += "SELECT " +
@@ -391,13 +391,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -412,8 +412,8 @@ public class QueryJpa {
         }
     }
 
-    public List<ProductHomeRequest> filterMauSacThuongHieuProductHome(String maMau, String tenThuongHieu) {
-        List<ProductHomeRequest> productHomeRequests = new ArrayList<>();
+    public List<ProductHomeResponse> filterMauSacThuongHieuProductHome(String maMau, String tenThuongHieu) {
+        List<ProductHomeResponse> productHomeRequests = new ArrayList<>();
 
         // Kết nối tới cơ sở dữ liệu
         try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
@@ -431,7 +431,7 @@ public class QueryJpa {
                     "        san_pham.id = chi_tiet_san_pham.id_san_pham " +
                     "    join thuong_hieu on thuong_hieu.id = san_pham.id_thuong_hieu " +
                     "    join mau_sac on mau_sac.id = chi_tiet_san_pham.id_mau_sac " +
-                    "    where thuong_hieu.ten like ? and mau_sac.ma like ? " +
+                    "    where thuong_hieu.ten like ? and mau_sac.ma like ? and  san_pham.trang_thai = 1 " +
                     ") " +
                     "SELECT " +
                     "    id, " +
@@ -451,7 +451,7 @@ public class QueryJpa {
                 // Duyệt qua kết quả trả về
                 while (resultSet.next()) {
                     // Tạo một đối tượng ProductHomeRequest và đặt các giá trị từ cơ sở dữ liệu
-                    ProductHomeRequest productHomeRequest = new ProductHomeRequest();
+                    ProductHomeResponse productHomeRequest = new ProductHomeResponse();
                     productHomeRequest.setId(resultSet.getInt("id"));
                     productHomeRequest.setTenSanPham(resultSet.getString("ten"));
                     productHomeRequest.setGiaBan(resultSet.getFloat("gia_ban"));
@@ -468,7 +468,7 @@ public class QueryJpa {
     }
 
 
-    public List<ProductHomeRequest> getSanPhamYeuThich(Integer idKhachHang) {
+    public List<ProductHomeResponse> getSanPhamYeuThich(Integer idKhachHang) {
         try {
             // Tạo kết nối tới cơ sở dữ liệu
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
@@ -489,7 +489,7 @@ public class QueryJpa {
                     "    JOIN khach_hang kh ON spyt.id_khach_hang = kh.id ";
             // Nếu tên được cung cấp, thêm điều kiện tìm kiếm vào câu lệnh SQL
             if (idKhachHang != null) {
-                sql += "WHERE kh.id = ? )";
+                sql += "WHERE kh.id = ? and san_pham.trang_thai=1)";
             }
 
             sql += "SELECT " +
@@ -514,13 +514,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -535,7 +535,7 @@ public class QueryJpa {
         }
     }
 
-    public List<ProductHomeRequest> searchProductFavoriteByName(Integer idKhachHang, String tenSanPham) {
+    public List<ProductHomeResponse> searchProductFavoriteByName(Integer idKhachHang, String tenSanPham) {
         try {
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
@@ -554,7 +554,7 @@ public class QueryJpa {
                     "    JOIN khach_hang kh ON spyt.id_khach_hang = kh.id ";
 
             if (idKhachHang != null) {
-                sql += "WHERE kh.id = ? and san_pham.ten like ? )";
+                sql += "WHERE kh.id = ? and san_pham.ten like ? and san_pham.trang_thai=1 )";
             }
 
             sql += " SELECT " +
@@ -580,13 +580,13 @@ public class QueryJpa {
             ResultSet resultSet = statement.executeQuery();
 
             // Duyệt qua kết quả và tạo danh sách sản phẩm
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 
@@ -602,7 +602,7 @@ public class QueryJpa {
     }
 
 
-    public List<ProductHomeRequest> tempLimit(int limit) {
+    public List<ProductHomeResponse> tempLimit(int limit) {
         try {
             Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
 
@@ -618,7 +618,7 @@ public class QueryJpa {
                     "    FROM " +
                     "        san_pham " +
                     "    JOIN " +
-                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham " +
+                    "        chi_tiet_san_pham ON san_pham.id = chi_tiet_san_pham.id_san_pham where san_pham.trang_thai = 1" +
                     ") " +
                     "SELECT TOP(@limit) " +
                     "    id, " +
@@ -636,13 +636,13 @@ public class QueryJpa {
             statement.setInt(1, limit);
             ResultSet resultSet = statement.executeQuery();
 
-            List<ProductHomeRequest> productList = new ArrayList<>();
+            List<ProductHomeResponse> productList = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String ten = resultSet.getString("ten");
                 float giaBan = resultSet.getFloat("gia_ban");
                 String anhCtsp = resultSet.getString("anh_ctsp");
-                ProductHomeRequest product = new ProductHomeRequest(id, ten, giaBan, anhCtsp);
+                ProductHomeResponse product = new ProductHomeResponse(id, ten, giaBan, anhCtsp);
                 productList.add(product);
             }
 

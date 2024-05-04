@@ -1,8 +1,9 @@
 package com.bags.sixdoBag.service.impl;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.*;
+import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
 import com.bags.sixdoBag.model.repository.QueryJpa;
 import com.bags.sixdoBag.model.repository.SanPhamRepository;
 import com.bags.sixdoBag.service.*;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class SanPhamServiceImpl implements SanPhamService {
     private final DanhMucService danhMucService;
     private final DoiTuongSuDungService doiTuongSuDungService;
     private QueryJpa queryJpa = new QueryJpa();
+    private final ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
     public SanPham getSanPham(Integer idSanPham) {
@@ -68,11 +71,13 @@ public class SanPhamServiceImpl implements SanPhamService {
         if (Objects.nonNull(sanPhamRequest.getIdDoiTuongSuDung())) {
             sp.setDoiTuongSuDung(doiTuongSuDungService.getDoiTuongSuDung(sanPhamRequest.getIdDoiTuongSuDung()));
         }
+        sp.setTrangThai(true);
         return sp;
     }
 
     @Override
     public SanPham editSanPham(Integer idSanPham, SanPhamRequest sanPhamRequest) {
+        List<ChiTietSanPham> listCTSP = chiTietSanPhamRepository.getChiTietSanPhamById(idSanPham);
         SanPham sp = getSanPham(idSanPham);
         addEditSanPham(sanPhamRequest, sp);
         if (Objects.nonNull(sanPhamRequest.getIdThoiGianBaoHanh())) {
@@ -87,7 +92,28 @@ public class SanPhamServiceImpl implements SanPhamService {
         if (Objects.nonNull(sanPhamRequest.getIdDoiTuongSuDung())) {
             sp.setDoiTuongSuDung(doiTuongSuDungService.getDoiTuongSuDung(sanPhamRequest.getIdDoiTuongSuDung()));
         }
+        sp.setTrangThai(sanPhamRequest.getTrangThai());
+        if (!sp.getTrangThai()) {
+            for (ChiTietSanPham chiTietSanPham : listCTSP) {
+                ChiTietSanPham chiTietSanPham1 = chiTietSanPham;
+                chiTietSanPham1.setTrangThai(0);
+            }
+        } else {
+            for (ChiTietSanPham chiTietSanPham : listCTSP) {
+                ChiTietSanPham chiTietSanPham1 = chiTietSanPham;
+                if (chiTietSanPham1.getSoLuong() < 0) {
+                    chiTietSanPham1.setTrangThai(2);
+                } else {
+                    chiTietSanPham1.setTrangThai(1);
+                }
+            }
+        }
         return sanPhamRepository.save(sp);
+    }
+
+    @Override
+    public List<SanPham> getSoLuongThongKe() {
+        return sanPhamRepository.getSoLuongThongKe();
     }
 
     private void addEditSanPham(SanPhamRequest sanPhamRequest, SanPham sp) {
@@ -139,37 +165,37 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu) {
-        return sanPhamRepository.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
+    public List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu, boolean trangThai) {
+        return sanPhamRepository.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu, trangThai);
     }
 
     @Override
-    public List<ProductHomeRequest> listHienThiSanPham() {
+    public List<ProductHomeResponse> listHienThiSanPham() {
         return queryJpa.temp();
     }
 
     @Override
-    public List<ProductHomeRequest> listHienThiSanPhamLimit(int limit) {
+    public List<ProductHomeResponse> listHienThiSanPhamLimit(int limit) {
         return queryJpa.tempLimit(limit);
     }
 
     @Override
-    public List<ProductHomeRequest> displayedByBrand(int idSp, int idThuongHieu) {
+    public List<ProductHomeResponse> displayedByBrand(int idSp, int idThuongHieu) {
         return queryJpa.displayedByBrand(idSp, idThuongHieu);
 
     }
 
     @Override
-    public List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int idSp, int min, int max) {
+    public List<ProductHomeResponse> sanPhamCoGiaTienTuongTu(int idSp, int min, int max) {
         return queryJpa.sanPhamCoGiaTienTuongTu(idSp, min, max);
     }
 
     @Override
-    public List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSP, int idDanhMuc) {
+    public List<ProductHomeResponse> sanPhamCoDanhMucTuongTu(int idSP, int idDanhMuc) {
         return queryJpa.sanPhamCoDanhMucTuongTu(idSP, idDanhMuc);
     }
 
-    public List<ProductHomeRequest> searchSanPhamOnlines(String name) {
+    public List<ProductHomeResponse> searchSanPhamOnlines(String name) {
         return queryJpa.searchProductByName(name);
     }
 
@@ -184,8 +210,29 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public List<ProductHomeRequest> filterMaMauSacOrThuongHieuOnlineProductHome(String maMau, String tenThuongHieu) {
-        List<ProductHomeRequest> productHomeRequestList = queryJpa.filterMauSacThuongHieuProductHome(maMau, tenThuongHieu);
+    public boolean findByNameSanPhamSua(String name, int idSp) {
+        SanPham sanPham = getSanPham(idSp);
+        if (sanPham != null && name.equalsIgnoreCase(sanPham.getTenSanPham())) {
+            return false;
+        }
+
+        List<String> danhSachTen = sanPhamRepository.findSanPhamByAll().stream()
+                .map(SanPham::getTenSanPham)
+                .collect(Collectors.toList());
+
+        for (String ten : danhSachTen) {
+            if (ten.equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public List<ProductHomeResponse> filterMaMauSacOrThuongHieuOnlineProductHome(String maMau, String tenThuongHieu) {
+        List<ProductHomeResponse> productHomeRequestList = queryJpa.filterMauSacThuongHieuProductHome(maMau, tenThuongHieu);
         return productHomeRequestList;
     }
 

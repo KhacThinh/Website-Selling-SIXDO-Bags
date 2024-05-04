@@ -255,8 +255,8 @@
     }
 
     function addMauSac(){
-        var maMauSac = document.getElementById("maMauSac").value;
-        var tenMauSac = document.getElementById("tenMauSac").value;
+        var maMauSac = document.getElementById("maMauSac").value.trim();
+        var tenMauSac = document.getElementById("tenMauSac").value.trim();
 
         console.log(maMauSac);
         console.log(tenMauSac);
@@ -301,8 +301,8 @@
     }
 
     function updateMauSac(id) {
-        var maMauSac = document.getElementById("maUpdate" + id).value;
-        var tenMauSac = document.getElementById("tenUpdate" + id).value;
+        var maMauSac = document.getElementById("maUpdate" + id).value.trim();
+        var tenMauSac = document.getElementById("tenUpdate" + id).value.trim();
 
 
 

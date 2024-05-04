@@ -136,14 +136,7 @@
             font-size: 12px;
 
         }
-        .status.pending {
-            padding: 2px 4px;
-            background: red;
-            color: var(--white);
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
-        }
+
 
         .status.dangxuly {
             padding: 2px 4px;
@@ -153,6 +146,16 @@
             font-size: 14px;
             font-weight: 500;
         }
+
+        .status.hetMa {
+            padding: 2px 4px;
+            background: #98531b;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
         .bold {
             font-weight: bold;
         }
@@ -189,7 +192,7 @@
         </div>
 
         <div class="col-md-4">
-            <form action="/ma_giam_gia" class="search-form" method="get">
+            <form action="/ma-giam-gia" class="search-form" method="get">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -226,11 +229,18 @@
             <c:set var="currentDate" value="<%= java.time.LocalDate.now() %>" />
 
             <c:forEach items="${listColors.content}" var="sp" varStatus="i">
+                <c:set var="soLuongMGG" value="${sp.soLuong}" />
                 <c:set var="ngayBatDau" value="${sp.ngayBatDau}" />
                 <c:set var="ngayKetThuc" value="${sp.ngayKetThuc}" />
                 <c:set var="trangThai" value="mặc định" />
                 <c:set var="classCss" value="" />
                 <c:choose>
+
+                    <c:when test="${soLuongMGG <= 0}">
+                        <c:set var="trangThai" value="Hết mã" />
+                        <c:set var="classCss" value="status hetMa" />
+                    </c:when>
+
                     <%-- Nếu ngày hiện tại nằm trong khoảng ngày bắt đầu và ngày kết thúc --%>
                     <c:when test="${currentDate >= ngayBatDau && currentDate <= ngayKetThuc }">
                         <c:set var="trangThai" value="Hoạt động" />
@@ -239,8 +249,6 @@
                     <c:when test="${currentDate < ngayBatDau}">
                         <c:set var="trangThai" value="Chưa bắt đầu" />
                         <c:set var="classCss" value="status pending" />
-
-
                     </c:when>
                     <c:when test="${currentDate > ngayKetThuc}">
                         <c:set var="trangThai" value="Đã hết hạn" />
@@ -266,11 +274,15 @@
                         <ul class="dropdown-menu">
                             <li>
                             <li>
+                            <c:choose>
+                            <c:when test="${currentDate < ngayBatDau}">
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
                                         onclick="getDataKhachHangByMgg(${sp.id})"
                                         data-bs-target="#modalUpdateMGG${sp.id}">
                                     <i class="bi bi-pencil"></i> Sửa
                                 </button>
+                            </c:when>
+                            </c:choose>
                             </li>
 
                             </li>
@@ -560,7 +572,7 @@
 
     function addMaGiamGia() {
         var maGiamGia = document.getElementById("maGiamGia").value;
-        var tenMaGiamGia = document.getElementById("tenMaGiamGia").value;
+        var tenMaGiamGia = document.getElementById("tenMaGiamGia").value.trim();
         var giaTriGiam = document.getElementById("giaTriGiam").value;
         var ngayBatDau = document.getElementById("ngayBatDau").value;
         var ngayKetThuc = document.getElementById("ngayKetThuc").value;
@@ -582,6 +594,7 @@
             toastr.error("Vui lòng điền đầy đủ thông tin");
             return false;
         }
+
         var startDate = new Date(ngayBatDau);
         var endDate = new Date(ngayKetThuc);
         if (startDate >= endDate) {
@@ -636,6 +649,8 @@
             }
         });
     }
+
+
 
 
     function updateData(id) {

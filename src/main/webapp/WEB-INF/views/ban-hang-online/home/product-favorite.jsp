@@ -119,6 +119,7 @@
             $(document).ready(function () {
                 loadData();
                 xoaSanPhamYeuThich();
+                checkSanPhamYeuThichTrangChu();
 
                 $('#search-form').submit(function (event) {
                     event.preventDefault();
@@ -126,6 +127,26 @@
                     searchProducts(searchTerm);
                 });
             });
+
+            // check xem sản phẩm đã được yêu thích chưa
+            function checkSanPhamYeuThichTrangChu() {
+                $.get('/product-favorite/check-san-pham-yeu-thich-home', function (data) {
+                    var productIDs = data;
+                    $(".js-addwish-b2").each(function () {
+                        var productID = $(this).data("product-id");
+                        if (productIDs.includes(productID)) {
+                            $(this).find('.bi-heart').hide();
+                            $(this).find('.bi-heart-fill').show();
+                        }
+                    });
+                });
+            }
+
+            function capNhapSoLuongSanPhamYeuThichHearder() {
+                $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
+                    displaySoLuongSanPhamFavorite(data);
+                });
+            }
 
 
             // sản phẩm yêu thích product favorites

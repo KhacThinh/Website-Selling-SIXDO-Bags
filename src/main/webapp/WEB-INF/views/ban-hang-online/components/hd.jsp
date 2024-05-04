@@ -98,9 +98,14 @@
         <div class="wrap-menu-desktop how-shadow1">
             <nav class="limiter-menu-desktop" style="margin: 0 30px">
 
+<%--                <a href="/sixdo-shop" class="logo">--%>
+<%--                    <img src="../static/images/logo1.jpg"--%>
+<%--                         alt="" id="js-logo-header">--%>
+<%--                </a>--%>
+
                 <a href="/sixdo-shop" class="logo">
                     <img src="../static/images/logo1.jpg"
-                         alt="IMG-PRODUCT" id="logo-header js-logo-header">
+                         alt="">
                 </a>
 
 
@@ -113,10 +118,6 @@
                         <li class="label1" data-label1="hot">
                             <a href="/sixdo-shop/product">Sản phẩm</a>
                         </li>
-
-                        <%--                        <li class="active-menu">--%>
-                        <%--                            <a href="/sixdo-shop/hello">Bộ sưu tập</a>--%>
-                        <%--                        </li>--%>
 
                         <li>
                             <a href="/sixdo-shop/contact">Liên hệ</a>
@@ -217,7 +218,7 @@
     <div class="menu-mobile">
         <ul class="main-menu-m">
             <li>
-                <a href="/user/ban-hang">Trang chủ</a>
+                <a href="/sixdo-shop">Trang chủ</a>
                 <span class="arrow-main-menu-m">
 						<i class="fa fa-angle-right" aria-hidden="true"></i>
 					</span>
@@ -276,97 +277,18 @@
         });
     });
 
-    // check xem sản phẩm đã được yêu thích chưa
-    function checkSanPhamYeuThichTrangChu() {
-        $.get('/product-favorite/check-san-pham-yeu-thich-home', function (data) {
-            var productIDs = data;
-            $(".js-addwish-b2").each(function () {
-                var productID = $(this).data("product-id");
-                if (productIDs.includes(productID)) {
-                    $(this).find('.bi-heart').hide();
-                    $(this).find('.bi-heart-fill').show();
-                }
-            });
-        });
-    }
-
-    // sản phẩm yêu thích product favorites
-    function themSanPhamYeuThich() {
-        $(document).on('click', '.js-addwish-b2', function () {
-            var heartFill = $(this).find('.bi-heart-fill');
-            var heartOutline = $(this).find('.bi-heart');
-            var productId = $(this).data('product-id');
-
-            $.get('/product-favorite/check-thong-tin-khach-hang', function (response) {
-                if (response !== 0) {
-                    console.log('Khách hàng đã đăng nhập với ID:', response);
-                    if (heartFill.css('display') === 'none') {
-                        $.post('/product-favorite/them-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
-                            if (sanPhamCheck != 0) {
-                                heartFill.css('display', 'inline');
-                                heartOutline.css('display', 'none');
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Đã thêm vào danh sách yêu thích!',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                capNhapSoLuongSanPhamYeuThichHearder();
-                            } else {
-                                console.log("không thêm được vô sản phẩm yêu thích");
-                            }
-                        })
-                    } else {
-                        $.get('/product-favorite/xoa-san-pham-yeu-thich', {idSanPham: productId}, function (sanPhamCheck) {
-                            if (sanPhamCheck != 0) {
-                                // Ngược lại, chuyển về icon đậm và ẩn icon fill
-                                heartFill.css('display', 'none');
-                                heartOutline.css('display', 'inline');
-                                // Hiển thị thông báo hủy thành công
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Đã xóa khỏi danh sách yêu thích!',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                capNhapSoLuongSanPhamYeuThichHearder();
-                            } else {
-                                console.log("không xoá được sản phẩm yêu thích");
-                                alert("Lỗi");
-                            }
-                        });
-                    }
-                } else {
-                    Swal.fire({
-                        title: 'Vui lòng đăng nhập để thêm sản phẩm này vào danh sách yêu thích',
-                        text: 'Bằng cách đăng nhập, bạn có thể quản lý danh sách sản phẩm yêu thích cá nhân.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Đăng nhập',
-                        cancelButtonText: 'Để sau',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "/sixdo-shop/login-customer";
-                        }
-                    });
-                }
-            }).fail(function (xhr, status, error) {
-                console.error('Lỗi khi gửi yêu cầu kiểm tra thông tin khách hàng:', error);
-            });
-        });
-    }
-
-    function capNhapSoLuongSanPhamYeuThichHearder() {
-        $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
-            displaySoLuongSanPhamFavorite(data);
-        });
-    }
 
     function capNhapSoLuongSanPhamTrongGioHangHearder() {
         $.get('/sixdo-shop/hien-thi-so-luong-cart-product', function (data) {
             var cartIcon = document.querySelector('.js-show-cart');
             var soLuongSanPham = data;
             cartIcon.setAttribute('data-notify', soLuongSanPham);
+        });
+    }
+
+    function capNhapSoLuongSanPhamYeuThichHearder() {
+        $.get('/product-favorite/hien-thi-so-luong-product-favorite', function (data) {
+            displaySoLuongSanPhamFavorite(data);
         });
     }
 
@@ -381,9 +303,9 @@
                 containerDonMua.hide();
                 containerSanPhamYeuThich.hide();
             } else {
+                containerSanPhamYeuThich.show();
                 containerDonMuaMobi.show();
                 containerDonMua.show();
-                containerSanPhamYeuThich.show();
             }
 
         });
@@ -420,8 +342,7 @@
                                 var listItem = document.createElement('li');
                                 listItem.className = 'cart-item';
 
-                                if (product.chiTietSanPham.trangThai === 1) {
-                                    // Sản phẩm có sẵn
+                                if (product.chiTietSanPham.trangThai === 1 &&  product.chiTietSanPham.sanPham.trangThai ===true) {
                                     var itemHTML = '<li class="header-cart-item flex-w flex-t m-b-12">' +
                                         '<div class="header-cart-item-img" data-product-id="' + product.chiTietSanPham.id + '" data-product-price="' + product.chiTietSanPham.giaBan + '" data-product-soluong="' + product.soLuong + '">' +
                                         '<img style="width: 74px; height: 80px; margin-bottom: 16px;" src="' + imageProductForCart + '" alt="IMG">' +
@@ -440,7 +361,7 @@
                                     totalAmount += product.chiTietSanPham.giaBan * product.soLuong;
                                 } else {
                                     var trangThaiText;
-                                    if (product.chiTietSanPham.trangThai === 0) {
+                                    if (product.chiTietSanPham.trangThai === 0 || product.chiTietSanPham.sanPham.trangThai ===false) {
                                         trangThaiText = 'Ngừng Bán';
                                     } else if (product.chiTietSanPham.trangThai === 2) {
                                         trangThaiText = 'Hết hàng';

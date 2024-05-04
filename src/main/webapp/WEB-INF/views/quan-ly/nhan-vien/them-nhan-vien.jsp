@@ -169,7 +169,6 @@
                             <label for="trangThai" class="form-label">Trạng Thái</label>
                             <select id="trangThai" name="trangThai" class="form-select">
                                 <option value="1">Hoạt Động</option>
-                                <!-- <option value="0">Không Hoạt Động</option> -->
                             </select>
                         </div>
                     </div>

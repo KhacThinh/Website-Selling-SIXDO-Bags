@@ -1,8 +1,6 @@
 package com.bags.sixdoBag.controller;
 
-import com.bags.sixdoBag.model.entitys.HoaDon;
-import com.bags.sixdoBag.model.entitys.KhachHang;
-import com.bags.sixdoBag.model.entitys.KhuyenMai;
+import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.KhachHangRepository;
 import com.bags.sixdoBag.service.HoaDonService;
 import com.bags.sixdoBag.service.KhachHangService;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class KhachHangController {
 
         if (name != null && !name.isEmpty()) {
             model.addAttribute("nameSearch", name);
-            khuyenMais = khachHangService.searchKhachHangTenOrMa(name, pageable);
+            khuyenMais = khachHangService.searchKhachHangTenOrMa(name.trim(), pageable);
         } else if (trangThai != null) {
             khuyenMais = khachHangService.searchcbb(trangThai, pageable);
         } else {
@@ -63,34 +62,38 @@ public class KhachHangController {
             @RequestParam("trangThai") Integer trangThai,
             Model model
     ) {
-        String temp;
-        KhachHang khachhang1 = new KhachHang();
-        khachhang1.setMaKhachHang(maKhachHang);
-        khachhang1.setTenKhachHang(tenKhachHang);
-        khachhang1.setGioiTinh(gioiTinh);
-        khachhang1.setNgaySinh(ngaySinh);
-        khachhang1.setSdt(sdt);
-        khachhang1.setEmail(email);
-        khachhang1.setTrangThai(trangThai);
-        khachhang1 = khachHangService.addKhachHang1(khachhang1);
-        if (maKhachHang == null || maKhachHang.isEmpty()) {
-            khachhang1.setMaKhachHang("KH0"+ khachhang1.getId());
-            khachHangService.editKhachHang(khachhang1.getId() , khachhang1);
 
-        }else {
-            temp = maKhachHang;
+        KhachHang gg1 = khachHangRepository.searchKhachHangByMa(maKhachHang.trim());
+        if (gg1 != null) {
+            return ResponseEntity.ok("errorMa");
+        } else {
+            String temp;
+            KhachHang khachhang1 = new KhachHang();
+            khachhang1.setMaKhachHang(maKhachHang);
+            khachhang1.setTenKhachHang(tenKhachHang);
+            khachhang1.setGioiTinh(gioiTinh);
+            khachhang1.setNgaySinh(ngaySinh);
+            khachhang1.setSdt(sdt);
+            khachhang1.setEmail(email);
+            khachhang1.setTrangThai(trangThai);
+            khachhang1 = khachHangService.addKhachHang1(khachhang1);
+            if (maKhachHang == null || maKhachHang.isEmpty()) {
+                khachhang1.setMaKhachHang("KH0" + khachhang1.getId());
+                khachHangService.editKhachHang(khachhang1.getId(), khachhang1);
+
+            } else {
+                temp = maKhachHang;
+            }
+            return ResponseEntity.ok("ok");
         }
-        return ResponseEntity.ok("ok");
     }
 
 
-    @GetMapping("/getHoaDonByKhachHang")
-    public ResponseEntity<?> getHoaDonByKhachHang(@RequestParam("id") int idKh,Model model){
-        List<HoaDon> listHd= hoaDonService.getListSortHoaDonByKhachHang(idKh);
-        return ResponseEntity.ok(listHd);
-
+    private String generateRandomMaNhanVien() {
+        // Tạo chuỗi ngẫu nhiên gồm "NV" và hai số ngẫu nhiên
+        String randomNumbers = String.format("%02d", new Random().nextInt(1000));
+        return "KHR" + randomNumbers;
     }
-
 
     @PostMapping("/update")
     public ResponseEntity<?> suaMGG(@RequestParam("id") Integer id,
@@ -99,7 +102,7 @@ public class KhachHangController {
                                     @RequestParam("ngaySinh") String ngaySinh,
                                     @RequestParam("sdt") String sdt,
                                     @RequestParam("email") String email,
-                                    @RequestParam("matKhau") String matKhau,
+
                                     @RequestParam("trangThai") Integer trangThai) {
 
 //        KhachHang gg1 = khachHangRepository.searchKhachHangBySdt(sdt);
@@ -117,7 +120,7 @@ public class KhachHangController {
         khachHang.setNgaySinh(ngaySinh);
         khachHang.setSdt(sdt);
         khachHang.setEmail(email);
-        khachHang.setMatKhau(matKhau);
+
         khachHang.setTrangThai(trangThai);
         khachHangService.editKhachHang(id, khachHang);
         return ResponseEntity.ok("ok");
@@ -142,4 +145,25 @@ public class KhachHangController {
         }
     }
 
+    @GetMapping("/getHoaDonByKhachHang")
+    public ResponseEntity<?> getHoaDonByKhachHang(@RequestParam("id") int idKh,Model model){
+        List<HoaDon> listHd= hoaDonService.getListSortHoaDonByKhachHang(idKh);
+        return ResponseEntity.ok(listHd);
+
+    }
+
+
+    @GetMapping("/checkMail")
+    public @ResponseBody
+    boolean checkMail(@RequestParam("mail") String mail) {
+        KhachHang khachHang = khachHangService.getKhachHangByEmail(mail);
+        return khachHang != null;
+    }
+
+    @GetMapping("/checkSDT")
+    public @ResponseBody
+    boolean checkSDT(@RequestParam("sdt") String sdt) {
+        KhachHang khachHang = khachHangService.getKhachHangBySDT(sdt);
+        return khachHang != null;
+    }
 }

@@ -1,6 +1,6 @@
 package com.bags.sixdoBag.service.impl;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
 import com.bags.sixdoBag.model.entitys.KhachHang;
 import com.bags.sixdoBag.model.entitys.SanPham;
@@ -36,8 +36,8 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
     }
 
     @Override
-    public List<ProductHomeRequest> getListSanPhamYeuThich(int idKhachHang) {
-        List<ProductHomeRequest> productHomeRequestList = new ArrayList<>();
+    public List<ProductHomeResponse> getListSanPhamYeuThich(int idKhachHang) {
+        List<ProductHomeResponse> productHomeRequestList = new ArrayList<>();
         KhachHang khachHang = khachHangService.getidKhachHang(idKhachHang);
         if (Objects.nonNull(khachHang)) {
             productHomeRequestList = queryJpa.getSanPhamYeuThich(khachHang.getId());
@@ -78,8 +78,8 @@ public class SanPhamYeuThichServiceImpl implements SanPhamYeuThichService {
     }
 
     @Override
-    public List<ProductHomeRequest> searchSanPhamFavoriteOnlines(int idKh, String name) {
-        List<ProductHomeRequest> productHomeRequestList = new ArrayList<>();
+    public List<ProductHomeResponse> searchSanPhamFavoriteOnlines(int idKh, String name) {
+        List<ProductHomeResponse> productHomeRequestList = new ArrayList<>();
         KhachHang khachHang = khachHangService.getKhachHang(idKh);
         if (Objects.nonNull(khachHang) && Objects.nonNull(name)) {
             productHomeRequestList = queryJpa.searchProductFavoriteByName(khachHang.getId(), name.trim());

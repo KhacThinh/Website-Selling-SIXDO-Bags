@@ -32,7 +32,7 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     @Override
     public ThuongHieu addThuongHieu(ThuongHieu thuongHieu) {
         ThuongHieu th = new ThuongHieu();
-        th.setMa(thuongHieu.getMa().trim());
+        th.setMaTH(thuongHieu.getMaTH().trim());
         th.setTen(thuongHieu.getTen().trim());
         th.setTrangThai(true);
         return thuongHieuRepository.save(th);
