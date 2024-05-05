@@ -716,7 +716,6 @@
             $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
                 var tt = '';
                 var trangThai = item.hoaDon.trangThai;
-
                 var tongTienHang = item.hoaDon.tongTien;
                 if (item.hoaDon.phiVanChuyen != null) {
                     $('#ip-phi-giao-hang-thanh-toan').text(item.hoaDon.phiVanChuyen.toLocaleString() + ' đ');
@@ -748,6 +747,12 @@
                 $('#ip-sdt-nguoi-nhan').val(item.hoaDon.sdtNguoiNhan);
                 $('#ip-email-nguoi-nhan').val(item.hoaDon.emailNguoiNhan);
                 $('#ip-tong-thanh-toan').text(tongTienHang.toLocaleString());
+
+                if (item.hoaDon.maGiamGia != null) {
+                    $('#ip-giam-gia-thanh-toan').text(item.hoaDon.giamGia.toLocaleString());
+                } else {
+                    $('#ip-giam-gia-thanh-toan').text('0'.toLocaleString());
+                }
 
                 if (item.hoaDon.maGiamGia != null) {
                     $('#ip-giam-gia-thanh-toan').text(item.hoaDon.giamGia.toLocaleString());

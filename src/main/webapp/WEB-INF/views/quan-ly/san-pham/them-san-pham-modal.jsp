@@ -364,8 +364,7 @@
 <div class="modal modal-xl" id="modalAddDTSD" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content formcon">
-            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Đối
-                Tượng</h1>
+            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Đối Tượng</h1>
             <hr>
             <div class="modal-body1">
                 <div class="form-container1">

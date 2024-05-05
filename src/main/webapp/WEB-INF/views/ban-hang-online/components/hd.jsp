@@ -104,10 +104,8 @@
 <%--                </a>--%>
 
                 <a href="/sixdo-shop" class="logo">
-                    <img src="../static/images/logo1.jpg"
-                         alt="">
+                    <img src="../static/images/logo1.jpg" alt="">
                 </a>
-
 
                 <div class="menu-desktop">
                     <ul class="main-menu">
@@ -264,7 +262,18 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 
+    function thongTinCuaHangFt() {
+        $.get('/lien-he/thong-tin-cua-hang', function (data) {
+            $('#js-dia-chi-lh-ft').text(data.diaChi);
+            $('#js-sdt-lh-ft').text(data.sdt);
+            $('#ten-cua-hang-ft').text(data.tenDayDuCuaHang);
+            var backgroundImageUrl = '${pageContext.request.contextPath}/../' + data.hinhAnhLogo + ';'
+            $('#js-logo-header').attr("src", backgroundImageUrl);
+        })
+    }
+
     $(document).ready(function () {
+        thongTinCuaHangFt();
         hienThiMenuQuanLyDonHangOnle();
         capNhapSoLuongSanPhamYeuThichHearder();
         capNhapSoLuongSanPhamTrongGioHangHearder();

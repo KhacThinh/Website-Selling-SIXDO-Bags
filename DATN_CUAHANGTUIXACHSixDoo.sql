@@ -1,4 +1,4 @@
-﻿CREATE DATABASE DATN_CUAHANGTUIXACHSixDoo
+﻿CREAT DATABASE DATN_CUAHANGTUIXACHSixDoo
 GO
 USE DATN_CUAHANGTUIXACHSixDoo
 GO
@@ -450,19 +450,6 @@ select * from san_pham
 select * from mau_sac
 update mau_sac set ten = N'Nâu' where ma = '#663300'
 select * from chi_tiet_san_pham
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
