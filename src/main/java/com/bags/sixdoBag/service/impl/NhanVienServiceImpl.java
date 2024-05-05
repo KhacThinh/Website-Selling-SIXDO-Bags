@@ -90,10 +90,19 @@ public class NhanVienServiceImpl implements NhanVienService {
         } else {
             nv.setChucVu(chucVuService.getChucVu(idChucVu));
         }
+        if (nv.getTaiKhoan() == null) {
+            TaiKhoan taiKhoan1 = new TaiKhoan();
+            taiKhoan1.setTenDangNhap(nv.getEmail());
+            taiKhoan1.setMatKhau(nv.getMatKhau());
+            nv.setTaiKhoan(taiKhoan1);
+        } else {
+            nv.getTaiKhoan().setTenDangNhap(nv.getEmail());
+            nv.getTaiKhoan().setMatKhau(nv.getMatKhau());
+        }
 
-        TaiKhoan taiKhoan = nv.getTaiKhoan();
-        taiKhoan.setMatKhau(nhanVien.getMatKhau());
-        nv.setTaiKhoan(taiKhoan);
+//        TaiKhoan taiKhoan = nv.getTaiKhoan();
+//        taiKhoan.setMatKhau(nhanVien.getMatKhau());
+//        nv.setTaiKhoan(taiKhoan);
         return nhanVienRepository.save(nv);
     }
 
@@ -107,27 +116,28 @@ public class NhanVienServiceImpl implements NhanVienService {
 
     @Override
     public NhanVien loginNhanVien(String email, String matKhau) {
-        return nhanVienRepository.findByTenEndMatKhau(email,matKhau);
+        return nhanVienRepository.findByTenEndMatKhau(email, matKhau);
     }
 
     @Override
     public NhanVien getidNhanVien(Integer idNhanVien) {
-        NhanVien nhanVien= nhanVienRepository.findById(idNhanVien).orElse(null);
+        NhanVien nhanVien = nhanVienRepository.findById(idNhanVien).orElse(null);
         return nhanVien;
     }
 
-    /////////////////////////////////////////////////
     @Override
     public Page<NhanVien> searchNhanVienTenOrMa(String tenMa, Pageable pageable) {
         return nhanVienRepository.searchNhanVienTenOrMa(tenMa, pageable);
     }
+
     @Override
     public Page<NhanVien> searchcbb(Integer name, Pageable pageable) {
-        return nhanVienRepository.searchCbb(name,pageable);
+        return nhanVienRepository.searchCbb(name, pageable);
     }
+
     @Override
     public Page<NhanVien> searchcbb1(String name, Pageable pageable) {
-        return nhanVienRepository.searchCbb1(name,pageable);
+        return nhanVienRepository.searchCbb1(name, pageable);
     }
 
     @Override

@@ -37,4 +37,6 @@ public class MauSac {
     private String tenMauSac;
 
 
+    @Column(name = "trang_thai")
+    private int trangThai;
 }

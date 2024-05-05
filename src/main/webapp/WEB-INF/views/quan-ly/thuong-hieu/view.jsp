@@ -156,9 +156,9 @@
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                     </div>
                     <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
-<%--                    <div class="input-group-append">--%>
-<%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
-<%--                    </div>--%>
+                    <%--                    <div class="input-group-append">--%>
+                    <%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
+                    <%--                    </div>--%>
                 </div>
             </form>
         </div>
@@ -180,7 +180,7 @@
             <c:forEach items="${ listColors.content }" var="th" varStatus="i">
                 <tr id="record_${th.id}">
                     <td class="bold">${i.index + 1}</td>
-                    <td>${th.ma}</td>
+                    <td>${th.maTH}</td>
                     <td>${th.ten}</td>
                     <td><span class="status ${th.trangThai == true ? 'dangxuly' : 'pending'}">${th.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span></td>
 
@@ -203,61 +203,43 @@
                         </ul>
 
                             <%--                        Modal update--%>
-                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Thương Hiệu</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group" hidden>
-                                            <label  class="form-label">Id
-                                                <span>*</span></label>
-                                            <input value="${th.id}" name="id" id="id" class="form-control"/>
-                                        </div>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: sans-serif">Thông Tin Bảo Hành</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label  class="form-label">Mã
-                                                        <span>*</span></label>
-                                                    <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control"/>
+                                        <form>
+                                            <div class="mb-3 row">
+                                                <label for="maUpdate${th.id}" class="col-sm-3 col-form-label">Mã Thương Hiệu <span>*</span></label>
+                                                <div class="col-sm-9">
+                                                    <input value="${th.maTH}" name="maTH" id="maUpdate${th.id}" class="form-control" readonly
+                                                    >
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label  class="form-label">Tên Thương Hiệu
-                                                        <span>*</span></label>
-                                                    <input value="${th.ten}" name="ten" id="tenUpdate${th.id}" class="form-control"/>
-
+                                            <div class="mb-3 row">
+                                                <label for="tenUpdate${th.id}" class="col-sm-3 col-form-label">Tên Thương Hiệu <span>*</span></label>
+                                                <div class="col-sm-9">
+                                                    <input value="${th.ten}" name="ten" id="tenUpdate${th.id}" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label  class="form-label">Trạng thái
-                                                    <span>*</span></label>
-                                                <select name="trangThai" id="trangThaiUpdate${th.id}" class="form-select">
-                                                    <option value="true"${th.trangThai == true ? 'selected' : ''}>Hoạt động</option>
-                                                    <option value="false" ${th.trangThai == false? 'selected' : ''}>Không hoạt động</option>
-                                                </select>
-                                                    <%--                                                <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>--%>
+                                            <div class="mb-3 row">
+                                                <label for="trangThaiUpdate${th.id}" class="col-sm-3 col-form-label">Trạng Thái <span>*</span></label>
+                                                <div class="col-sm-9">
+                                                    <select name="trangThai" id="trangThaiUpdate${th.id}" class="form-select">
+                                                        <option value="true"${th.trangThai == true ? 'selected' : ''}>Hoạt động</option>
+                                                        <option value="false" ${th.trangThai == false? 'selected' : ''}>Không hoạt động</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                     <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            Thoát
-                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                                         <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateThuongHieu(${th.id})">Lưu</button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -326,42 +308,40 @@
     }
 
     function addThuongHieu() {
-        var ma = document.getElementById("ma").value;
-        var ten = document.getElementById("ten").value;
+        var maTH = document.getElementById("maTH").value.trim();
+        var ten = document.getElementById("ten").value.trim();
         var trangThai = document.getElementById("trangThai").value;
-        console.log(ma);
-        console.log(ten);
-        if (ma.trim() === "" || ten.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Thương Hiệu và Tên Thương Hiệu.");
+
+        if (ten.trim()==="" ) {
+            toastr.error("Vui lòng điền tên thương hiệu ");
             return false;
         }
         $.ajax({
             url: '/thuonghieu/add',
             type: 'POST',
             data: {
-                ma: ma,
+                maTH: maTH,
                 ten: ten,
                 trangThai: trangThai,
             },
             success: function (response) {
-                if (response === "ok") {
+                if (response === "errorMa") {
+                    toastr.error("Mã Thương Hiệu Đã Tồn Tại ");
+                }else if(response === "errorTen"){
+                    toastr.error("Tên Thương Hiệu Đã Tồn Tại ");
+                }else{
                     Swal.fire({
                         title: "Good job!",
                         text: "Thêm Thành Công!",
                         icon: "success"
                     }).then((result) => {
                         if (result.isConfirmed || result.isDismissed) {
-                            window.location.reload(); // Load lại trang nếu thành công
+                            window.location.reload();
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("Mã trùng");
-                } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {
-                console.error("Có lỗi xảy ra:", error);
                 toastr.error("Có lỗi xảy ra");
             }
         });
@@ -369,14 +349,14 @@
     }
 
     function updateThuongHieu(id) {
-        var ma = document.getElementById("maUpdate" + id).value;
-        var ten = document.getElementById("tenUpdate" + id).value;
+        var maTH = document.getElementById("maUpdate" + id).value.trim();
+        var ten = document.getElementById("tenUpdate" + id).value.trim();
         var trangThai = document.getElementById("trangThaiUpdate" + id).value;
 
 
-        console.log(ma);
-        if (ma.trim() === "" || ten.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
+
+        if (ten.trim() === "") {
+            toastr.error("Vui lòng điền tên thương hiệu ");
             return false;
         }
 
@@ -385,7 +365,7 @@
             type: 'POST',
             data: {
                 id: id,
-                ma: ma,
+                maTH: maTH,
                 ten: ten,
                 trangThai: trangThai,
             },
@@ -400,10 +380,8 @@
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("Mã trùng");
-                } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
+                } else   {
+                    toastr.error("Tên Thương Hiệu Đã Tồn Tại");
                 }
             },
             error: function (error) {

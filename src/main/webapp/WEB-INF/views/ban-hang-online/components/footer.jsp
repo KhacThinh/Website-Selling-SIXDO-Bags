@@ -120,9 +120,7 @@
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h3 class="stext-301 cl0 p-b-30" id="ten-cua-hang-ft">
-                </h3>
-
+                <h3 class="stext-301 cl0 p-b-30" id="ten-cua-hang-ft"></h3>
                 <p class="stext-107 cl7 size-201 f-s" style="font-size: 15px">Cửa hàng túi xách Sixdo là điểm đến lý
                     tưởng cho những người yêu thích túi xách cao cấp. Chúng tôi
                     cung cấp những sản phẩm chất lượng, thiết kế đẹp mắt và phù hợp với mọi phong cách. Hãy ghé thăm cửa
@@ -168,5 +166,18 @@
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
+<script>
+    $(document).ready(function () {
+        thongTinCuaHangFt();
+    })
+
+    function thongTinCuaHangFt() {
+        $.get('/lien-he/thong-tin-cua-hang', function (data) {
+            $('#js-dia-chi-lh-ft').text(data.diaChi);
+            $('#js-sdt-lh-ft').text(data.sdt);
+            $('#ten-cua-hang-ft').text(data.tenDayDuCuaHang);
+        })
+    }
+</script>
 </body>
 </html>

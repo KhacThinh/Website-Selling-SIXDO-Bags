@@ -661,6 +661,7 @@
             outline: none;
         }
 
+
         .btn-2 {
             background: rgb(22, 9, 240);
             background: linear-gradient(0deg, rgba(22, 9, 240, 1) 0%, rgba(49, 110, 244, 1) 100%);
@@ -676,6 +677,7 @@
             background: rgb(0, 172, 238);
             background: linear-gradient(0deg, rgba(0, 172, 238, 1) 0%, rgba(2, 126, 251, 1) 100%);
         }
+
 
         .thanh-toan {
             position: relative;
@@ -1120,6 +1122,8 @@
         }
 
         function addToCartQR(maSanPham) {
+            var button = document.getElementById("${tabs.maHoaDon}");
+            var tabActive = button.id.substring(2);
             if (tabActive === "") {
                 Swal.fire({
                     title: "Giỏ hàng chưa được tạo?",
@@ -1128,6 +1132,8 @@
                 });
                 return;
             }
+
+
             $.ajax({
                 url: '/chi-tiet-san-pham/ctsp',
                 type: 'GET',
@@ -1153,6 +1159,19 @@
                                 });
                                 return;
                             }
+                            var quantity = prompt("Nhập số lượng sản phẩm:");
+                            if (quantity === null) {
+                                return;
+                            }
+
+                            if (quantity === "" || isNaN(quantity) || quantity <= 0) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: "Giá trị nhập không hợp lệ!"
+                                });
+                                return;
+                            }
 
                             $.ajax({
                                 url: '/ban-tai-quay/them-gio-hang-qr',
@@ -1161,6 +1180,7 @@
                                 data: JSON.stringify({
                                     maSanPham: maSanPham,
                                     tabActive: tabActive,
+                                    soLuong: quantity,
                                 }),
                                 success: function (response) {
                                     $.ajax({
@@ -1558,6 +1578,45 @@
             .saveInvoice:active {
                 box-shadow: 0 0.3em 1em -0.5em #14a73e98;
             }
+
+            .button-24 {
+                background: #FF4742;
+                border: 1px solid #FF4742;
+                border-radius: 6px;
+                box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+                box-sizing: border-box;
+                color: #FFFFFF;
+                cursor: pointer;
+                display: inline-block;
+                font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+                font-size: 16px;
+                font-weight: 800;
+                line-height: 16px;
+                min-height: 40px;
+                outline: 0;
+                padding: 12px 14px;
+                text-align: center;
+                text-rendering: geometricprecision;
+                text-transform: none;
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: manipulation;
+                vertical-align: middle;
+                height: 40px;
+            }
+
+            .button-24:hover,
+            .button-24:active {
+                background-color: initial;
+                background-position: 0 0;
+                color: #FF4742;
+            }
+
+            .button-24:active {
+                opacity: .5;
+            }
+
+
         </style>
 
         <%--         validate and add KH--%>
@@ -1709,7 +1768,7 @@
         </div>
 
         <div style="display: flex;height: 53px; margin-top: 0px">
-            <p style="margin-left:8px ; font-weight: bold" for="cash-in-return${tabs.id}">Đơn Hàng Thu Hộ :
+            <p style="margin-left:8px ; font-weight: bold" for="cash-in-return${tabs.id}" id="donHangThuHo-p">Đơn Hàng Thu Hộ :
             </p>
             <p style="margin-left: 196px; font-size: 18px" id="cash-in-return">
                 <c:out value='${empty tabs.soTienNo ? 0 : tabs.soTienNo}'/>
@@ -1717,13 +1776,13 @@
         </div>
 
 
-        <%--        <button class="custom-btn btn-2 checkout" onclick="xacNhan(${tabs.id})">XÁC NHẬN</button>--%>
 
         <div style="display: flex; text-align: center;margin-top: 5px">
             <button style="margin-right: 20px;margin-left: 40px" class="custom-btn btn-2 checkout"
-                    onclick="xacNhan(${tabs.id})">Xác Nhận
+                    onclick="xacNhan(${tabs.id})">XÁC NHẬN
             </button>
             <button class="button-24" onclick="huyDonHang(${tabs.id})">HỦY ĐƠN</button>
+
         </div>
 
 
@@ -1738,6 +1797,12 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+
 
 <%--Hủy ĐƠn Hàng--%>
 <script>
@@ -1781,7 +1846,12 @@
                                 confirmButtonText: "OK"
                             }).then((result) => {
                                 if (result.isConfirmed) {
+                                    <% if (session.getAttribute("quanLy") != null) { %>
                                     window.location.href = "http://localhost:8080/hoa-don/lich-su";
+
+                                    <% } else { %>
+                                    window.location.href = " http://localhost:8080/hoa-don/nv-lich-su"
+                                    <% } %>
                                 }
                             });
                         } else if (response === "error") {
@@ -1849,194 +1919,201 @@
         var khachThanhToan = document.getElementById("khach-thanh-toan").value;
         var phiVanChuyen = document.getElementById("shipping-fee").value;
         var soTienNo = document.getElementById("cash-in-return").innerText;
-        var trangThai
+        var khachCanTraElement = document.getElementById("customer-need-to-pay").innerText;
 
+
+        var soTienGiamElement = document.getElementById("voucher").innerText;
+        var tongTienHangElement = document.getElementById("totalOrder").innerText;
+
+
+        var soTienGiam = soTienGiamElement.replace(/\./g, "").replace("vnd", "").trim();
+        var tienHang = tongTienHangElement.replace(/\./g, "").replace("vnd", "").trim();
+
+        var tongTienDonHang = tienHang-soTienGiam;
 
         phiVanChuyen = parseFloat(phiVanChuyen.replace(/,/g, ''));
         khachThanhToan = parseFloat(khachThanhToan.replace(/,/g, ''));
         soTienNo = parseFloat(soTienNo.replace(/,/g, ''));
+        var khachCanTraValue = khachCanTraElement.replace(/\./g, "").replace("vnd", "").trim();
+
 
         console.log("tenNguoiNhan" + tenNguoiNhan)
         console.log("phiVanChuyen " + phiVanChuyen)
         console.log("khachThanhToan " + khachThanhToan)
 
-        $.ajax({
-            url: '/hoa-don/check-trangThai-ctsp',
-            type: 'POST',
-            data: {
-                id: id,
-            },
-            success: function (response) {
-                if (response.length === 0) {
 
-                    $.ajax({
-                        url: '/hoa-don/check-soLuong-xacNhan',
-                        type: 'POST',
-                        data: {
-                            id: id,
-                        },
-                        success: function (response) {
-                            if (response.length === 0) {
-                                $.ajax({
-                                    url: '/ban-tai-quay/xacNhan',
-                                    type: 'POST',
-                                    data: {
-                                        id: id,
-                                        tenNguoiNhan: tenNguoiNhan,
-                                        sdtNguoiNhan: sdtNguoiNhan,
-                                        emailNguoiNhan: emailNguoiNhan,
-                                        diaChiNguoiNhan: diaChiNguoiNhan,
-                                        khachThanhToan: khachThanhToan,
-                                        phiVanChuyen: phiVanChuyen,
-                                        soTienNo: soTienNo,
+        Swal.fire({
+            title: 'Xác nhận',
+            text: 'Bạn có chắc chắn muốn xác nhận đơn hàng này ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true // Đảo ngược vị trí của các nút
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng xác nhận xóa sản phẩm
+                $.ajax({
+                    url: '/ban-tai-quay/check-trangThai-ctsp-giaoHang',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                    },
+                    success: function (response) {
+                        if (response.length === 0) {
 
-                                    },
-                                    success: function (response) {
-                                        if (response === "ok") {
-                                            Swal.fire({
-                                                title: "Good job!",
-                                                text: "Đơn hàng đã được xác nhận",
-                                                icon: "success"
-                                            });
+                            $.ajax({
+                                url: '/ban-tai-quay/check-soLuong-giaoHang',
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                },
+                                success: function (response) {
+                                    if (response.length === 0) {
+                                        $.ajax({
+                                            url: '/ban-tai-quay/xacNhan',
+                                            type: 'POST',
+                                            data: {
+                                                id: id,
+                                                tenNguoiNhan: tenNguoiNhan,
+                                                sdtNguoiNhan: sdtNguoiNhan,
+                                                emailNguoiNhan: emailNguoiNhan,
+                                                diaChiNguoiNhan: diaChiNguoiNhan,
+                                                khachThanhToan: khachThanhToan,
+                                                phiVanChuyen: phiVanChuyen,
+                                                soTienNo: soTienNo,
+                                                khachCanTra : tongTienDonHang
 
-                                            setTimeout(function () {
-                                                window.location.href = "http://localhost:8080/hoa-don/lich-su";
-                                            }, 2000); // Đợi 2 giây trước khi chuyển trang
-                                        } else if (response === "null") {
-                                            Swal.fire({
-                                                title: "Bạn muốn hủy đơn hàng này?",
-                                                icon: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonText: "Hủy",
-                                                cancelButtonText: "Cancel",
-                                                customClass: {
-                                                    confirmButton: 'swal-confirm-button',
-                                                    cancelButton: 'swal-cancel-button'
+                                            },
+                                            success: function (response) {
+                                                if (response === "ok") {
+                                                    Swal.fire({
+                                                        title: "Good job!",
+                                                        text: "Đơn hàng đã được xác nhận",
+                                                        icon: "success"
+                                                    });
+
+                                                    setTimeout(function () {
+
+                                                        <% if (session.getAttribute("quanLy") != null) { %>
+                                                        window.location.href = "http://localhost:8080/hoa-don/lich-su";
+
+                                                        <% } else { %>
+                                                        window.location.href = " http://localhost:8080/hoa-don/nv-lich-su"
+                                                        <% } %>
+                                                    }, 1100); // Đợi 2 giây trước khi chuyển trang
                                                 }
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    // Xử lý khi người dùng chọn "Giữ"
-                                                    // Ví dụ: window.location.href = "http://example.com";
-                                                } else {
-                                                    // Xử lý khi người dùng chọn "Hủy"
-                                                    // Ví dụ: alert("Hủy đơn hàng");
-                                                }
-                                            });
-                                        } else if (response === "errorXacNhan") {
+                                            },
+                                            error: function (error) {
+                                                console.error("Có lỗi xảy ra:", error);
 
-                                            Swal.fire({
-                                                title: "No",
-                                                text: "Đơn hàng đã được xác nhận từ trước đó",
-                                                icon: "warning",
-                                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
-                                                confirmButtonText: "OK"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
-                                                }
-                                            });
+                                            }
+                                        });
 
-                                        } else if (response === "errorHuyHoaDon") {
-                                            Swal.fire({
-                                                title: "No",
-                                                text: "Đơn hàng đã được Hủy từ trước đó",
-                                                icon: "warning",
-                                                showCancelButton: false,
-                                                confirmButtonText: "OK"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
-                                                }
-                                            });
-
-                                        } else if (response === "errorTrangThai6") {
-                                            Swal.fire({
-                                                title: "No",
-                                                text: "Đơn hàng đã được Giao Thành Công không xác nhận",
-                                                icon: "warning",
-                                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
-                                                confirmButtonText: "OK"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
-                                                }
-                                            });
-
-                                        }
-                                    },
-                                    error: function (error) {
-                                        console.error("Có lỗi xảy ra:", error);
-
-                                    }
-                                });
-
-                            } else {
-                                // Tạo chuỗi thông báo để hiển thị tên sản phẩm và màu sắc trên cùng một dòng
-                                var message = "";
-                                var soLuong = "";
-                                response.forEach(function (item) {
-                                    if (item.soLuong === 0) {
-                                        soLuong = " - Hết Hàng"
                                     } else {
-                                        soLuong = " .Chỉ được thêm tối đa: " + item.soLuong + " Sản Phẩm "
+                                        // Tạo chuỗi thông báo để hiển thị tên sản phẩm và màu sắc trên cùng một dòng
+                                        var message = "";
+                                        var soLuong = "";
+                                        response.forEach(function (item) {
+                                            if (item.soLuong === 0) {
+                                                soLuong = " - Hết Hàng"
+                                            } else {
+                                                soLuong = " .Chỉ Được Thêm Tối Đa: " + item.soLuong + " Sản Phẩm So Với Lúc Đầu!"
+                                            }
+                                            message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + soLuong + "<br>";
+                                        });
+
+                                        Swal.fire({
+                                            title: "Thông tin sản phẩm",
+                                            html: message,
+                                            icon: "warning",
+                                            customClass: {
+                                                htmlContainer: 'swal2-html-container',
+                                                popup: 'swal2-popup',
+                                                title: 'swal2-title',
+                                                content: 'swal2-content',
+                                                confirmButton: 'swal2-confirm',
+                                                cancelButton: 'swal2-cancel',
+                                            }
+                                        });
                                     }
-                                    message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + soLuong + "<br>";
-                                });
+                                },
+                                error: function (error) {
+                                    console.error("Có lỗi xảy ra:", error);
 
-                                Swal.fire({
-                                    title: "Thông tin sản phẩm",
-                                    html: message,
-                                    icon: "warning",
-                                    customClass: {
-                                        htmlContainer: 'swal2-html-container',
-                                        popup: 'swal2-popup',
-                                        title: 'swal2-title',
-                                        content: 'swal2-content',
-                                        confirmButton: 'swal2-confirm',
-                                        cancelButton: 'swal2-cancel',
-                                    }
-                                });
-                            }
-                        },
-                        error: function (error) {
-                            console.error("Có lỗi xảy ra:", error);
+                                }
+                            });
+                        }else if(response==="errorHuyHoaDon"){
+                            Swal.fire({
+                                title: "No",
+                                text: "Đơn hàng đã được hủy từ trước đó.Không thể xác nhận",
+                                icon: "warning",
+                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                }
+                            });
 
+                        } else if(response==="errorGiaoHang"){
+                            Swal.fire({
+                                title: "No",
+                                text: "Đơn hàng đã đang giao.Không thể xác nhận",
+                                icon: "warning",
+                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                }
+                            });
+
+                        }else if(response==="errorTrangThai6"){
+                            Swal.fire({
+                                title: "No",
+                                text: "Đơn hàng đã được Giao Thành Công không thể xác nhận",
+                                icon: "warning",
+                                showCancelButton: false, // Đặt showCancelButton thành false để loại bỏ nút Cancel
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "http://localhost:8080/hoa-don/lich-su";
+                                }
+                            });
+
+                        } else {
+                            var message = "";
+                            var trangThai = "";
+                            response.forEach(function (item) {
+                                if (item.trangThai === 0) {
+                                    trangThai = " - Ngừng Bán"
+                                }
+                                message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + trangThai + "<br>";
+                            });
+
+                            Swal.fire({
+                                title: "Thông tin sản phẩm",
+                                html: message,
+                                icon: "warning",
+                                customClass: {
+                                    htmlContainer: 'swal2-html-container',
+                                    popup: 'swal2-popup',
+                                    title: 'swal2-title',
+                                    content: 'swal2-content',
+                                    confirmButton: 'swal2-confirm',
+                                    cancelButton: 'swal2-cancel',
+                                }
+                            });
                         }
-                    });
+                    },
+                    error: function (error) {
+                        console.error("Có lỗi xảy ra:", error);
 
-
-                } else {
-                    var message = "";
-                    var trangThai = "";
-                    response.forEach(function (item) {
-                        if (item.trangThai === 0) {
-                            trangThai = " - Ngừng Bán"
-                        }
-                        message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + trangThai + "<br>";
-                    });
-
-                    Swal.fire({
-                        title: "Thông tin sản phẩm",
-                        html: message,
-                        icon: "warning",
-                        customClass: {
-                            htmlContainer: 'swal2-html-container',
-                            popup: 'swal2-popup',
-                            title: 'swal2-title',
-                            content: 'swal2-content',
-                            confirmButton: 'swal2-confirm',
-                            cancelButton: 'swal2-cancel',
-                        }
-                    });
-                }
-            },
-            error: function (error) {
-                console.error("Có lỗi xảy ra:", error);
-
+                    }
+                });
             }
         });
-
-
     }
 
 
@@ -2071,9 +2148,20 @@
         let d = shippingFee - totalOrder;
         console.log("shippingFee" + shippingFee + " totalOrder" + totalOrder);
         console.log("jhhj" + d)
-
+        console.log("inputttt " + d)
         // Hiển thị giá trị của Khách Cần Trả
-        document.getElementById('cash-in-return').innerText = d.toLocaleString('en') + ' vnd';
+
+        if(totalOrder > shippingFee){
+
+            document.getElementById('donHangThuHo-p').innerText = "Số Tiền Nợ Khách : "
+            document.getElementById('cash-in-return').innerText =    Math.abs(d).toLocaleString('en') + ' vnd';
+
+        }else{
+            document.getElementById('donHangThuHo-p').innerText = "Đơn Hàng Thu Hộ : "
+            document.getElementById('cash-in-return').innerText = d.toLocaleString('en') + ' vnd';
+
+
+        }
     }
 
 
@@ -2277,7 +2365,7 @@
             var formattedPrice = price.toLocaleString('vi-VN', {style: 'decimal'});
             var productHTML = '<div class="item productInCart" style="margin-bottom: 6px ; border: 1px solid #CCD1D1;border-radius: 10px;height: 37px" >' +
                 '<div class= "idCtsp" hidden>' + product.chiTietSanPham.id + '</div>' +
-                '<div class="orderNumber" style="margin-right: 10px;width: 10px">' + count++ + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
+                // Hiển thị số thứ tự với khoảng cách 20px
                 '<button class="deleteButton" style="margin: 0px;" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3" style="font-size: 22px;"></i></button>' + // Thêm margin-left cho nút giỏ hàng
                 '<div class="orderNumber" style="margin-right: 45px;width: 40px">' + product.chiTietSanPham.ma + '</div>' +
                 '<div class="info" style="width: 400px; max-width: 400px">' +
@@ -2326,14 +2414,14 @@
             document.getElementById('quantities' + id).value = soLuong;
         }
 
-        if (soLuong > soLuongSanPhamKho) {
-            updateGiaSanPham.textContent = giaBan.toLocaleString('vi-VN', {style: 'decimal'});
-            updateTotalPrice();
-            errorAdd('Số lượng sản phẩm không đủ');
-            soLuong = 1;
-
-
-        }
+        // if (soLuong > soLuongSanPhamKho) {
+        //     updateGiaSanPham.textContent = giaBan.toLocaleString('vi-VN', {style: 'decimal'});
+        //     updateTotalPrice();
+        //     errorAdd('Số lượng sản phẩm không đủ');
+        //     soLuong = 1;
+        //
+        //
+        // }
         document.getElementById('quantities' + id).value = soLuong;
         $.ajax({
             url: '/ban-tai-quay/update-so-luong-san-pham',
@@ -2368,37 +2456,50 @@
         // Ngăn chặn hành vi mặc định của nút xóa (chẳng hạn chuyển trang)
         event.stopPropagation();
 
-        $.ajax({
-            url: '/ban-tai-quay/xoa-san-pham-gio-hang',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                maHoaDon: "HD" + tabActive, // Gửi mã hóa đơn hiện tại
-                id: productId // Gửi ID sản phẩm cần xóa
-            }),
-            success: function (response) {
-                // Xóa sản phẩm khỏi danh sách sản phẩm trong giao diện người dùng
-                var productElement = event.target.closest('.item');
-                productElement.remove();
+        // Hiển thị hộp thoại xác nhận
+        Swal.fire({
+            title: 'Xác nhận',
+            text: 'Bạn có chắc chắn muốn xóa sản phẩm khỏi giỏ hàng?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true // Đảo ngược vị trí của các nút
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng xác nhận xóa sản phẩm
+                $.ajax({
+                    url: '/ban-tai-quay/xoa-san-pham-gio-hang',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        maHoaDon: "HD" + tabActive, // Gửi mã hóa đơn hiện tại
+                        id: productId // Gửi ID sản phẩm cần xóa
+                    }),
+                    success: function (response) {
+                        // Xóa sản phẩm khỏi danh sách sản phẩm trong giao diện người dùng
+                        var productElement = event.target.closest('.item');
+                        productElement.remove();
 
-                updateTotalPrice();
-                fillSoLuong();
+                        updateTotalPrice();
+                        fillSoLuong();
 
-                console.log("Đã xóa sản phẩm khỏi giỏ hàng:", productId);
-                Swal.fire({
-                    title: "Đã xóa sản phẩm khỏi giỏ hàng",
-                    icon: "success",
-                    timer: 500, // Thời gian đợi tính bằng mili giây (200ms = 0.2 giây)
-                    showConfirmButton: false // Ẩn nút "OK"
+                        console.log("Đã xóa sản phẩm khỏi giỏ hàng:", productId);
+                        Swal.fire({
+                            title: "Đã xóa sản phẩm khỏi giỏ hàng",
+                            icon: "success",
+                            timer: 500, // Thời gian đợi tính bằng mili giây (200ms = 0.2 giây)
+                            showConfirmButton: false // Ẩn nút "OK"
+                        });
+
+                    },
+                    error: function (error) {
+                        console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error);
+                    }
                 });
-
-            },
-            error: function (error) {
-                console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error);
             }
         });
     }
-
 
     function addTab() {
         var tabs = document.querySelectorAll('.tablinks');
@@ -2513,7 +2614,7 @@
             success: function (response) {
                 if (response === "error") {
                     document.getElementById("voucher").innerText = 0;
-                    document.getElementById('customer-need-to-pay').innerText = (totalPrice - phiShip).toLocaleString('vi-VN', {style: 'decimal'}) + " vnd";
+                    document.getElementById('customer-need-to-pay').innerText = (totalPrice + Number (phiShip)).toLocaleString('vi-VN', {style: 'decimal'}) + " vnd";
                     changeDonHangThuHo();
                 } else {
                     document.getElementById("voucher").innerText = response.toLocaleString('vi-VN', {style: 'decimal'}) + " vnd";

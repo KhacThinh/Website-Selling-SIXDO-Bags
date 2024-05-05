@@ -1,6 +1,7 @@
 package com.bags.sixdoBag.controller;
 
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
+import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.service.*;
@@ -36,22 +37,27 @@ public class SanPhamController {
 
     private final DoiTuongSuDungService doiTuongSuDungService;
 
-    @GetMapping(value = {"","/nv"})
+    private final ChiTietSanPhamServivce chiTietSanPhamServivce;
+
+    @GetMapping(value = {"", "/nv"})
     public String getSanPham(Model model, @RequestParam(name = "name", required = false) String name) {
         extracted(model);
         hienThiChung(model);
         if (Objects.isNull(name)) {
             model.addAttribute("sanPhams", sanPhamService.getSanPhams());
-            model.addAttribute("listColors",danhMucService.getDanhMucs());
-            model.addAttribute("listColorsBH",thoiGianBaoHanhService.getThoiGianBaoHanhs());
-            model.addAttribute("listColorsTH",thuongHieuService.getThuongHieus());
-            model.addAttribute("listColorsDTSD",doiTuongSuDungService.getListDoiTuongSuDung());
+            model.addAttribute("listColors", danhMucService.getDanhMucs());
+            model.addAttribute("listColorsBH", thoiGianBaoHanhService.getThoiGianBaoHanhs());
+            model.addAttribute("listColorsTH", thuongHieuService.getThuongHieus());
+            model.addAttribute("listColorsDTSD", doiTuongSuDungService.getListDoiTuongSuDung());
 
 
         } else {
             model.addAttribute("nameSearch", name);
             model.addAttribute("sanPhams", sanPhamService.searchSanPhamTenOrMa(name));
-
+            model.addAttribute("listColors", danhMucService.getDanhMucs());
+            model.addAttribute("listColorsBH", thoiGianBaoHanhService.getThoiGianBaoHanhs());
+            model.addAttribute("listColorsTH", thuongHieuService.getThuongHieus());
+            model.addAttribute("listColorsDTSD", doiTuongSuDungService.getListDoiTuongSuDung());
         }
         return "/quan-ly/san-pham/view";
     }
@@ -75,13 +81,20 @@ public class SanPhamController {
     @PostMapping("/filter")
     public String search(Model model,
                          @RequestParam String tenChatLieu,
-                         @RequestParam String tenThuongHieu
+                         @RequestParam String tenThuongHieu,
+                         @RequestParam boolean trangThai
     ) {
         extracted(model);
-        List<SanPham> sanPhams = sanPhamService.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu);
+        List<SanPham> sanPhams = sanPhamService.filterSanPhamChatLieuOrThuongHieu(tenChatLieu, tenThuongHieu, trangThai);
+        hienThiChung(model);
         model.addAttribute("sanPhams", sanPhams);
         model.addAttribute("tenChatLieuSelect", tenChatLieu);
+        model.addAttribute("trangThaiSelect", trangThai);
         model.addAttribute("tenThuongHieuSelect", tenThuongHieu);
+        model.addAttribute("listColors", danhMucService.getDanhMucs());
+        model.addAttribute("listColorsBH", thoiGianBaoHanhService.getThoiGianBaoHanhs());
+        model.addAttribute("listColorsTH", thuongHieuService.getThuongHieus());
+        model.addAttribute("listColorsDTSD", doiTuongSuDungService.getListDoiTuongSuDung());
         return "/quan-ly/san-pham/view";
     }
 //    nameSearch
@@ -113,6 +126,11 @@ public class SanPhamController {
 
     @PostMapping("/delete")
     public ResponseEntity<?> deleteKhuyeMai(@RequestParam(value = "idSanPham") Integer id) {
+        List<ChiTietSanPham>listCTSP =chiTietSanPhamServivce.getChiTietSanPhamById(id);
+        for (ChiTietSanPham ctsp:listCTSP){
+            ctsp.setTrangThai(0);
+            chiTietSanPhamServivce.editChiTietSanPham(ctsp.getId(),ctsp);
+        }
         return new ResponseEntity<>(sanPhamService.deleteSanPham(id), HttpStatus.OK);
     }
 
@@ -143,6 +161,14 @@ public class SanPhamController {
     boolean findByTenSanPham(@RequestParam("tenSanPham") String tenSp) {
         System.out.println(sanPhamService.findByNameSanPham(tenSp));
         return sanPhamService.findByNameSanPham(tenSp);
+    }
+
+    @GetMapping("search-name-sua")
+    public @ResponseBody
+    boolean findByTenSanPhamSua(@RequestParam("tenSanPham") String tenSp,
+                                @RequestParam("idSanPham") int idSanPham) {
+        System.out.println(sanPhamService.findByNameSanPham(tenSp));
+        return sanPhamService.findByNameSanPhamSua(tenSp, idSanPham);
     }
 
 }

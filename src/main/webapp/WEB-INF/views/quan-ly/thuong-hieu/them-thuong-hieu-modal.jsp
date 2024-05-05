@@ -72,24 +72,23 @@
 <div class="modal modal-xl" id="modalAddThuongHieu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <h1>THÊM THƯƠNG HIỆU</h1>
+            <h1 style="font-family: sans-serif">THÊM THƯƠNG HIỆU</h1>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="ma">Mã Thương Hiệu</label>
-                            <input  id="ma" class="form-control"/>
+                            <label for="maTH">Mã Thương Hiệu</label>
+                            <input  id="maTH" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="ten">Tên Thương Hiệu</label>
                             <input id="ten" class="form-control"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="trangThai">Trạng Thái:</label>
-                        <select id="trangThai" name="trangThai">
+                    <div class="mb-3">
+                        <label for="trangThai" class="form-label">Trạng Thái</label>
+                        <select id="trangThai" name="trangThai" class="form-select" disabled>
                             <option value="true">Hoạt Động</option>
-                            <%--                            <option value="0">Không Hoạt Động</option>--%>
                         </select>
                     </div>
                 </div>

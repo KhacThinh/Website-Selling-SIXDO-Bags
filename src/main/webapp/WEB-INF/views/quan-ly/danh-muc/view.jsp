@@ -200,9 +200,9 @@
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                     </div>
                     <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
-<%--                    <div class="input-group-append">--%>
-<%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
-<%--                    </div>--%>
+                    <%--                    <div class="input-group-append">--%>
+                    <%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
+                    <%--                    </div>--%>
                 </div>
             </form>
         </div>
@@ -254,7 +254,7 @@
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Danh Mục</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: sans-serif">Thông Tin Danh Mục</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -357,13 +357,13 @@
     }
 
     function addDanhMuc() {
-        var maDanhMuc = document.getElementById("maDanhMuc").value;
-        var tenDanhMuc = document.getElementById("tenDanhMuc").value;
+        var maDanhMuc = document.getElementById("maDanhMuc").value.trim();
+        var tenDanhMuc = document.getElementById("tenDanhMuc").value.trim();
         var trangThai = document.getElementById("trangThai").value;
         console.log(maDanhMuc);
         console.log(tenDanhMuc);
-        if (maDanhMuc.trim() === "" || tenDanhMuc.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+        if ( tenDanhMuc.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin");
             return false;
         }
         $.ajax({
@@ -375,7 +375,11 @@
                 trangThai: trangThai,
             },
             success: function (response) {
-                if (response === "ok") {
+                if (response === "errorMa") {
+                    toastr.error("Mã Danh Mục Đã Tồn Tại");
+                } else if (response === "errorTen") {
+                    toastr.error("Tên Danh Mục Đã Tồn Tại");
+                }else {
                     Swal.fire({
                         title: "Good job!",
                         text: "Thêm Thành Công!",
@@ -385,10 +389,6 @@
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("mã trùng");
-                } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {
@@ -400,14 +400,14 @@
     }
 
     function updateDanhMuc(id) {
-        var maDanhMuc = document.getElementById("maUpdate" + id).value;
-        var tenDanhMuc = document.getElementById("tenUpdate" + id).value;
+        var maDanhMuc = document.getElementById("maUpdate" + id).value.trim();
+        var tenDanhMuc = document.getElementById("tenUpdate" + id).value.trim();
         var trangThai = document.getElementById("trangThaiUpdate" + id).value;
 
 
 
-        if (maDanhMuc.trim() === "" || tenDanhMuc.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+        if (tenDanhMuc.trim() === "") {
+            toastr.error("Vui lòng điền tên danh mục ");
             return false;
         }
 
@@ -422,7 +422,9 @@
 
             },
             success: function (response) {
-                if (response === "ok") {
+                 if (response === "errorTen") {
+                    toastr.error("Tên Danh Mục Đã Tồn Tại");
+                }else {
                     Swal.fire({
                         title: "Good job!",
                         text: "Sửa Thành Công!",
@@ -432,10 +434,6 @@
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("Mã trùng");
-                } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
                 }
             },
             error: function (error) {

@@ -74,18 +74,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="khuyenMai" class="form-label">Khuyến Mãi</label>
-                                <form:select path="khuyenMai" class="form-control">
-                                    <option value="" label="Chọn Khuyến Mãi"/>
-                                    <c:forEach items="${listKhuyenMai}" var="c">
 
-                                        <option value="${c.id}">${c.ten}</option>
-                                    </c:forEach>
-                                </form:select>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="modal-footer justify-content-between">
@@ -93,6 +82,7 @@
                         <button type="submit" id="uploadButton" class="btn btn-primary">Lưu</button>
                     </div>
                 </form:form>
+
             </div>
         </div>
     </div>

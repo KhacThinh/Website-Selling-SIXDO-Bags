@@ -180,7 +180,7 @@
         <div class="col-md-7 mb-3">
             <form action="/san-pham/filter" class="filter-form" method="post">
                 <div class="row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <select name="tenChatLieu" class="form-select" name="category">
                             <option value="">Chọn Chất Liệu</option>
                             <c:forEach items="${tenChatLieuSelects}" var="cl">
@@ -188,7 +188,7 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <select name="tenThuongHieu" class="form-select" name="category">
                             <option value="">Chọn thương hiệu</option>
                             <c:forEach items="${tenThuongHieuSelects}" var="th">
@@ -196,7 +196,14 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <div class="col-md-4 mb-3">
+
+                    <div class="col-md-3 mb-3">
+                        <select name="trangThai" class="form-select">
+                            <option value="true" ${trangThaiSelect ? 'selected' : ''}>Đang Bán</option>
+                            <option value="false" ${!trangThaiSelect ? 'selected' : ''}>Ngừng Bán</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
                         <button type="submit" class="btn btn-primary">Lọc</button>
                     </div>
                 </div>
@@ -259,15 +266,18 @@
                                 </button>
                             </li>
 
-                            <li>
-                                <a class="dropdown-item" href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}"><i
-                                        class="bi bi-box-arrow-right"></i> Quản lý sản phẩm chi tiết</a>
-                            </li>
+                            <c:if test="${sp.trangThai}">
+                                <li>
+                                    <a class="dropdown-item" href="/chi-tiet-san-pham/detailCTSP?id=${sp.id}"><i
+                                            class="bi bi-box-arrow-right"></i> Quản lý sản phẩm chi tiết</a>
+                                </li>
+                            </c:if>
                             <li>
                                 <button type="button" class="dropdown-item btn-modal-sua" data-bs-toggle="modal"
                                         data-bs-target="#exampleModallll" data-id="${sp.id}"><i
                                         class="bi bi-pencil"></i> Sửa
                                 </button>
+
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item btn-modal-xoa" data-id-xoa="${sp.id}"
@@ -342,8 +352,8 @@
         var tenDanhMuc = document.getElementById("tenDanhMuc").value;
         var trangThai = document.getElementById("trangThai").value;
 
-        if (maDanhMuc.trim() === "" || tenDanhMuc.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
+        if (tenDanhMuc.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin tên danh mục ");
             return false;
         }
         $.ajax({
@@ -358,12 +368,10 @@
             success: function (response) {
 
                 if (response === "errorMa") {
-                    toastr.error("mã trùng");
+                    toastr.error("Mã Danh Mục Đã Tồn Tại");
                 } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
+                    toastr.error("Tên Danh Mục Đã Tồn Tại");
                 } else {
-
-
 
                     var selectElement = document.getElementById("idDanhMuc");
                     selectElement.innerHTML = "";
@@ -371,8 +379,6 @@
                     defaultOption.text = "Chọn Danh Mục";
                     defaultOption.value = "";
                     selectElement.add(defaultOption);
-
-
                     response.forEach(function (item) {
                         var option = document.createElement("option");
                         option.value = item.id;
@@ -383,13 +389,12 @@
 //table
                     var tableBody = document.querySelector("#test1 tbody");
 
-                   // Xóa hết các hàng hiện có trong bảng
+                    // Xóa hết các hàng hiện có trong bảng
                     while (tableBody.firstChild) {
                         tableBody.removeChild(tableBody.firstChild);
                     }
-
-                    response.forEach(function(item, index) {
-                        var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
+                    response.forEach(function (item, index) {
+                        var newRow = tableBody.insertRow();
 
                         var cellSTT = newRow.insertCell(0);
                         cellSTT.textContent = index + 1;
@@ -406,8 +411,6 @@
                         statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
                         cellTrangThai.appendChild(statusSpan);
                     });
-
-
 
 
                     Swal.fire({
@@ -439,7 +442,7 @@
         var tenDoiTuongSuDung = document.getElementById("tenDoiTuongSuDung").value;
         var trangThai = document.getElementById("trangThai").value;
 
-        if (maDoiTuongSuDung.trim() === "" || tenDoiTuongSuDung.trim() === "") {
+        if (tenDoiTuongSuDung.trim() === "") {
             toastr.error("Vui lòng điền đầy đủ thông tin ");
             return false;
         }
@@ -454,8 +457,9 @@
             success: function (response) {
                 if (response === "errorMa") {
                     toastr.error("mã đối tượng đã tồn tại");
-                }else {
-
+                } else if (response === "errorTen") {
+                    toastr.error("Tên Đối Tượng Đã Tồn Tại");
+                } else {
 
 
                     var selectElement = document.getElementById("idDoiTuongSuDung");
@@ -464,8 +468,6 @@
                     defaultOption.text = "Chọn Đối Tượng Sử Dụng";
                     defaultOption.value = "";
                     selectElement.add(defaultOption);
-
-
                     response.forEach(function (item) {
                         var option = document.createElement("option");
                         option.value = item.id;
@@ -474,24 +476,23 @@
                     });
 
 //table
-                    var tableBody = document.querySelector("#test1 tbody");
+                    var tableBody = document.querySelector("#test4 tbody");
 
                     // Xóa hết các hàng hiện có trong bảng
                     while (tableBody.firstChild) {
                         tableBody.removeChild(tableBody.firstChild);
                     }
-
-                    response.forEach(function(item, index) {
-                        var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
+                    response.forEach(function (item, index) {
+                        var newRow = tableBody.insertRow();
 
                         var cellSTT = newRow.insertCell(0);
                         cellSTT.textContent = index + 1;
 
-                        var cellMaDoiTuongSuDung = newRow.insertCell(1);
-                        cellMaDoiTuongSuDung.textContent = item.maDoiTuongSuDung;
+                        var cellMaDTSD = newRow.insertCell(1);
+                        cellMaDTSD.textContent = item.maDoiTuongSuDung;
 
-                        var cellTenDoiTuongSuDung = newRow.insertCell(2);
-                        cellTenDoiTuongSuDung.textContent = item.tenDoiTuongSuDung;
+                        var cellTenDTSD = newRow.insertCell(2);
+                        cellTenDTSD.textContent = item.tenDoiTuongSuDung;
 
                         var cellTrangThai = newRow.insertCell(3);
                         var statusSpan = document.createElement("span");
@@ -499,9 +500,6 @@
                         statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
                         cellTrangThai.appendChild(statusSpan);
                     });
-
-
-
 
                     Swal.fire({
                         title: "Good job!",
@@ -514,11 +512,13 @@
                             closeModal2DTSD();
                         }
                     });
+
+
                 }
             },
             error: function (error) {
                 console.error("Có lỗi xảy ra:", error);
-                toastr.error("Tên đối tượng đã tồn tại");
+                toastr.error("Có lỗi xảy ra");
             }
         });
 
@@ -526,20 +526,23 @@
 
 
     function addThuongHieu() {
-        var ma = document.getElementById("ma").value;
+
+        var maTH = document.getElementById("maTH").value;
         var ten = document.getElementById("ten").value;
         var trangThai = document.getElementById("trangThai").value;
-        console.log(ma);
+        console.log(maTH);
         console.log(ten);
-        if (ma.trim() === "" || ten.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
+
+
+        if (ten.trim() === "") {
+            toastr.error("Vui lòng điền thông tin thương hiệu ");
             return false;
         }
         $.ajax({
             url: '/thuonghieu/add',
             type: 'POST',
             data: {
-                ma: ma,
+                maTH: maTH,
                 ten: ten,
                 trangThai: trangThai,
             },
@@ -547,8 +550,8 @@
                 if (response === "errorMa") {
                     toastr.error("Mã trùng");
                 } else if (response === "errorTen") {
-                    toastr.error("Trùng Tên");
-                }else {
+                    toastr.error("Tên Thương Hiệu Đã Tồn Tại");
+                } else {
 
                     var selectElement = document.getElementById("idThuongHieu");
                     selectElement.innerHTML = "";
@@ -566,21 +569,21 @@
                     });
 
 //table
-                    var tableBody = document.querySelector("#test1 tbody");
+                    var tableBody = document.querySelector("#test3 tbody");
 
                     // Xóa hết các hàng hiện có trong bảng
                     while (tableBody.firstChild) {
                         tableBody.removeChild(tableBody.firstChild);
                     }
 
-                    response.forEach(function(item, index) {
+                    response.forEach(function (item, index) {
                         var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
 
                         var cellSTT = newRow.insertCell(0);
                         cellSTT.textContent = index + 1;
 
                         var cellMaTH = newRow.insertCell(1);
-                        cellMaTH.textContent = item.ma;
+                        cellMaTH.textContent = item.maTH;
 
                         var cellTenTH = newRow.insertCell(2);
                         cellTenTH.textContent = item.ten;
@@ -593,14 +596,13 @@
                     });
 
 
-
                     Swal.fire({
                         title: "Good job!",
                         text: "Thêm Thành Công!",
                         icon: "success"
                     }).then((result) => {
                         if (result.isConfirmed || result.isDismissed) {
-                            document.getElementById("ma").value = '';
+                            document.getElementById("maTH").value = '';
                             document.getElementById("ten").value = '';
                             closeModal2TH();
                         }
@@ -621,8 +623,12 @@
         var thoiGian = document.getElementById("thoiGian").value;
         var trangThai = document.getElementById("trangThai").value;
 
-        if (ma.trim() === "" || thoiGian === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
+        if (thoiGian === "") {
+            toastr.error("Vui lòng điền thông tin thời gian bảo hành ");
+            return false;
+        }
+        if (isNaN(thoiGian) || thoiGian <= 0) {
+            toastr.error("Vui lòng nhập một giá trị thời gian hợp lệ (số lớn hơn 0)");
             return false;
         }
         $.ajax({
@@ -635,10 +641,12 @@
             },
             success: function (response) {
                 if (response === "errorMa") {
-                    toastr.error("Mã trùng");
-                }else{
+                    toastr.error("Mã Bảo Hành Đã Tồn Tại");
+                } else if (response === "errorTen") {
+                    toastr.error("Thời Gian Đã Tồn Tại");
+                } else {
 
-
+                    // console(response);
                     var selectElement = document.getElementById("idThoiGianBaoHanh");
                     selectElement.innerHTML = "";
                     var defaultOption = document.createElement("option");
@@ -655,14 +663,14 @@
                     });
 
 //table
-                    var tableBody = document.querySelector("#test1 tbody");
+                    var tableBody = document.querySelector("#test2 tbody");
 
                     // Xóa hết các hàng hiện có trong bảng
                     while (tableBody.firstChild) {
                         tableBody.removeChild(tableBody.firstChild);
                     }
 
-                    response.forEach(function(item, index) {
+                    response.forEach(function (item, index) {
                         var newRow = tableBody.insertRow(); // Tạo một dòng mới trong tbody
 
                         var cellSTT = newRow.insertCell(0);
@@ -680,7 +688,6 @@
                         statusSpan.textContent = item.trangThai ? "Hoạt Động" : "Không Hoạt Động";
                         cellTrangThai.appendChild(statusSpan);
                     });
-
 
 
                     Swal.fire({

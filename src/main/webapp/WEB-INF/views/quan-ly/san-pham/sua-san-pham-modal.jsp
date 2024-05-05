@@ -72,6 +72,15 @@
                                 <span id="kichThuocErrorr"
                                       class="error text-danger"></span>
                             </div>
+
+                            <div class="mb-3">
+                                <label for="trangThaiSua" class="form-label">Trạng Thái</label>
+                                <select id="trangThaiSua" name="trangThai" class="form-select">
+                                    <option value="true">Hoạt Động</option>
+                                    <option value="false">Ngừng Bán</option>
+
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label for="khoiLuongSua">Khối Lượng (gram)<span
                                         class="required">*</span></label>
@@ -182,6 +191,11 @@
                 $('#idThuongHieuSua').val(response.thuongHieu.id);
                 $('#idDanhMucSua').val(response.danhMuc.id);
                 $('#idDoiTuongSuDungSua').val(response.doiTuongSuDung.id);
+                var trangThai = response.trangThai;
+                $('#trangThaiSua').val(trangThai + '').change();
+                $('#trangThaiSua option[value="' + trangThai + '"]').prop('selected', true);
+
+
                 $('#previewImage').attr('src', response.anh);
             },
             error: function (xhr, status, error) {
@@ -208,6 +222,7 @@
         var idDanhMuc = document.getElementById('idDanhMucSua').value;
         var idThuongHieu = document.getElementById('idThuongHieuSua').value;
         var idDoiTuongSuDung = document.getElementById('idDoiTuongSuDungSua').value;
+        var trangThai = document.getElementById('trangThaiSua').value;
 
         // Biến để kiểm tra xem có lỗi không
         let hasError = false;
@@ -215,12 +230,12 @@
         // Hàm kiểm tra lỗi và gửi dữ liệu đi
         function checkErrorsAndSubmit() {
             if (!hasError) {
-                suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung);
+                suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung, trangThai);
             }
         }
 
         // Kiểm tra lỗi và hiển thị thông báo tương ứng
-        if (tenSanPham === '') {
+        if (tenSanPham.trim() === '') {
             document.getElementById('tenSanPhamErrorr').innerText = 'Vui lòng nhập Tên Sản Phẩm.';
             hasError = true;
         } else if (tenSanPham.length > 100) {
@@ -306,7 +321,7 @@
 
         // Kiểm tra sự tồn tại của tên sản phẩm (thực hiện AJAX sau khi kiểm tra lỗi)
         if (!hasError) {
-            $.get('/san-pham/search-name', {tenSanPham: tenSanPham}, function (data) {
+            $.get('/san-pham/search-name-sua', {tenSanPham: tenSanPham, idSanPham: idSanPham}, function (data) {
                 if (data) {
                     document.getElementById('tenSanPhamErrorr').innerText = 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác!';
                     hasError = true;
@@ -318,7 +333,7 @@
         }
     });
 
-    function suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung) {
+    function suaSanPhamToServer(idSanPham, maSanPham, tenSanPham, chatLieu, xuatXu, khoiLuong, kichThuoc, hinhAnh, moTa, idThoiGianBaoHanh, idThuongHieu, idDanhMuc, idDoiTuongSuDung, trangThai) {
         const data = {
             idSanPham: idSanPham,
             maSanPham: maSanPham,
@@ -331,7 +346,8 @@
             idThoiGianBaoHanh: idThoiGianBaoHanh,
             idThuongHieu: idThuongHieu,
             idDanhMuc: idDanhMuc,
-            idDoiTuongSuDung: idDoiTuongSuDung
+            idDoiTuongSuDung: idDoiTuongSuDung,
+            trangThai: trangThai
         };
 
         $.ajax({

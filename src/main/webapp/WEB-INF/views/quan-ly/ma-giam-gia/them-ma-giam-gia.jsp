@@ -138,9 +138,9 @@
                             <input type="datetime-local" id="ngayKetThuc" class="form-control"/>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="">
                             <label for="moTa">Mô Tả</label>
-                            <input id="moTa" value="OK" class="form-control"/>
+                            <input id="moTa" value="" class="form-control"/>
                         </div>
                         <%--                        <div class="form-group">--%>
                         <%--                            <label for="trangThai" class="col-sm-3 col-form-label">Trạng Thái:</label>--%>

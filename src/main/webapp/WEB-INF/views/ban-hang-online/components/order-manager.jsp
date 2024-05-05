@@ -390,7 +390,7 @@
         });
 
         $("#click-don-hang-hoan-thanh").click(function () {
-            hienThiDonHangHoanThanhVaHuyVaDangXuLy(0);
+            hienThiDonHangHoanThanhVaHuyVaDangXuLy(6);
         });
 
         $("#click-don-hang-da-huy").click(function () {
@@ -419,16 +419,19 @@
                 var year = datetime.getFullYear();
                 var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
 
-
+                var temp = item.hoaDon.tongTien;
+                if (item.hoaDon.phiVanChuyen != null) {
+                    temp = temp + item.hoaDon.phiVanChuyen;
+                }
                 var row = "<tr>" +
                     "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.sdtNguoiNhan + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + temp.toLocaleString() + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
-                    "<td style='vertical-align: middle; text-align: right;'> <button class='btn btn-outline-danger btn-huy-don-hang-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i> Huỷ Đơn</button></td>" +
+                    "<td style='vertical-align: middle; text-align: right;'> <button class='btn btn-outline-danger btn-huy-don-hang-order' data-id='" + item.hoaDon.id + "' ><i class='bi bi-trash'></i>Huỷ Đơn</button></td>" +
                     "<td style='vertical-align: middle; text-align: center;'> <button class='btn btn-outline-warning btn-modal-edit-chi-tiet-order'   data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModallll'><i class='bi bi-pencil-square'></i> Sửa</button></td>" +
                     "<td style='vertical-align: middle; text-align: left;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order'  data-bs-toggle='modal' data-id='" + item.hoaDon.id + "' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
                     "</tr>";
@@ -438,8 +441,6 @@
     }
 
     function clickHuyDonHang() {
-        let inputReasonEntered = false; // Biến để kiểm tra xem người dùng đã nhập lý do hay không
-
         $(document).on('click', '.btn-huy-don-hang-order', function () {
             var maHoaDon = $(this).data('id'); // Lấy mã đơn hàng từ thuộc tính data-id của nút
             Swal.fire({
@@ -449,7 +450,7 @@
                 cancelButtonText: 'Không, giữ nguyên',
                 reverseButtons: true,
                 preConfirm: async () => {
-                    const {value: inputReason, dismiss} = await Swal.fire({
+                    const { value: inputReason, dismiss } = await Swal.fire({
                         title: 'Vui lòng cung cấp lý do huỷ đơn',
                         input: 'text',
                         inputPlaceholder: 'Nhập lý do ở đây...',
@@ -466,14 +467,33 @@
                                 return false;
                             }
                             // Gửi request POST
-                            return $.post('/sixdo-shop/manager-order-customer-online/huy-don-hang-by-id-hoa-don', {
+                            $.post('/sixdo-shop/manager-order-customer-online/huy-don-hang-by-id-hoa-don', {
                                 idHoaDon: maHoaDon,
                                 lyDoKhachHuy: inputReason
+                            }, function(response) {
+                                if (response === true) {
+                                    // Nếu trả về true từ controller
+                                    Swal.fire({
+                                        title: 'Đã huỷ đơn hàng',
+                                        text: `Đơn hàng của bạn đã được huỷ. Lý do: ` + inputReason,
+                                        icon: 'success'
+                                    });
+                                    hienThiDonHangDangChoXacNhan(2);
+                                    donHangChuaXacNhan();
+                                    donHangDaHuy();
+                                } else {
+                                    // Nếu trả về false từ controller
+                                    Swal.fire({
+                                        title: 'Lỗi',
+                                        text: 'Đơn Hàng Không Thể Hủy, Vui Lòng Liên Hệ Để Được Hỗ Trợ',
+                                        icon: 'error'
+                                    });
+                                }
                             });
                         },
                     });
 
-                    if (dismiss === 'cancel' && !inputReasonEntered) {
+                    if (dismiss === 'cancel' && !inputReason) {
                         // Nếu người dùng ấn nút "Huỷ" mà không nhập lý do, hủy hành động
                         return false;
                     }
@@ -481,30 +501,10 @@
                     return inputReason;
                 },
                 allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (result !== true) {
-                        Swal.fire({
-                            title: 'Đã huỷ đơn hàng',
-                            text: `Đơn hàng của bạn đã được huỷ. Lý do: ${inputReason}`,
-                            icon: 'success'
-                        });
-                        hienThiDonHangDangChoXacNhan(2);
-                        donHangChuaXacNhan();
-                        donHangDaHuy();
-                    } else {
-                        // Hiển thị thông báo lỗi
-                        Swal.fire({
-                            title: 'Lỗi',
-                            text: 'Có lỗi xảy ra khi huỷ đơn hàng',
-                            icon: 'error'
-                        });
-                    }
-                }
             });
         });
-
     }
+
 
 
     function hienThiDonHangDangGiao(trangThai) {
@@ -529,13 +529,18 @@
                 var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
 
 
+                var temp = item.hoaDon.tongTien;
+                if (item.hoaDon.phiVanChuyen != null) {
+                    temp = temp + item.hoaDon.phiVanChuyen;
+                }
+
                 var row = "<tr>" +
                     "<th style='vertical-align: middle; text-align: center;' >" + rowIndex + "</th>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.maHoaDon + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.sdtNguoiNhan + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + temp.toLocaleString() + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
                     "<td style='vertical-align: middle; text-align: right;'><button class='btn btn-outline-success btn-nhan-hang-thanh-cong-order' data-id='" + item.hoaDon.id + "' data-ma='" + item.hoaDon.maHoaDon + "'><i class='bi bi-check-circle-fill'></i> Đã nhận được hàng</button></td>" +
                     "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
@@ -573,7 +578,7 @@
                             donHangDangGiao();
                             donHangHoanThanh();
                             // hienThiDonHangDangGiao(5);
-                            hienThiDonHangHoanThanhVaHuyVaDangXuLy(0);
+                            hienThiDonHangHoanThanhVaHuyVaDangXuLy(6);
                         } else {
                             console.log("Bạn không nhận hàng thành công!");
                         }
@@ -594,7 +599,7 @@
                 var csss = '';
                 var showLyDoHuy = '';
                 var reasonCancel = document.getElementById('th-ly-do-huy');
-                if (trangThai == 0) {
+                if (trangThai == 6) {
                     reasonCancel.style.display = 'none';
                     csss = 'status delivered'
                     tt = 'Hoàn Thành';
@@ -607,6 +612,11 @@
                     csss += 'status return';
                     showLyDoHuy = "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.lyDoKhachHuy + "</td>"
                     tt = 'Huỷ';
+                }
+
+                var temp = item.hoaDon.tongTien;
+                if (item.hoaDon.phiVanChuyen != null) {
+                    temp = temp + item.hoaDon.phiVanChuyen;
                 }
 
                 var datetimeString = item.hoaDon.thoiGianTao;
@@ -623,7 +633,7 @@
                     "<td style='vertical-align: middle; text-align: center;'><img src='" + item.urlHinhAnhMau + "' alt='Ảnh Sản Phẩm' width='50px'/></td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.sdtNguoiNhan + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'>" + formattedDate + "</td>" +
-                    "<td style='vertical-align: middle; text-align: center;'>" + item.hoaDon.tongTien.toLocaleString() + "</td>" +
+                    "<td style='vertical-align: middle; text-align: center;'>" + temp.toLocaleString() + "</td>" +
                     "<td style='vertical-align: middle; text-align: center;'><span class='" + csss + "'>" + tt + "</span></td>" +
                     showLyDoHuy +
                     "<td style='vertical-align: middle; text-align: center;'><button class='btn btn-outline-secondary btn-modal-chi-tiet-order' data-id='" + item.hoaDon.id + "'  data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='bi bi-info-circle'></i> Chi Tiết</button></td>" +
@@ -659,6 +669,11 @@
                     tt = 'Đang Giao Hàng';
                 }
 
+                var temp = item.hoaDon.tongTien;
+                if (item.hoaDon.phiVanChuyen != null) {
+                    temp = temp + item.hoaDon.phiVanChuyen;
+                }
+
                 $('#js-ma-don-hang').text(item.hoaDon.maHoaDon);
                 $('#js-ten-tai-khoan').text(item.hoaDon.khachHang.tenKhachHang);
                 $('#js-trang-thai-don-hang').text(tt);
@@ -667,8 +682,7 @@
                 $('#js-dia-chi-nguoi-nhan').text(item.hoaDon.diaChiNguoiNhan);
                 $('#js-sdt-nguoi-nhan').text(item.hoaDon.sdtNguoiNhan);
                 $('#js-email-nguoi-nhan').text(item.hoaDon.emailNguoiNhan);
-
-                $('#js-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
+                $('#js-tong-thanh-toan').text(temp.toLocaleString());
                 if (item.hoaDon.maGiamGia != null) {
                     $('#js-giam-gia-thanh-toan').text(item.hoaDon.maGiamGia.giaTriGiam.toLocaleString());
                 } else {
@@ -702,9 +716,10 @@
             $.get('/sixdo-shop/manager-order-customer-online/find-id-hoa-don', {idHoaDon: idDonHang}, function (item) {
                 var tt = '';
                 var trangThai = item.hoaDon.trangThai;
-
+                var tongTienHang = item.hoaDon.tongTien;
                 if (item.hoaDon.phiVanChuyen != null) {
                     $('#ip-phi-giao-hang-thanh-toan').text(item.hoaDon.phiVanChuyen.toLocaleString() + ' đ');
+                    tongTienHang = tongTienHang + item.hoaDon.phiVanChuyen;
                 } else {
                     $('#ip-phi-giao-hang-thanh-toan').text('0 đ');
                 }
@@ -731,7 +746,13 @@
                 $('#ip-dia-chi-nguoi-nhan').val(item.hoaDon.diaChiNguoiNhan);
                 $('#ip-sdt-nguoi-nhan').val(item.hoaDon.sdtNguoiNhan);
                 $('#ip-email-nguoi-nhan').val(item.hoaDon.emailNguoiNhan);
-                $('#ip-tong-thanh-toan').text(item.hoaDon.tongTien.toLocaleString());
+                $('#ip-tong-thanh-toan').text(tongTienHang.toLocaleString());
+
+                if (item.hoaDon.maGiamGia != null) {
+                    $('#ip-giam-gia-thanh-toan').text(item.hoaDon.giamGia.toLocaleString());
+                } else {
+                    $('#ip-giam-gia-thanh-toan').text('0'.toLocaleString());
+                }
 
                 if (item.hoaDon.maGiamGia != null) {
                     $('#ip-giam-gia-thanh-toan').text(item.hoaDon.giamGia.toLocaleString());

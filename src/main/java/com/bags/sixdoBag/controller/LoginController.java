@@ -59,6 +59,7 @@ public class LoginController {
     @GetMapping("/logout/quan-ly")
     public String logOutQuanLy(Model model) {
         session.removeAttribute("quanLy");
+        session.removeAttribute("nhanVien");
         return "redirect:/login/hien-thi";
     }
 
@@ -76,7 +77,7 @@ public class LoginController {
         if (Objects.nonNull(nv)) {
             if (nv.getChucVu().getId() == 1) {
                 session.setAttribute("quanLy", nv);
-                return 1;
+                return 4;
             } else {
                 session.setAttribute("nhanVien", nv);
                 return 2;

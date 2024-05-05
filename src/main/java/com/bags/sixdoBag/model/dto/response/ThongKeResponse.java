@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,8 +26,20 @@ public class ThongKeResponse {
 
     private Integer tongSoLuongBan;
 
-    private Integer tongDoanhThu;
+    private Long tongDoanhThu;
 
     private Integer tongSoTienLai;
+
+    private String tenKh;
+
+    private String sdtKh;
+
+    private Integer tienMuaSam;
+
+    private Date ngay;
+
+    private String loaiBanHang;
+
+    private int thang;
 
 }

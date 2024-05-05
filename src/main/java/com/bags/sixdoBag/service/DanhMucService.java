@@ -1,9 +1,7 @@
 package com.bags.sixdoBag.service;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
-import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.entitys.DanhMuc;
-import com.bags.sixdoBag.model.entitys.KhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,5 +31,5 @@ public interface DanhMucService {
 
     public Page<DanhMuc> searchcbb(boolean name, Pageable pageable);
 
-    public List<ProductHomeRequest> filterDanhMucCTSPOnline(String tenDanhMuc);
+    public List<ProductHomeResponse> filterDanhMucCTSPOnline(String tenDanhMuc);
 }

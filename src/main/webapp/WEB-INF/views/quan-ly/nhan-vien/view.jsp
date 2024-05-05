@@ -19,13 +19,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style type="text/css">
-        #test {
-            width: auto;
-            height: 400px;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative; /* Thiết lập vị trí tương đối */
-        }
+        <style type="text/css">
+                              #test {
+                                  width: auto;
+                                  height: 400px;
+                                  overflow-x: hidden;
+                                  overflow-y: auto;
+                                  position: relative; /* Thiết lập vị trí tương đối */
+                              }
 
         #test thead {
             position: sticky;
@@ -157,7 +158,6 @@
         }
 
 
-
         .status.pending {
             padding: 2px 4px;
             background: red;
@@ -175,9 +175,11 @@
             font-size: 14px;
             font-weight: 500;
         }
+
         .bold {
             font-weight: bold;
         }
+
     </style>
 </head>
 <body class="containerAll">
@@ -189,7 +191,7 @@
     <div class="row">
         <button type="button" class="btn btn-outline-secondary mt-5 rounded-pill" data-bs-toggle="modal"
                 data-bs-target="#modalAddNhanVien">
-            <i class="bi bi-plus-square-fill"></i>  <span>THÊM NHÂN VIÊN</span>
+            <i class="bi bi-plus-square-fill"></i> <span>THÊM NHÂN VIÊN</span>
         </button>
         <jsp:include page="them-nhan-vien.jsp"/>
     </div>
@@ -251,7 +253,7 @@
                 <th scope="col">Tên Đăng Nhập</th>
                 <th scope="col">Mã</th>
                 <th scope="col">Họ tên</th>
-                <th scope="col">Ngày Sinh</th>
+<%--                <th scope="col">Ngày Sinh</th>--%>
                 <th scope="col">SDT</th>
                 <%--                <th scope="col">EMAIL</th>--%>
                 <%--                <th scope="col">Mật Khẩu</th>--%>
@@ -271,7 +273,7 @@
                     <td>${sp.taiKhoan.tenDangNhap}</td>
                     <td>${sp.maNhanVien}</td>
                     <td>${sp.hoTen}</td>
-                    <td>${sp.ngaySinh== '1900-01-01' ? ' ':  sp.ngaySinh }</td>
+
                     <td>${sp.sdt}</td>
                         <%--                    <td>${sp.email}</td>--%>
                         <%--                    <td>${sp.matKhau}</td>--%>
@@ -279,7 +281,9 @@
                     <td>${sp.cccd}</td>
                     <td>${sp.thoiGianVao == '1900-01-01' ? ' ':  sp.thoiGianVao }</td>
                         <%--                    <td>${sp.thoiGianRa == '1900-01-01' ? ' ':  sp.thoiGianRa  }</td>--%>
-                    <td><span class="status ${sp.trangThai == 1 ? 'dangxuly' : 'pending'}">${sp.trangThai == 1 ? 'Hoạt Động' : 'Không Hoạt Động'}</span></td>
+                    <td><span
+                            class="status ${sp.trangThai == 1 ? 'dangxuly' : 'pending'}">${sp.trangThai == 1 ? 'Hoạt Động' : 'Không Hoạt Động'}</span>
+                    </td>
 
 
                     <td>
@@ -362,18 +366,18 @@
                                                     <label for="email" class="form-label">Email</label>
                                                     <input id="emailUpdate${sp.id}" class="form-control"
                                                            placeholder="Nhập địa chỉ email" value="${sp.email}"
-                                                           readonly/>
+                                                    />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="matKhau" class="form-label">Mật Khẩu</label>
-                                                    <input id="matKhauUpdate${sp.id}" class="form-control"
-                                                           placeholder="Nhập mật khẩu" value="${sp.matKhau}" readonly/>
+                                                    <input id="matKhauUpdate${sp.id}" type="password" class="form-control"
+                                                           placeholder="Nhập mật khẩu" value="${sp.matKhau}"/>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col">
                                                         <label for="cccd" class="form-label">Số Căn Cước</label>
                                                         <input id="cccdUpdate${sp.id}" class="form-control"
-                                                               placeholder="Nhập số căn cước" value="${sp.cccd}"/>
+                                                               placeholder="Nhập số căn cước" value="${sp.cccd}" readonly/>
                                                     </div>
                                                     <div class="col">
                                                         <label for="queQuan" class="form-label">Quê Quán</label>
@@ -485,8 +489,8 @@
 
 
     function addNhanVien() {
-        var maNhanVien = document.getElementById("maNhanVien").value;
-        var hoTen = document.getElementById("hoTen").value;
+        var maNhanVien = document.getElementById("maNhanVien").value.trim();
+        var hoTen = document.getElementById("hoTen").value.trim();
         var ngaySinh = document.getElementById("ngaySinh").value;
         var sdt = document.getElementById("sdt").value;
         var email = document.getElementById("email").value;
@@ -518,9 +522,9 @@
             toastr.error("Vui lòng không bỏ trống mật khẩu ");
             return false;
         }
-        var phoneNumberRegex = /^(0\d{9,9})$/;
+        var phoneNumberRegex = /^(0\d{9}|\+84\d{9}|84\d{9})$/;
         if (!phoneNumberRegex.test(sdt)) {
-            toastr.error("Số điện thoại sai định dạng");
+            toastr.error("Số điện thoại không đúng định dạng");
             return false;
         }
 
@@ -606,6 +610,7 @@
                                                     cccd: cccd,
                                                     thoiGianVao: thoiGianVao,
                                                     trangThai: trangThai,
+                                                    idCv: chucVu
                                                 },
                                                 success: function (response) {
                                                     if (response === "ok") {
@@ -651,14 +656,10 @@
     }
 
 
-
-
-
-
     function updateNhanVien(id) {
 
-        var maNhanVien = document.getElementById("maUpdate" + id).value;
-        var hoTen = document.getElementById("tenUpdate" + id).value;
+        var maNhanVien = document.getElementById("maUpdate" + id).value.trim();
+        var hoTen = document.getElementById("tenUpdate" + id).value.trim();
         var gioiTinh = document.getElementById("gioiTinhUpdate" + id).value;
         var ngaySinh = document.getElementById("ngaySinhUpdate" + id).value;
         var sdt = document.getElementById("sdtUpdate" + id).value;
@@ -682,16 +683,15 @@
             toastr.error("Vui lòng điền email ");
             return false;
         }
-        if (cccd.trim() === "") {
-            toastr.error("Vui lòng điền thông tin căn cước ");
-            return false;
-        }
+        // if (cccd.trim() === "") {
+        //     toastr.error("Vui lòng điền thông tin căn cước ");
+        //     return false;
+        // }
 
 
-        var phoneNumberRegex = /^(0\d{9,9})$/;
-
+        var phoneNumberRegex = /^(0\d{9}|\+84\d{9}|84\d{9})$/;
         if (!phoneNumberRegex.test(sdt)) {
-            toastr.error("Số điện thoại phải có 10 số và bắt đầu bằng số 0.");
+            toastr.error("Số điện thoại không đúng định dạng");
             return false;
         }
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -706,11 +706,11 @@
             }
         }
 
-        var cmndRegex = /^\d{12}$/; // Biểu thức chính quy để kiểm tra số căn cước có 12 chữ số
-        if (!cmndRegex.test(cccd)) {
-            toastr.error("Số căn cước bạn nhập không hợp lệ ");
-            return false;
-        }
+        // var cmndRegex = /^\d{12}$/; // Biểu thức chính quy để kiểm tra số căn cước có 12 chữ số
+        // if (!cmndRegex.test(cccd)) {
+        //     toastr.error("Số căn cước bạn nhập không hợp lệ ");
+        //     return false;
+        // }
         var dob = new Date(ngaySinh);
         var currentDate = new Date();
         var minAgeDate = new Date();
@@ -732,96 +732,87 @@
         }
 
         $.ajax({
-            url: '/nhan-vien/checkSDT',
-            type: 'GET',
-            data: {
-                sdt: sdt
-            },
-            success: function (sdtResponse) {
-                if (sdtResponse) {
-                    toastr.error("Số điện thoại đã tồn tại.");
-                } else {
-                    // Tiếp tục kiểm tra số CCCD
-                    $.ajax({
-                        url: '/nhan-vien/checkCCCD',
-                        type: 'GET',
-                        data: {
-                            cccd: cccd
-                        },
-                        success: function (cccdResponse) {
-                            if (cccdResponse) {
-                                toastr.error("Số CCCD đã tồn tại.");
-                            } else {
-                                // Tiếp tục kiểm tra email
-                                $.ajax({
-                                    url: '/nhan-vien/checkMail',
-                                    type: 'GET',
-                                    data: {
-                                        email: email
-                                    },
-                                    success: function (emailResponse) {
-                                        if (emailResponse) {
-                                            toastr.error("Email đã tồn tại.");
-                                        } else {
-                                            // Tiếp tục thêm nhân viên
-                                            $.ajax({
-                                                url: '/nhan-vien/update',
-                                                type: 'POST',
-                                                data: {
-                                                    id: chucVu,
-                                                    maNhanVien: maNhanVien,
-                                                    hoTen: hoTen,
-                                                    gioiTinh: gioiTinh,
-                                                    ngaySinh: ngaySinh,
-                                                    sdt: sdt,
-                                                    email: email,
-                                                    matKhau: matKhau,
-                                                    queQuan: queQuan,
-                                                    cccd: cccd,
-                                                    thoiGianVao: thoiGianVao,
-                                                    trangThai: trangThai,
-                                                },
-                                                success: function (response) {
-                                                    if (response === "ok") {
-                                                        Swal.fire({
-                                                            title: "Good job!",
-                                                            text: "Thêm Thành Công!",
-                                                            icon: "success"
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed || result.isDismissed) {
-                                                                window.location.reload();
-                                                            }
-                                                        });
-                                                    } else if (response === "errorMa") {
-                                                        toastr.error("Mã trùng");
+                url: '/nhan-vien/checkSDT-update',
+                type: 'GET',
+                data: {
+                    sdt: sdt,
+                    idNv: id
+                },
+                success: function (sdtResponse) {
+                    if (sdtResponse) {
+                        toastr.error("Số điện thoại đã tồn tại.");
+                    } else {
+                        // Tiếp tục kiểm tra email
+                        $.ajax({
+                            url: '/nhan-vien/checkMail-update',
+                            type: 'GET',
+                            data: {
+                                email: email,
+                                idNv: id
+                            },
+                            success: function (emailResponse) {
+                                if (emailResponse) {
+                                    toastr.error("Email đã tồn tại.");
+                                } else {
+                                    // Tiếp tục thêm nhân viên
+                                    $.ajax({
+                                        url: '/nhan-vien/update',
+                                        type: 'POST',
+                                        data: {
+                                            id: id,
+                                            maNhanVien: maNhanVien,
+                                            hoTen: hoTen,
+                                            gioiTinh: gioiTinh,
+                                            ngaySinh: ngaySinh,
+                                            sdt: sdt,
+                                            email: email,
+                                            matKhau: matKhau,
+                                            queQuan: queQuan,
+                                            cccd: cccd,
+                                            thoiGianVao: thoiGianVao,
+                                            trangThai: trangThai,
+                                            idCV: chucVu
+                                        },
+                                        success: function (response) {
+                                            if (response === "ok") {
+                                                Swal.fire({
+                                                    title: "Good job!",
+                                                    text: "Sửa Thành Công!",
+                                                    icon: "success"
+                                                }).then((result) => {
+                                                    if (result.isConfirmed || result.isDismissed) {
+                                                        window.location.reload();
                                                     }
-                                                },
-                                                error: function (error) {
-                                                    console.error("Có lỗi xảy ra:", error);
-                                                    toastr.error("Có lỗi khi thêm nhân viên");
-                                                }
-                                            });
+                                                });
+                                            } else if (response === "errorMa") {
+                                                toastr.error("Mã trùng");
+                                            }
+                                        },
+                                        error: function (error) {
+                                            console.error("Có lỗi xảy ra:", error);
+                                            toastr.error("Có lỗi khi thêm nhân viên");
                                         }
-                                    },
-                                    error: function (error) {
-                                        console.error("Có lỗi xảy ra:", error);
-                                        toastr.error("Đã có lỗi xảy ra khi kiểm tra email.");
-                                    }
-                                });
+                                    });
+                                }
+                            },
+                            error: function (error) {
+                                console.error("Có lỗi xảy ra:", error);
+                                toastr.error("Đã có lỗi xảy ra khi kiểm tra email.");
                             }
-                        },
-                        error: function (error) {
-                            console.error("Có lỗi xảy ra:", error);
-                            toastr.error("Đã có lỗi xảy ra khi kiểm tra số CCCD.");
-                        }
-                    });
+                        });
+                    }
+
+
                 }
             },
-            error: function (error) {
+
+
+            function (error) {
                 console.error("Có lỗi xảy ra:", error);
                 toastr.error("Đã có lỗi xảy ra khi kiểm tra số điện thoại.");
             }
-        });
+        )
+        ;
     }
 
     function fetchGeoLocation() {

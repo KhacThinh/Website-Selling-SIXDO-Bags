@@ -58,6 +58,9 @@ public class BanHangTaiQuayController {
     private final KhachHangService khachHangService;
 
     private final ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    private final HttpSession session;
+
     private final CuaHangService cuaHangService;
 
 
@@ -200,6 +203,34 @@ public class BanHangTaiQuayController {
 
     }
 
+    //hủy đơn hàng form ls-hd
+
+    @PostMapping("/xoa-hoaDon-DangGiaoHang")
+    public ResponseEntity<?> xoaHoaDonĐangGiaoHang(@RequestParam("id") Integer id, @RequestParam("lyDoHuy") String lyDoHuy) {
+        HoaDon hoaDon = hoaDonService.getHoaDonById(id);
+
+        List<ChiTietHoaDon> listCTHD = hoaDonChiTietService.getGioHangChiTietFromHoaDon(id);
+        if (hoaDon.getTrangThai() != 6) {
+            if (hoaDon.getTrangThai() != 4) {
+
+                for (ChiTietHoaDon cthd : listCTHD
+                ) {
+                    ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + cthd.getSoLuong());
+                }
+                hoaDon.setLyDoKhachHuy(lyDoHuy);
+                hoaDon.setTrangThai(4);
+                hoaDonService.editHoaDon(id, hoaDon);
+                return ResponseEntity.ok("ok");
+            } else {
+                return ResponseEntity.ok("error");
+            }
+        } else {
+            return ResponseEntity.ok("errorTrangThai6");
+        }
+
+
+    }
 
     //check trạng thái ctsp form giao hàng
     @PostMapping("/check-trangThai-ctsp-giaoHang")
@@ -289,7 +320,8 @@ public class BanHangTaiQuayController {
                                      @RequestParam("diaChiNguoiNhan") String diaChiNguoiNhan,
                                      @RequestParam("khachThanhToan") double khachThanhToan,
                                      @RequestParam("phiVanChuyen") double phiVanChuyen,
-                                     @RequestParam("soTienNo") double soTienNo) {
+                                     @RequestParam("soTienNo") double soTienNo,
+                                     @RequestParam("khachCanTra") double khachCanTra) {
 
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
         List<ChiTietHoaDon> chiTietHoaDons = hoaDonChiTietService.getGioHangChiTietFromHoaDon(id);
@@ -365,6 +397,7 @@ public class BanHangTaiQuayController {
                             hoaDon.setPhiVanChuyen(phiVanChuyen);
                             hoaDon.setSoTienNo(soTienNo);
                             hoaDon.setTrangThai(3);
+                            hoaDon.setTongTien(khachCanTra);
                             hoaDonService.editHoaDon(id, hoaDon);
                             return ResponseEntity.ok("ok");
                         } else {
@@ -395,7 +428,8 @@ public class BanHangTaiQuayController {
                                       @RequestParam("diaChiNguoiNhan") String diaChiNguoiNhan,
                                       @RequestParam("khachThanhToan") double khachThanhToan,
                                       @RequestParam("phiVanChuyen") double phiVanChuyen,
-                                      @RequestParam("soTienNo") double soTienNo) {
+                                      @RequestParam("soTienNo") double soTienNo,
+                                      @RequestParam("khachCanTra") double khachCanTra) {
         System.out.println("kkkkkkkkkk");
 
         HoaDon hoaDon = hoaDonService.getHoaDonById(id);
@@ -461,6 +495,7 @@ public class BanHangTaiQuayController {
         hoaDon.setDiaChiNguoiNhan(diaChiNguoiNhan);
         hoaDon.setKhachThanhToan(khachThanhToan);
         hoaDon.setPhiVanChuyen(phiVanChuyen);
+        hoaDon.setTongTien(khachCanTra);
         hoaDon.setSoTienNo(soTienNo);
         hoaDon.setTrangThai(5);
         hoaDonService.editHoaDon(id, hoaDon);
@@ -597,6 +632,7 @@ public class BanHangTaiQuayController {
     public ResponseEntity<?> themGioHangQr(@RequestBody Map<String, Object> requestBody) {
         String maSanPham = String.valueOf(requestBody.get("maSanPham"));
         String idTabString = String.valueOf(requestBody.get("tabActive"));
+        String idSoLuongString = String.valueOf(requestBody.get("soLuong"));
         ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.searchByMaSanPham(maSanPham);
 
         if (Objects.nonNull(chiTietSanPham)) {
@@ -606,7 +642,7 @@ public class BanHangTaiQuayController {
 
             ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
             chiTietHoaDon.setIdCtSanPham(productId);
-            chiTietHoaDon.setSoLuong(1);
+            chiTietHoaDon.setSoLuong(Integer.parseInt(idSoLuongString));
             chiTietHoaDon.setGia((double) chiTietSanPham.getGiaBan());
             chiTietHoaDon.setIdHoaDon(idTab);
             hoaDonChiTietService.addGioHang(chiTietHoaDon);
@@ -619,10 +655,19 @@ public class BanHangTaiQuayController {
     public ResponseEntity<?> getGioHang(@RequestBody Map<String, Object> requestBody) {
         String idTabString = String.valueOf(requestBody.get("maHoaDon"));
         int idTab = Integer.parseInt(idTabString.substring(2));
-        System.out.println("idddđ tab là :  " + idTab);
+
         List<ChiTietHoaDon> listHoaDonChiTiet = hoaDonChiTietService.getGioHangTaiQuay(idTab);
         System.out.println("listHoaDonchi = " + listHoaDonChiTiet.size());
-        return ResponseEntity.ok(listHoaDonChiTiet);
+        if (listHoaDonChiTiet.size() > 0) {
+            System.out.println("list sizeeeeeeeeeeeeeeeee  :  " + listHoaDonChiTiet.size());
+            return ResponseEntity.ok(listHoaDonChiTiet);
+
+        } else {
+            System.out.println("list sizeeeeeeeeeeeeeeeee 888888888 :  ");
+
+            return ResponseEntity.ok(hoaDonService.getHoaDonById(idTab));
+
+        }
     }
 
     @PostMapping("/filter")
@@ -697,6 +742,13 @@ public class BanHangTaiQuayController {
 
     @PostMapping("/thanh-toan")
     public ResponseEntity<?> thanhToan(@RequestBody Map<String, Object> requestBody) {
+        NhanVien nhanVien = new NhanVien();
+        if (Objects.nonNull((NhanVien) session.getAttribute("quanLy"))) {
+            nhanVien = (NhanVien) session.getAttribute("quanLy");
+        } else {
+            nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        }
+
         String idTabString = String.valueOf(requestBody.get("maHoaDon"));
         String tenKhachHang = String.valueOf(requestBody.get("tenKhachHang"));
         String soDienThoai = String.valueOf(requestBody.get("soDienThoai"));
@@ -718,6 +770,7 @@ public class BanHangTaiQuayController {
             }
             if (listCtsp.isEmpty()) {
                 HoaDon hoaDon = new HoaDon();
+                hoaDon.setNhanVien(nhanVien);
                 hoaDon.setTrangThai(0);
                 hoaDon.setSdtNguoiNhan(soDienThoai);
                 if (tenKhachHang.isBlank()) {
@@ -800,18 +853,41 @@ public class BanHangTaiQuayController {
     }
 
     @PostMapping("/themKhachHang")
-    public ResponseEntity<?> themKhachHang(@RequestParam("soDienThoai") String sdt, @RequestParam("tenKhachHang") String tenKh) {
+    public ResponseEntity<?> themKhachHang(@RequestParam("soDienThoai") String sdt, @RequestParam("tenKhachHang") String tenKh,
+                                           @RequestParam("idTabs") String idTabs) {
         KhachHang khachHang = khachHangRepository.searchBySdt(sdt);
+        int idTab = Integer.parseInt(idTabs.substring(2));
 
         if (khachHang == null || khachHang.getId() == null) {
             KhachHang kh = new KhachHang();
             kh.setTenKhachHang(tenKh);
             kh.setSdt(sdt);
             khachHangService.addKhachHang(kh);
+            HoaDon hoaDon = new HoaDon();
+            hoaDon.setSdtNguoiNhan(sdt);
+            hoaDon.setTenNguoiNhan(tenKh);
+            hoaDon.setTrangThai(1);
+            hoaDonService.updateHoaDon(idTab, hoaDon);
             return ResponseEntity.ok("success");
         } else {
             return ResponseEntity.ok("error");
         }
+    }
+
+
+    @PostMapping("/themKhachHangCustomer")
+    public ResponseEntity<?> themKhachHangCostomer(@RequestParam("soDienThoai") String sdt, @RequestParam("tenKhachHang") String tenKh,
+                                                   @RequestParam("idTabs") String idTabs) {
+        int idTab = Integer.parseInt(idTabs.substring(2));
+
+
+        HoaDon hoaDon = new HoaDon();
+        hoaDon.setSdtNguoiNhan(sdt);
+        hoaDon.setTenNguoiNhan(tenKh);
+        hoaDon.setTrangThai(1);
+        hoaDonService.updateHoaDon(idTab, hoaDon);
+        return ResponseEntity.ok("success");
+
     }
 
     @PostMapping("/searchModal")

@@ -117,11 +117,11 @@
 <img class="background-image"
      src="https://png.pngtree.com/thumb_back/fh260/background/20230523/pngtree-cyan-blue-light-effect-abstract-vector-stock-photos-image-guardian-bright-image_2806077.jpg">
 <div class="container">
-    <h2>Forgot Password</h2>
+    <h2>Đổi Mật Khẩu </h2>
     <form id="passwordResetForm" action="/send-email" method="post">
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" value="${email}"  placeholder="Enter Email">
+            <input type="text" id="email" name="email" value="${email}"  placeholder="Nhập Email">
         </div>
         <c:if test="${not empty tb}">
             <span class="error-message">${tb}</span>

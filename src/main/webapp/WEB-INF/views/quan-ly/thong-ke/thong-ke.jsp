@@ -557,7 +557,7 @@
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 10px;
-        background-color: var(--blue);
+        background-color: #007bff;
         color: #f0f0f0;
     }
 
@@ -584,27 +584,246 @@
         background-color: #f0f0f0; /* Màu nền hover */
     }
 
+    .row-divider td {
+        border-bottom: 1px solid #ccc;
+    }
+
+
+    .dateSelector {
+        margin-left: 20px;
+        margin-right: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f0f0f0;
+    }
+
+    .datePicker,
+    .weekPicker {
+        display: flex;
+        align-items: center;
+    }
+
+    .datePicker label,
+    .weekPicker label {
+        margin-right: 10px;
+    }
+
+    .datePicker input,
+    .weekPicker input {
+        padding: 5px;
+    }
+
+    .datePicker button,
+    .weekPicker button {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .datePicker button:hover,
+    .weekPicker button:hover {
+        background-color: #45a049;
+    }
+
+    .dateSelector {
+        display: flex;
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        margin-top: 20px; /* Khoảng cách từ đỉnh màn hình */
+    }
+
+    .datePicker,
+    .weekPicker {
+        margin: 0 200px; /* Khoảng cách giữa các phần tử */
+    }
+
+
+    /* Style cho dateSelector */
+    .dateSelector {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    /* Style cho datePicker và weekPicker */
+    .datePicker, .weekPicker {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Style cho các label */
+    .datePicker label, .weekPicker label {
+        margin-right: 10px;
+    }
+
+    /* Style cho input */
+    .datePicker input, .weekPicker input {
+        margin-right: 10px;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Style cho button */
+    .datePicker button, .weekPicker button {
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Hover style cho button */
+    .datePicker button:hover, .weekPicker button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Style cho bảng dữ liệu */
+    #dataTable {
+        margin-top: 20px;
+    }
+
+    /* Style cho bảng */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    /* Style cho tiêu đề của bảng */
+    th {
+
+        background-color: #ced4da;
+        color: black;
+        font-weight: bold;
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* Style cho các hàng trong bảng */
+    td, th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    /* Hover style cho các hàng trong bảng */
+    tr:hover {
+        background-color: #f2f2f2;
+    }
+
+    #dataTable {
+        margin-left: 20px;
+        margin-right: 10px;
+        max-height: 400px; /* Chiều cao tối đa của bảng */
+        overflow-y: auto; /* Tạo thanh cuộn khi nội dung vượt quá chiều cao tối đa */
+    }
+
+
+    /* CSS cho bảng */
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+
+    .custom-table th {
+        background-color: #aaaaaa;
+        text-align: left;
+    }
+
+    /* CSS cho hàng bảng */
+    .custom-table-row:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .custom-table-row:hover {
+        background-color: #ddd;
+    }
+
+
+    #dataTableContainer {
+        position: relative;
+    }
+
+    #tableWrapper {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 300px;
+    }
+
+    #tongDoanhThu {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 2;
+        margin-left: 20px;
+        color: #007bff;
+        font-size: 20px;
+    }
+
+    #dataTable thead th {
+        position: sticky;
+        top: 40px;
+        background-color: #fff;
+        z-index: 1;
+    }
+
+
+    .recentOrders {
+        max-height: 300px; /* Đặt chiều cao tối đa */
+        overflow-y: scroll; /* Hiển thị thanh cuộn dọc khi cần thiết */
+        position: relative; /* Đặt vị trí tương đối cho phần tử cha */
+    }
+
+    .cardHeader {
+        position: sticky; /* Đặt cố định */
+        top: 0; /* Đặt vị trí của cardHeader ở trên cùng */
+        background-color: #fff; /* Đặt màu nền */
+        z-index: 2; /* Đảm bảo cardHeader hiển thị trên cùng */
+    }
+
+    #thongKeTable thead th {
+        position: sticky; /* Đặt thẻ th cố định */
+        top: 40px; /* Đặt vị trí của thẻ th ở trên cùng */
+        background-color: #fff; /* Đặt màu nền của thẻ th */
+        z-index: 1; /* Đặt thẻ th ở trên cùng */
+    }
+
+    #thongKeTable tbody th,
+    #thongKeTable tbody td {
+        padding: 8px; /* Thêm khoảng cách đệm cho thẻ th và td */
+        border: 1px solid #ddd; /* Đặt viền cho thẻ th và td */
+    }
+
+    .cardHeader h2 {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 2;
+        padding: 10px 0;
+    }
+
+
+
+
+
 
 </style>
 <!-- Bootstrap Icons CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <jsp:include page="/WEB-INF/views/quan-ly/sidebar-manager/sidebar-manager.jsp"/>
 
 <div class="main">
     <!-- ======================= Cards ================== -->
     <div class="cardBox">
-        <div class="card">
-            <div>
-                <div class="numbers">1,504</div>
-                <div class="cardName">Lượt xem hàng ngày</div>
-            </div>
 
-            <div class="iconBx">
-                <ion-icon name="eye-outline"></ion-icon>
-            </div>
-        </div>
 
         <div class="card">
             <div id="so-luong-san-pham">
@@ -654,6 +873,33 @@
 
     </div>
 
+    <%--    Thống Kê doanh thu theo ngày and tuần--%>
+    <div class="chart" id="chart-1-container">
+        <h3 class="chart-title">Doanh Thu Theo Ngày Và Tuần</h3>
+    </div>
+    <div class="dateSelector">
+        <div class="datePicker">
+            <label for="selectedDate">Chọn ngày:</label>
+            <input type="date" id="selectedDate" name="selectedDate">
+            <button id="selectDateButton">Chọn</button>
+        </div>
+        <div class="weekPicker">
+            <label for="selectedWeek">Chọn tuần:</label>
+            <input type="week" id="selectedWeek" name="selectedWeek">
+            <button id="selectWeekButton">Chọn</button>
+        </div>
+    </div>
+
+    <div id="dataTableContainer">
+        <div id="tableWrapper" style="overflow-x: hidden; overflow-y: auto; max-height: 300px;">
+            <table id="dataTable">
+                <p id="tongDoanhThu" style="color: #007bff;margin-left: 20px;font-size:20px">Doanh Thu: 0đ</p>
+                <!-- Dữ liệu sẽ được thêm vào đây -->
+            </table>
+        </div>
+    </div>
+
+
     <!-- ================ Order Details List ================= -->
     <div class="details">
         <div class="recentOrders">
@@ -664,7 +910,6 @@
                     <option value="doanhThu">Theo doanh thu</option>
                 </select>
             </div>
-
 
             <table id="thongKeTable">
                 <thead>
@@ -678,128 +923,32 @@
                 </tr>
                 </thead>
                 <tbody>
+                <!-- Các hàng dữ liệu sẽ được thêm vào đây -->
                 </tbody>
             </table>
         </div>
 
+
         <!-- ================= New Customers ================ -->
         <div class="recentCustomers">
             <div class="cardHeader">
-                <h2>Khách hàng gần đây</h2>
+                <h2>Top Khách Hàng Mua Sắm Nhiều</h2>
             </div>
 
-            <table>
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Khắc Thịnh <br/>
-                            <span>Việt Nam</span>
-                        </h4>
-                    </td>
-                </tr>
+            <table id="customerTableKhachHhang">
 
                 <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
+                    <td> Hạng 1</td>
+
                     <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
+                        <h4>tran dinh hieu
+                            <br/>
+                            <span>0123456789</span>
                         </h4>
                     </td>
+                    <td>200.000.000Đ</td>
                 </tr>
 
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            David <br/>
-                            <span>Italy</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            David <br/>
-                            <span>Italy</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer01.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            David <br/>
-                            <span>Italy</span>
-                        </h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx">
-                            <img src="assets/imgs/customer02.jpg" alt=""/>
-                        </div>
-                    </td>
-                    <td>
-                        <h4>
-                            Amit <br/>
-                            <span>India</span>
-                        </h4>
-                    </td>
-                </tr>
             </table>
         </div>
     </div>
@@ -812,15 +961,252 @@
 <%-- jquery--%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 
 <script>
-
     $(document).ready(function() {
+        $("#selectWeekButton").click(function() {
+            // Sử dụng JavaScript hoặc jQuery để gửi yêu cầu AJAX
+            var selectedWeek = $('#selectedWeek').val(); // Chuỗi "2024-W17"
+            var weekNumber = selectedWeek.split('-W')[1]; // Tách chuỗi và lấy chỉ số tuần
+            var selectedYear = new Date().getFullYear(); // Lấy năm hiện tại
+
+
+            var data =[ "Tuần "+weekNumber," "+selectedYear];
+
+            $.ajax({
+                type: 'Get',
+                url: '/thong-ke/thong-ke-doanh-thu-theo-tuan',
+                data: {
+                    tuan: weekNumber,
+                    nam: selectedYear
+                },
+                success: function(response) {
+                    console.log(response);
+                    var dataTable = document.getElementById("dataTable");
+                    dataTable.innerHTML = ""; // Xóa dữ liệu cũ (nếu có)
+                    document.getElementById("selectedDate").value = "";
+
+                    displayTongDoanhThu(response,data);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                }
+            });
+
+        });
+    });
+
+</script>
+
+
+<script>
+    document.getElementById("selectDateButton").addEventListener("click", function () {
+        var selectedDate = document.getElementById("selectedDate").value;
+        if (!selectedDate) {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            selectedDate = yyyy + '-' + mm + '-' + dd;
+        }
+
+
+// Gửi yêu cầu AJAX
+        $.ajax({
+            url: "/thong-ke/thong-ke-theo-ngay",
+            type: "GET",
+            data: {
+                selectedDate: selectedDate
+            },
+            success: function (responseData) {
+                console.log(responseData);
+                displayData(responseData);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+
+
+        $.ajax({
+            url: "/thong-ke/thong-ke-doanh-thu-theo-ngay",
+            type: "GET",
+            data: {
+                selectedDate: selectedDate
+            },
+            success: function (responseData) {
+                console.log(responseData);
+
+                document.getElementById("selectedWeek").value = "";
+
+                displayTongDoanhThu(responseData,selectedDate);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+
+
+    });
+
+
+    function displayTongDoanhThu(data,time) {
+        var tongDoanhThuElement = document.getElementById("tongDoanhThu");
+        var tongDoanhThu = parseFloat(data.tongDoanhThu);
+
+        if (isNaN(tongDoanhThu)) {
+            tongDoanhThuElement.textContent = "Doanh Thu: 0đ";
+        } else {
+            tongDoanhThuElement.textContent = "Doanh Thu ("+ time +"): "  + tongDoanhThu.toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
+        }
+    }
+
+
+
+    // Hàm hiển thị dữ liệu lên bảng
+    function displayData(data) {
+        var dataTable = document.getElementById("dataTable");
+        dataTable.innerHTML = ""; // Xóa dữ liệu cũ (nếu có)
+
+        // Kiểm tra nếu không có dữ liệu
+        if (data.length === 0) {
+            var noDataMessageRow = dataTable.insertRow(0);
+            var cell = noDataMessageRow.insertCell(0);
+            cell.colSpan = 6; // Kết hợp tất cả các cột
+
+            cell.textContent = "Không có đơn hàng nào...";
+
+            return;
+        }
+
+        // Tạo bảng và các hàng
+        var table = document.createElement("table");
+        table.classList.add("custom-table"); // Thêm lớp cho bảng
+
+        var headerRow = table.insertRow(0);
+        var headerCell1 = headerRow.insertCell(0);
+        var headerCell2 = headerRow.insertCell(1);
+        var headerCell3 = headerRow.insertCell(2);
+        var headerCell4 = headerRow.insertCell(3);
+        var headerCell5 = headerRow.insertCell(4);
+        var headerCell6 = headerRow.insertCell(5);
+
+        // Thiết lập tiêu đề của các cột
+        headerCell1.innerHTML = "<b>Ngày</b>";
+        headerCell2.innerHTML = "<b>Tên Sản Phẩm</b>";
+        headerCell3.innerHTML = "<b>Màu Sắc</b>";
+        headerCell4.innerHTML = "<b>Số Lượng Bán</b>";
+        headerCell5.innerHTML = "<b>Số Tiền Bán</b>";
+        headerCell6.innerHTML = "<b>Hình Thức Bán</b>";
+
+        // Thêm dữ liệu vào từng hàng
+        for (var i = 0; i < data.length; i++) {
+            var row = table.insertRow(i + 1);
+            row.classList.add("custom-table-row"); // Thêm lớp cho hàng
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+
+            cell1.innerHTML = data[i].ngay;
+            cell2.innerHTML = data[i].tenSanPham;
+            cell3.innerHTML = data[i].mauSac;
+            cell4.innerHTML = data[i].soLuongDaBanTrenTungSanPham;
+            cell6.innerHTML = data[i].loaiBanHang;
+
+            // Định dạng số tiền bán
+            var formattedDoanhThu = parseFloat(data[i].doanhThuTrenTungSanPham).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
+            cell5.innerHTML = formattedDoanhThu;
+        }
+
+        // Thêm bảng vào div dataTable
+        dataTable.appendChild(table);
+    }
+
+</script>
+
+
+<script>
+    function loadDataKh() {
+        $.ajax({
+            url: "/thong-ke/top-khach-hang-mua-sam", // Đường dẫn đến phương thức trong Controller
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+                // Xóa nội dung hiện tại của bảng
+                $("#customerTableKhachHhang").empty();
+
+                // Thêm dữ liệu vào bảng
+                for (var i = 0; i < data.length; i++) {
+                    var row = $("<tr>");
+
+                    // Thêm ô đầu tiên
+                    var firstCell = $("<td style='font-size: small' >").text("Hạng " + (i + 1));
+                    row.append(firstCell);
+
+                    // Thêm ô thứ hai
+                    var secondCell = $("<td >");
+                    var h4 = $("<h4 style='font-size: small'>").text(data[i].tenKh);
+                    var br = $("<br>");
+                    var span = $("<span style='font-size: small'>").text(data[i].sdtKh);
+                    h4.append(br);
+                    h4.append(span);
+                    secondCell.append(h4);
+                    row.append(secondCell);
+
+                    // Thêm ô thứ ba
+                    var formattedTienMuaSam = numberWithCommas(data[i].tienMuaSam); // Hàm để định dạng số có dấu chấm
+                    var thirdCell = $("<td style='font-size: small'>").text(formattedTienMuaSam + "Đ");
+                    row.append(thirdCell);
+
+                    // Thêm hàng vào bảng
+                    if (i < data.length - 1) {
+                        row.addClass("row-divider");
+                    }
+                    $("#customerTableKhachHhang").append(row);
+                }
+
+// Hàm để định dạng số có dấu chấm
+                function numberWithCommas(x) {
+                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading data:", error);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadDataKh();
+    });
+
+
+</script>
+<script>
+
+    $(document).ready(function () {
         // Ngăn chặn hành vi mặc định của select khi chọn năm mới
-        $('#selectYear').change(function(event) {
+        $('#selectYear').change(function (event) {
             event.preventDefault();
             var selectedYear = $(this).val(); // Lấy năm đã chọn
             // Thực hiện các hành động cần thiết khi chọn năm, ví dụ: render biểu đồ tương ứng với năm đã chọn
@@ -848,6 +1234,7 @@
     }
 
     function soLuongSanPhamThongKe() {
+
         $.get('/thong-ke/so-luong-san-pham', function (data) {
             const container = $('#so-luong-san-pham');
             container.empty();
@@ -855,6 +1242,7 @@
             productHTML += '<div class="cardName">Sản phẩm</div>';
             container.append(productHTML);
         });
+
     }
 
     function tongDoanhThu() {
@@ -936,7 +1324,7 @@
                     // Thêm tháng vào mảng nhãn
                     labels.push(key);
                     // Thêm doanh thu vào mảng doanhThuTheoThang
-                    doanhThuTheoThang.push(thongKeResponse.doanhThuTrenTungSanPham);
+                    doanhThuTheoThang.push(thongKeResponse.tongDoanhThu);
                 }
             }
 
@@ -977,7 +1365,7 @@
 
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         function getListCtspDesc(sortBy) {
             fetch('/thong-ke/list-ctsp-desc?sortBy=' + sortBy)
                 .then(response => response.json())
@@ -987,7 +1375,7 @@
 
         getListCtspDesc('soLuong');
 
-        $('#sortBy').change(function() {
+        $('#sortBy').change(function () {
             var sortBy = $(this).val();
             getListCtspDesc(sortBy);
             console.log(sortBy);
@@ -1000,7 +1388,7 @@
         var tbody = document.getElementById('thongKeTable').getElementsByTagName('tbody')[0];
         tbody.innerHTML = '';
         var stt = 1;
-        data.forEach(function(item) {
+        data.forEach(function (item) {
             var row = tbody.insertRow();
 
             var sttCell = row.insertCell(0);
@@ -1015,7 +1403,7 @@
             tenCell.textContent = truncateText(item.tenSanPham, 30);
             mauSacCell.textContent = item.mauSac;
             giaBanCell.textContent = item.giaBan.toLocaleString();
-            soLuongDaBanCell.textContent =item.soLuongDaBanTrenTungSanPham;
+            soLuongDaBanCell.textContent = item.soLuongDaBanTrenTungSanPham;
             doanhThuCell.textContent = item.doanhThuTrenTungSanPham.toLocaleString();
             stt++;
         });
@@ -1034,11 +1422,9 @@
     }
 
     function formatNumber(number) {
-        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
     }
 </script>
-
-
 
 
 <!-- ====== ionicons ======= -->

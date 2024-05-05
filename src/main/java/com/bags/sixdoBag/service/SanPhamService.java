@@ -1,6 +1,6 @@
 package com.bags.sixdoBag.service;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.dto.request.SanPhamRequest;
 import com.bags.sixdoBag.model.entitys.SanPham;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public interface SanPhamService {
     public SanPham addSanPham(SanPhamRequest sanPham);
 
     public SanPham editSanPham(Integer idSanPham, SanPhamRequest sanPham);
-
+    public List<SanPham> getSoLuongThongKe();
     public SanPham deleteSanPham(Integer idSanPham);
 
     public List<SanPham> searchSanPhamTenOrMa(String tenMa);
@@ -30,21 +30,23 @@ public interface SanPhamService {
 
     public List<SanPham> searchKichThuoc(int min, int max);
 
-    List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu);
+    List<SanPham> filterSanPhamChatLieuOrThuongHieu(String tenChatLieu, String tenThuongHieu, boolean trangThai);
 
-    List<ProductHomeRequest> listHienThiSanPham();
+    List<ProductHomeResponse> listHienThiSanPham();
 
-    List<ProductHomeRequest> listHienThiSanPhamLimit(int limit);
+    List<ProductHomeResponse> listHienThiSanPhamLimit(int limit);
 
-    List<ProductHomeRequest> displayedByBrand(int idSp, int idThuongHieu);
+    List<ProductHomeResponse> displayedByBrand(int idSp, int idThuongHieu);
 
-    List<ProductHomeRequest> sanPhamCoGiaTienTuongTu(int idSp, int min, int max);
+    List<ProductHomeResponse> sanPhamCoGiaTienTuongTu(int idSp, int min, int max);
 
-    List<ProductHomeRequest> sanPhamCoDanhMucTuongTu(int idSp, int idDanhMuc);
+    List<ProductHomeResponse> sanPhamCoDanhMucTuongTu(int idSp, int idDanhMuc);
 
-    List<ProductHomeRequest> searchSanPhamOnlines(String name);
+    List<ProductHomeResponse> searchSanPhamOnlines(String name);
 
     public boolean findByNameSanPham(String name);
 
-    List<ProductHomeRequest> filterMaMauSacOrThuongHieuOnlineProductHome(String maMau, String tenThuongHieu);
+    public boolean findByNameSanPhamSua(String name, int idSp);
+
+    List<ProductHomeResponse> filterMaMauSacOrThuongHieuOnlineProductHome(String maMau, String tenThuongHieu);
 }

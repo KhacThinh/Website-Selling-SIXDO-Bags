@@ -164,7 +164,7 @@
      src="https://png.pngtree.com/thumb_back/fh260/background/20230523/pngtree-cyan-blue-light-effect-abstract-vector-stock-photos-image-guardian-bright-image_2806077.jpg">
 
 <div class="container">
-    <h2>Change the password</h2>
+    <h2>Thay Đổi Mật Khẩu</h2>
 
     <form action="/lay-mk/config" method="post" onsubmit="return validateForm()">
         <div class="form-group3">
@@ -176,8 +176,8 @@
 
 
         <div class="form-group">
-            <label for="new-password">Password</label>
-            <input class="password1" type="password" id="new-password" name="pass" placeholder=" New Password">
+            <label for="new-password">Mật Khẩu Mới</label>
+            <input class="password1" type="password" id="new-password" name="pass" placeholder="Mật Khẩu mới">
 
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="eye eye-close ">
@@ -192,9 +192,9 @@
             </svg>
         </div>
         <div class="form-group">
-            <label for="confirm-password">Enter the password</label>
+            <label for="confirm-password">Nhập lại mật khẩu mới</label>
             <input class="password1" type="password" id="confirm-password" name="confirm"
-                   placeholder="Enter New Password">
+                   placeholder="Nhập lại mật khẩu mới">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="eye1 eye-close1 ">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -212,7 +212,7 @@
         <div id="error-message" class="error-message" style="display: none;"></div>
 
         <div class="form-group1">
-            <input type="submit" value="NEXT">
+            <input type="submit" value="Tiếp Theo">
         </div>
 
     </form>

@@ -759,8 +759,15 @@
             var giamGia = document.getElementById('maGiamGiaOnlineValue').value;
             var giaTriGiam = 0;
             var maGiamGia = null;
-
-
+          
+<%--            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">--%>
+<%--            var product = {--%>
+<%--                idCtSanPham: ${o.idChiTietSanPham},--%>
+<%--                soLuong: document.getElementById('quantityProduct-${i.index}').value,--%>
+<%--                gia:${o.chiTietSanPham.giaBan *o.soLuong},--%>
+<%--            };--%>
+<%--            productList.push(product);--%>
+<%--            </c:forEach>--%>
             $.get('/product-favorite/check-gio-hang-chi-tiet', function (data) {
                 if (data.length > 0) {
                     // Xử lý dữ liệu nhận được
@@ -779,15 +786,6 @@
                     });
                 }
             });
-            <%--            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">--%>
-            <%--            var product = {--%>
-            <%--                idCtSanPham: ${o.idChiTietSanPham},--%>
-            <%--                soLuong: document.getElementById('quantityProduct-${i.index}').value,--%>
-            <%--                gia:${o.chiTietSanPham.giaBan *o.soLuong},--%>
-            <%--            };--%>
-            <%--            productList.push(product);--%>
-            <%--            </c:forEach>--%>
-
 
             var errors = [];
 
@@ -826,6 +824,7 @@
             if (maGiamGiaValue !== '') {
                 $.post('/sixdo-shop/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
                     if (data != 'error') {
+                        if (data.soLuong > 0) {
                         if (Number(giamGia) > 0) {
                             // order data này khác với order data ở dưới lên đừng copy chung
                             orderData = {
@@ -843,6 +842,12 @@
                                     id:${khachHang.id}
                                 }
                             };
+                        }} else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Mã giảm giá đã hết!',
+                            });
+                            return false;
                         }
                     }
                 });
@@ -877,14 +882,31 @@
             if (maGiamGiaValue !== '') {
                 $.post('/sixdo-shop/check-ma-giam-gia', {maGiamGia: maGiamGiaValue}, function (data) {
                     if (data != 'error') {
-                        if (Number(giamGia) > 0) {
-                            maGiamGia = data;
-                            giaTriGiam = data.giaTriGiam;
-                            console.log('akvm' + maGiamGia + giaTriGiam);
+                        if (data.soLuong > 0) {
+                            if (Number(giamGia) > 0) {
+                                maGiamGia = data;
+                                giaTriGiam = data.giaTriGiam;
+                                console.log('akvm' + maGiamGia + giaTriGiam);
+                            }
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Mã giảm giá đã hết!',
+                            });
+                            return false;
                         }
                     }
                 });
             }
+
+<%--            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">--%>
+<%--            var product = {--%>
+<%--                idCtSanPham: ${o.idChiTietSanPham},--%>
+<%--                soLuong: document.getElementById('quantityProduct-${i.index}').value,--%>
+<%--                gia:${o.chiTietSanPham.giaBan *o.soLuong},--%>
+<%--            };--%>
+<%--            productList.push(product);--%>
+<%--            </c:forEach>--%>
 
             $.get('/product-favorite/check-gio-hang-chi-tiet', function (data) {
                 if (data.length > 0) {
@@ -904,19 +926,7 @@
                     });
                 }
             });
-
-            console.log(JSON.stringify(productList));
-            // return false;
-
-
-            <%--            <c:forEach var="o" items="${listGioHangBuyer}" varStatus="i">--%>
-            <%--            var product = {--%>
-            <%--                idCtSanPham: ${o.idChiTietSanPham},--%>
-            <%--                soLuong: document.getElementById('quantityProduct-${i.index}').value,--%>
-            <%--                gia:${o.chiTietSanPham.giaBan *o.soLuong},--%>
-            <%--            };--%>
-            <%--            productList.push(product);--%>
-            <%--            </c:forEach>--%>
+      
             $.ajax({
                 type: 'GET',
                 url: '/check-customer/mail',
@@ -992,7 +1002,7 @@
                         contentType: 'application/json',
                         data: JSON.stringify(orderData),
                         success: function (response) {
-                            if (response === "ok") {
+                            if (response.length===0) {
                                 // ktra so luong trong kho
                                 $.ajax({
                                     url: '/sixdo-shop/check-soLuong-checkout',
@@ -1021,6 +1031,19 @@
                                                     }).then(function () {
                                                         // Sau khi thông báo đóng, chuyển hướng sang trang mới
                                                         window.location.href = 'http://localhost:8080/sixdo-shop/manager-oder-customer';
+                                                        // gửi mail
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: '/sixdo-shop/sendMail',
+                                                            contentType: 'application/json',
+                                                            data: JSON.stringify(orderData),
+                                                            success: function (data) {
+
+                                                            },
+                                                            error: function () {
+                                                                Swal.fire('Lỗi', 'Có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
+                                                            }
+                                                        });
                                                     });
 
                                                     document.getElementById('sumCart').innerText = '0 đ';
@@ -1070,20 +1093,39 @@
                                     error: function (error) {
                                         // Xử lý lỗi nếu có
                                         console.error(error);
-                                        showAlertAddCart('Order error.', '', 'error');
+                                        showAlertAddCart('Order error 1111111111111 .', '', 'error');
                                     }
                                 });
                             } else {
+                                console.log("listCheckTrangThai"+response);
+                                var message = "";
+                                var trangThai = "";
+                                response.forEach(function (item) {
+
+                                    if (item.trangThai === 2) {
+                                        trangThai = " - Hết Hàng"
+                                    } else if(item.trangThai=== 0) {
+                                        trangThai = " - Ngừng Bán"
+                                    }
+                                    message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + trangThai + "<br>";
+                                });
                                 Swal.fire({
-                                    title: 'Thông báo!',
-                                    text: 'Giỏ hàng của bạn đã được cập nhật. Vui lòng kiểm tra lại.',
-                                    showCancelButton: false, // Ẩn nút Hủy bỏ
-                                    showConfirmButton: true, // Hiển thị nút Xác nhận
-                                    confirmButtonText: 'OK',
-                                    allowOutsideClick: false,
+                                    title: "Thông tin sản phẩm",
+                                    html: message,
+                                    icon: "warning",
+                                    customClass: {
+                                        htmlContainer: 'swal2-html-container',
+                                        popup: 'swal2-popup',
+                                        title: 'swal2-title',
+                                        content: 'swal2-content',
+                                        confirmButton: 'swal2-confirm',
+                                    },
+                                    confirmButtonText: 'OK', // Đổi tiêu đề của nút xác nhận thành "OK"
+                                    allowOutsideClick: true // Cho phép nhấn ra ngoài hộp thoại
                                 }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        location.reload();
+                                    // Nếu người dùng nhấn OK hoặc ấn ra ngoài hộp thoại
+                                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.overlay || result.dismiss === Swal.DismissReason.close) {
+                                        window.location.reload(); // Load lại trang
                                     }
                                 });
 
@@ -1093,7 +1135,7 @@
                         error: function (error) {
                             // Xử lý lỗi nếu có
                             console.error(error);
-                            showAlertAddCart('Order error.', '', 'error');
+                            showAlertAddCart('Order error 22222222222222s.', '', 'error');
                         }
                     });
                 }

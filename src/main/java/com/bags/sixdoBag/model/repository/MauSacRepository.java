@@ -13,11 +13,11 @@ import java.util.List;
 @Repository
 public interface MauSacRepository extends JpaRepository<MauSac, Integer> {
 
-    @Query(value = "SELECT dtsg FROM MauSac dtsg")
+    @Query(value = "SELECT dtsg FROM MauSac dtsg where dtsg.trangThai =1 ")
     List<MauSac> findMauSacByAll();
 
-    @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from mau_sac \n" +
-            ") select * from x where rs between :page and :size", nativeQuery = true)
+    @Query(value = "with x as(select ROW_NUMBER() over (order by id desc) as rs, * from mau_sac where trang_thai =1  \n" +
+            ") select * from x where rs between :page and :size ", nativeQuery = true)
     List<MauSac> findByPageing(int page, int size);
 
 
@@ -34,7 +34,8 @@ public interface MauSacRepository extends JpaRepository<MauSac, Integer> {
 
 
     /////////////////////////////////////////////////////
-    Page<MauSac> findAll(Pageable pageable);
+    @Query(value = "select * from mau_sac where trang_thai =  1 ", nativeQuery = true)
+    Page<MauSac> findAllCustom(Pageable pageable);
 
     @Query(value = "select * from mau_sac where ten like %:tenMa% or ma like %:tenMa%", nativeQuery = true)
     Page<MauSac> searchMauSacTenOrMa(String tenMa,Pageable pageable);

@@ -57,13 +57,14 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia, Integer> {
             "JOIN ma_giam_gia mgg ON dskm.id_ma_giam_gia = mgg.id\n" +
             "WHERE dskm.id_khach_hang = :idKhachHang \n" +
             "  AND dskm.id_ma_giam_gia = :idMaGiamGia\n" +
+            "  AND mgg.so_luong > 0 \n" +
             "  AND mgg.trang_thai = 1\n" +
             "  AND GETDATE() BETWEEN mgg.ngay_bat_dau AND mgg.ngay_ket_thuc;", nativeQuery = true)
     int apDungMaGiamGia(@Param("idKhachHang") int idKhachHang, @Param("idMaGiamGia") int idMaGiamGia);
 
     @Query(value = "select mgg.* from ma_giam_gia as mgg " +
             "join danh_sach_kh_mgg as dskm on mgg.id = dskm.id_ma_giam_gia " +
-            "where dskm.id_khach_hang = :idKhachHang AND mgg.trang_thai = 1 " +
+            "where dskm.id_khach_hang = :idKhachHang AND mgg.so_luong > 0 AND mgg.trang_thai = 1 " +
             "AND GETDATE() BETWEEN mgg.ngay_bat_dau AND mgg.ngay_ket_thuc;", nativeQuery = true)
     List<MaGiamGia> danhSachMaGiamGiaByKhachHang(@Param("idKhachHang") int idKhachHang);
 
@@ -73,6 +74,7 @@ public interface MaGiamGiaRepository extends JpaRepository<MaGiamGia, Integer> {
             "JOIN ma_giam_gia mgg ON dskm.id_ma_giam_gia = mgg.id\n" +
             "WHERE dskm.id_khach_hang = :idKhachHang \n" +
             "  AND dskm.id_ma_giam_gia = :idMaGiamGia\n" +
+            "  AND mgg.so_luong > 0 \n" +
             "  AND mgg.trang_thai = 1\n" +
             "  AND GETDATE() BETWEEN mgg.ngay_bat_dau AND mgg.ngay_ket_thuc;", nativeQuery = true)
     MaGiamGia getMaGiamGiaByKhachHang(@Param("idKhachHang") int idKhachHang, @Param("idMaGiamGia") int idMaGiamGia);

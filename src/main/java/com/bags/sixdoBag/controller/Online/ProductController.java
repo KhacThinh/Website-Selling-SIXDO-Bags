@@ -3,7 +3,7 @@ package com.bags.sixdoBag.controller.Online;
 
 import com.bags.sixdoBag.model.dto.request.ChiTietGioHangRequestDto;
 import com.bags.sixdoBag.model.dto.request.OderDataDto;
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.entitys.*;
 import com.bags.sixdoBag.model.repository.ChiTietGioHangRepository;
 import com.bags.sixdoBag.model.repository.ChiTietSanPhamRepository;
@@ -71,7 +71,7 @@ public class ProductController {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
         model.addAttribute("khachHang", khachHang);
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+        List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
         model.addAttribute("listSp", productHomeRequestList);
         return "ban-hang-online/home/home-page";
 
@@ -81,7 +81,7 @@ public class ProductController {
 
     @GetMapping("/search")
     public String search(Model model, @RequestParam("name") String keyword) {
-        List<ProductHomeRequest> searchResults = sanPhamService.searchSanPhamOnlines(keyword);
+        List<ProductHomeResponse> searchResults = sanPhamService.searchSanPhamOnlines(keyword);
         model.addAttribute("listSp", searchResults);
         model.addAttribute("nameHomeSearch", keyword);
 
@@ -107,7 +107,7 @@ public class ProductController {
     public String hienThiSanPham(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
 
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+        List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
         model.addAttribute("khachHang", khachHang);
 
@@ -273,8 +273,8 @@ public class ProductController {
         if (sanPham.getThuongHieu() == null && sanPham.getDanhMuc() == null) {
             throw new IllegalArgumentException("Sản phẩm với danh mục của sản phẩm có id " + id + " có trá trị null");
         }
-        List<ProductHomeRequest> productHomeRequestList = mapProductRequest(sanPhamService.displayedByBrand(id, sanPham.getThuongHieu().getId()));
-        List<ProductHomeRequest> productHomeDanhMuc = mapProductRequest(sanPhamService.sanPhamCoDanhMucTuongTu(id, sanPham.getDanhMuc().getId()));
+        List<ProductHomeResponse> productHomeRequestList = mapProductRequest(sanPhamService.displayedByBrand(id, sanPham.getThuongHieu().getId()));
+        List<ProductHomeResponse> productHomeDanhMuc = mapProductRequest(sanPhamService.sanPhamCoDanhMucTuongTu(id, sanPham.getDanhMuc().getId()));
 
         int giaTien = list.get(0).getGiaBan();
         int min = giaTien - 100000;
@@ -282,7 +282,7 @@ public class ProductController {
         if (min < 0) {
             min = giaTien;
         }
-        List<ProductHomeRequest> productHomeGiaTienTuongUng = mapProductRequest(sanPhamService.sanPhamCoGiaTienTuongTu(id, min, max));
+        List<ProductHomeResponse> productHomeGiaTienTuongUng = mapProductRequest(sanPhamService.sanPhamCoGiaTienTuongTu(id, min, max));
 
         boolean checkThuongHieuTuongUng = true;
         if (productHomeRequestList.isEmpty()) {
@@ -309,10 +309,10 @@ public class ProductController {
         return "ban-hang-online/home/product-detail";
     }
 
-    public List<ProductHomeRequest> mapProductRequest(List<ProductHomeRequest> searchResults) {
-        List<ProductHomeRequest> updateProduct = searchResults.stream()
+    public List<ProductHomeResponse> mapProductRequest(List<ProductHomeResponse> searchResults) {
+        List<ProductHomeResponse> updateProduct = searchResults.stream()
                 .map((sp) -> {
-                            ProductHomeRequest productHomeRequest = new ProductHomeRequest();
+                            ProductHomeResponse productHomeRequest = new ProductHomeResponse();
                             productHomeRequest.setId(sp.getId());
                             productHomeRequest.setHinhAnh(sp.getHinhAnh());
                             productHomeRequest.setTenSanPham(sp.getTenSanPham());
@@ -346,15 +346,15 @@ public class ProductController {
     public String shopingCart(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.isNull(khachHang)) {
-            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
             model.addAttribute("listSp", productHomeRequestList);
             return "ban-hang-online/home/home-page";
         }
-        int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId());
+        int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId()).size();
         model.addAttribute("khachHang", khachHang);
 
         if (soLuong <= 0) {
-            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
             model.addAttribute("listSp", productHomeRequestList);
             return "ban-hang-online/home/home-page";
         }
@@ -363,7 +363,7 @@ public class ProductController {
 
         for (ChiTietGioHang ctgh : chiTietGioHangList
         ) {
-            if (ctgh.getChiTietSanPham().getTrangThai() == 1) {
+            if (ctgh.getChiTietSanPham().getSanPham().getTrangThai() == true && ctgh.getChiTietSanPham().getTrangThai() == 1) {
                 listCTGHByCTSPTrangThai1.add(ctgh);
             }
         }
@@ -376,24 +376,20 @@ public class ProductController {
 
     @PostMapping("/check-trangThai-ctsp-checkout")
     public ResponseEntity<?> checkTrangThaiCTSP(@RequestBody OderDataDto orderData) {
+//        System.out.println("Hello mấy cưng");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
-        List<ChiTietGioHang> chiTietGioHangList = chiTietGioHangRepository.getListChiTietGioHangByKhachHangAndTrangThaiCtsp(khachHang != null ? khachHang.getId() : -1);
-        List<ChiTietHoaDon> listCTHD = orderData.getCart();
+        List<ChiTietHoaDon> chiTietHDList = orderData.getCart();
         List<ChiTietSanPham> listCTSP1 = new ArrayList<>();
-        List<ChiTietSanPham> listCTSP2 = new ArrayList<>();
-        for (ChiTietGioHang ctgh : chiTietGioHangList
+        for (ChiTietHoaDon cthd : chiTietHDList
         ) {
-            listCTSP1.add(ctgh.getChiTietSanPham());
+            ChiTietSanPham ctsp = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
+            if (ctsp.getTrangThai() == 0 || ctsp.getTrangThai() == 2) {
+                listCTSP1.add(ctsp);
+            }
+
         }
-        for (ChiTietHoaDon cthd : listCTHD
-        ) {
-            listCTSP2.add(chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham()));
-        }
-        if (listCTSP1.size() != listCTSP2.size()) {
-            return ResponseEntity.ok("no");
-        } else {
-            return ResponseEntity.ok("ok");
-        }
+        System.out.println("listCheckTrangThai" + listCTSP1);
+        return ResponseEntity.ok(listCTSP1);
     }
 
     @PostMapping("/check-soLuong-checkout")
@@ -417,13 +413,22 @@ public class ProductController {
     public String placeOrder(@RequestBody OderDataDto orderData) {
         List<ChiTietSanPham> listCTSP = new ArrayList<>();
         KhachHang khachHang = orderData.getKhachHang();
+        MaGiamGia maGiamGia = orderData.getHoadon().getMaGiamGia();
+        if (Objects.nonNull(maGiamGia)) {
+            MaGiamGia maGiamGia1 = maGIamGiaService.getMaGiamGia(maGiamGia.getId());
+            int soLuong = maGiamGia.getSoLuong();
+            maGiamGia1.setSoLuong(soLuong - 1);
+            if (maGiamGia1.getSoLuong() <= 0) {
+                maGiamGia1.setSoLuong(0);
+            }
+        }
         int idGioHang = gioHangService.getIdGioHang(khachHang.getId());
         HoaDon hoaDon = orderData.getHoadon();
         hoaDon.setThoiGianTao(utils.getCurrentDateTime());
         hoaDon.setKhachHang(khachHang);
         hoaDon.setTrangThai(2);
         hoaDonService.saveHoaDon(hoaDon);
-        hoaDon.setId(hoaDon.getId());
+//        hoaDon.setId(hoaDon.getId());
         hoaDon.setMaHoaDon("HDOL" + hoaDon.getId());
         hoaDonService.saveHoaDon(hoaDon);
         System.out.println("hihihihihi");
@@ -433,9 +438,11 @@ public class ProductController {
             ChiTietSanPham ctsp = chiTietSanPhamServivce.getChiTietSanPham(cthd.getIdCtSanPham());
             ctsp.setSoLuong(ctsp.getSoLuong() - cthd.getSoLuong());
         }
+
         for (ChiTietHoaDon o : orderData.getCart()) {
-            o.setIdHoaDon(hoaDon.getId());
-            hoaDonChiTietService.saveProductForCart(o.getIdHoaDon(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
+            System.out.println("sixxxxxxxxxxxxxxxxxeeeeeeeee " + orderData.getCart().size());
+//            o.setIdHoaDon(hoaDon.getId());
+            hoaDonChiTietService.saveProductForCart(hoaDon.getId(), o.getIdCtSanPham(), o.getSoLuong(), o.getGia());
         }
 
         //xóa giỏ hàng chi tiết khi thanh toán
@@ -455,10 +462,10 @@ public class ProductController {
 
     }
 
-    double tongTien = 0;
 
     @PostMapping("/sendMail")
     public ResponseEntity<?> sendMailXN(@RequestBody OderDataDto orderData) {
+        double tongTien = 0;
         List<ChiTietHoaDon> cart = orderData.getCart();
         if (cart == null || cart.isEmpty()) {
             return new ResponseEntity<>("Cart is empty", HttpStatus.BAD_REQUEST);
@@ -471,8 +478,12 @@ public class ProductController {
 
         if (email != null && !email.isEmpty()) {
             for (ChiTietHoaDon chiTietHoaDon : cart) {
-                tongTien += chiTietHoaDon.getSoLuong() * chiTietHoaDon.getGia();
+                tongTien += chiTietHoaDon.getGia();
             }
+
+            HoaDon hoaDon = orderData.getHoadon();
+            tongTien -= hoaDon.getGiamGia();
+            double finalTongTien = tongTien;
             MimeMessagePreparator messagePreparator = mimeMessage -> {
                 MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
                 messageHelper.setTo(email);
@@ -495,12 +506,13 @@ public class ProductController {
                     htmlContent.append("Tên sản phẩm: ").append(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getSanPham().getTenSanPham());
                     htmlContent.append(" ");
                     htmlContent.append("Màu Sắc: ").append(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getMauSac().getTenMauSac());
-                    htmlContent.append(", Số lượng: ").append(chiTietHoaDon.getSoLuong());
-                    htmlContent.append(", Đơn giá: ").append(decimalFormat.format(chiTietHoaDon.getGia()));
+                    htmlContent.append("</br>, Số lượng: ").append(chiTietHoaDon.getSoLuong());
+                    htmlContent.append(", Đơn giá: ").append(decimalFormat.format(chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getIdCtSanPham()).getGiaBan()));
                     htmlContent.append("</li>");
                 }
                 htmlContent.append("</ul>");
-                htmlContent.append("<li>Tổng số tiền: ").append(decimalFormat.format(tongTien)).append("( Chưa bao gồm phí vận chuyển và thuế)</li>");
+                htmlContent.append("<li>Giảm giá: ").append(decimalFormat.format(hoaDon.getGiamGia())).append("</li></br>");
+                htmlContent.append("<li>Tổng số tiền: ").append(decimalFormat.format(finalTongTien)).append("( Chưa bao gồm phí vận chuyển và thuế)</li>");
                 htmlContent.append("</ul>");
                 htmlContent.append("<p>Vui lòng kiểm tra thông tin đơn hàng của bạn. Nếu có bất kỳ thắc mắc hoặc yêu cầu bổ sung, vui lòng liên hệ với chúng tôi ngay qua email hoặc số điện thoại được cung cấp dưới đây.</p>");
                 htmlContent.append("<p>Chúng tôi sẽ tiếp tục cập nhật thông tin về quá trình xử lý của đơn hàng và sẽ thông báo cho bạn khi đơn hàng được vận chuyển.</p>");
@@ -524,7 +536,7 @@ public class ProductController {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         idKhachHangFinal = khachHang != null ? khachHang.getId() : 0;
         model.addAttribute("khachHang", khachHang);
-        List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+        List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
 
 
         model.addAttribute("listSp", productHomeRequestList);
@@ -535,13 +547,14 @@ public class ProductController {
     @GetMapping("/manager-oder-customer")
     public String managerOderCustomer(Model model) {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
+        List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
         if (Objects.nonNull(khachHang)) {
-            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
             model.addAttribute("khachHang", khachHang);
             model.addAttribute("listSp", productHomeRequestList);
 
             return "ban-hang-online/home/manager-order-customer";
         } else {
+            model.addAttribute("listSp", productHomeRequestList);
             return "ban-hang-online/home/home-page";
         }
     }
@@ -552,7 +565,7 @@ public class ProductController {
     int getProuductSoLuongCartHead() {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
-            int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId());
+            int soLuong = chiTietGioHangService.soLuongGioHangByKhachHang(khachHang.getId()).size();
             return soLuong;
         }
         return 0;
@@ -577,7 +590,7 @@ public class ProductController {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         model.addAttribute("khachHang", khachHang);
         if (Objects.nonNull(khachHang)) {
-            List<ProductHomeRequest> productHomeRequestList = sanPhamService.listHienThiSanPham();
+            List<ProductHomeResponse> productHomeRequestList = sanPhamService.listHienThiSanPham();
             model.addAttribute("listSp", productHomeRequestList);
             return "ban-hang-online/home/home-page";
         }

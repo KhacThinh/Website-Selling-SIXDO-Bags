@@ -88,7 +88,7 @@ public class HoaDon {
 
 
 //        case 0:
-//            trangThaiString = 'Đã Thanh Toán';
+//            trangThaiString = 'Đã Thanh Toán tại quầy';
 //        case 1:
 //            trangThaiString = 'Hóa Đơn Tạm';
 //        case 2:
@@ -99,4 +99,6 @@ public class HoaDon {
 //            trangThaiString = 'Đã Hủy';
 //        case 5:
 //            trangThaiString = 'Đang Giao Hàng';
+//        case 6:
+//            trangThaiString = 'Giao hàng thành công';
 }

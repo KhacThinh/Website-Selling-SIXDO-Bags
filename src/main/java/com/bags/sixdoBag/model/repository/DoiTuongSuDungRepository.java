@@ -27,6 +27,8 @@ public interface DoiTuongSuDungRepository extends JpaRepository<DoiTuongSuDung, 
     @Query(value = "select ms from DoiTuongSuDung ms where ms.maDoiTuongSuDung =:ma")
     DoiTuongSuDung searchDoiTuongSuDungByMa(String ma);
 
+    @Query(value = "select ms from DoiTuongSuDung ms where ms.tenDoiTuongSuDung =:ten")
+    DoiTuongSuDung searchDoiTuongSuDungByTen(String ten);
     //////////////////////////////////////////////////////
     Page<DoiTuongSuDung> findAll(Pageable pageable);
 

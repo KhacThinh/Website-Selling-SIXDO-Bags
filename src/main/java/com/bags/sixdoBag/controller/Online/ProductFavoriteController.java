@@ -1,6 +1,6 @@
 package com.bags.sixdoBag.controller.Online;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.dto.request.SanPhamYeuThichRequest;
 import com.bags.sixdoBag.model.entitys.ChiTietGioHang;
 import com.bags.sixdoBag.model.entitys.KhachHang;
@@ -51,8 +51,8 @@ public class ProductFavoriteController {
 
     @GetMapping("load-data")
     public @ResponseBody
-    List<ProductHomeRequest> getListResponseEntity() {
-        List<ProductHomeRequest> productHomeControllers = new ArrayList<>();
+    List<ProductHomeResponse> getListResponseEntity() {
+        List<ProductHomeResponse> productHomeControllers = new ArrayList<>();
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.nonNull(khachHang)) {
             productHomeControllers = sanPhamYeuThichService.getListSanPhamYeuThich(khachHang.getId());
@@ -115,7 +115,7 @@ public class ProductFavoriteController {
             idSanPhamYeuThich = sanPhamYeuThichService
                     .getListSanPhamYeuThich(khachHang.getId())
                     .stream()
-                    .map(ProductHomeRequest::getId)
+                    .map(ProductHomeResponse::getId)
                     .collect(Collectors.toList());
 
         }
@@ -176,16 +176,15 @@ public class ProductFavoriteController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductHomeRequest>> searchComponentProductHome(@RequestParam("name") String keyword) {
+    public ResponseEntity<List<ProductHomeResponse>> searchComponentProductHome(@RequestParam("name") String keyword) {
         System.out.println("/product-favorite/search");
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         if (Objects.isNull(khachHang)) {
             throw new IllegalArgumentException("Khách Hàng không tồn tại vui lòng check lại");
         }
-        List<ProductHomeRequest> searchResults = sanPhamYeuThichService.searchSanPhamFavoriteOnlines(khachHang.getId(), keyword);
+        List<ProductHomeResponse> searchResults = sanPhamYeuThichService.searchSanPhamFavoriteOnlines(khachHang.getId(), keyword);
         return ResponseEntity.ok(searchResults);
     }
-
 
     @GetMapping("/check-gio-hang-chi-tiet")
     public @ResponseBody

@@ -1071,6 +1071,7 @@
         </div>
 
     </div>
+    <p style="margin-right: 35px; color: white">${nhanVien.hoTen}-${nhanVien.maNhanVien}</p>
 
 
 </div>
@@ -1117,6 +1118,7 @@
         }
 
         function addToCartQR(maSanPham) {
+            var idTemp =0 ;
             if (tabActive === "") {
                 Swal.fire({
                     title: "Giỏ hàng chưa được tạo?",
@@ -1135,7 +1137,7 @@
                         var foundProduct = false;
 
                         response.forEach(function (product) {
-
+                            idTemp =  product.id;
                             if (maSanPham === product.ma) {
                                 idSanPham = product.id;
                                 foundProduct = true;
@@ -1172,7 +1174,7 @@
                                 type: 'POST',
 
                                 data: {
-                                    productId: productId,
+                                    productId: idTemp,
                                     quantity: parseInt(quantity)
                                 },
                                 success: function (response) {
@@ -1184,6 +1186,7 @@
                                             data: JSON.stringify({
                                                 maSanPham: maSanPham,
                                                 tabActive: tabActive,
+                                                soLuong: quantity,
                                             }),
                                             success: function (response) {
                                                 $.ajax({
@@ -1396,10 +1399,12 @@
             background-color: #007bff; /* Màu nền */
             color: #fff; /* Màu chữ */
             border: none;
-            padding: 10px 20px;
+            padding: 6px 10px;
             border-radius: 5px;
             cursor: pointer;
             margin-bottom: 15px;
+            margin-left: 10px;
+            font-size: 14x;
         }
 
         #addCustomerBtn:hover {
@@ -1463,15 +1468,16 @@
 
     <!-- Right column -->
     <div class="info-panel thanh-toan">
-        <p>Tên nhân viên : ${nhanVien.hoTen}</p>
         <p style="font-size: 19px; font-weight: bold; margin: 30px 0px 10px 1px;background-color: #d3ead9 ; padding: 5px;border-radius: 5px ">
             Thông Tin Đơn Hàng</p>
         <div>
-            <input type="text" id="soDienThoai" placeholder="Số điện thoại">
+            <input style="font-size: 15px; height: 21px" type="text" id="soDienThoai" placeholder="Số điện thoại">
             <span id="soDienThoaiError" class="error" style="color: red;font-size: small"></span><br>
-            <input type="text" id="tenKhachHang" placeholder="Tên khách hàng">
+            <input style="width: 375px ; font-size: 15px; height: 21px" type="text" id="tenKhachHang"
+                   placeholder="Tên khách hàng">
+            <button id="addCustomerBtn">Lưu</button>
             <span id="tenKhachHangError" style="color: red;font-size: small" class="error"></span><br>
-            <button id="addCustomerBtn">Thêm</button>
+
         </div>
 
         <div style="display: flex;height: 53px;margin-top: 20px">
@@ -1653,6 +1659,7 @@
                 type: "POST",
                 url: "/ban-tai-quay/themKhachHang",
                 data: {
+                    idTabs: tabActive,
                     soDienThoai: soDienThoai,
                     tenKhachHang: tenKhachHang
                 },
@@ -1673,7 +1680,6 @@
                 },
 
                 error: function (xhr, status, error) {
-                    alert("Đã xảy ra lỗi: " + error);
                     console.log(xhr.responseText);
                 }
             });
@@ -1687,18 +1693,39 @@
     $(document).ready(function () {
         $('#soDienThoai').on('input', function () {
             var soDienThoai = $(this).val();
-            $.ajax({
-                type: 'GET',
-                url: '/ban-tai-quay/kiemTraKhachHang',
-                data: {soDienThoai: soDienThoai},
-                success: function (response) {
+            if (soDienThoai.length==10){
+                $.ajax({
+                    type: 'GET',
+                    url: '/ban-tai-quay/kiemTraKhachHang',
+                    data: {soDienThoai: soDienThoai},
+                    success: function (response) {
 
-                    $('#tenKhachHang').val(response);
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr.responseText);
-                }
-            });
+                        $('#tenKhachHang').val(response);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/ban-tai-quay/themKhachHangCustomer",
+                            data: {
+                                idTabs: tabActive,
+                                soDienThoai: soDienThoai,
+                                tenKhachHang: response
+                            },
+                            success: function (response) {
+
+                            },
+
+                            error: function (xhr, status, error) {
+
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+
         });
     });
 </script>
@@ -1750,6 +1777,12 @@
                             showConfirmButton: false,
                             timer: 1000
                         });
+
+                        document.getElementById('totalOrder').innerText=""
+                        document.getElementById("cash-in-return").innerText=""
+                        document.getElementById("khach-thanh-toan").value = 0;
+                        document.getElementById("soDienThoai").value = "";
+                        document.getElementById("tenKhachHang").value = "";
                         tabActive = "";
                         $('.gioHangTaiQuay').empty();
                         $('.tab button.tablinks').remove();
@@ -1915,7 +1948,9 @@
 
 
     function openTab(evt, tabName) {
-        maHoaDon=tabName;
+
+        document.getElementById("khach-thanh-toan").value = 0;
+        maHoaDon = tabName;
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -1933,6 +1968,8 @@
             selectedTab.style.display = "block";
             evt.currentTarget.style.backgroundColor = "white";
             evt.currentTarget.style.color = "black";
+            var sdt="";
+            var tenKhachHang ="";
 
             // Gửi maHoaDon của tab đang chọn đến máy chủ
             $.ajax({
@@ -1944,16 +1981,30 @@
                 }), // Gửi maHoaDon của tab
                 success: function (response) {
                     var khachThanhToan = 0;
-                    for (let i = 0; i < response.length; i++) {
-                        khachThanhToan = response[i].hoaDon.khachThanhToan;
+                    console.log("llllllllllllll "+ response.maHoaDon)
+
+                    if (response.maHoaDon===tabName){
+                        console.log("forrrrrrrrrrrrr "+ response.length)
+                        khachThanhToan = response.khachThanhToan;
+                        sdt = response.sdtNguoiNhan;
+                        tenKhachHang = response.tenNguoiNhan;
+                    }else{
+                        console.log("sixxxxxxxxxxxxxxxxxxxx "+ response.length)
+                        for (let i = 0; i < response.length; i++) {
+                            khachThanhToan = response[0].hoaDon.khachThanhToan;
+                            sdt = response[0].hoaDon.sdtNguoiNhan;
+                            tenKhachHang = response[0].hoaDon.tenNguoiNhan;
+                        }
                     }
-                    updateProductList(response);
+
                     document.getElementById("khach-thanh-toan").value = formatMoney(khachThanhToan);
+                    document.getElementById("soDienThoai").value = sdt;
+                    document.getElementById("tenKhachHang").value = tenKhachHang;
+                    updateProductList(response);
                     updateTotalPrice();
                     fillSoLuong();
 
 
-                    // Gán sự kiện cho các phần tử DOM và gọi hàm calculateCashInReturn để tính toán ban đầu
                     document.getElementById("khach-thanh-toan").addEventListener("input", calculateCashInReturn2);
                     document.getElementById("totalOrder").addEventListener("input", calculateCashInReturn2);
                     calculateCashInReturn(); // Gọi hàm calculateCashInReturn lần đầu tiên
@@ -1996,7 +2047,7 @@
         gioHangTaiQuayElement.innerHTML = '';
 
         // check GioHang Null
-        if (products.length === 0) {
+        if (products.length===undefined) {
             gioHangTaiQuayElement.innerHTML =
                 '<div class="center-content" style="text-align: center; margin: 20px; padding: 10px; background-color: #f7f7f7; border-radius: 5px;">' +
                 '<img src="../static/images/icon/cost.png" alt="Cost Icon" style="width: 200px; height: 200px; margin-bottom: 20px; margin-top: 20px ">' +
@@ -2005,15 +2056,13 @@
             '</div>';
             return; // Thoát khỏi hàm nếu giỏ hàng rỗng
         }
-        // Thêm danh sách sản phẩm mới vào giao diện người dùng
         var count = 1; // Biến đếm số thứ tự
 
         products.forEach(function (product) {
             const price = product.chiTietSanPham.giaBan * product.soLuong;
             var formattedPrice = price.toLocaleString('vi-VN', {style: 'decimal'});
             var productHTML = '<div class="item productInCart" style="margin-bottom: 6px ; border: 1px solid #CCD1D1;border-radius: 10px;height: 37px" >' +
-                '<div class= "idCtsp" hidden>' + product.chiTietSanPham.id + '</div>' +
-                '<div class="orderNumber" style="margin-right: 10px;width: 10px">' + count++ + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
+                '<div class= "idCtsp" hidden>' + product.chiTietSanPham.id + '</div>' + // Hiển thị số thứ tự với khoảng cách 20px
                 '<button class="deleteButton" style="margin: 0px;" onclick="deleteProduct(' + product.chiTietSanPham.id + ', event)"><i class="bi bi-trash3" style="font-size: 22px;"></i></button>' + // Thêm margin-left cho nút giỏ hàng
                 '<div class="orderNumber" style="margin-right: 45px;width: 40px">' + product.chiTietSanPham.ma + '</div>' +
                 '<div class="info" style="width: 400px; max-width: 400px">' +
@@ -2177,6 +2226,8 @@
                         // Xóa sản phẩm khỏi danh sách sản phẩm trong giao diện người dùng
                         var productElement = event.target.closest('.item');
                         productElement.remove();
+                        var count = document.getElementById("countTemp").innerText
+                        // document.getElementById("countTemp").innerText = count -1;
 
                         updateTotalPrice();
                         fillSoLuong();
@@ -2221,6 +2272,11 @@
                         var newTabHTML = '<button class="tablinks active tab1" style="padding-right: 8px"   id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
                             '<span  onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
                         '</button>';
+
+                        var newTabHTML = '<button class="tablinks active tab1" style="padding-right: 8px"   id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
+                            '<span  onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
+                        '</button>';
+
                         $('.tab').append(newTabHTML);
                     });
 
@@ -2324,243 +2380,257 @@
 
 
 
-        console.log("tong " + tongGiaTri)
+
         if (tabActive == "") {
             errorAdd("Chọn Hóa Đơn Để Thanh Toán");
             return;
         } else {
-            $.ajax({
-                url: '/ban-tai-quay/check-trangThai-ctsp',
-                type: 'POST',
-                data: {
-                    maHoaDon: tabActive,
-                },
-                success: function (response) {
-                    if(response ==="null"){
-                        Swal.fire({
-                            title: "Thông Báo",
-                            html: "Bạn chưa có sản phẩm nào trong giỏ hàng",
-                            icon: "warning",
-                            customClass: {
-                                htmlContainer: 'swal2-html-container',
-                                popup: 'swal2-popup',
-                                title: 'swal2-title',
-                                content: 'swal2-content',
-                                confirmButton: 'swal2-confirm',
-                                cancelButton: 'swal2-cancel',
+
+            Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn Muốn Thanh Toán Đơn Hàng',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy',
+                reverseButtons: true // Đảo ngược vị trí của các nút
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu người dùng xác nhận xóa sản phẩm
+                    $.ajax({
+                        url: '/ban-tai-quay/check-trangThai-ctsp',
+                        type: 'POST',
+                        data: {
+                            maHoaDon: tabActive,
+                        },
+                        success: function (response) {
+                            if(response ==="null"){
+                                Swal.fire({
+                                    title: "Thông Báo",
+                                    html: "Bạn chưa có sản phẩm nào trong giỏ hàng",
+                                    icon: "warning",
+                                    customClass: {
+                                        htmlContainer: 'swal2-html-container',
+                                        popup: 'swal2-popup',
+                                        title: 'swal2-title',
+                                        content: 'swal2-content',
+                                        confirmButton: 'swal2-confirm',
+                                        cancelButton: 'swal2-cancel',
+                                    }
+                                });
                             }
-                        });
-                    }
-                    else if (response.length === 0) {
-                        $.ajax({
-                            url: '/ban-tai-quay/check-soLuong-ctsp',
-                            type: 'POST',
-                            data: {
-                                maHoaDon: tabActive,
-                            },
-                            success: function (response) {
-                                if (khachThanhToanInput.trim() === "") {
-                                    Swal.fire({
-                                        title: "Thông Báo",
-                                        html: "Vui Lòng Nhập Tiền Khách Trả!",
-                                        icon: "warning",
-                                        customClass: {
-                                            htmlContainer: 'swal2-html-container',
-                                            popup: 'swal2-popup',
-                                            title: 'swal2-title',
-                                            content: 'swal2-content',
-                                            confirmButton: 'swal2-confirm',
-                                            cancelButton: 'swal2-cancel',
+                            else if (response.length === 0) {
+                                $.ajax({
+                                    url: '/ban-tai-quay/check-soLuong-ctsp',
+                                    type: 'POST',
+                                    data: {
+                                        maHoaDon: tabActive,
+                                    },
+                                    success: function (response) {
+                                        if (khachThanhToanInput.trim() === "") {
+                                            Swal.fire({
+                                                title: "Thông Báo",
+                                                html: "Vui Lòng Nhập Tiền Khách Trả!",
+                                                icon: "warning",
+                                                customClass: {
+                                                    htmlContainer: 'swal2-html-container',
+                                                    popup: 'swal2-popup',
+                                                    title: 'swal2-title',
+                                                    content: 'swal2-content',
+                                                    confirmButton: 'swal2-confirm',
+                                                    cancelButton: 'swal2-cancel',
+                                                }
+                                            });
+                                            return;
                                         }
-                                    });
-                                    return;
-                                }
 
-                                if (khachThanhToanValue-tongGiaTri<0) {
-                                    // Hiển thị thông báo
-                                    Swal.fire({
-                                        title: "Thông Báo",
-                                        html: "Khách Chưa Trả Đủ Tiền Hàng!",
-                                        icon: "warning",
-                                        customClass: {
-                                            htmlContainer: 'swal2-html-container',
-                                            popup: 'swal2-popup',
-                                            title: 'swal2-title',
-                                            content: 'swal2-content',
-                                            confirmButton: 'swal2-confirm',
-                                            cancelButton: 'swal2-cancel',
+                                        if (khachThanhToanValue-tongGiaTri<0) {
+                                            // Hiển thị thông báo
+                                            Swal.fire({
+                                                title: "Thông Báo",
+                                                html: "Khách Chưa Trả Đủ Tiền Hàng!",
+                                                icon: "warning",
+                                                customClass: {
+                                                    htmlContainer: 'swal2-html-container',
+                                                    popup: 'swal2-popup',
+                                                    title: 'swal2-title',
+                                                    content: 'swal2-content',
+                                                    confirmButton: 'swal2-confirm',
+                                                    cancelButton: 'swal2-cancel',
+                                                }
+                                            });
+                                            return;
                                         }
-                                    });
-                                    return;
-                                }
-                                if (response.length === 0) {
+                                        if (response.length === 0) {
 
-                                    $.ajax({
-                                        url: '/ban-tai-quay/thanh-toan',
-                                        type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify({
+                                            $.ajax({
+                                                url: '/ban-tai-quay/thanh-toan',
+                                                type: 'POST',
+                                                contentType: 'application/json',
+                                                data: JSON.stringify({
 
-                                            soDienThoai: soDienThoai,
-                                            tenKhachHang: tenKhachHang,
-                                            tongGiaTri: tongGiaTri,
-                                            maHoaDon: tabActive
-                                        }),
+                                                    soDienThoai: soDienThoai,
+                                                    tenKhachHang: tenKhachHang,
+                                                    tongGiaTri: tongGiaTri,
+                                                    maHoaDon: tabActive
+                                                }),
 
-                                        success: function (response) {
-                                            if (response === "null") {
-                                                Swal.fire({
-                                                    title: "Thông Báo",
-                                                    html: "Bạn chưa có sản phẩm nào trong giỏ hàng",
-                                                    icon: "warning",
-                                                    customClass: {
-                                                        htmlContainer: 'swal2-html-container',
-                                                        popup: 'swal2-popup',
-                                                        title: 'swal2-title',
-                                                        content: 'swal2-content',
-                                                        confirmButton: 'swal2-confirm',
-                                                        cancelButton: 'swal2-cancel',
+                                                success: function (response) {
+                                                    if (response === "null") {
+                                                        Swal.fire({
+                                                            title: "Thông Báo",
+                                                            html: "Bạn chưa có sản phẩm nào trong giỏ hàng",
+                                                            icon: "warning",
+                                                            customClass: {
+                                                                htmlContainer: 'swal2-html-container',
+                                                                popup: 'swal2-popup',
+                                                                title: 'swal2-title',
+                                                                content: 'swal2-content',
+                                                                confirmButton: 'swal2-confirm',
+                                                                cancelButton: 'swal2-cancel',
+                                                            }
+                                                        });
+                                                    } else {
+                                                        var tenKhachHangInput = document.getElementById('tenKhachHang');
+                                                        var soDienThoaiInput = document.getElementById('soDienThoai');
+                                                        var totalOrderSpan = document.getElementById('totalOrder');
+                                                        //////////
+                                                        tenKhachHangInput.value = '';
+                                                        soDienThoaiInput.value = '';
+                                                        totalOrderSpan.textContent = '0';
+                                                        $('.gioHangTaiQuay').empty();
+                                                        $('.tab button.tablinks').remove();
+                                                        response.forEach(function (hoaDon) {
+                                                            var temp = hoaDon.maHoaDon;
+                                                            var newTabHTML = '<button class="tablinks active tab1"  style="padding-right: 7px ;height: 37.6px" id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
+                                                                '<span style="margin-left: 0px; padding-left: 0px" class="closeButtonTab" onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
+                                                            '</button>';
+                                                            $('.tab').append(newTabHTML);
+
+                                                        });
+                                                        var newAddTabs = '<button class="tablinks add" onclick="addTab()">+</button>';
+                                                        $('.tab').append(newAddTabs);
+
+                                                        console.log("Đã thanh toán thành công. Thông tin đơn hàng:", response);
+                                                        successMessage('Thanh Toán Thành Công');
+
+                                                        Swal.fire({
+                                                            title: "Bạn có muốn in hoá đơn không?",
+                                                            icon: "success",
+                                                            showCancelButton: true,
+                                                            confirmButtonText: "In hóa đơn",
+                                                            cancelButtonText: "Đóng",
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                var form = document.createElement('form');
+                                                                form.setAttribute('action', '/ban-tai-quay/export');
+                                                                form.setAttribute('method', 'get');
+                                                                form.style.display = 'none'; // Ẩn form đi để tránh hiển thị trên giao diện
+
+                                                                var input = document.createElement('input');
+                                                                input.setAttribute('type', 'hidden');
+                                                                input.setAttribute('name', 'maHoaDon');
+                                                                input.setAttribute('value', tabActive); // Truyền giá trị tabActive vào biến maHoaDon
+
+                                                                form.appendChild(input);
+                                                                document.body.appendChild(form);
+
+                                                                form.submit();
+                                                                // Redirect();
+                                                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                                                // // Xóa màn hình của hóa đơn vừa thanh toán
+                                                                // tabActive = "";
+                                                                // $('.gioHangTaiQuay').empty();
+                                                                // $('.tab button.tablinks').remove();
+                                                                // response.forEach(function (hoaDon) {
+                                                                //     var temp = hoaDon.maHoaDon;
+                                                                //     var newTabHTML = '<button class="tablinks active tab1"  style="padding-right: 7px ;height: 37.6px" id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
+                                                                //         '<span style="margin-left: 0px; padding-left: 0px" class="closeButtonTab" onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
+                                                                //     '</button>';
+                                                                //     $('.tab').append(newTabHTML);
+                                                                // });
+                                                                // var newAddTabs = '<button class="tablinks add" onclick="addTab()">+</button>';
+                                                                // $('.tab').append(newAddTabs);
+                                                                location.reload();
+                                                            }
+                                                        });
+
+
                                                     }
-                                                });
-                                            } else {
-                                                var tenKhachHangInput = document.getElementById('tenKhachHang');
-                                                var soDienThoaiInput = document.getElementById('soDienThoai');
-                                                var totalOrderSpan = document.getElementById('totalOrder');
-                                                //////////
-                                                tenKhachHangInput.value = '';
-                                                soDienThoaiInput.value = '';
-                                                totalOrderSpan.textContent = '0';
-                                                $('.gioHangTaiQuay').empty();
-                                                $('.tab button.tablinks').remove();
-                                                response.forEach(function (hoaDon) {
-                                                    var temp = hoaDon.maHoaDon;
-                                                    var newTabHTML = '<button class="tablinks active tab1"  style="padding-right: 8px; width: 117px"  id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
-                                                        '<span onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
-                                                    '</button>';
-                                                    $('.tab').append(newTabHTML);
-
-                                                });
-                                                var newAddTabs = '<button class="tablinks add" onclick="addTab()">+</button>';
-                                                $('.tab').append(newAddTabs);
-
-                                                console.log("Đã thanh toán thành công. Thông tin đơn hàng:", response);
-                                                successMessage('Thanh Toán Thành Công');
-
-                                                Swal.fire({
-                                                    title: "Bạn có muốn in hoá đơn không?",
-                                                    icon: "success",
-                                                    showCancelButton: true,
-                                                    confirmButtonText: "In hóa đơn",
-                                                    cancelButtonText: "Đóng",
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        var form = document.createElement('form');
-                                                        form.setAttribute('action', '/ban-tai-quay/export');
-                                                        form.setAttribute('method', 'get');
-                                                        form.style.display = 'none'; // Ẩn form đi để tránh hiển thị trên giao diện
-
-                                                        var input = document.createElement('input');
-                                                        input.setAttribute('type', 'hidden');
-                                                        input.setAttribute('name', 'maHoaDon');
-                                                        input.setAttribute('value', tabActive); // Truyền giá trị tabActive vào biến maHoaDon
-
-                                                        form.appendChild(input);
-                                                        document.body.appendChild(form);
-
-                                                        form.submit();
-                                                        // Redirect();
-                                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                                        // // Xóa màn hình của hóa đơn vừa thanh toán
-                                                        // tabActive = "";
-                                                        // $('.gioHangTaiQuay').empty();
-                                                        // $('.tab button.tablinks').remove();
-                                                        // response.forEach(function (hoaDon) {
-                                                        //     var temp = hoaDon.maHoaDon;
-                                                        //     var newTabHTML = '<button class="tablinks active tab1"  style="padding-right: 7px ;height: 37.6px" id="' + hoaDon.maHoaDon + '" onclick="openTab(event, \'' + hoaDon.maHoaDon + '\')">' + hoaDon.maHoaDon + '' +
-                                                        //         '<span style="margin-left: 0px; padding-left: 0px" class="closeButtonTab" onclick="closeTabs(\'' + temp + '\')"><i class="bi bi-x-circle closeButtonTab"></i></span>';
-                                                        //     '</button>';
-                                                        //     $('.tab').append(newTabHTML);
-                                                        // });
-                                                        // var newAddTabs = '<button class="tablinks add" onclick="addTab()">+</button>';
-                                                        // $('.tab').append(newAddTabs);
-                                                        location.reload();
-                                                    }
-                                                });
 
 
-                                            }
+                                                },
+                                                error: function (error) {
+                                                    console.error("Lỗi khi thanh toán:", error);
+                                                }
+                                            });
 
 
-                                        },
-                                        error: function (error) {
-                                            console.error("Lỗi khi thanh toán:", error);
-                                        }
-                                    });
-
-
-                                } else {
-                                    // Tạo chuỗi thông báo để hiển thị tên sản phẩm và màu sắc trên cùng một dòng
-                                    var message = "";
-                                    var soLuong = "";
-                                    response.forEach(function (item) {
-                                        if (item.soLuong === 0) {
-                                            soLuong = " - Hết Hàng"
                                         } else {
-                                            soLuong = " .Chỉ được thêm tối đa: " + item.soLuong + " Sản Phẩm "
+                                            // Tạo chuỗi thông báo để hiển thị tên sản phẩm và màu sắc trên cùng một dòng
+                                            var message = "";
+                                            var soLuong = "";
+                                            response.forEach(function (item) {
+                                                if (item.soLuong === 0) {
+                                                    soLuong = " - Hết Hàng"
+                                                } else {
+                                                    soLuong = " .Chỉ được thêm tối đa: " + item.soLuong + " Sản Phẩm "
+                                                }
+                                                message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + soLuong + "<br>";
+                                            });
+
+                                            Swal.fire({
+                                                title: "Thông tin sản phẩm",
+                                                html: message,
+                                                icon: "warning",
+                                                customClass: {
+                                                    htmlContainer: 'swal2-html-container',
+                                                    popup: 'swal2-popup',
+                                                    title: 'swal2-title',
+                                                    content: 'swal2-content',
+                                                    confirmButton: 'swal2-confirm',
+                                                    cancelButton: 'swal2-cancel',
+                                                }
+                                            });
                                         }
-                                        message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + soLuong + "<br>";
-                                    });
 
-                                    Swal.fire({
-                                        title: "Thông tin sản phẩm",
-                                        html: message,
-                                        icon: "warning",
-                                        customClass: {
-                                            htmlContainer: 'swal2-html-container',
-                                            popup: 'swal2-popup',
-                                            title: 'swal2-title',
-                                            content: 'swal2-content',
-                                            confirmButton: 'swal2-confirm',
-                                            cancelButton: 'swal2-cancel',
-                                        }
-                                    });
-                                }
+                                    },
+                                    error: function (error) {
+                                        console.error(error);
+                                        console.log("Có lỗi khi kiểm tra số lượng sản phẩm trong kho");
+                                    }
+                                });
+                            } else {
+                                var message = "";
+                                var trangThai = "";
+                                response.forEach(function (item) {
+                                    if (item.trangThai === 0) {
+                                        trangThai = " - Ngừng Bán"
+                                    }
+                                    message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + trangThai + "<br>";
+                                });
 
-                            },
-                            error: function (error) {
-                                console.error(error);
-                                console.log("Có lỗi khi kiểm tra số lượng sản phẩm trong kho");
+                                Swal.fire({
+                                    title: "Thông tin sản phẩm",
+                                    html: message,
+                                    icon: "warning",
+                                    customClass: {
+                                        htmlContainer: 'swal2-html-container',
+                                        popup: 'swal2-popup',
+                                        title: 'swal2-title',
+                                        content: 'swal2-content',
+                                        confirmButton: 'swal2-confirm',
+                                        cancelButton: 'swal2-cancel',
+                                    }
+                                });
                             }
-                        });
-                    } else {
-                        var message = "";
-                        var trangThai = "";
-                        response.forEach(function (item) {
-                            if (item.trangThai === 0) {
-                                trangThai = " - Ngừng Bán"
-                            }
-                            message += "<span class='bold'>" + item.sanPham.tenSanPham + "</span> - " + item.mauSac.tenMauSac + trangThai + "<br>";
-                        });
 
-                        Swal.fire({
-                            title: "Thông tin sản phẩm",
-                            html: message,
-                            icon: "warning",
-                            customClass: {
-                                htmlContainer: 'swal2-html-container',
-                                popup: 'swal2-popup',
-                                title: 'swal2-title',
-                                content: 'swal2-content',
-                                confirmButton: 'swal2-confirm',
-                                cancelButton: 'swal2-cancel',
-                            }
-                        });
-                    }
-
-                },
-                error: function (error) {
-                    console.error(error);
-                    console.log("Có lỗi khi check trạng thái sản phẩm");
+                        },
+                        error: function (error) {
+                            console.error(error);
+                            console.log("Có lỗi khi check trạng thái sản phẩm");
+                        }
+                    });
                 }
             });
         }

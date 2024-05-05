@@ -1,8 +1,11 @@
 package com.bags.sixdoBag.controller.Online;
 
 import com.bags.sixdoBag.model.dto.response.DonHangOnlineResponse;
+import com.bags.sixdoBag.model.entitys.ChiTietHoaDon;
+import com.bags.sixdoBag.model.entitys.ChiTietSanPham;
 import com.bags.sixdoBag.model.entitys.HoaDon;
 import com.bags.sixdoBag.model.entitys.KhachHang;
+import com.bags.sixdoBag.service.ChiTietSanPhamServivce;
 import com.bags.sixdoBag.service.HoaDonService;
 import com.bags.sixdoBag.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +26,8 @@ public class ManagerOrderCustomer {
     private final HttpSession session;
 
     private final KhachHangService khachHangService;
+
+    private final ChiTietSanPhamServivce chiTietSanPhamServivce;
 
     @GetMapping("/don-chua-xac-nhan")
     public @ResponseBody
@@ -64,7 +69,7 @@ public class ManagerOrderCustomer {
         KhachHang khachHang = (KhachHang) session.getAttribute("buyer");
         int soLuong = 0;
         if (Objects.nonNull(khachHang)) {
-            soLuong = hoaDonService.getSortHoaDonByKhachHang(khachHang.getId()).get(0).intValue();
+            soLuong = hoaDonService.getSortHoaDonByKhachHang(khachHang.getId()).get(6).intValue();
         }
         return soLuong;
     }
@@ -101,12 +106,25 @@ public class ManagerOrderCustomer {
     boolean huyHoaDonByIdHoaDon(@RequestParam("idHoaDon") int id, @RequestParam("lyDoKhachHuy") String lyDoKhachHuy) {
         try {
             HoaDon hoaDon = hoaDonService.getHoaDonById(id);
-            if (lyDoKhachHuy.equals("") || lyDoKhachHuy == null) {
+            if (lyDoKhachHuy.equals("") || lyDoKhachHuy == null ) {
                 return false;
-            } else {
+            }else if(hoaDon.getTrangThai() !=2 ){
+                return false;
+            }else {
                 hoaDon.setTrangThai(4);
                 System.out.println(hoaDon.getLyDoKhachHuy());
+                List<ChiTietHoaDon> chiTietHoaDons = hoaDon.getChiTietHoaDons();
+                for (ChiTietHoaDon chiTietHoaDon : chiTietHoaDons) {
+                    ChiTietSanPham chiTietSanPham = chiTietSanPhamServivce.getChiTietSanPham(chiTietHoaDon.getChiTietSanPham().getId());
+                    int soLuong = chiTietHoaDon.getSoLuong();
+                    int soLuongGoc = chiTietSanPham.getSoLuong();
+                    chiTietSanPham.setSoLuong(soLuong + soLuongGoc);
+                    System.out.println("So luong goc " + soLuongGoc + "  soLuong cong: " + soLuong);
+                    System.out.println("huy: sp" + chiTietHoaDon.getChiTietSanPham().getMa());
+                }
+
                 hoaDon.setLyDoKhachHuy(lyDoKhachHuy);
+
                 hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
                 return true;
             }
@@ -121,7 +139,7 @@ public class ManagerOrderCustomer {
     boolean nhanHangThanhCongByIdHoaDon(@RequestParam("idHoaDon") int id) {
         try {
             HoaDon hoaDon = hoaDonService.getHoaDonById(id);
-            hoaDon.setTrangThai(0);
+            hoaDon.setTrangThai(6);
             hoaDon.setThoiGianThanhToan(LocalDateTime.now());
             hoaDonService.editHoaDon(hoaDon.getId(), hoaDon);
             return true;

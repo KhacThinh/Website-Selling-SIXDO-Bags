@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -79,11 +80,16 @@ public class MaGiamGiaController {
     @PostMapping("/add")
     public ResponseEntity<?> add(Model model, @RequestBody MaGiamGiaDTO maGiamGiaDTO
     ) {
-        System.out.println("maGiamGia" + maGiamGiaDTO.getMaGiamGia());
-        MaGiamGia gg1 = maGiamGiaRepository.searchMaGiamGiaByMa(maGiamGiaDTO.getMaGiamGia());
-        MaGiamGia gg2 = maGiamGiaRepository.searchMaGiamGiaByTen(maGiamGiaDTO.getTenMaGiamGia());
 
-        if (gg1 == null && gg2 == null) {
+        System.out.println("maGiamGia" + maGiamGiaDTO.getMaGiamGia());
+        MaGiamGia gg1 = maGiamGiaRepository.searchMaGiamGiaByMa(maGiamGiaDTO.getMaGiamGia().trim());
+        MaGiamGia gg2 = maGiamGiaRepository.searchMaGiamGiaByTen(maGiamGiaDTO.getTenMaGiamGia().trim());
+        if (Objects.nonNull(gg2)) {
+            return ResponseEntity.ok("errorTen");
+        }else if (gg1 != null) {
+            return ResponseEntity.ok("errorMa");
+//            (gg1 == null && gg2 == null)
+        }else {
             MaGiamGia maGiamGia1 = new MaGiamGia();
             maGiamGia1.setMaGiamGia(maGiamGiaDTO.getMaGiamGia());
             maGiamGia1.setTenMaGiamGia(maGiamGiaDTO.getTenMaGiamGia());
@@ -115,10 +121,6 @@ public class MaGiamGiaController {
             }
 
             return ResponseEntity.ok("ok");
-        } else if (gg1 != null && gg2 == null) {
-            return ResponseEntity.ok("errorMa");
-        } else {
-            return ResponseEntity.ok("errorTen");
         }
     }
 
@@ -239,7 +241,7 @@ public class MaGiamGiaController {
                 return ResponseEntity.ok(hoaDon.getMaGiamGia().getGiaTriGiam());
             } else {
                 hoaDon.setGiamGia(0);
-                hoaDon.setTongTien(tongTienHang+phiShip);
+                hoaDon.setTongTien(tongTienHang);
                 hoaDon.setPhiVanChuyen(phiShip);
                 hoaDonRepository.save(hoaDon);
 

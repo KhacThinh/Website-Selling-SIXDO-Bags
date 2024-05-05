@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("mau-sac")
@@ -52,7 +53,7 @@ public class MauSacController {
             model.addAttribute("nameSearch", name);
             khuyenMais = mauSacService.searchMauSacTenOrMa(name, pageable);
         }else {
-            khuyenMais = mauSacRepository.findAll(pageable);
+            khuyenMais = mauSacRepository.findAllCustom(pageable);
         }
 
         model.addAttribute("listColors", khuyenMais);
@@ -61,30 +62,29 @@ public class MauSacController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestParam("maMauSac") String maMauSac,
                                  @RequestParam("tenMauSac") String tenMauSac, Model model
-     ) {
+    ) {
         System.out.println(maMauSac);
-        MauSac ms1 = mauSacRepository.searchMauSacByMa(maMauSac);
-        MauSac ms2 = mauSacRepository.searchMauSacByTen(tenMauSac);
-        System.out.println(ms1);
-        System.out.println(ms2);
-        if(ms1 ==null && ms2 ==null) {
+        MauSac ms1 = mauSacRepository.searchMauSacByMa(maMauSac.trim());
+        MauSac ms2 = mauSacRepository.searchMauSacByTen(tenMauSac.trim());
+
+        if (Objects.nonNull(ms2)) {
+            return ResponseEntity.ok("errorTen");
+        } else if( ms1 != null) {
+            return ResponseEntity.ok("errorMa");
+        }else {
             MauSac mauSac = new MauSac();
             mauSac.setMaMauSac(maMauSac);
             mauSac.setTenMauSac(tenMauSac);
             mauSacService.addMauSac(mauSac);
             return ResponseEntity.ok("ok");
         }
-       else if (ms1 != null && ms2 == null) {
-            return ResponseEntity.ok("errorMa");
-        } else {
-            return ResponseEntity.ok("errorTen");
-        }
+
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> suaMauSac(@RequestParam("id") Integer id,
-                                           @RequestParam("maMauSac") String maMauSac,
-                                           @RequestParam("tenMauSac") String tenMauSac) {
+                                       @RequestParam("maMauSac") String maMauSac,
+                                       @RequestParam("tenMauSac") String tenMauSac) {
         System.out.println(maMauSac    );
         System.out.println(tenMauSac);
         MauSac mauSac = mauSacService.getidMauSac(id);

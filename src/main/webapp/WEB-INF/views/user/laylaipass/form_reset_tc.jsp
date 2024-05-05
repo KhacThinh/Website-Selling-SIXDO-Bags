@@ -65,9 +65,9 @@
      src="https://png.pngtree.com/thumb_back/fh260/background/20230523/pngtree-cyan-blue-light-effect-abstract-vector-stock-photos-image-guardian-bright-image_2806077.jpg">
 
 <div class="container">
-    <h2>Password Changed Successfully!</h2>
-    <p class="message">Your password has been changed successfully.</p>
-    <a href="/login/hien-thi">Go to Login</a>
+    <h2>Đã đổi mật khẩu thành công!</h2>
+    <p class="message">Mật khẩu của bạn đã được thay đổi thành công...</p>
+    <a href="/login/hien-thi">Đi tới Đăng Nhập</a>
 </div>
 </body>
 </html>

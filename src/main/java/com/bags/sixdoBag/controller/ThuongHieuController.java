@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -60,47 +61,57 @@ public class ThuongHieuController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestParam("ma") String maThuongHieu,
-                                 @RequestParam("ten") String tenThuongHieu,
-                                 @RequestParam("trangThai") boolean trangThaiTT, Model model
+    public ResponseEntity<?> add(
+            @RequestParam(value = "maTH", required = false) String maTH,
+//                                 @RequestParam("maTH") String maThuongHieu,
+            @RequestParam("ten") String tenThuongHieu,
+            @RequestParam("trangThai") boolean trangThaiTT, Model model
     ) {
-        System.out.println(maThuongHieu);
-        ThuongHieu th1 = thuongHieuRepository.searchThuongHieuByMa(maThuongHieu);
-        ThuongHieu th2 = thuongHieuRepository.searchThuongHieuByTen(tenThuongHieu);
-        System.out.println(th1);
-        System.out.println(th2);
-        System.out.println(trangThaiTT);
-
-        if (th1 == null && th2 == null) {
+        System.out.println(maTH);
+        ThuongHieu th1 = thuongHieuRepository.searchThuongHieuByMa(maTH.trim());
+        ThuongHieu th2 = thuongHieuRepository.searchThuongHieuByTen(tenThuongHieu.trim());
+        if (Objects.nonNull(th2)) {
+            return ResponseEntity.ok("errorTen");
+        } else if (th1 != null) {
+            return ResponseEntity.ok("errorMa");
+        } else {
+            String temp;
             ThuongHieu thuongHieu = new ThuongHieu();
-            thuongHieu.setMa(maThuongHieu);
+            thuongHieu.setMaTH(maTH);
             thuongHieu.setTen(tenThuongHieu);
             thuongHieu.setTrangThai(trangThaiTT);
-            thuongHieuService.addThuongHieu(thuongHieu);
+            thuongHieu = thuongHieuService.addThuongHieu(thuongHieu);
+            if (maTH == null || maTH.isEmpty()) {
+                thuongHieu.setMaTH("TH0" + thuongHieu.getId());
+                thuongHieuService.editThuongHieu(thuongHieu.getId(), thuongHieu);
+            }
 
             List<ThuongHieu> listDM = thuongHieuService.getThuongHieus();
             return ResponseEntity.ok(listDM);
-        } else if (th1 != null && th2 == null) {
-            return ResponseEntity.ok("errorMa");
-        } else {
-            return ResponseEntity.ok("errorTen");
         }
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> suaThuongHieu(@RequestParam("id") Integer id,
-                                           @RequestParam("ma") String ma,
+                                           @RequestParam("maTH") String ma,
                                            @RequestParam("ten") String ten,
                                            @RequestParam("trangThai") boolean trangThaiTT) {
         System.out.println(ma);
         System.out.println(ten);
+
         ThuongHieu thuongHieu = thuongHieuService.getidThuongHieu(id);
-        System.out.println(thuongHieu);
-        thuongHieu.setMa(ma);
-        thuongHieu.setTen(ten);
-        thuongHieu.setTrangThai(trangThaiTT);
-        thuongHieuService.editThuongHieu(id, thuongHieu);
-        return ResponseEntity.ok("ok");
+        String tenTh = thuongHieu.getTen();
+        ThuongHieu th2 = thuongHieuRepository.searchThuongHieuByTen(ten.trim());
+        if (th2 == null || ten.equals(tenTh)) {
+
+            thuongHieu.setMaTH(ma);
+            thuongHieu.setTen(ten);
+            thuongHieu.setTrangThai(trangThaiTT);
+            thuongHieuService.editThuongHieu(id, thuongHieu);
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.ok("errorTen");
+        }
     }
 
 
@@ -112,10 +123,7 @@ public class ThuongHieuController {
         return ResponseEntity.ok(danhSachThuongHieu);
     }
 
-    //    @PostMapping("/delete")
-//    public ResponseEntity<?> xoaChucVu(@RequestParam("idThuongHieu") Integer id) {
-//        return ResponseEntity.ok(thuongHieuService.deleteThuongHieu(id));
-//    }
+
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deleteKhuyenMai(@PathVariable("id") Integer id) {
         ThuongHieu khuyenMai = thuongHieuService.getidThuongHieu(id);

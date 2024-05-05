@@ -25,9 +25,9 @@ public class DoiTuongSuDung {
     @Column(name = "id")
     private Integer id;
 
-    @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
-    @NotEmpty(message = "Mã Không Được Để Trống")
-    @Length(max = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
+//    @NotBlank(message = "Mã Không Được Để Khoảng Trắng")
+//    @NotEmpty(message = "Mã Không Được Để Trống")
+//    @Length(max = 100, message = "Mã Không Vượt Quá 100 Ký Tự")
     @Column(name = "ma")
     private String maDoiTuongSuDung;
 

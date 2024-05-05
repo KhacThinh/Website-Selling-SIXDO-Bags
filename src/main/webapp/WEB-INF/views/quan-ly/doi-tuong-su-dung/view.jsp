@@ -206,9 +206,9 @@
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                     </div>
                     <input type="text" name="name" value="${nameSearch}" class="form-control" placeholder="Tìm kiếm theo mã hoặc tên...">
-<%--                    <div class="input-group-append">--%>
-<%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
-<%--                    </div>--%>
+                    <%--                    <div class="input-group-append">--%>
+                    <%--                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>--%>
+                    <%--                    </div>--%>
                 </div>
             </form>
         </div>
@@ -260,7 +260,7 @@
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin ĐỐi Tượng Sử Dụng</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: sans-serif">Thông Tin ĐỐi Tượng Sử Dụng</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -328,47 +328,47 @@
 
 <script>
 
-        function xoaDTSD(id) {
-            $.ajax({
-                url: '/doi-tuong-su-dung/delete/' + id,
-                type: 'POST',
-                success: function(response) {
-                    if (response === "ok") {
-                        Swal.fire({
-                            title: "Good job!",
-                            text: "Xóa Thành Công!",
-                            icon: "success"
-                        }).then((result) => {
-                            if (result.isConfirmed || result.isDismissed) {
-                                window.location.reload(); // Load lại trang nếu thành công
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Error!",
-                            text: "Lỗi khi xóa khuyến mãi",
-                            icon: "error"
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Có lỗi xảy ra:", error);
+    function xoaDTSD(id) {
+        $.ajax({
+            url: '/doi-tuong-su-dung/delete/' + id,
+            type: 'POST',
+            success: function(response) {
+                if (response === "ok") {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Xóa Thành Công!",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.reload(); // Load lại trang nếu thành công
+                        }
+                    });
+                } else {
                     Swal.fire({
                         title: "Error!",
-                        text: "Có lỗi xảy ra khi xóa khuyến mãi",
+                        text: "Lỗi khi xóa khuyến mãi",
                         icon: "error"
                     });
                 }
-            });
-        }
+            },
+            error: function(xhr, status, error) {
+                console.error("Có lỗi xảy ra:", error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Có lỗi xảy ra khi xóa khuyến mãi",
+                    icon: "error"
+                });
+            }
+        });
+    }
 
     function addDTSD() {
-        var maDoiTuongSuDung = document.getElementById("maDoiTuongSuDung").value;
-        var tenDoiTuongSuDung = document.getElementById("tenDoiTuongSuDung").value;
+        var maDoiTuongSuDung = document.getElementById("maDoiTuongSuDung").value.trim();
+        var tenDoiTuongSuDung = document.getElementById("tenDoiTuongSuDung").value.trim();
         var trangThai = document.getElementById("trangThai").value;
 
-        if (maDoiTuongSuDung.trim() === "" || tenDoiTuongSuDung.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+        if ( tenDoiTuongSuDung.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
             return false;
         }
         $.ajax({
@@ -380,7 +380,12 @@
                 trangThai: trangThai,
             },
             success: function (response) {
-                if (response === "ok") {
+                if (response === "errorMa") {
+                    toastr.error("Mã Đối Tượng Đã Tồn Tại");
+                }else if (response === "errorTen") {
+                    toastr.error("Tên Đối Tượng Đã Tồn Tại");
+                }
+                else {
                     Swal.fire({
                         title: "Good job!",
                         text: "Thêm Thành Công!",
@@ -390,8 +395,6 @@
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("mã trùng");
                 }
             },
             error: function (error) {
@@ -403,14 +406,14 @@
     }
 
     function updateDTSD(id) {
-        var maDoiTuongSuDung = document.getElementById("maUpdate" + id).value;
-        var tenDoiTuongSuDung = document.getElementById("tenUpdate" + id).value;
+        var maDoiTuongSuDung = document.getElementById("maUpdate" + id).value.trim();
+        var tenDoiTuongSuDung = document.getElementById("tenUpdate" + id).value.trim();
         var trangThai = document.getElementById("trangThaiUpdate" + id).value;
 
 
 
-        if (maDoiTuongSuDung.trim() === "" || tenDoiTuongSuDung.trim() === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin cho Mã Chức Vụ và Tên Chức Vụ.");
+        if ( tenDoiTuongSuDung.trim() === "") {
+            toastr.error("Vui lòng điền đầy đủ thông tin ");
             return false;
         }
 
@@ -425,7 +428,9 @@
 
             },
             success: function (response) {
-                if (response === "ok") {
+                if (response === "errorTen") {
+                    toastr.error("Đối Tượng Sử Dụng Đã Tồn Tại");
+                }else {
                     Swal.fire({
                         title: "Good job!",
                         text: "Sửa Thành Công!",
@@ -435,8 +440,6 @@
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("Mã trùng");
                 }
             },
             error: function (error) {
@@ -446,22 +449,22 @@
         });
 
     }
-        document.getElementById('trangThaiSelect').addEventListener('change', function() {
-            var selectedValue = this.value;
-            if (selectedValue !== '') {
-                window.location.href = '/doi-tuong-su-dung?trangThai=' + selectedValue;
-            } else {
-                window.location.href = '/doi-tuong-su-dung';
-            }
-        });
+    document.getElementById('trangThaiSelect').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue !== '') {
+            window.location.href = '/doi-tuong-su-dung?trangThai=' + selectedValue;
+        } else {
+            window.location.href = '/doi-tuong-su-dung';
+        }
+    });
 
-        window.addEventListener('DOMContentLoaded', function() {
-            var urlParams = new URLSearchParams(window.location.search);
-            var trangThaiValue = urlParams.get('trangThai');
-            if (trangThaiValue !== null) {
-                document.getElementById('trangThaiSelect').value = trangThaiValue;
-            }
-        });
+    window.addEventListener('DOMContentLoaded', function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var trangThaiValue = urlParams.get('trangThai');
+        if (trangThaiValue !== null) {
+            document.getElementById('trangThaiSelect').value = trangThaiValue;
+        }
+    });
 </script>
 </body>
 

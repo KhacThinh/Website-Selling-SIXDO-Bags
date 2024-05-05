@@ -20,11 +20,11 @@ public class ThuongHieu {
     @Column(name = "id")
     private Integer id;
 
-    @NotBlank(message = "Mã không được để khoảng trắng")
-    @NotEmpty(message = "Mã không được để trống")
-    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự!")
+    //    @NotBlank(message = "Mã không được để khoảng trắng")
+//    @NotEmpty(message = "Mã không được để trống")
+//    @Length(max = 100, message = "Mã không được vượt quá 100 ký tự!")
     @Column(name = "ma")
-    private String ma;
+    private String maTH;
 
     @NotBlank(message = "Mã không được để khoảng trắng")
     @NotEmpty(message = "Mã không được để trống")

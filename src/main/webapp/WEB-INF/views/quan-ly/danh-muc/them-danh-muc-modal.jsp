@@ -75,13 +75,13 @@
 <div class="modal modal-xl" id="modalAddDanhMuc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <h1>Danh Mục</h1>
+            <h1 style="font-family: sans-serif">Danh Mục</h1>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="maDanhMuc">Mã Danh Mục</label><span class="red-star"> *</span>
-                            <input  id="maDanhMuc" class="form-control"/>
+                            <input  id="maDanhMuc" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="tenDanhMuc">Tên Danh Mục</label><span class="red-star"> *</span>

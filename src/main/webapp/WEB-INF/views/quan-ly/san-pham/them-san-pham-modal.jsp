@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành <span
+                                <label for="idThoiGianBaoHanh">Thời Gian Bảo Hành(Tháng)<span
                                         class="required">*</span></label>
                                 <div class="input-group">
                                     <form:select path="idThoiGianBaoHanh" class="form-control">
@@ -177,7 +177,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="maDanhMuc">Mã Danh Mục</label><span class="red-star"> *</span>
-                            <input id="maDanhMuc" class="form-control"/>
+                            <input id="maDanhMuc" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="tenDanhMuc">Tên Danh Mục</label><span class="red-star"> *</span>
@@ -242,7 +242,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="ma">Mã Bảo Hành</label><span class="red-star"> *</span>
-                            <input id="ma" class="form-control"/>
+                            <input id="ma" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="thoiGian">Thời Gian</label><span class="red-star"> *</span>
@@ -257,13 +257,13 @@
                     </div>
                 </div>
                 <div class="table-container1">
-                    <div id="test1">
+                    <div id="test2">
                         <table class="table table-sm table-hover table-striped mb-5">
                             <thead>
                             <tr>
                                 <th scope="col">STT</th>
                                 <th scope="col">MÃ BẢO HÀNH</th>
-                                <th scope="col">THỜI GIAN</th>
+                                <th scope="col">THỜI GIAN(Tháng)</th>
                                 <th scope="col">TRẠNG THÁI</th>
                             </tr>
                             </thead>
@@ -307,8 +307,8 @@
                 <div class="form-container1">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="ma">Mã Thương Hiệu</label><span class="red-star"> *</span>
-                            <input id="ma" class="form-control"/>
+                            <label for="maTH">Mã Thương Hiệu</label><span class="red-star"> *</span>
+                            <input id="maTH" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="ten">Tên Thương Hiệu</label><span class="red-star"> *</span>
@@ -323,7 +323,7 @@
                     </div>
                 </div>
                 <div class="table-container1">
-                    <div id="test1">
+                    <div id="test3">
                         <table class="table table-sm table-hover table-striped mb-5">
                             <thead>
                             <tr>
@@ -337,7 +337,7 @@
                             <c:forEach items="${listColorsTH}" var="sp" varStatus="i">
                                 <tr id="record_${sp.id}">
                                     <td>${i.index + 1}</td>
-                                    <td>${sp.ma}</td>
+                                    <td>${sp.maTH}</td>
                                     <td>${sp.ten}</td>
                                     <td><span
                                             class="status ${sp.trangThai == true ? 'dangxuly' : 'pending'}">${sp.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span>
@@ -364,15 +364,14 @@
 <div class="modal modal-xl" id="modalAddDTSD" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content formcon">
-            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Đôi
-                Tượng</h1>
+            <h1 style="font-size: 20px;margin-top: 20px;margin-left:250px ; font-family:sans-serif">Thông Tin Đối Tượng</h1>
             <hr>
             <div class="modal-body1">
                 <div class="form-container1">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="maDoiTuongSuDung">Mã Đối Tượng</label><span class="red-star"> *</span>
-                            <input id="maDoiTuongSuDung" class="form-control"/>
+                            <input id="maDoiTuongSuDung" class="form-control" style="background-color: #f2f2f2;"/>
                         </div>
                         <div class="form-group">
                             <label for="tenDoiTuongSuDung">Tên Đối Tượng</label><span class="red-star"> *</span>
@@ -387,7 +386,7 @@
                     </div>
                 </div>
                 <div class="table-container1">
-                    <div id="test1">
+                    <div id="test4">
                         <table class="table table-sm table-hover table-striped mb-5">
                             <thead>
                             <tr>
@@ -494,6 +493,15 @@
         function checkErrorsAndSubmitAdd() {
             if (!hasError) {
                 document.getElementById('addSanPhamForm').submit();
+                Swal.fire({
+                    icon: "success",
+                    title: "Sản phẩm của bạn đã thêm thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function () {
+
+                    window.location.href = 'http://localhost:8080/san-pham';
+                });
             }
         }
 

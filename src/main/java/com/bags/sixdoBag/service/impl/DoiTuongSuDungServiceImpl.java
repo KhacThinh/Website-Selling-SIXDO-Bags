@@ -1,9 +1,7 @@
 package com.bags.sixdoBag.service.impl;
 
-import com.bags.sixdoBag.model.dto.request.ProductHomeRequest;
-import com.bags.sixdoBag.model.entitys.ChucVu;
+import com.bags.sixdoBag.model.dto.response.ProductHomeResponse;
 import com.bags.sixdoBag.model.entitys.DoiTuongSuDung;
-import com.bags.sixdoBag.model.entitys.ThuongHieu;
 import com.bags.sixdoBag.model.repository.DoiTuongSuDungRepository;
 import com.bags.sixdoBag.model.repository.QueryJpa;
 import com.bags.sixdoBag.service.DoiTuongSuDungService;
@@ -85,8 +83,8 @@ public class DoiTuongSuDungServiceImpl implements DoiTuongSuDungService {
     }
 
     @Override
-    public List<ProductHomeRequest> filterDoiTuongSuDungCTSPOnline(String ten) {
-        List<ProductHomeRequest> productHomeRequestList = queryJpa.filterDoiTuongSuDungProductHome(ten);
+    public List<ProductHomeResponse> filterDoiTuongSuDungCTSPOnline(String ten) {
+        List<ProductHomeResponse> productHomeRequestList = queryJpa.filterDoiTuongSuDungProductHome(ten);
         return productHomeRequestList;
     }
 }

@@ -14,17 +14,15 @@ public interface ChiTietGioHangRepository extends JpaRepository<ChiTietGioHang, 
     @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang")
     List<ChiTietGioHang> getListChiTietGioHangByKhachHang(int iKhachHang);
 
-    @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang and dtsg.chiTietSanPham.trangThai=1")
+    @Query(value = "SELECT dtsg FROM ChiTietGioHang dtsg where dtsg.gioHang.khachHang.id =:iKhachHang and dtsg.chiTietSanPham.trangThai = 1 " +
+            "and dtsg.chiTietSanPham.sanPham.trangThai = true")
     List<ChiTietGioHang> getListChiTietGioHangByKhachHangAndTrangThaiCtsp(int iKhachHang);
 
     @Query("select ctgh from ChiTietGioHang ctgh where ctgh.idGioHang =:idGioHang and ctgh.idChiTietSanPham =:idChiTietSanPham")
     ChiTietGioHang getChiTietGioHang(Integer idGioHang, Integer idChiTietSanPham);
 
-    @Query(value = "select sum(ctgh.so_luong) from gio_hang as gh " +
-            "join chi_tiet_gio_hang as ctgh on gh.id = ctgh.id_gio_hang " +
-            "where gh.id_khach_hang = :idKh " +
-            "group by gh.id", nativeQuery = true)
-    public Integer soLuongGioHangByIdKhachHang(@Param("idKh") int idKh);
+    @Query(value = "select o from ChiTietGioHang  o where o.chiTietSanPham.trangThai = 1 and o.chiTietSanPham.sanPham.trangThai = true and o.gioHang.khachHang.id =:idKh")
+    public List<ChiTietGioHang> soLuongGioHangByIdKhachHang(int idKh);
 
     @Query(value = "delete from chi_tiet_gio_hang where id_gio_hang =:idGh and  id_ctsp =:idCtsp",nativeQuery = true)
     void deleteChiTietGioHang(int idGh, int idCtsp);

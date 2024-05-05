@@ -181,7 +181,7 @@
                 <tr id="record_${th.id}">
                     <td class="bold">${i.index + 1}</td>
                     <td>${th.ma}</td>
-                    <td>${th.thoiGian}</td>
+                    <td>${th.thoiGian} Tháng</td>
                     <td><span
                             class="status ${th.trangThai == true ? 'dangxuly' : 'pending'}">${th.trangThai == true ? 'Hoạt Động' : 'Không Hoạt Động'}</span>
                     </td>
@@ -205,64 +205,47 @@
                         </ul>
 
                             <%--                        Modal update--%>
-                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalUpdate${th.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin Thời Gian Bảo Hành</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group" hidden>
-                                            <label  class="form-label">Id
-                                                <span>*</span></label>
-                                            <input value="${th.id}" name="id" id="id" class="form-control"/>
-                                        </div>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel" style="font-family: sans-serif">Thông Tin Bảo Hành</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label  class="form-label">Mã
-                                                        <span>*</span></label>
-                                                    <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control"/>
+                                        <form>
+                                            <div class="mb-3 row">
+                                                <label for="maUpdate${th.id}" class="col-sm-3 col-form-label">Mã Bảo Hành <span>*</span></label>
+                                                <div class="col-sm-9">
+                                                    <input value="${th.ma}" name="ma" id="maUpdate${th.id}" class="form-control" readonly
+                                                    >
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label  class="form-label">Thời Gian
-                                                        <span>*</span></label>
-                                                    <input value="${th.thoiGian}" name="thoiGian" id="thoiGianUpdate${th.id}" class="form-control"/>
-
+                                            <div class="mb-3 row">
+                                                <label for="tenUpdate${th.id}" class="col-sm-3 col-form-label">Thời Gian <span>*</span></label>
+                                                <div class="col-sm-9">
+                                                    <input value="${th.thoiGian}" name="thoiGian" id="thoiGianUpdate${th.id}" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label  class="form-label">Trạng thái
-                                                    <span>*</span></label>
-                                                <select name="trangThai" id="trangThaiUpdate${th.id}" class="form-select">
-                                                    <option value="true"${th.trangThai == true ? 'selected' : ''}>Hoạt động</option>
-                                                    <option value="false" ${th.trangThai == false? 'selected' : ''}>Không hoạt động</option>
-                                                </select>
-                                                    <%--                                                <input value="${th.trangThai}" name="trangThai" id="trangThaiUpdate${th.id}" class="form-control"/>--%>
+                                            <div class="mb-3 row">
+                                                <label for="trangThaiUpdate${th.id}" class="col-sm-3 col-form-label">Trạng Thái <span>*</span></label>
+                                                <div class="col-sm-9">
+                                                    <select name="trangThai" id="trangThaiUpdate${th.id}" class="form-select">
+                                                        <option value="true"${th.trangThai == true ? 'selected' : ''}>Hoạt động</option>
+                                                        <option value="false" ${th.trangThai == false? 'selected' : ''}>Không hoạt động</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                     <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            Thoát
-                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                                         <button type="submit" id="uploadButton" class="btn btn-primary" onclick="updateTGBH(${th.id})">Lưu</button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+
                     </td>
                 </tr>
             </c:forEach>
@@ -327,13 +310,18 @@
         });
     }
 
+
     function addThoiGian() {
-        var ma = document.getElementById("ma").value;
+        var ma = document.getElementById("ma").value.trim();
         var thoiGian = document.getElementById("thoiGian").value;
         var trangThai = document.getElementById("trangThai").value;
 
-        if (ma.trim() === ""||thoiGian==="" ) {
+        if (thoiGian==="" ) {
             toastr.error("Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+        if (isNaN(thoiGian) || thoiGian <= 0) {
+            toastr.error("Vui lòng nhập một giá trị thời gian hợp lệ (số lớn hơn 0)");
             return false;
         }
         $.ajax({
@@ -345,7 +333,11 @@
                 trangThai: trangThai,
             },
             success: function (response) {
-                if (response === "ok") {
+                if (response === "errorMa") {
+                    toastr.error("Mã trùng");
+                } else if (response === "errorTen") {
+                    toastr.error("Thời Gian Đã Tồn Tại");
+                }else {
                     Swal.fire({
                         title: "Good job!",
                         text: "Thêm Thành Công!",
@@ -355,17 +347,17 @@
                             window.location.reload();
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("Mã trùng");
                 }
             },
             error: function (error) {
-                console.error("Có lỗi xảy ra:", error);
                 toastr.error("Có lỗi xảy ra");
             }
         });
 
     }
+
+
+
 
     function updateTGBH(id) {
         var ma = document.getElementById("maUpdate" + id).value;
@@ -374,11 +366,14 @@
 
 
         console.log(ma);
-        if (ma.trim() === "" || thoiGian === "") {
-            toastr.error("Vui lòng điền đầy đủ thông tin ");
+        if ( thoiGian === "") {
+            toastr.error("Vui lòng điền thời gian Bảo hành ");
             return false;
         }
-
+        if (isNaN(thoiGian) || thoiGian <= 0) {
+            toastr.error("Vui lòng nhập một giá trị thời gian hợp lệ (số lớn hơn 0)");
+            return false;
+        }
         $.ajax({
             url: '/thoi_gian_bao_hanh/update',
             type: 'POST',
@@ -399,8 +394,8 @@
                             window.location.reload(); // Load lại trang nếu thành công
                         }
                     });
-                } else if (response === "errorMa") {
-                    toastr.error("Mã trùng");
+                } else {
+                    toastr.error("Thời Gian Đã Tồn Tại");
                 }
             },
             error: function (error) {
