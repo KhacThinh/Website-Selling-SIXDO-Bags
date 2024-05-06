@@ -6,6 +6,7 @@
 <html>
 <head>
     <title>QUẢN LÝ</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -19,14 +20,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style type="text/css">
-        <style type="text/css">
-                              #test {
-                                  width: auto;
-                                  height: 400px;
-                                  overflow-x: hidden;
-                                  overflow-y: auto;
-                                  position: relative; /* Thiết lập vị trí tương đối */
-                              }
+        #test {
+            width: auto;
+            height: 400px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative; /* Thiết lập vị trí tương đối */
+        }
 
         #test thead {
             position: sticky;
@@ -253,7 +253,7 @@
                 <th scope="col">Tên Đăng Nhập</th>
                 <th scope="col">Mã</th>
                 <th scope="col">Họ tên</th>
-<%--                <th scope="col">Ngày Sinh</th>--%>
+                <%--                <th scope="col">Ngày Sinh</th>--%>
                 <th scope="col">SDT</th>
                 <%--                <th scope="col">EMAIL</th>--%>
                 <%--                <th scope="col">Mật Khẩu</th>--%>
@@ -370,14 +370,16 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="matKhau" class="form-label">Mật Khẩu</label>
-                                                    <input id="matKhauUpdate${sp.id}" type="password" class="form-control"
+                                                    <input id="matKhauUpdate${sp.id}" type="password"
+                                                           class="form-control"
                                                            placeholder="Nhập mật khẩu" value="${sp.matKhau}"/>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col">
                                                         <label for="cccd" class="form-label">Số Căn Cước</label>
                                                         <input id="cccdUpdate${sp.id}" class="form-control"
-                                                               placeholder="Nhập số căn cước" value="${sp.cccd}" readonly/>
+                                                               placeholder="Nhập số căn cước" value="${sp.cccd}"
+                                                               readonly/>
                                                     </div>
                                                     <div class="col">
                                                         <label for="queQuan" class="form-label">Quê Quán</label>

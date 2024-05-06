@@ -9,6 +9,7 @@
 
 <head>
     <title>QUẢN LÝ</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

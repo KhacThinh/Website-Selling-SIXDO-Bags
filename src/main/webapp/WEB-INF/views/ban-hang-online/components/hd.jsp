@@ -104,7 +104,7 @@
 <%--                </a>--%>
 
                 <a href="/sixdo-shop" class="logo">
-                    <img src="../static/images/logo1.jpg" alt="">
+                    <img src="../static/images/cua-hang/logo1.jpg" alt="">
                 </a>
 
                 <div class="menu-desktop">
