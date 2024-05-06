@@ -9,6 +9,8 @@
 <html lang="en">
 
 <head>
+    <title>QUẢN LÝ</title>
+    <link rel="Website Icon" type="png" href="../static/images/icon/LOGOSIXDO.png">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +19,6 @@
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <title>QUẢN LÝ</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -738,15 +739,15 @@
                 <i class="uil uil-signout"></i>
                 <span class="link-name">Đăng xuất</span>
             </a></li>
-            <li class="mode">
-                <a href="#">
-                    <i class="uil uil-moon"></i>
-                    <span class="link-name">Dark Mode</span>
-                </a>
-                <div class="mode-toggle">
-                    <span class="switch"></span>
-                </div>
-            </li>
+<%--            <li class="mode">--%>
+<%--                <a href="#">--%>
+<%--                    <i class="uil uil-moon"></i>--%>
+<%--                    <span class="link-name">Dark Mode</span>--%>
+<%--                </a>--%>
+<%--                <div class="mode-toggle">--%>
+<%--                    <span class="switch"></span>--%>
+<%--                </div>--%>
+<%--            </li>--%>
         </ul>
     </div>
 </nav>
